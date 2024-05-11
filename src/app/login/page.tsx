@@ -8,7 +8,14 @@ async function LoginPage() {
   return (
     <div>
       <h2 className="text-2xl font-bold">Login Page</h2>
-      {user ? <SignOutButton /> : <LoginButton />}
+      {user ? (
+        <SignOutButton />
+      ) : (
+        <div>
+          <LoginButton provider="github" />
+          <LoginButton provider="google" />
+        </div>
+      )}
     </div>
   );
 }
