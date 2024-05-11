@@ -6,7 +6,11 @@ import { useTransition } from "react";
 import toast from "react-hot-toast";
 import { loginAction } from "@/actions/users";
 
-function LoginButton() {
+interface LoginButtonProps {
+  provider: Provider;
+}
+
+function LoginButton({ provider }: LoginButtonProps) {
   const router = useRouter();
 
   const [isPending, startTransition] = useTransition();
@@ -25,10 +29,10 @@ function LoginButton() {
   return (
     <button
       className="border-2 border-black p-2 rounded-md hover:bg-black hover:text-white"
-      onClick={() => handleClickLoginButton("github")}
+      onClick={() => handleClickLoginButton(provider)}
       disabled={isPending}
     >
-      {isPending ? "Logging in..." : "Login with GitHub"}
+      {isPending ? "Logging in..." : `Login with ${provider == "github" ? "GitHub" : "Google"}`}
     </button>
   );
 }
