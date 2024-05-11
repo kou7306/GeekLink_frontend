@@ -16,7 +16,7 @@ export const loginAction = async (provider: Provider) => {
 
     return { errorMessage: null, url: data.url };
   } catch (error) {
-    return { errorMessage: "Error logging in" };
+    return { errorMessage: "ログインに失敗しました" };
   }
 };
 
@@ -27,6 +27,40 @@ export const signOutAction = async () => {
 
     return { errorMessage: null };
   } catch (error) {
-    return { errorMessage: "Error signing out" };
+    return { errorMessage: "サインアウトに失敗しました" };
+  }
+};
+
+export const signInAction = async (email: string, password: string) => {
+  try {
+    const { error } = await getSupabaseAuth().signInWithPassword({
+      email,
+      password,
+    });
+    if (error) throw error;
+    return { errorMessage: null };
+  } catch (error: any) {
+    if (error.status === 400) {
+      return { errorMessage: "無効なログイン情報です。メールアドレスとパスワードを確認してください。" };
+    }
+    console.log(error);
+    return { errorMessage: "サインインに失敗しました" };
+  }
+};
+
+export const signUpAction = async (email: string, password: string) => {
+  try {
+    const { error } = await getSupabaseAuth().signUp({
+      email,
+      password,
+    });
+    if (error) throw error;
+    return { errorMessage: null };
+  } catch (error: any) {
+    if (error.status === 429 && error.code === "over_email_send_rate_limit") {
+      return { errorMessage: "リクエストの上限に達しました。しばらくしてから再度お試しください。" };
+    }
+    console.log(error);
+    return { errorMessage: "サインアップに失敗しました" };
   }
 };
