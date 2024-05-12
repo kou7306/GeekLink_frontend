@@ -1,3 +1,4 @@
+// src/components/auth/SignUpButton.tsx
 "use client";
 
 import { signUpAction } from "@/actions/users";
@@ -20,7 +21,7 @@ function SignUpButton({ email, password }: SignUpButtonProps) {
       const { errorMessage } = await signUpAction(email, password);
       if (!errorMessage) {
         router.push("/login");
-        toast.success("Successfully signed up! Please sign in.")
+        toast.success("Successfully signed up! Please sign in.");
       } else {
         toast.error(errorMessage);
       }
@@ -29,9 +30,9 @@ function SignUpButton({ email, password }: SignUpButtonProps) {
 
   return (
     <button
-      className="border-2 border-black p-2 rounded-md hover:bg-black hover:text-white"
       onClick={() => handleSignUp()}
       disabled={isPending}
+      className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 ease-in-out"
     >
       {isPending ? "Signing up..." : "Sign Up"}
     </button>

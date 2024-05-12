@@ -1,3 +1,4 @@
+// src/components/auth/SignInButton.tsx
 "use client";
 
 import { signInAction } from "@/actions/users";
@@ -29,9 +30,9 @@ function SignInButton({ email, password }: SignInButtonProps) {
 
   return (
     <button
-      className="border-2 border-black p-2 rounded-md hover:bg-black hover:text-white"
       onClick={() => handleSignIn()}
       disabled={isPending}
+      className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 ease-in-out"
     >
       {isPending ? "Signing in..." : "Sign In"}
     </button>

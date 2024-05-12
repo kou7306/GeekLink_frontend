@@ -1,3 +1,4 @@
+// src/components/auth/SignOutButton.tsx
 "use client";
 
 import { signOutAction } from "../../actions/users";
@@ -20,9 +21,9 @@ function SignOutButton() {
 
   return (
     <button
-      className="border-2 border-black p-2 rounded-md hover:bg-black hover:text-white"
       onClick={() => handleClickSignOutButton()}
       disabled={isPending}
+      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
     >
       {isPending ? "Signing out..." : "Sign Out"}
     </button>
