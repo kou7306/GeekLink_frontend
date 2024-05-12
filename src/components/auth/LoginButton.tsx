@@ -1,3 +1,4 @@
+// src/components/auth/LoginButton.tsx
 "use client";
 
 import { Provider } from "@supabase/supabase-js";
@@ -12,7 +13,6 @@ interface LoginButtonProps {
 
 function LoginButton({ provider }: LoginButtonProps) {
   const router = useRouter();
-
   const [isPending, startTransition] = useTransition();
 
   const handleClickLoginButton = (provider: Provider) => {
@@ -28,9 +28,9 @@ function LoginButton({ provider }: LoginButtonProps) {
 
   return (
     <button
-      className="border-2 border-black p-2 rounded-md hover:bg-black hover:text-white"
       onClick={() => handleClickLoginButton(provider)}
       disabled={isPending}
+      className="bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded w-full"
     >
       {isPending ? "Logging in..." : `${provider == "github" ? "GitHub" : "Google"}`}
     </button>
