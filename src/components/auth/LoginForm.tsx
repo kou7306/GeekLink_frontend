@@ -3,8 +3,13 @@
 import React, { useState } from "react";
 import SignInButton from "@/components/auth/SignInButton";
 import SignUpButton from "@/components/auth/SignUpButton";
+import Link from "next/link";
 
-function LoginForm() {
+interface LoginFormProps {
+  scean: string;
+}
+
+function LoginForm({ scean }: LoginFormProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -18,8 +23,14 @@ function LoginForm() {
         onChange={(e) => setPassword(e.target.value)}
       />
       <div>
-        <SignInButton email={email} password={password} />
-        <SignUpButton email={email} password={password} />
+        {scean === "sign-in" ? (
+          <div>
+          <Link href={"/sign-up"}>新規登録はこちら</Link>
+          <SignInButton email={email} password={password} />
+          </div>
+        ) : (
+          <SignUpButton email={email} password={password} />
+        )}
       </div>
     </div>
   );
