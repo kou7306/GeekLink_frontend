@@ -8,15 +8,15 @@ async function LoginPage() {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold">Login Page</h2>
+      <h2>Login</h2>
       {user ? (
         <SignOutButton />
       ) : (
-        <>
-          <LoginForm />
+        <div>
+          <LoginForm scean="sign-in"/>
           <LoginButton provider="google" />
           <LoginButton provider="github" />
-        </>
+        </div>
       )}
     </div>
   );

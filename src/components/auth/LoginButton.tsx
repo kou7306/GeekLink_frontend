@@ -32,7 +32,7 @@ function LoginButton({ provider }: LoginButtonProps) {
       onClick={() => handleClickLoginButton(provider)}
       disabled={isPending}
     >
-      {isPending ? "Logging in..." : `Login with ${provider == "github" ? "GitHub" : "Google"}`}
+      {isPending ? "Logging in..." : `${provider == "github" ? "GitHub" : "Google"}`}
     </button>
   );
 }

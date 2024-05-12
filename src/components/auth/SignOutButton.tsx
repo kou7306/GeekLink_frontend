@@ -11,7 +11,7 @@ function SignOutButton() {
     startTransition(async () => {
       const { errorMessage } = await signOutAction();
       if (!errorMessage) {
-        toast.success("Successfully signed out");
+        toast.success("Successfully Signed Out");
       } else {
         toast.error(errorMessage);
       }
