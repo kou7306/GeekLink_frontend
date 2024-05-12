@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import toast from "react-hot-toast";
 import { loginAction } from "@/actions/users";
+import { FaGithub, FaGoogle } from "react-icons/fa";
 
 interface LoginButtonProps {
   provider: Provider;
@@ -15,7 +16,7 @@ function LoginButton({ provider }: LoginButtonProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
-  const handleClickLoginButton = (provider: Provider) => {
+  const handleClickLoginButton = async (provider: Provider) => {
     startTransition(async () => {
       const { errorMessage, url } = await loginAction(provider);
       if (!errorMessage && url) {
@@ -30,9 +31,18 @@ function LoginButton({ provider }: LoginButtonProps) {
     <button
       onClick={() => handleClickLoginButton(provider)}
       disabled={isPending}
-      className="bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded w-full"
+      className={`${
+        provider === "github" ? "bg-gray-800 hover:bg-black" : "bg-red-500 hover:bg-red-600"
+      } text-white font-bold py-2 px-4 rounded w-full flex items-center justify-center space-x-2`}
     >
-      {isPending ? "Logging in..." : `${provider == "github" ? "GitHub" : "Google"}`}
+      {isPending ? (
+        "Logging in..."
+      ) : (
+        <>
+          {provider === "github" ? <FaGithub className="w-5 h-5" /> : <FaGoogle className="w-5 h-5" />}
+          <span>{provider === "github" ? "GitHub" : "Google"}</span>
+        </>
+      )}
     </button>
   );
 }
