@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import React, { useMemo } from "react";
+import { useState, useRef } from "react";
 import TinderCard from "react-tinder-card";
 
 export default function Home() {
@@ -25,8 +26,29 @@ export default function Home() {
       url: "/img/ShinjiIkari.jpg",
     },
   ];
+  type TinderCardInstance = {
+    swipe: (dir?: string) => Promise<void>;
+    restoreCard: () => Promise<void>;
+  };
 
+  const [currentIndex, setCurrentIndex] = useState(characters.length - 1);
   const [lastDirection, setLastDirection] = useState("");
+  const currentIndexRef = useRef(currentIndex);
+
+  const childRefs = useRef(
+    Array(characters.length)
+      .fill(0)
+      .map(() => React.createRef<TinderCardInstance>())
+  ).current;
+
+  const updateCurrentIndex = (val: any) => {
+    setCurrentIndex(val);
+    currentIndexRef.current = val;
+  };
+
+  const canGoBack = currentIndex < characters.length - 1;
+
+  const canSwipe = currentIndex >= 0;
 
   const swiped = (direction: string, nameToDelete: string) => {
     console.log("removing: " + nameToDelete);
@@ -35,6 +57,22 @@ export default function Home() {
 
   const outOfFrame = (name: string) => {
     console.log(name + " left the screen!");
+  };
+
+  const swipe = async (dir: string) => {
+    if (canSwipe && currentIndex >= 0) {
+      await childRefs[currentIndex].current?.swipe(dir);
+      updateCurrentIndex(currentIndex - 1);
+    }
+  };
+
+  const goBack = async () => {
+    if (!canGoBack) return;
+    const newIndex = currentIndex + 1;
+    updateCurrentIndex(newIndex);
+    if (childRefs[newIndex]?.current) {
+      await childRefs[newIndex]?.current?.restoreCard();
+    }
   };
 
   return (
@@ -49,8 +87,9 @@ export default function Home() {
       />
       <h1>Random-match</h1>
       <div className="w-[90vw] max-w-[260px] h-[300px]">
-        {characters.map((character) => (
+        {characters.map((character, index) => (
           <TinderCard
+            ref={childRefs[index]}
             className="absolute"
             key={character.name}
             onSwipe={(dir) => swiped(dir, character.name)}
@@ -70,6 +109,15 @@ export default function Home() {
       ) : (
         <h2 className="infoText" />
       )}
+      <div className="flex space-x-4 mt-4">
+        <button onClick={() => swipe("left")} className="btn">
+          Swipe Left
+        </button>
+        <button onClick={() => goBack()}>Undo swipe!</button>
+        <button onClick={() => swipe("right")} className="btn">
+          Swipe Right
+        </button>
+      </div>
     </div>
   );
 }
