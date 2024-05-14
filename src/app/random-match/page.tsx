@@ -2,6 +2,9 @@
 import React, { useMemo } from "react";
 import { useState, useRef } from "react";
 import TinderCard from "react-tinder-card";
+import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
+import UndoIcon from "@mui/icons-material/Undo";
+import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 
 export default function Home() {
   const characters = [
@@ -111,8 +114,29 @@ export default function Home() {
         <h2 className="infoText" />
       )}
       <div className="flex space-x-4 mt-4">
-        <button onClick={() => swipe("left")}>Swipe Left</button>
-        <button onClick={() => swipe("right")}>Swipe Right</button>
+        <button
+          className="transform transition-transform duration-200 active:scale-90"
+          onClick={() => swipe("left")}
+        >
+          <ThumbDownAltIcon />
+        </button>
+        <button
+          className="transform transition-transform duration-200 active:scale-90"
+          onClick={goBack}
+        >
+          <UndoIcon />
+        </button>
+        <button
+          className="transform transition-transform duration-200 active:scale-90"
+          onClick={() => swipe("right")}
+        >
+          <ThumbUpAltIcon />
+        </button>
+      </div>
+      <div>
+        <button className="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700 transition duration-200">
+          終了
+        </button>
       </div>
     </div>
   );
