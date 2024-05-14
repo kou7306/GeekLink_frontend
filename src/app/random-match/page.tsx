@@ -41,7 +41,7 @@ export default function Home() {
       .map(() => React.createRef<TinderCardInstance>())
   ).current;
 
-  const updateCurrentIndex = (val: any) => {
+  const updateCurrentIndex = (val: number) => {
     setCurrentIndex(val);
     currentIndexRef.current = val;
   };
@@ -53,6 +53,7 @@ export default function Home() {
   const swiped = (direction: string, nameToDelete: string) => {
     console.log("removing: " + nameToDelete);
     setLastDirection(direction);
+    updateCurrentIndex(currentIndex - 1);
   };
 
   const outOfFrame = (name: string) => {
@@ -110,13 +111,8 @@ export default function Home() {
         <h2 className="infoText" />
       )}
       <div className="flex space-x-4 mt-4">
-        <button onClick={() => swipe("left")} className="btn">
-          Swipe Left
-        </button>
-        <button onClick={() => goBack()}>Undo swipe!</button>
-        <button onClick={() => swipe("right")} className="btn">
-          Swipe Right
-        </button>
+        <button onClick={() => swipe("left")}>Swipe Left</button>
+        <button onClick={() => swipe("right")}>Swipe Right</button>
       </div>
     </div>
   );
