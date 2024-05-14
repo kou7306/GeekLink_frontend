@@ -2,36 +2,104 @@
 "use client";
 
 import React, { useState } from "react";
-import { ages, residences, technologies, jobTitles } from "./options";
+import { ages, places, technologies, occupations } from "./options";
+import { TechModal } from "@/components/profile/TechModal";
+import { TopTechModal } from "@/components/profile/TopTechModal";
+import NameInput from "@/components/profile/NameInput";
+import SexSelect from "@/components/profile/SexSelect";
+import AgeSelect from "@/components/profile/AgeSelect";
+import PlaceSelect from "@/components/profile/PlaceSelect";
+import OccupationSelect from "@/components/profile/OccupationSelect";
+import TechSelection from "@/components/profile/TechSelect";
 
 interface ProfileForm {
   name: string;
-  gender: string;
+  sex: string;
   age: number;
-  residence: string;
-  technology: string;
-  jobTitle: string;
+  place: string;
+  techs: string[];
+  topTechs: string[];
+  occupation: string;
 }
 
-export default function ProfileSetup() {
+export default function ProfileInitialization() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isTopTecnologyModalOpen, setIsTopTecnologyModalOpen] = useState(false);
+  const [selectedTech, setSelectedTech] = useState<string[]>([]);
+  const [topTech, setTopTech] = useState<string[]>([]);
   const [profile, setProfile] = useState<ProfileForm>({
     name: "",
-    gender: "",
+    sex: "",
     age: 0,
-    residence: "",
-    technology: "",
-    jobTitle: "",
+    place: "",
+    techs: [],
+    topTechs: [],
+    occupation: "",
   });
+
+  const toggleModal = () => setIsModalOpen(!isModalOpen);
+  const openTopTechModal = () => {
+    setIsModalOpen(false);
+    setIsTopTecnologyModalOpen(true);
+  };
+  const closeTopTechModal = () => setIsTopTecnologyModalOpen(false);
+
+  const handleSelectTech = (tech: string) => {
+    setSelectedTech((prev) => {
+      const isAlreadySelected = prev.includes(tech);
+      if (isAlreadySelected) {
+        return prev.filter((t) => t !== tech);
+      }
+      return [...prev, tech];
+    });
+  };
+
+  const handleTopSelect = (tech: string) => {
+    setTopTech((prev: string[]) => {
+      const isAlreadySelected = prev.includes(tech);
+      // すでに選択されている場合は除去し、選択されていない場合は追加（ただし3つまで）
+      const newTopTech = isAlreadySelected
+        ? prev.filter((t) => t !== tech) // 選択解除
+        : prev.length < 3
+        ? [...prev, tech] // 新規追加
+        : prev; // 変更なし
+
+      return newTopTech;
+    });
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
     const { name, value } = e.target;
-    const newValue = name === "age" ? parseInt(value, 10) : value;
-    setProfile((prev) => ({ ...prev, [name]: newValue }));
+    if (name === "tech") {
+      // select multiple のための特別なハンドリング
+      const options = (e.target as HTMLSelectElement).options;
+      const values: string[] = [];
+      for (let i = 0; i < options.length; i++) {
+        if (options[i].selected) {
+          values.push(options[i].value);
+        }
+      }
+      setProfile((prev) => ({ ...prev, tech: values }));
+    } else {
+      const newValue = name === "age" ? parseInt(value, 10) : value;
+      setProfile((prev) => ({ ...prev, [name]: newValue }));
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Profile Data:", profile);
+    // profile の techs と topTechs を更新する
+    setProfile((prevProfile) => ({
+      ...prevProfile,
+      techs: selectedTech,
+      topTechs: topTech,
+    }));
+    // 更新したプロファイルをコンソールに出力
+    console.log("Profile Data:", {
+      ...profile,
+      techs: selectedTech,
+      topTechs: topTech,
+    });
   };
 
   return (
@@ -39,101 +107,42 @@ export default function ProfileSetup() {
       <h2 className="text-2xl font-bold mb-4 text-gray-800">プロフィール初期設定</h2>
       <form onSubmit={handleSubmit} className="w-full max-w-lg p-8 bg-white shadow-xl rounded-lg">
         <div className="space-y-6">
-          <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-              名前
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={profile.name}
-              onChange={(e) => setProfile({ ...profile, name: e.target.value })}
-              className="p-2 block mt-1 w-full border-gray-300 shadow-sm"
-            />
-          </div>
-          <div>
-            <label htmlFor="gender" className="block text-sm font-medium text-gray-700">
-              性別
-            </label>
-            <select
-              name="gender"
-              value={profile.gender}
-              onChange={handleChange}
-              className="mt-1 block w-full"
-            >
-              <option value="">選択してください</option>
-              <option value="male">男性</option>
-              <option value="female">女性</option>
-            </select>
-          </div>
-          <div>
-            <label htmlFor="age" className="block text-sm font-medium text-gray-700">
-              年齢
-            </label>
-            <select name="age" value={profile.age} onChange={handleChange} className="mt-1 block w-full">
-              <option value="">選択してください</option>
-              {ages.map((age) => (
-                <option key={age} value={age}>
-                  {age}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label htmlFor="residence" className="block text-sm font-medium text-gray-700">
-              在住
-            </label>
-            <select
-              name="residence"
-              value={profile.residence}
-              onChange={handleChange}
-              className="mt-1 block w-full"
-            >
-              <option value="">選択してください</option>
-              {residences.map((residence) => (
-                <option key={residence} value={residence}>
-                  {residence}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label htmlFor="technology" className="block text-sm font-medium text-gray-700">
-              技術
-            </label>
-            <select
-              name="technology"
-              value={profile.technology}
-              onChange={handleChange}
-              className="mt-1 block w-full"
-            >
-              <option value="">選択してください</option>
-              {technologies.map((technology) => (
-                <option key={technology} value={technology}>
-                  {technology}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label htmlFor="jobTitle" className="block text-sm font-medium text-gray-700">
-              職種
-            </label>
-            <select
-              name="jobTitle"
-              value={profile.jobTitle}
-              onChange={handleChange}
-              className="mt-1 block w-full"
-            >
-              <option value="">選択してください</option>
-              {jobTitles.map((title) => (
-                <option key={title} value={title}>
-                  {title}
-                </option>
-              ))}
-            </select>
-          </div>
+          <NameInput
+            name={profile.name}
+            onChange={(e) => setProfile({ ...profile, name: e.target.value })}
+          />
+          <SexSelect sex={profile.sex} onChange={handleChange} />
+          <AgeSelect age={profile.age} onChange={handleChange} ages={ages} />
+          <PlaceSelect place={profile.place} onChange={handleChange} places={places} />
+          <OccupationSelect
+            occupation={profile.occupation}
+            onChange={handleChange}
+            occupations={occupations}
+          />
+
+          <TechSelection
+            toggleModal={toggleModal}
+            openTopTechModal={openTopTechModal}
+            topTech={topTech}
+            selectedTech={selectedTech}
+          />
+
+          <TechModal
+            isOpen={isModalOpen}
+            technologies={technologies}
+            selectedTech={selectedTech}
+            onClose={toggleModal}
+            onSelect={handleSelectTech}
+            onNext={openTopTechModal}
+          />
+          <TopTechModal
+            isOpen={isTopTecnologyModalOpen}
+            selectedTech={selectedTech}
+            topTech={topTech}
+            onClose={closeTopTechModal}
+            onTopSelect={handleTopSelect}
+          />
+
           <button
             type="submit"
             className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
