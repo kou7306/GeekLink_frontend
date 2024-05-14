@@ -1,7 +1,8 @@
-// app/profile-setup/page.tsx
+// app/profile-initialization/page.tsx
 "use client";
 
 import React, { useState } from "react";
+import { ages, residences, technologies, jobTitles } from "./options";
 
 interface ProfileForm {
   name: string;
@@ -72,9 +73,9 @@ export default function ProfileSetup() {
             </label>
             <select name="age" value={profile.age} onChange={handleChange} className="mt-1 block w-full">
               <option value="">選択してください</option>
-              {Array.from({ length: 66 }, (_, i) => (
-                <option key={i} value={i + 15}>
-                  {i + 15}
+              {ages.map((age) => (
+                <option key={age} value={age}>
+                  {age}
                 </option>
               ))}
             </select>
@@ -90,60 +91,11 @@ export default function ProfileSetup() {
               className="mt-1 block w-full"
             >
               <option value="">選択してください</option>
-              {[
-                "北海道",
-                "青森県",
-                "岩手県",
-                "宮城県",
-                "秋田県",
-                "山形県",
-                "福島県",
-                "茨城県",
-                "栃木県",
-                "群馬県",
-                "埼玉県",
-                "千葉県",
-                "東京都",
-                "神奈川県",
-                "新潟県",
-                "富山県",
-                "石川県",
-                "福井県",
-                "山梨県",
-                "長野県",
-                "岐阜県",
-                "静岡県",
-                "愛知県",
-                "三重県",
-                "滋賀県",
-                "京都府",
-                "大阪府",
-                "兵庫県",
-                "奈良県",
-                "和歌山県",
-                "鳥取県",
-                "島根県",
-                "岡山県",
-                "広島県",
-                "山口県",
-                "徳島県",
-                "香川県",
-                "愛媛県",
-                "高知県",
-                "福岡県",
-                "佐賀県",
-                "長崎県",
-                "熊本県",
-                "大分県",
-                "宮崎県",
-                "鹿児島県",
-                "沖縄県",
-              ].map((pref) => (
-                <option key={pref} value={pref}>
-                  {pref}
+              {residences.map((residence) => (
+                <option key={residence} value={residence}>
+                  {residence}
                 </option>
               ))}
-              <option value="海外">海外</option>
             </select>
           </div>
           <div>
@@ -157,14 +109,11 @@ export default function ProfileSetup() {
               className="mt-1 block w-full"
             >
               <option value="">選択してください</option>
-              <option value="Java">Java</option>
-              <option value="JavaScript">JavaScript</option>
-              <option value="Python">Python</option>
-              <option value="Ruby">Ruby</option>
-              <option value="PHP">PHP</option>
-              <option value="React">React</option>
-              <option value="Angular">Angular</option>
-              <option value="Vue.js">Vue.js</option>
+              {technologies.map((technology) => (
+                <option key={technology} value={technology}>
+                  {technology}
+                </option>
+              ))}
             </select>
           </div>
           <div>
@@ -178,23 +127,11 @@ export default function ProfileSetup() {
               className="mt-1 block w-full"
             >
               <option value="">選択してください</option>
-              <option value="high-school-1">高校生１年生</option>
-              <option value="high-school-2">高校生２年生</option>
-              <option value="high-school-3">高校生３年生</option>
-              <option value="technical-school-1">高専１年生</option>
-              <option value="technical-school-2">高専２年生</option>
-              <option value="technical-school-3">高専３年生</option>
-              <option value="technical-school-4">高専４年生</option>
-              <option value="technical-school-5">高専５年生</option>
-              <option value="university-1">大学生１年生</option>
-              <option value="university-2">大学生２年生</option>
-              <option value="university-3">大学生３年生</option>
-              <option value="university-4">大学生４年生</option>
-              <option value="college-1">専門学校１年生</option>
-              <option value="college-2">専門学校２年生</option>
-              <option value="it-company">IT企業エンジニア</option>
-              <option value="freelance">フリーランスエンジニア</option>
-              <option value="other">その他</option>
+              {jobTitles.map((title) => (
+                <option key={title} value={title}>
+                  {title}
+                </option>
+              ))}
             </select>
           </div>
           <button
