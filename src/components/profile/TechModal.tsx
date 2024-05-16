@@ -4,8 +4,8 @@ interface ModalProps {
   isOpen: boolean;
   technologies: string[];
   selectedTech: string[];
-  onClose: () => void;
   onSelect: (tech: string) => void;
+  onClose: () => void;
   onNext: () => void;
 }
 
@@ -13,8 +13,8 @@ export const TechModal: React.FC<ModalProps> = ({
   isOpen,
   technologies,
   selectedTech,
-  onClose,
   onSelect,
+  onClose,
   onNext,
 }) => {
   if (!isOpen) return null;

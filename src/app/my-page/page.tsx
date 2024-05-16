@@ -1,8 +1,15 @@
-// app/profile-initialization/page.tsx
+// app/my-page/page.tsx
 "use client";
 
 import React, { useState } from "react";
-import { ages, places, technologies, occupations, ProfileForm } from "@/components/profile/options";
+import {
+  ages,
+  places,
+  technologies,
+  occupations,
+  ProfileForm,
+  experienceOptions,
+} from "@/components/profile/options";
 import { TechModal } from "@/components/profile/TechModal";
 import { TopTechModal } from "@/components/profile/TopTechModal";
 import NameInput from "@/components/profile/NameInput";
@@ -11,11 +18,19 @@ import AgeSelect from "@/components/profile/AgeSelect";
 import PlaceSelect from "@/components/profile/PlaceSelect";
 import OccupationSelect from "@/components/profile/OccupationSelect";
 import TechSelection from "@/components/profile/TechSelect";
+import HobbyInput from "@/components/profile/HobbyInput";
+import FacultySelect from "@/components/profile/FacultySelect";
+import GraduateSelect from "@/components/profile/GraduateSelect";
+import EditorSelect from "@/components/profile/EditorSelect";
+import ExperienceSelect from "@/components/profile/ExperienceSelect";
+import { ExperienceModal } from "@/components/profile/ExperienceModal";
 
 export default function ProfileInitialization() {
   const [isTechModalOpen, setIsTechModalOpen] = useState(false);
+  const [isExperienceModalOpen, setIsExperienceModalOpen] = useState(false);
   const [isTopTecnologyModalOpen, setIsTopTecnologyModalOpen] = useState(false);
   const [selectedTech, setSelectedTech] = useState<string[]>([]);
+  const [selectedExperiences, setSelectedExperiences] = useState<string[]>([]);
   const [topTech, setTopTech] = useState<string[]>([]);
   const [profile, setProfile] = useState<ProfileForm>({
     name: "",
@@ -25,9 +40,20 @@ export default function ProfileInitialization() {
     techs: [],
     topTechs: [],
     occupation: "",
+    hobby: "",
+    editor: "",
+    affiliation: [],
+    qualification: [],
+    message: "",
+    portfolio: "",
+    graduate: "",
+    desiredOccupation: "",
+    faculty: "",
   });
 
-  const toggleModal = () => setIsTechModalOpen(!isTechModalOpen);
+  const toggleTechModal = () => setIsTechModalOpen(!isTechModalOpen);
+  const toggleExperienceModal = () => setIsExperienceModalOpen(!isExperienceModalOpen);
+
   const openTopTechModal = () => {
     setIsTechModalOpen(false);
     setIsTopTecnologyModalOpen(true);
@@ -55,6 +81,16 @@ export default function ProfileInitialization() {
         : prev; // 変更なし
 
       return newTopTech;
+    });
+  };
+
+  const handleSelectExperience = (experience: string) => {
+    setSelectedExperiences((prev) => {
+      const isAlreadySelected = prev.includes(experience);
+      if (isAlreadySelected) {
+        return prev.filter((t) => t !== experience);
+      }
+      return [...prev, experience];
     });
   };
 
@@ -94,7 +130,7 @@ export default function ProfileInitialization() {
 
   return (
     <div className="min-h-screen my-4 bg-gray-50 flex flex-col items-center justify-center">
-      <h2 className="text-2xl font-bold mb-4 text-gray-800">プロフィール初期設定</h2>
+      <h2 className="text-2xl font-bold mb-4 text-gray-800">プロフィール設定</h2>
       <form onSubmit={handleSubmit} className="w-full max-w-lg p-8 bg-white shadow-xl rounded-lg">
         <div className="space-y-6">
           <NameInput
@@ -111,7 +147,7 @@ export default function ProfileInitialization() {
           />
 
           <TechSelection
-            toggleModal={toggleModal}
+            toggleModal={toggleTechModal}
             openTopTechModal={openTopTechModal}
             topTech={topTech}
             selectedTech={selectedTech}
@@ -121,8 +157,8 @@ export default function ProfileInitialization() {
             isOpen={isTechModalOpen}
             technologies={technologies}
             selectedTech={selectedTech}
-            onClose={toggleModal}
             onSelect={handleSelectTech}
+            onClose={toggleTechModal}
             onNext={openTopTechModal}
           />
           <TopTechModal
@@ -131,6 +167,42 @@ export default function ProfileInitialization() {
             topTech={topTech}
             onClose={closeTopTechModal}
             onTopSelect={handleTopSelect}
+          />
+
+          <HobbyInput
+            hobby={profile.hobby}
+            onChange={(e) => setProfile({ ...profile, hobby: e.target.value })}
+          />
+          {/* 所属 入力 */}
+          {/* 資格 入力 */}
+          <EditorSelect
+            editor={profile.editor}
+            onChange={(e) => setProfile({ ...profile, editor: e.target.value })}
+          />
+
+          {/* 実務経験　入力 */}
+          <ExperienceSelect
+            toggleModal={toggleExperienceModal}
+            selectedExperiences={selectedExperiences}
+          />
+          <ExperienceModal
+            isOpen={isExperienceModalOpen}
+            experiences={experienceOptions}
+            selectedExperiences={selectedExperiences}
+            onSelect={handleSelectExperience}
+            onClose={toggleExperienceModal}
+          />
+
+          {/* AtCoder 入力　上のSNSアイコンと同じ亜書にあってもいいのでは？ */}
+          {/* ポートフォリオ　入力 */}
+          {/* メッセージ　入力 */}
+          <GraduateSelect
+            graduate={profile.graduate}
+            onChange={(e) => setProfile({ ...profile, graduate: e.target.value })}
+          />
+          <FacultySelect
+            faculty={profile.faculty}
+            onChange={(e) => setProfile({ ...profile, faculty: e.target.value })}
           />
 
           <button
