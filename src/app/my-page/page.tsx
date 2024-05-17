@@ -40,22 +40,23 @@ export default function ProfileInitialization() {
   const [qualifications, setQualifications] = useState<string[]>([]);
   const [showQualificationInput, setShowQualificationInput] = useState<boolean>(false);
   const [profile, setProfile] = useState<ProfileForm>({
-    name: "",
-    sex: "",
-    age: 0,
-    place: "",
-    techs: [],
-    topTechs: [],
-    occupation: "",
-    hobby: "",
-    editor: "",
-    affiliation: "",
-    qualification: [],
-    message: "",
-    portfolio: "",
-    graduate: "",
-    desiredOccupation: "",
-    faculty: "",
+    name: "", // 名前
+    sex: "", // 性別
+    age: 0, // 年齢
+    place: "", // 在住
+    techs: [], // スキル
+    topTechs: [], // トップスキル
+    occupation: "", // 職業
+    hobby: "", // 趣味
+    editor: "", // エディタ
+    affiliation: "", // 所属
+    qualification: [], // 資格
+    message: "", // メッセージ
+    portfolio: "", // ポートフォリオ
+    graduate: "", // 卒業年度
+    desiredOccupation: "", // 希望職種
+    faculty: "", // 学部
+    experience: [], // 経験
   });
 
   const toggleTechModal = () => setIsTechModalOpen(!isTechModalOpen);
@@ -164,6 +165,26 @@ export default function ProfileInitialization() {
             occupations={occupations}
           />
 
+          {profile.occupation !== "IT企業エンジニア" &&
+            profile.occupation !== "フリーランスエンジニア" &&
+            profile.occupation !== "その他" &&
+            profile.occupation !== "" && (
+              <div className="space-y-8">
+                <GraduateSelect
+                  graduate={profile.graduate}
+                  onChange={(e) => setProfile({ ...profile, graduate: e.target.value })}
+                />
+                <FacultySelect
+                  faculty={profile.faculty}
+                  onChange={(e) => setProfile({ ...profile, faculty: e.target.value })}
+                />
+                <DesireOccupationSelect
+                  desireOccupation={profile.desiredOccupation}
+                  onChange={(e) => setProfile({ ...profile, desiredOccupation: e.target.value })}
+                />
+              </div>
+            )}
+
           <TechSelection
             toggleModal={toggleTechModal}
             openTopTechModal={openTopTechModal}
@@ -244,19 +265,6 @@ export default function ProfileInitialization() {
           <MessageInput
             message={profile.message}
             onChange={(e) => setProfile({ ...profile, message: e.target.value })}
-          />
-
-          <GraduateSelect
-            graduate={profile.graduate}
-            onChange={(e) => setProfile({ ...profile, graduate: e.target.value })}
-          />
-          <FacultySelect
-            faculty={profile.faculty}
-            onChange={(e) => setProfile({ ...profile, faculty: e.target.value })}
-          />
-          <DesireOccupationSelect
-            desireOccupation={profile.desiredOccupation}
-            onChange={(e) => setProfile({ ...profile, desiredOccupation: e.target.value })}
           />
 
           <button
