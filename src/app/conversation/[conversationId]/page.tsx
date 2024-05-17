@@ -2,7 +2,7 @@ import Chat from "@/components/chat/Chat";
 
 const Page = ({ params }: { params: any }) => {
   return (
-    <div>
+    <div className="bg-accent">
       <Chat params={params} />
     </div>
   );
