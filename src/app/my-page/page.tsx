@@ -23,7 +23,12 @@ import FacultySelect from "@/components/profile/FacultySelect";
 import GraduateSelect from "@/components/profile/GraduateSelect";
 import EditorSelect from "@/components/profile/EditorSelect";
 import ExperienceSelect from "@/components/profile/ExperienceSelect";
-import { ExperienceModal } from "@/components/profile/ExperienceModal";
+import ExperienceModal from "@/components/profile/ExperienceModal";
+import AffiliationInput from "@/components/profile/AffiliationInput";
+import PortfolioInput from "@/components/profile/PortfolioInput";
+import MessageInput from "@/components/profile/MessageInput";
+import QualificationInput from "@/components/profile/QualificationInput";
+import DesireOccupationSelect from "@/components/profile/DesireOccupationSelect";
 
 export default function ProfileInitialization() {
   const [isTechModalOpen, setIsTechModalOpen] = useState(false);
@@ -32,6 +37,8 @@ export default function ProfileInitialization() {
   const [selectedTech, setSelectedTech] = useState<string[]>([]);
   const [selectedExperiences, setSelectedExperiences] = useState<string[]>([]);
   const [topTech, setTopTech] = useState<string[]>([]);
+  const [qualifications, setQualifications] = useState<string[]>([]);
+  const [showQualificationInput, setShowQualificationInput] = useState<boolean>(false);
   const [profile, setProfile] = useState<ProfileForm>({
     name: "",
     sex: "",
@@ -42,7 +49,7 @@ export default function ProfileInitialization() {
     occupation: "",
     hobby: "",
     editor: "",
-    affiliation: [],
+    affiliation: "",
     qualification: [],
     message: "",
     portfolio: "",
@@ -94,6 +101,19 @@ export default function ProfileInitialization() {
     });
   };
 
+  const handleAddQualification = (qualification: string) => {
+    setQualifications([...qualifications, qualification]);
+    setShowQualificationInput(false);
+  };
+
+  const handleShowQualificationInput = () => {
+    setShowQualificationInput(true);
+  };
+
+  const handleRemoveQualification = (index: number) => {
+    setQualifications((prev) => prev.filter((_, i) => i !== index));
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
     const { name, value } = e.target;
     if (name === "tech") {
@@ -114,25 +134,23 @@ export default function ProfileInitialization() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // profile の techs と topTechs を更新する
+    // profile の設定を更新する
     setProfile((prevProfile) => ({
       ...prevProfile,
       techs: selectedTech,
       topTechs: topTech,
+      experience: selectedExperiences,
+      qualification: qualifications,
     }));
     // 更新したプロファイルをコンソールに出力
-    console.log("Profile Data:", {
-      ...profile,
-      techs: selectedTech,
-      topTechs: topTech,
-    });
+    console.log("Profile Data:", { profile });
   };
 
   return (
     <div className="min-h-screen my-4 bg-gray-50 flex flex-col items-center justify-center">
       <h2 className="text-2xl font-bold mb-4 text-gray-800">プロフィール設定</h2>
       <form onSubmit={handleSubmit} className="w-full max-w-lg p-8 bg-white shadow-xl rounded-lg">
-        <div className="space-y-6">
+        <div className="space-y-8">
           <NameInput
             name={profile.name}
             onChange={(e) => setProfile({ ...profile, name: e.target.value })}
@@ -173,14 +191,40 @@ export default function ProfileInitialization() {
             hobby={profile.hobby}
             onChange={(e) => setProfile({ ...profile, hobby: e.target.value })}
           />
-          {/* 所属 入力 */}
-          {/* 資格 入力 */}
+          <AffiliationInput
+            affiliation={profile.affiliation}
+            onChange={(e) => setProfile({ ...profile, affiliation: e.target.value })}
+          />
+
+          <ul className="flex gap-2 flex-wrap mb-4">
+            {qualifications.map((qualification, index) => (
+              <li key={index} className="bg-blue-300 text-white rounded-full px-4 py-1">
+                {qualification}
+                <button
+                  onClick={() => handleRemoveQualification(index)}
+                  className=" hover:text-red-700 ml-4"
+                >
+                  ✖︎
+                </button>
+              </li>
+            ))}
+          </ul>
+          {showQualificationInput ? (
+            <QualificationInput onAddQualification={handleAddQualification} />
+          ) : (
+            <button
+              onClick={handleShowQualificationInput}
+              className="bg-blue-500 text-white px-4 py-2 rounded-md"
+            >
+              資格を追加
+            </button>
+          )}
+
           <EditorSelect
             editor={profile.editor}
             onChange={(e) => setProfile({ ...profile, editor: e.target.value })}
           />
 
-          {/* 実務経験　入力 */}
           <ExperienceSelect
             toggleModal={toggleExperienceModal}
             selectedExperiences={selectedExperiences}
@@ -193,9 +237,15 @@ export default function ProfileInitialization() {
             onClose={toggleExperienceModal}
           />
 
-          {/* AtCoder 入力　上のSNSアイコンと同じ亜書にあってもいいのでは？ */}
-          {/* ポートフォリオ　入力 */}
-          {/* メッセージ　入力 */}
+          <PortfolioInput
+            portfolio={profile.portfolio}
+            onChange={(e) => setProfile({ ...profile, portfolio: e.target.value })}
+          />
+          <MessageInput
+            message={profile.message}
+            onChange={(e) => setProfile({ ...profile, message: e.target.value })}
+          />
+
           <GraduateSelect
             graduate={profile.graduate}
             onChange={(e) => setProfile({ ...profile, graduate: e.target.value })}
@@ -203,6 +253,10 @@ export default function ProfileInitialization() {
           <FacultySelect
             faculty={profile.faculty}
             onChange={(e) => setProfile({ ...profile, faculty: e.target.value })}
+          />
+          <DesireOccupationSelect
+            desireOccupation={profile.desiredOccupation}
+            onChange={(e) => setProfile({ ...profile, desiredOccupation: e.target.value })}
           />
 
           <button

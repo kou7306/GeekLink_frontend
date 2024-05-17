@@ -10,7 +10,7 @@ export interface ProfileForm {
   occupation: string;
   hobby?: string;
   editor?: string;
-  affiliation?: string[];
+  affiliation?: string;
   qualification?: string[];
   message?: string;
   portfolio?: string;

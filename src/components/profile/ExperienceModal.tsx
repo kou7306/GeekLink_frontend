@@ -8,7 +8,7 @@ interface ExperienceModalProps {
   onClose: () => void;
 }
 
-export const ExperienceModal: React.FC<ExperienceModalProps> = ({
+const ExperienceModal: React.FC<ExperienceModalProps> = ({
   isOpen,
   experiences,
   selectedExperiences,
@@ -48,3 +48,5 @@ export const ExperienceModal: React.FC<ExperienceModalProps> = ({
     </div>
   );
 };
+
+export default ExperienceModal;
