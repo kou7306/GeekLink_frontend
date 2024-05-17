@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { ages, places, technologies, occupations } from "./options";
+import { ages, places, technologies, occupations, ProfileForm } from "@/components/profile/options";
 import { TechModal } from "@/components/profile/TechModal";
 import { TopTechModal } from "@/components/profile/TopTechModal";
 import NameInput from "@/components/profile/NameInput";
@@ -12,18 +12,8 @@ import PlaceSelect from "@/components/profile/PlaceSelect";
 import OccupationSelect from "@/components/profile/OccupationSelect";
 import TechSelection from "@/components/profile/TechSelect";
 
-interface ProfileForm {
-  name: string;
-  sex: string;
-  age: number;
-  place: string;
-  techs: string[];
-  topTechs: string[];
-  occupation: string;
-}
-
 export default function ProfileInitialization() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isTechModalOpen, setIsTechModalOpen] = useState(false);
   const [isTopTecnologyModalOpen, setIsTopTecnologyModalOpen] = useState(false);
   const [selectedTech, setSelectedTech] = useState<string[]>([]);
   const [topTech, setTopTech] = useState<string[]>([]);
@@ -37,9 +27,9 @@ export default function ProfileInitialization() {
     occupation: "",
   });
 
-  const toggleModal = () => setIsModalOpen(!isModalOpen);
+  const toggleModal = () => setIsTechModalOpen(!isTechModalOpen);
   const openTopTechModal = () => {
-    setIsModalOpen(false);
+    setIsTechModalOpen(false);
     setIsTopTecnologyModalOpen(true);
   };
   const closeTopTechModal = () => setIsTopTecnologyModalOpen(false);
@@ -103,7 +93,7 @@ export default function ProfileInitialization() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center">
+    <div className="min-h-screen my-4 bg-gray-50 flex flex-col items-center justify-center">
       <h2 className="text-2xl font-bold mb-4 text-gray-800">プロフィール初期設定</h2>
       <form onSubmit={handleSubmit} className="w-full max-w-lg p-8 bg-white shadow-xl rounded-lg">
         <div className="space-y-6">
@@ -128,7 +118,7 @@ export default function ProfileInitialization() {
           />
 
           <TechModal
-            isOpen={isModalOpen}
+            isOpen={isTechModalOpen}
             technologies={technologies}
             selectedTech={selectedTech}
             onClose={toggleModal}
