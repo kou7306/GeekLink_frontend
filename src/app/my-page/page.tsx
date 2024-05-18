@@ -262,7 +262,7 @@ export default function ProfileInitialization() {
                   type="text"
                   value={profile.githubID}
                   onChange={(e) => handleSnsIDChange(e, "github")}
-                  onKeyPress={(e) => handleKeyPress(e, "github")}
+                  onKeyDown={(e) => handleKeyPress(e, "github")}
                   className="flex-1 px-4 py-2 border-none"
                 />
               </div>
@@ -283,7 +283,7 @@ export default function ProfileInitialization() {
                   type="text"
                   value={profile.twitterID}
                   onChange={(e) => handleSnsIDChange(e, "twitter")}
-                  onKeyPress={(e) => handleKeyPress(e, "twitter")}
+                  onKeyDown={(e) => handleKeyPress(e, "twitter")}
                   className="flex-1 px-4 py-2 border-none"
                 />
               </div>
@@ -304,7 +304,7 @@ export default function ProfileInitialization() {
                   type="text"
                   value={profile.zennID}
                   onChange={(e) => handleSnsIDChange(e, "zenn")}
-                  onKeyPress={(e) => handleKeyPress(e, "zenn")}
+                  onKeyDown={(e) => handleKeyPress(e, "zenn")}
                   className="flex-1 px-4 py-2 border-none"
                 />
               </div>
@@ -325,7 +325,7 @@ export default function ProfileInitialization() {
                   type="text"
                   value={profile.qiitaID}
                   onChange={(e) => handleSnsIDChange(e, "qiita")}
-                  onKeyPress={(e) => handleKeyPress(e, "qiita")}
+                  onKeyDown={(e) => handleKeyPress(e, "qiita")}
                   className="flex-1 px-4 py-2 border-none"
                 />
               </div>
@@ -346,7 +346,7 @@ export default function ProfileInitialization() {
                   type="text"
                   value={profile.atcoderID}
                   onChange={(e) => handleSnsIDChange(e, "atcoder")}
-                  onKeyPress={(e) => handleKeyPress(e, "atcoder")}
+                  onKeyDown={(e) => handleKeyPress(e, "atcoder")}
                   className="flex-1 px-4 py-2 border-none"
                 />
               </div>
