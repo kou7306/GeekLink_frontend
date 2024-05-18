@@ -20,7 +20,7 @@ export default function Profile() {
   const [profile, setProfile] = useState<ProfileForm>({
     name: "",
     sex: "",
-    age: 0,
+    age: "",
     place: "",
     techs: [],
     topTechs: [],
@@ -71,8 +71,7 @@ export default function Profile() {
       }
       setProfile((prev) => ({ ...prev, tech: values }));
     } else {
-      const newValue = name === "age" ? parseInt(value, 10) : value;
-      setProfile((prev) => ({ ...prev, [name]: newValue }));
+      setProfile((prev) => ({ ...prev, [name]: value }));
     }
   };
 
