@@ -8,6 +8,9 @@ const Chat = ({ params }: { params: any }) => {
   const conversationId = params.conversationId;
   // メッセージデータの管理
   const [messages, setMessages] = useState<Message[]>([]);
+  // スクロール用のrefを作成
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
   // 過去のメッセージデータを取得
   useEffect(() => {
     const fetchMessages = async () => {
@@ -17,6 +20,11 @@ const Chat = ({ params }: { params: any }) => {
 
     fetchMessages();
   }, [conversationId]);
+
+  // メッセージが更新されたときにスクロールする
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   // WebSocket通信
   const socketRef = useRef<WebSocket>();
@@ -75,17 +83,17 @@ const Chat = ({ params }: { params: any }) => {
   return (
     <>
       <div className="bg-primary">
-        <h1>WebSocket is connected : {`${isConnected}`}</h1>
+        {/* <h1>WebSocket is connected : {`${isConnected}`}</h1> */}
         <ul className="h-[85vh] overflow-y-auto">
           {messages.map((message, index) =>
             //TODO:message.sender_idが自分のUUIDだった場合にする
             message.sender_id === "1" ? (
               <div key={index} className="text-right mr-5 my-2">
                 <li className="inline-block">
-                  <div className="bg-accent relative px-3 py-1 rounded-xl inline-block">
+                  <div className="bg-accent relative px-4 py-1 rounded-full inline-block">
                     <p>{message.content}</p>
                   </div>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-secondary">
                     {new Date(message.created_at).toLocaleString()}
                   </p>
                 </li>
@@ -93,11 +101,11 @@ const Chat = ({ params }: { params: any }) => {
             ) : (
               <div key={index} className="ml-5 my-2">
                 <li className="inline-block">
-                  <div className="bg-secondary relative px-3 py-1 rounded-xl inline-block shadow">
+                  <div className="bg-secondary relative px-4 py-1 rounded-full inline-block shadow">
                     <p>{message.content}</p>
                   </div>
                   <p>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-secondary">
                       {new Date(message.created_at).toLocaleString()}
                     </p>
                   </p>
@@ -105,6 +113,7 @@ const Chat = ({ params }: { params: any }) => {
               </div>
             )
           )}
+          <div ref={messagesEndRef} />
         </ul>
         <form
           onSubmit={sendData}
