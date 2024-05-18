@@ -8,7 +8,7 @@ export interface ProfileForm {
   techs: string[];
   topTechs: string[];
   occupation: string;
-  imageUrl: string;
+  imageUrl?: string;
   hobby?: string;
   editor?: string;
   affiliation?: string;

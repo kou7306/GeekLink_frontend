@@ -222,7 +222,7 @@ export default function ProfileInitialization() {
         <div className="flex flex-col items-center mb-4">
           <label htmlFor="upload-button">
             <Image
-              src={profile.imageUrl}
+              src={profile.imageUrl!}
               alt="Icon"
               width={150}
               height={150}
