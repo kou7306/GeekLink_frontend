@@ -26,6 +26,7 @@ const UploadForm = () => {
       <input type="file" onChange={handleFileChange} />
       <button onClick={handleUpload}>Upload</button>
       {uploadedUrl && <p>Uploaded image URL: {uploadedUrl}</p>}
+      {/* https://vettovaznwdhefdeeglu.supabase.co/storage/v1/object/public/UserImage/uploadedUrl というURLが発行される */}
     </div>
   );
 };
