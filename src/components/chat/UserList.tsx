@@ -25,10 +25,10 @@ const UserList = () => {
   }, []);
 
   return (
-    <aside className="inset-y-0 pb-20 lg:pb-0 lg:left-20 lg:w-80 lg:block overflow-y-auto border-r border-border block w-full left-0 h-full">
-      <div className="px-5 flex-col">
+    <aside className="fixed inset-y-0 pb-20 lg:pb-0 lg:px-8 lg:w-96 lg:block overflow-y-auto border-r border-border block w-full left-0">
+      <div className="px-5 flex-col text-center">
+        <div className="font-bold py-4">トーク一覧</div>
         <div id="character-list">
-          <div className="font-bold py-4">トーク一覧</div>
           {users.map((user: User) => (
             // 選択したユーザーのIDと自分のIDを足し合わせたIDをリンク先に指定
             <Link

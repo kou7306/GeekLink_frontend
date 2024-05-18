@@ -85,7 +85,7 @@ const Chat = ({ params }: { params: any }) => {
 
   return (
     <>
-      <div className="bg-primary px-4 py-10 sm:px-6 lg:px-8 h-full">
+      <div className="bg-secondary px-4 py-10 sm:px-6 lg:px-8 h-full">
         {/* <h1>WebSocket is connected : {`${isConnected}`}</h1> */}
         <ul className="h-[85vh] overflow-y-auto  overflow-x-hidden">
           {messages.map((message, index) =>
