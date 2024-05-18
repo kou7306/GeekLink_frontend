@@ -3,13 +3,12 @@ import { useEffect, useRef, useState } from "react";
 import { getMessageData } from "../../utils/getMessageData";
 import { Message } from "../../utils/getMessageData";
 import { MdSend } from "react-icons/md";
-import { getUuidFromCookie } from "../../actions/users";
 
 const Chat = ({ params }: { params: any }) => {
   console.log("params: ", params);
   const conversationId = params.conversationId;
   const [receiver_id, uuid] = conversationId.split("!");
-  console.log(uuid);
+  console.log({ uuid });
   // メッセージデータの管理
   const [messages, setMessages] = useState<Message[]>([]);
   // スクロール用のrefを作成
@@ -104,7 +103,7 @@ const Chat = ({ params }: { params: any }) => {
             ) : (
               <div key={index} className="ml-5 my-2">
                 <li className="inline-block">
-                  <div className="bg-secondary relative px-4 py-1 rounded-full inline-block shadow">
+                  <div className="bg-primary relative px-4 py-1 rounded-full inline-block shadow">
                     <p>{message.content}</p>
                   </div>
                   <p>
@@ -120,10 +119,10 @@ const Chat = ({ params }: { params: any }) => {
         </ul>
         <form
           onSubmit={sendData}
-          className="fixed bottom-0 w-4/5 p-4 bg-primary z-99 flex justify-center items-center"
+          className="fixed bottom-0 w-4/5 p-2 bg-secondary z-99 flex justify-center items-center"
         >
           <input
-            className="w-3/5 bg-secondary rounded-xl px-2 py-3 border-0 active:border-2 active:border-accent leading-tight"
+            className="w-3/5 bg-primary rounded-xl px-2 py-3 border-0 active:border-2 active:border-accent leading-tight"
             type="text"
             name="socketData"
             value={socketData}
