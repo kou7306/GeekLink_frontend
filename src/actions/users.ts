@@ -76,7 +76,10 @@ export const signInAction = async (email: string, password: string) => {
     return { errorMessage: null };
   } catch (error: any) {
     if (error.status === 400) {
-      return { errorMessage: "無効なログイン情報です。メールアドレスとパスワードを確認してください。" };
+      return {
+        errorMessage:
+          "無効なログイン情報です。メールアドレスとパスワードを確認してください。",
+      };
     }
     console.log(error);
     return { errorMessage: "サインインに失敗しました" };
@@ -98,7 +101,10 @@ export const signUpAction = async (email: string, password: string) => {
     return { errorMessage: null };
   } catch (error: any) {
     if (error.status === 429 && error.code === "over_email_send_rate_limit") {
-      return { errorMessage: "リクエストの上限に達しました。しばらくしてから再度お試しください。" };
+      return {
+        errorMessage:
+          "リクエストの上限に達しました。しばらくしてから再度お試しください。",
+      };
     }
     console.log(error);
     return { errorMessage: "サインアップに失敗しました" };
