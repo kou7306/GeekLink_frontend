@@ -1,19 +1,21 @@
 import { getUuidFromCookie } from "@/actions/users";
 
 export interface User {
-  id: string;
+  user_id: string;
   name: string;
   img_url: string;
   language: string;
   age: number;
-  gender: string;
+  sex: string;
 }
 
 // ログインしてるユーザーとマッチングしているユーザー一覧を取得する関数
 export const getMatchingUser = async (): Promise<User[]> => {
   try {
-    const uuid = getUuidFromCookie();
+    console.log("fetching users2");
+    const uuid = await getUuidFromCookie();
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    console.log(uuid);
     // APIからデータを取得
     const response = await fetch(`${apiUrl}/getMatchingUser`, {
       method: "POST",
@@ -23,6 +25,8 @@ export const getMatchingUser = async (): Promise<User[]> => {
       },
       body: JSON.stringify({ uuid }),
     });
+
+    console.log("fetching users2");
     // レスポンスをJSONとしてパース
     const result = await response.json();
     return result;

@@ -5,6 +5,7 @@ import Image from "next/image";
 import React from "react";
 import { getMatchingUser } from "@/utils/getMatchingUser";
 import { User } from "@/utils/getMatchingUser";
+import { getUuidFromCookie } from "@/actions/users";
 
 const UserList = () => {
   // const users = [
@@ -51,10 +52,16 @@ const UserList = () => {
   // ];
 
   const [users, setUsers] = useState<User[]>([]);
+  const [uuid, setUuid] = useState<String>("");
   useEffect(() => {
+    console.log("fetching users1");
     const fetchUsers = async () => {
       const users = await getMatchingUser();
       setUsers(users);
+      const uuid = await getUuidFromCookie();
+      if (uuid) {
+        setUuid(uuid);
+      }
     };
 
     fetchUsers();
@@ -67,7 +74,7 @@ const UserList = () => {
         <div id="character-list">
           {users.map((user: User) => (
             // 選択したユーザーのIDと自分のIDを足し合わせたIDをリンク先に指定
-            <Link key={user.id} href={`message/${user.id}`}>
+            <Link key={user.user_id} href={`message/${user.user_id + uuid}`}>
               <div className="flex items-start mb-4 cursor-pointer">
                 <div>
                   <div className="w-20 h-20 relative">
@@ -82,7 +89,7 @@ const UserList = () => {
                   <div className="text-xs text-gray-500 text-center">
                     <div className="mt-1">{user.language}</div>
                     <div>
-                      {user.age}歳 / {user.gender}
+                      {user.age}歳 / {user.sex}
                     </div>
                   </div>
                 </div>
