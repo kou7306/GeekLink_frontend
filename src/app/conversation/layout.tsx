@@ -6,14 +6,7 @@ const MessageLayout = ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  return (
-    <div className="h-full">
-      <div className="lg:pl-20 h-full">
-        <UserList />
-        {children}
-      </div>
-    </div>
-  );
+  return <>{children}</>;
 };
 
 export default MessageLayout;

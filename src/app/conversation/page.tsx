@@ -1,11 +1,15 @@
 "use client";
 import EmptyState from "@/components/chat/EmptyState";
+import UserList from "@/components/chat/UserList";
 import React from "react";
 
 const Page = () => {
   return (
-    <div className="hidden h-full lg:block lg:pl-80">
-      <EmptyState />
+    <div className="flex h-full mt-20">
+      <UserList />
+      <div className="flex-1">
+        <EmptyState />
+      </div>
     </div>
   );
 };
