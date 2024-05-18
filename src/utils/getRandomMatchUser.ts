@@ -1,7 +1,7 @@
 import { getUuidFromCookie } from "@/actions/users";
 
 export interface User {
-    user_id: string;
+    userID: string;
     name: string;
     sex: string;
     age: number;
