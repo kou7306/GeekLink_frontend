@@ -8,6 +8,7 @@ export interface ProfileForm {
   techs: string[];
   topTechs: string[];
   occupation: string;
+  imageUrl: string;
   hobby?: string;
   editor?: string;
   affiliation?: string;
@@ -18,6 +19,11 @@ export interface ProfileForm {
   desiredOccupation?: string;
   faculty?: string;
   experience?: string[];
+  githubID?: string;
+  twitterID?: string;
+  zennID?: string;
+  qiitaID?: string;
+  atcoderID?: string;
 }
 
 export const ages = Array.from({ length: 66 }, (_, i) => i + 15);
