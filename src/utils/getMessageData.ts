@@ -13,14 +13,12 @@ export const getMessageData = async (
   conversationId: string
 ): Promise<Message[]> => {
   try {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     // APIからデータを取得
-    const response = await fetch(
-      `http://localhost:8080/getMessage/${conversationId}`,
-      {
-        method: "GET",
-        mode: "cors",
-      }
-    );
+    const response = await fetch(`${apiUrl}/getMessage/${conversationId}`, {
+      method: "GET",
+      mode: "cors",
+    });
     console.log(response);
     // レスポンスをJSONとしてパース
     const data: Message[] = await response.json();
@@ -30,8 +28,8 @@ export const getMessageData = async (
       message.created_at = new Date(message.created_at);
     });
 
-    // タイムスタンプでソート (新しい順)
-    data.sort((a, b) => b.created_at.getTime() - a.created_at.getTime());
+    // タイムスタンプでソート (古い順)
+    data.sort((a, b) => a.created_at.getTime() - b.created_at.getTime());
 
     return data;
   } catch (error) {

@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 export const getUser = async () => {
   const auth = getSupabaseAuth();
   const user = (await auth.getUser()).data.user;
+  console.log(user);
 
   return user;
 };
