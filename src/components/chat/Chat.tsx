@@ -8,24 +8,13 @@ import { getUuidFromCookie } from "../../actions/users";
 const Chat = ({ params }: { params: any }) => {
   console.log("params: ", params);
   const conversationId = params.conversationId;
+  const [receiver_id, uuid] = conversationId.split("!");
+  console.log(uuid);
   // メッセージデータの管理
   const [messages, setMessages] = useState<Message[]>([]);
   // スクロール用のrefを作成
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-
-  const [uuid, setUuid] = useState<string>("");
-  // 自分のUUIDを取得
-  useEffect(() => {
-    console.log("fetching users1");
-    const fetchUsers = async () => {
-      const uuid = await getUuidFromCookie();
-      if (uuid) {
-        setUuid(uuid);
-      }
-    };
-    fetchUsers();
-  }, []);
+  const apiUrl = process.env.NEXT_PUBLIC_WS_URL;
 
   // 過去のメッセージデータを取得
   useEffect(() => {
@@ -53,7 +42,7 @@ const Chat = ({ params }: { params: any }) => {
     const formMessage = event.target[0].value;
     const message: Message = {
       sender_id: uuid,
-      receiver_id: "2",
+      receiver_id: receiver_id,
       content: formMessage,
       created_at: new Date(),
       conversation_id: conversationId,
@@ -131,10 +120,10 @@ const Chat = ({ params }: { params: any }) => {
         </ul>
         <form
           onSubmit={sendData}
-          className="absoluete bottom-0 left-0 w-full p-4 bg-primary z-99 flex justify-center items-center"
+          className="fixed bottom-0 w-4/5 p-4 bg-primary z-99 flex justify-center items-center"
         >
           <input
-            className="w-4/5 bg-secondary rounded-xl px-2 py-3 border-0 active:border-2 active:border-accent leading-tight"
+            className="w-3/5 bg-secondary rounded-xl px-2 py-3 border-0 active:border-2 active:border-accent leading-tight"
             type="text"
             name="socketData"
             value={socketData}

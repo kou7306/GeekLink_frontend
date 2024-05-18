@@ -8,49 +8,6 @@ import { User } from "@/utils/getMatchingUser";
 import { getUuidFromCookie } from "@/actions/users";
 
 const UserList = () => {
-  // const users = [
-  //   {
-  //     id: 0,
-  //     name: "Asuka",
-  //     url: "/img/AsukaSouryu.jpg",
-  //     language: "TypeScript",
-  //     age: 20,
-  //     gender: "woman",
-  //   },
-  //   {
-  //     id: 1,
-  //     name: "Gendo Ikari",
-  //     url: "/img/GendoIkari.jpg",
-  //     language: "TypeScript",
-  //     age: 34,
-  //     gender: "man",
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Kaoru Nagisa",
-  //     url: "/img/KaoruNagisa.jpg",
-  //     language: "Go",
-  //     age: 19,
-  //     gender: "man",
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Rei Ayanami",
-  //     url: "/img/ReiAyanami.jpeg",
-  //     language: "Go",
-  //     age: 22,
-  //     gender: "female",
-  //   },
-  //   {
-  //     id: 4,
-  //     name: "Shinji Ikari",
-  //     url: "/img/ShinjiIkari.jpg",
-  //     language: "TypeScript",
-  //     age: 20,
-  //     gender: "man",
-  //   },
-  // ];
-
   const [users, setUsers] = useState<User[]>([]);
   const [uuid, setUuid] = useState<string>("");
   useEffect(() => {
@@ -76,7 +33,10 @@ const UserList = () => {
             // 選択したユーザーのIDと自分のIDを足し合わせたIDをリンク先に指定
             <Link
               key={user.user_id}
-              href={`conversation/${user.user_id + uuid}`}
+              href={{
+                pathname: `conversation/${user.user_id}!${uuid}`,
+                query: { name: user.name },
+              }}
             >
               <div className="flex items-start mb-4 cursor-pointer">
                 <div>
