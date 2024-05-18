@@ -12,7 +12,7 @@ import PlaceSelect from "@/components/profile/PlaceSelect";
 import OccupationSelect from "@/components/profile/OccupationSelect";
 import TechSelection from "@/components/profile/TechSelect";
 
-export default function ProfileInitialization() {
+export default function Profile() {
   const [isTechModalOpen, setIsTechModalOpen] = useState(false);
   const [isTopTecnologyModalOpen, setIsTopTecnologyModalOpen] = useState(false);
   const [selectedTech, setSelectedTech] = useState<string[]>([]);
