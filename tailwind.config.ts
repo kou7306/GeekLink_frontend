@@ -1,3 +1,4 @@
+import { text } from "stream/consumers";
 import type { Config } from "tailwindcss";
 
 const config: Config = {
@@ -12,8 +13,10 @@ const config: Config = {
     },
     colors: {
       primary: "#ffffff",
-      secondary: "#e5e7eb",
+      secondary: "#f3f4f6",
+      border: "#e5e7eb",
       accent: "#22d3ee",
+      text: "#111827",
     },
   },
   plugins: [],
