@@ -219,23 +219,23 @@ export default function ProfileInitialization() {
       <h2 className="text-2xl font-bold mb-4 text-gray-800">プロフィール設定</h2>
       <form onSubmit={handleSubmit} className="w-full max-w-lg p-8 bg-white shadow-xl rounded-lg">
         <div className="space-y-8">
-        <div className="flex flex-col items-center mb-4">
-          <label htmlFor="upload-button">
-            <Image
-              src={profile.imageUrl!}
-              alt="Icon"
-              width={150}
-              height={150}
-              className="rounded-full cursor-pointer"
+          <div className="flex flex-col items-center mb-4">
+            <label htmlFor="upload-button">
+              <Image
+                src={profile.imageUrl!}
+                alt="Icon"
+                width={150}
+                height={150}
+                className="rounded-full cursor-pointer"
+              />
+            </label>
+            <input
+              type="file"
+              id="upload-button"
+              style={{ display: "none" }}
+              onChange={handleImageUpload}
             />
-          </label>
-          <input
-            type="file"
-            id="upload-button"
-            style={{ display: 'none' }}
-            onChange={handleImageUpload}
-          />
-        </div>
+          </div>
           <div className="flex justify-center space-x-4 mb-4">
             <div onClick={() => handleIconClick("github")}>
               <FaGithub size={30} />
