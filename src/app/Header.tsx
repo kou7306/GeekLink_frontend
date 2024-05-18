@@ -17,7 +17,7 @@ const Header = () => {
           <a href="/sign-up" className="text-black hover:text-accent">
             サインアップ
           </a>
-          <a href="/message" className="text-black hover:text-accent">
+          <a href="/conversation" className="text-black hover:text-accent">
             メッセージ
           </a>
           <a href="/random-match" className="text-black hover:text-accent">
