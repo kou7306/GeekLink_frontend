@@ -30,8 +30,8 @@ export const getMessageData = async (
       message.created_at = new Date(message.created_at);
     });
 
-    // タイムスタンプでソート (新しい順)
-    data.sort((a, b) => b.created_at.getTime() - a.created_at.getTime());
+    // タイムスタンプでソート (古い順)
+    data.sort((a, b) => a.created_at.getTime() - b.created_at.getTime());
 
     return data;
   } catch (error) {
