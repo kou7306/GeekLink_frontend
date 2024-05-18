@@ -2,9 +2,9 @@
 import React from "react";
 
 interface AgeSelectProps {
-  age: number;
+  age: string;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  ages: number[];
+  ages: string[];
 }
 
 const AgeSelect: React.FC<AgeSelectProps> = ({ age, onChange, ages }) => {

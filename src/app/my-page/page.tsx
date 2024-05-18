@@ -44,7 +44,7 @@ export default function ProfileInitialization() {
   const [profile, setProfile] = useState<ProfileForm>({
     name: "", // 名前
     sex: "", // 性別
-    age: 0, // 年齢
+    age: "", // 年齢
     place: "", // 在住
     techs: [], // スキル
     topTechs: [], // トップスキル
