@@ -49,7 +49,7 @@ export default function ProfileInitialization() {
     techs: [], // スキル
     topTechs: [], // トップスキル
     occupation: "", // 職業
-    imageUrl: "", // 画像URL
+    imageUrl: "/user.svg", // 画像URL
     hobby: "", // 趣味
     editor: "", // エディタ
     affiliation: "", // 所属
