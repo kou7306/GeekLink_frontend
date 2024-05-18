@@ -86,7 +86,7 @@ const Chat = ({ params }: { params: any }) => {
         {/* <h1>WebSocket is connected : {`${isConnected}`}</h1> */}
         <ul className="h-[85vh] overflow-y-auto">
           {messages.map((message, index) =>
-            //TODO:message.sender_idが自分のUUIDだった場合にする
+            //TODO:message.sender_idが自分のUUIDだった場合に右側に表示する
             message.sender_id === "1" ? (
               <div key={index} className="text-right mr-5 my-2">
                 <li className="inline-block">
