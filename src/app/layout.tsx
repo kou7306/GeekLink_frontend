@@ -19,7 +19,7 @@ export default function RootLayout({
     <html lang="ja">
       <body className={inter.className}>
         <Header />
-        <main>{children}</main>
+        <main className="my-20">{children}</main>
 
         <Toaster />
       </body>

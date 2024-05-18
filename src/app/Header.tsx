@@ -3,7 +3,7 @@ import { FaHeart, FaSearch, FaShoppingCart, FaUser } from "react-icons/fa";
 
 const Header = () => {
   return (
-    <header className="bg-white shadow-md">
+    <header className="bg-white shadow-md fixed top-0 w-full z-99">
       <div className="container mx-auto flex justify-between items-center py-4 px-6">
         <div className="text-2xl font-bold">
           <a href="/" className="flex items-center">
@@ -17,7 +17,7 @@ const Header = () => {
           <a href="/sign-up" className="text-black hover:text-accent">
             サインアップ
           </a>
-          <a href="/message" className="text-black hover:text-accent">
+          <a href="/conversation" className="text-black hover:text-accent">
             メッセージ
           </a>
           <a href="/random-match" className="text-black hover:text-accent">

@@ -40,7 +40,8 @@ export default function ProfileInitialization() {
   const [selectedExperiences, setSelectedExperiences] = useState<string[]>([]);
   const [topTech, setTopTech] = useState<string[]>([]);
   const [qualifications, setQualifications] = useState<string[]>([]);
-  const [showQualificationInput, setShowQualificationInput] = useState<boolean>(false);
+  const [showQualificationInput, setShowQualificationInput] =
+    useState<boolean>(false);
   const [profile, setProfile] = useState<ProfileForm>({
     name: "", // 名前
     sex: "", // 性別
@@ -93,7 +94,10 @@ export default function ProfileInitialization() {
     }
   };
 
-  const handleSnsIDChange = (e: React.ChangeEvent<HTMLInputElement>, platform: string) => {
+  const handleSnsIDChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    platform: string
+  ) => {
     const { value } = e.target;
     setProfile((prevProfile) => ({
       ...prevProfile,
@@ -101,7 +105,10 @@ export default function ProfileInitialization() {
     }));
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>, platform: string) => {
+  const handleKeyPress = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    platform: string
+  ) => {
     if (e.key === "Enter") {
       handleIconClick(platform);
     }
@@ -112,7 +119,8 @@ export default function ProfileInitialization() {
   };
 
   const toggleTechModal = () => setIsTechModalOpen(!isTechModalOpen);
-  const toggleExperienceModal = () => setIsExperienceModalOpen(!isExperienceModalOpen);
+  const toggleExperienceModal = () =>
+    setIsExperienceModalOpen(!isExperienceModalOpen);
 
   const openTopTechModal = () => {
     setIsTechModalOpen(false);
@@ -167,7 +175,9 @@ export default function ProfileInitialization() {
     setQualifications((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>
+  ) => {
     const { name, value } = e.target;
     if (name === "tech") {
       // select multiple のための特別なハンドリング
@@ -216,8 +226,13 @@ export default function ProfileInitialization() {
 
   return (
     <div className="min-h-screen my-4 bg-gray-50 flex flex-col items-center justify-center">
-      <h2 className="text-2xl font-bold mb-4 text-gray-800">プロフィール設定</h2>
-      <form onSubmit={handleSubmit} className="w-full max-w-lg p-8 bg-white shadow-xl rounded-lg">
+      <h2 className="text-2xl font-bold mb-4 text-gray-800">
+        プロフィール設定
+      </h2>
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-lg p-8 bg-white shadow-xl rounded-lg"
+      >
         <div className="space-y-8">
           <div className="flex flex-col items-center mb-4">
             <label htmlFor="upload-button">
@@ -244,20 +259,37 @@ export default function ProfileInitialization() {
               <FaTwitter size={30} />
             </div>
             <div onClick={() => handleIconClick("zenn")}>
-              <Image src="/zenn-icon.svg" alt="Zenn Icon" width={30} height={30} />
+              <Image
+                src="/zenn-icon.svg"
+                alt="Zenn Icon"
+                width={30}
+                height={30}
+              />
             </div>
             <div onClick={() => handleIconClick("qiita")}>
-              <Image src="/qiita-icon.png" alt="Qiita Icon" width={30} height={30} />
+              <Image
+                src="/qiita-icon.png"
+                alt="Qiita Icon"
+                width={30}
+                height={30}
+              />
             </div>
             <div onClick={() => handleIconClick("atcoder")}>
-              <Image src="/atcoder-icon.png" alt="AtCoder Icon" width={30} height={30} />
+              <Image
+                src="/atcoder-icon.png"
+                alt="AtCoder Icon"
+                width={30}
+                height={30}
+              />
             </div>
           </div>
 
           {showGithubInput && (
             <div className="flex items-center mb-2">
               <div className="flex items-center border rounded-md">
-                <span className="bg-gray-200 px-4 py-2">https://github.com/</span>
+                <span className="bg-gray-200 px-4 py-2">
+                  https://github.com/
+                </span>
                 <input
                   type="text"
                   value={profile.githubID}
@@ -278,7 +310,9 @@ export default function ProfileInitialization() {
           {showTwitterInput && (
             <div className="flex items-center mb-2">
               <div className="flex items-center border rounded-md">
-                <span className="bg-gray-200 px-4 py-2">https://twitter.com/</span>
+                <span className="bg-gray-200 px-4 py-2">
+                  https://twitter.com/
+                </span>
                 <input
                   type="text"
                   value={profile.twitterID}
@@ -320,7 +354,9 @@ export default function ProfileInitialization() {
           {showQiitaInput && (
             <div className="flex items-center mb-2">
               <div className="flex items-center border rounded-md">
-                <span className="bg-gray-200 px-4 py-2">https://qiita.com/</span>
+                <span className="bg-gray-200 px-4 py-2">
+                  https://qiita.com/
+                </span>
                 <input
                   type="text"
                   value={profile.qiitaID}
@@ -341,7 +377,9 @@ export default function ProfileInitialization() {
           {showAtCoderInput && (
             <div className="flex items-center mb-2">
               <div className="flex items-center border rounded-md">
-                <span className="bg-gray-200 px-4 py-2">https://atcoder.jp/users/</span>
+                <span className="bg-gray-200 px-4 py-2">
+                  https://atcoder.jp/users/
+                </span>
                 <input
                   type="text"
                   value={profile.atcoderID}
@@ -366,7 +404,11 @@ export default function ProfileInitialization() {
           />
           <SexSelect sex={profile.sex} onChange={handleChange} />
           <AgeSelect age={profile.age} onChange={handleChange} ages={ages} />
-          <PlaceSelect place={profile.place} onChange={handleChange} places={places} />
+          <PlaceSelect
+            place={profile.place}
+            onChange={handleChange}
+            places={places}
+          />
           <OccupationSelect
             occupation={profile.occupation}
             onChange={handleChange}
@@ -380,15 +422,24 @@ export default function ProfileInitialization() {
               <div className="space-y-8">
                 <GraduateSelect
                   graduate={profile.graduate}
-                  onChange={(e) => setProfile({ ...profile, graduate: e.target.value })}
+                  onChange={(e) =>
+                    setProfile({ ...profile, graduate: e.target.value })
+                  }
                 />
                 <FacultySelect
                   faculty={profile.faculty}
-                  onChange={(e) => setProfile({ ...profile, faculty: e.target.value })}
+                  onChange={(e) =>
+                    setProfile({ ...profile, faculty: e.target.value })
+                  }
                 />
                 <DesireOccupationSelect
                   desireOccupation={profile.desiredOccupation}
-                  onChange={(e) => setProfile({ ...profile, desiredOccupation: e.target.value })}
+                  onChange={(e) =>
+                    setProfile({
+                      ...profile,
+                      desiredOccupation: e.target.value,
+                    })
+                  }
                 />
               </div>
             )}
@@ -406,12 +457,17 @@ export default function ProfileInitialization() {
           />
           <AffiliationInput
             affiliation={profile.affiliation}
-            onChange={(e) => setProfile({ ...profile, affiliation: e.target.value })}
+            onChange={(e) =>
+              setProfile({ ...profile, affiliation: e.target.value })
+            }
           />
 
           <ul className="flex gap-2 flex-wrap mb-4">
             {qualifications.map((qualification, index) => (
-              <li key={index} className="bg-blue-300 text-white rounded-full px-4 py-1">
+              <li
+                key={index}
+                className="bg-blue-300 text-white rounded-full px-4 py-1"
+              >
                 {qualification}
                 <button
                   onClick={() => handleRemoveQualification(index)}
@@ -445,11 +501,15 @@ export default function ProfileInitialization() {
 
           <PortfolioInput
             portfolio={profile.portfolio}
-            onChange={(e) => setProfile({ ...profile, portfolio: e.target.value })}
+            onChange={(e) =>
+              setProfile({ ...profile, portfolio: e.target.value })
+            }
           />
           <MessageInput
             message={profile.message}
-            onChange={(e) => setProfile({ ...profile, message: e.target.value })}
+            onChange={(e) =>
+              setProfile({ ...profile, message: e.target.value })
+            }
           />
 
           <button
