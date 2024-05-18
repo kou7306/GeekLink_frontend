@@ -31,9 +31,10 @@ interface UserData {
 }
 
 const Paga = () => {
+  const api = process.env.NEXT_PUBLIC_API_URL;
   const [data, setData] = useState<UserData>(); // Add type annotation to 'data' state variable
   useEffect(() => {
-    fetch("http://localhost:8080/getUserData", {
+    fetch(api + "/getUserData", {
       method: "POST",
       mode: "cors",
       headers: {
