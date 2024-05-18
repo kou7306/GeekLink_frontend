@@ -52,7 +52,7 @@ const UserList = () => {
   // ];
 
   const [users, setUsers] = useState<User[]>([]);
-  const [uuid, setUuid] = useState<String>("");
+  const [uuid, setUuid] = useState<string>("");
   useEffect(() => {
     console.log("fetching users1");
     const fetchUsers = async () => {
@@ -74,7 +74,10 @@ const UserList = () => {
         <div id="character-list">
           {users.map((user: User) => (
             // 選択したユーザーのIDと自分のIDを足し合わせたIDをリンク先に指定
-            <Link key={user.user_id} href={`message/${user.user_id + uuid}`}>
+            <Link
+              key={user.user_id}
+              href={`conversation/${user.user_id + uuid}`}
+            >
               <div className="flex items-start mb-4 cursor-pointer">
                 <div>
                   <div className="w-20 h-20 relative">
