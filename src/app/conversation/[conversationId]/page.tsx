@@ -1,9 +1,18 @@
+"use client";
 import Chat from "@/components/chat/Chat";
+import { useSearchParams } from "next/navigation";
 
 const Page = ({ params }: { params: any }) => {
+  const searchParams = useSearchParams();
+  const name = searchParams.get("name");
   return (
-    <div className="bg-accent">
-      <Chat params={params} />
+    <div className="hidden h-full lg:block lg:pl-80">
+      <div className="fixed top-20 bg-white p-4 shadow-md w-full z-99 text-2xl">
+        {name}
+      </div>
+      <div className="pt-16">
+        <Chat params={params} />
+      </div>
     </div>
   );
 };

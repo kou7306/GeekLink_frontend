@@ -3,7 +3,7 @@
 export interface ProfileForm {
   name: string;
   sex: string;
-  age: number;
+  age: string;
   place: string;
   techs: string[];
   topTechs: string[];
@@ -26,7 +26,8 @@ export interface ProfileForm {
   atcoderID?: string;
 }
 
-export const ages = Array.from({ length: 66 }, (_, i) => i + 15);
+export const ages = Array.from({ length: 66 }, (_, i) => (i + 15).toString());
+
 
 export const places = [
   "北海道", "青森県", "岩手県", "宮城県", "秋田県", "山形県", "福島県", "茨城県", "栃木県", "群馬県",

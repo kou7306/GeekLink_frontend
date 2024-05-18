@@ -8,51 +8,8 @@ import { User } from "@/utils/getMatchingUser";
 import { getUuidFromCookie } from "@/actions/users";
 
 const UserList = () => {
-  // const users = [
-  //   {
-  //     id: 0,
-  //     name: "Asuka",
-  //     url: "/img/AsukaSouryu.jpg",
-  //     language: "TypeScript",
-  //     age: 20,
-  //     gender: "woman",
-  //   },
-  //   {
-  //     id: 1,
-  //     name: "Gendo Ikari",
-  //     url: "/img/GendoIkari.jpg",
-  //     language: "TypeScript",
-  //     age: 34,
-  //     gender: "man",
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Kaoru Nagisa",
-  //     url: "/img/KaoruNagisa.jpg",
-  //     language: "Go",
-  //     age: 19,
-  //     gender: "man",
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Rei Ayanami",
-  //     url: "/img/ReiAyanami.jpeg",
-  //     language: "Go",
-  //     age: 22,
-  //     gender: "female",
-  //   },
-  //   {
-  //     id: 4,
-  //     name: "Shinji Ikari",
-  //     url: "/img/ShinjiIkari.jpg",
-  //     language: "TypeScript",
-  //     age: 20,
-  //     gender: "man",
-  //   },
-  // ];
-
   const [users, setUsers] = useState<User[]>([]);
-  const [uuid, setUuid] = useState<String>("");
+  const [uuid, setUuid] = useState<string>("");
   useEffect(() => {
     console.log("fetching users1");
     const fetchUsers = async () => {
@@ -68,13 +25,19 @@ const UserList = () => {
   }, []);
 
   return (
-    <aside className="fixed inset-y-0 pb-20 lg:pb-0 lg:left-20 lg:w-80 lg:block overflow-y-auto border-r border-border block w-full left-0">
+    <aside className="inset-y-0 pb-20 lg:pb-0 lg:left-20 lg:w-80 lg:block overflow-y-auto border-r border-border block w-full left-0 h-full">
       <div className="px-5 flex-col">
-        <div className="font-bold py-4">トーク一覧</div>
         <div id="character-list">
+          <div className="font-bold py-4">トーク一覧</div>
           {users.map((user: User) => (
             // 選択したユーザーのIDと自分のIDを足し合わせたIDをリンク先に指定
-            <Link key={user.user_id} href={`message/${user.user_id + uuid}`}>
+            <Link
+              key={user.user_id}
+              href={{
+                pathname: `conversation/${user.user_id}!${uuid}`,
+                query: { name: user.name },
+              }}
+            >
               <div className="flex items-start mb-4 cursor-pointer">
                 <div>
                   <div className="w-20 h-20 relative">
