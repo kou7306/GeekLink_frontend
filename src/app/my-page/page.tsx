@@ -3,6 +3,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import axios from "axios";
 import {
   ages,
   places,
@@ -185,18 +186,45 @@ export default function ProfileInitialization() {
     }
   };
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        if (e.target?.result) {
+      const file = event.target.files[0];
+      const fileName = encodeURIComponent(file.name);
+      const contentType = file.type;
+
+      try {
+        // 署名付きURLの取得
+        const res = await axios.get(`/api/get-upload-url`, {
+          params: {
+            fileName,
+            contentType,
+          },
+        });
+
+        const { uploadUrl } = res.data;
+        console.log("Upload URL:", uploadUrl);
+
+        // 画像のアップロード
+        const uploadRes = await axios.post(uploadUrl, file, {
+          headers: {
+            "Content-Type": contentType,
+          },
+        });
+
+        if (uploadRes.status === 200 || uploadRes.status === 204) {
+          // アップロードされた画像のURLを設定
+          const imageUrl = uploadUrl.split("?")[0];
           setProfile((prevProfile) => ({
             ...prevProfile,
-            userIcon: e.target?.result as string,
+            imageUrl,
           }));
+          console.log("Image uploaded successfully:", imageUrl);
+        } else {
+          console.error("Failed to upload image to R2");
         }
-      };
-      reader.readAsDataURL(event.target.files[0]);
+      } catch (error) {
+        console.error("Error during image upload:", error);
+      }
     }
   };
 
