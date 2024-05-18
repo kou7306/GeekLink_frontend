@@ -8,7 +8,7 @@ const MessageLayout = ({
 }>) => {
   return (
     <div className="h-full">
-      <div className="lg:pl-20 h-full">
+      <div className="h-full">
         <UserList />
         {children}
       </div>
