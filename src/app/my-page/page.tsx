@@ -33,6 +33,7 @@ import DesireOccupationSelect from "@/components/profile/DesireOccupationSelect"
 import { FaGithub, FaTwitter } from "react-icons/fa";
 import toast from "react-hot-toast";
 import { getUuidFromCookie } from "@/actions/users";
+import { UploadImage } from "../image/UploadImage";
 
 export default function ProfileInitialization() {
   const [isTechModalOpen, setIsTechModalOpen] = useState(false);
@@ -200,21 +201,21 @@ export default function ProfileInitialization() {
     }
   };
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    if (event.target.files && event.target.files[0]) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        if (e.target?.result) {
-          setProfile((prevProfile) => ({
-            ...prevProfile,
-            userIcon: e.target?.result as string,
-          }));
-        }
-      };
-      reader.readAsDataURL(event.target.files[0]);
-    }
-  };
+  // const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   event.preventDefault();
+  //   if (event.target.files && event.target.files[0]) {
+  //     const reader = new FileReader();
+  //     reader.onload = (e) => {
+  //       if (e.target?.result) {
+  //         setProfile((prevProfile) => ({
+  //           ...prevProfile,
+  //           userIcon: e.target?.result as string,
+  //         }));
+  //       }
+  //     };
+  //     reader.readAsDataURL(event.target.files[0]);
+  //   }
+  // };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -248,6 +249,30 @@ export default function ProfileInitialization() {
     }
   };
 
+  const [file, setFile] = useState("");
+  const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
+  
+  const handleFileChange = (e: any) => {
+    setFile(e.target.files[0]);
+    console.log(file);
+  };
+
+  const handleUpload = async () => {
+    console.log("Uploading image...");
+    try {
+      const url = await UploadImage(file);
+      console.log("Uploaded image URL: ", url);
+      // setUploadedUrl(url);
+      setProfile((prevProfile) => ({
+        ...prevProfile,
+        image_url: `https://vettovaznwdhefdeeglu.supabase.co/storage/v1/object/public/UserImage/${url}`,
+      }));
+      console.log("test test test");
+    } catch (error) {
+      console.error("Error uploading image: ", error);
+    }
+  };
+
   return (
     <div className="min-h-screen my-4 bg-gray-50 flex flex-col items-center justify-center">
       <h2 className="text-2xl font-bold mb-4 text-gray-800">プロフィール設定</h2>
@@ -267,8 +292,9 @@ export default function ProfileInitialization() {
               type="file"
               id="upload-button"
               style={{ display: "none" }}
-              onChange={handleImageUpload}
+              onChange={handleFileChange}
             />
+            <button onClick={handleUpload}>Upload</button>
           </div>
           <div className="flex justify-center space-x-4 mb-4">
             <div onClick={() => handleIconClick("github")}>
