@@ -65,13 +65,40 @@ const Page = ({ params }: { params: any }) => {
   }, []);
 
   console.log(data);
+  const imageURL = data && data.image_url ? data.image_url : '/img/default_icon.png';
 
   return (
-    <div>
-      <h1>UUID: {params.uuid}</h1>
-      <div>{data && data.name}</div>
-      <p>ここに他のコンテンツを追加します。</p>
+    <div className="flex justify-center">
+    <div className="w-2/5">
+          <img src={data && data.image_url} alt="アイコン画像" className="px-16 w-36 h-36 rounded-full object-cover" />
+        </div>
+    <div className="w-3/5">
+        <p>名前：{data && data.name}</p>
+        <p>性別：{data && data.sex}</p>
+        <p>年齢：{data && data.age}</p>
+        <p>在住：{data && data.place}</p>
+        <p>トップ技術：{data && data.top_teches}</p>
+        <p>技術：{data && data.teches}</p>
+        <p>趣味：{data && data.hobby}</p>
+        <p>職種：{data && data.occupation}</p>
+        <p>所属：{data && data.affiliation}</p>
+        <p>資格：{data && data.qualification}</p>
+        <p>エディタ：{data && data.editor}</p>
+        <p>Github：{data && data.github}</p>
+        <p>Twitter：{data && data.twitter}</p>
+        <p>Zenn：{data && data.zenn}</p>
+        <p>Qiita：{data && data.qiita}</p>
+        <p>Atcoder：{data && data.atcoder}</p>
+        <p>メッセージ：{data && data.message}</p>
+        <p>ポートフォリオ：{data && data.portfolio}</p>
+        <p>卒業年度：{data && data.graduate}</p>
+        <p>希望職種：{data && data.desiredOccupation}</p>
+        <p>学部：{data && data.faculty}</p>
+        <p>経験：{data && data.experience}</p>
     </div>
+</div>
+
+
   );
 };
 
