@@ -20,6 +20,7 @@ export const getRandomUsers = async (): Promise<User[]> => {
     const api = process.env.NEXT_PUBLIC_API_URL;
     const response = await fetch(api + "/random-match", {
       method: "POST",
+      credentials: "include",
       mode: "cors",
       headers: {
         "Content-Type": "application/json",
