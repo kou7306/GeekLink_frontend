@@ -10,7 +10,6 @@ export async function postSwipedRightUserIds(IDs: string[]): Promise<any> {
       "Content-Type": "application/json",
     },
     mode: "cors",
-    credentials: "include",
     body: JSON.stringify({
       IDs: IDs,
       uuid: uuid,
