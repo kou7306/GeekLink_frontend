@@ -1,5 +1,6 @@
+import SignOutButton from "@/components/auth/SignOutButton";
 import React from "react";
-import { FaHeart, FaSearch, FaShoppingCart, FaUser } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
 
 const Header = () => {
   return (
@@ -11,12 +12,6 @@ const Header = () => {
           </a>
         </div>
         <nav className="flex space-x-6">
-          <a href="/login" className="text-black hover:text-accent">
-            ログイン
-          </a>
-          <a href="/sign-up" className="text-black hover:text-accent">
-            サインアップ
-          </a>
           <a href="/conversation" className="text-black hover:text-accent">
             メッセージ
           </a>
@@ -24,14 +19,17 @@ const Header = () => {
             ランダムマッチ
           </a>
         </nav>
-        <div className="flex space-x-1">
+        <div className="flex space-x-1 hover:text-accent">
           <a
             href="/my-page"
-            className="text-black hover:text-gray-700 flex items-center hover:text-accent"
+            className="text-black hover:text-accent flex items-center bg-secondary text-black py-2 px-4 rounded"
           >
-            <FaUser className="mr-1 hover:text-accent" />
+            <FaUser className="mr-2 " />
             マイページ
           </a>
+          <div className="ml-8">
+            <SignOutButton />
+          </div>
         </div>
       </div>
     </header>

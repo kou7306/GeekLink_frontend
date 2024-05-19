@@ -7,6 +7,7 @@ import UndoIcon from "@mui/icons-material/Undo";
 import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 import { getRandomUsers } from "../../utils/getRandomMatchUser";
 import { User } from "../../utils/getRandomMatchUser";
+import { postSwipedRightUserIds } from '../../utils/CreateLike'; // api.jsのパスに合わせて変更してください
 
 export default function Home() {
   const characters = [
@@ -39,6 +40,8 @@ export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(characters.length - 1);
   const [lastDirection, setLastDirection] = useState("");
   const currentIndexRef = useRef(currentIndex);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [swipedRightUserIds, setSwipedRightUserIds] = useState<string[]>([]);
 
   const childRefs = useRef(
     Array(characters.length)
@@ -65,11 +68,22 @@ export default function Home() {
     console.log(name + " left the screen!");
   };
 
+  useEffect(() => {
+    console.log(swipedRightUserIds);
+  }, [swipedRightUserIds]);
+
   const swipe = async (dir: string) => {
-    if (canSwipe && currentIndex >= 0) {
-      await childRefs[currentIndex].current?.swipe(dir);
-      updateCurrentIndex(currentIndex - 1);
+    if (canSwipe && currentIndex >= 0 && currentIndex < users.length) {
+    const user = users[currentIndex];
+    setCurrentUser(user);
+
+    if (dir === "right") {
+      setSwipedRightUserIds([...swipedRightUserIds, user.user_id]); // 右にスワイプしたときに、そのユーザーのIDを配列に追加
     }
+
+    await childRefs[currentIndex].current?.swipe(dir);
+    updateCurrentIndex(currentIndex - 1);
+  }
   };
 
   const goBack = async () => {
@@ -107,7 +121,7 @@ export default function Home() {
           <TinderCard
             ref={childRefs[index]}
             className="absolute"
-            key={user.userID}
+            key={user.user_id}
             onSwipe={(dir) => swiped(dir, user.name)}
             onCardLeftScreen={() => outOfFrame(user.name)}
           >
@@ -140,13 +154,26 @@ export default function Home() {
         </button>
         <button
           className="transform transition-transform duration-200 active:scale-90"
-          onClick={() => swipe("right")}
+          onClick={() => {
+            swipe("right");
+          }}
         >
           <ThumbUpAltIcon />
         </button>
       </div>
       <div>
-        <button className="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700 transition duration-200">
+        <button className="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700 transition duration-200"
+        onClick={async () => {
+          console.log(swipedRightUserIds);
+          // window.location.href = '/';
+          try {
+            const data = await postSwipedRightUserIds(swipedRightUserIds);
+            console.log(data);
+          } catch (error) {
+            console.error(error);
+          }
+        }}
+        >
           終了
         </button>
       </div>
