@@ -18,6 +18,9 @@ const Header = () => {
           <a href="/random-match" className="text-black hover:text-accent">
             ランダムマッチ
           </a>
+          <a href="/like" className="text-black hover:text-accent">
+            いいね
+          </a>
         </nav>
         <div className="flex space-x-1 hover:text-accent">
           <a
