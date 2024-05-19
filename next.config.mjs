@@ -8,7 +8,10 @@ const nextConfig = {
         source: "/(.*)",
         headers: [
           { key: "Access-Control-Allow-Credentials", value: "true" },
-          { key: "Access-Control-Allow-Origin", value: "*" },
+          {
+            key: "Access-Control-Allow-Origin",
+            value: "http://localhost:3000",
+          },
           {
             key: "Access-Control-Allow-Methods",
             value: "GET,OPTIONS,PATCH,DELETE,POST,PUT",
@@ -25,4 +28,4 @@ const nextConfig = {
   // ⬆追加
 };
 
-module.exports = nextConfig;
+export default nextConfig;
