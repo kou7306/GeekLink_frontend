@@ -7,7 +7,8 @@ import UndoIcon from "@mui/icons-material/Undo";
 import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 import { getRandomUsers } from "../../utils/getRandomMatchUser";
 import { User } from "../../utils/getRandomMatchUser";
-import { postSwipedRightUserIds } from '../../utils/CreateLike'; // api.jsのパスに合わせて変更してください
+import { postSwipedRightUserIds } from '../../utils/CreateLike';
+import Image from 'next/image'; 
 
 export default function Home() {
   const characters = [
@@ -78,7 +79,7 @@ export default function Home() {
     setCurrentUser(user);
 
     if (dir === "right") {
-      setSwipedRightUserIds([...swipedRightUserIds, user.user_id]); // 右にスワイプしたときに、そのユーザーのIDを配列に追加
+      setSwipedRightUserIds([...swipedRightUserIds, user.user_id]);
     }
 
     await childRefs[currentIndex].current?.swipe(dir);
@@ -115,8 +116,8 @@ export default function Home() {
         href="https://fonts.googleapis.com/css?family=Alatsi&display=swap"
         rel="stylesheet"
       />
-      <h1>Random-match</h1>
-      <div className="w-[90vw] max-w-[260px] h-[300px]">
+      <h1 className="text-3xl font-bold pb-6">Random-match</h1>
+      <div className="flex items-center justify-center w-[200vw] max-w-[260px] h-[300px]">
         {users.map((user, index) => (
           <TinderCard
             ref={childRefs[index]}
@@ -125,11 +126,34 @@ export default function Home() {
             onSwipe={(dir) => swiped(dir, user.name)}
             onCardLeftScreen={() => outOfFrame(user.name)}
           >
-            <div
-              style={{ backgroundImage: "url(" + user.imageURL + ")" }}
-              className="relative bg-white w-80 max-w-[260px] h-[300px] shadow-[0px_0px_60px_0px_rgba(0,0,0,0.30)] rounded-[20px] bg-cover bg-center"
-            >
-              <h3>{user.name}</h3>
+            <div className="flex items-center relative bg-white w-[520px] max-w-[600px] h-[300px] shadow-[0px_0px_60px_0px_rgba(0,0,0,0.30)] rounded-[20px]">
+              <div className="flex-shrink-0 pl-8 pr-4">
+              {user.imageURL ? (
+                <Image 
+                  src={user.imageURL}
+                  alt="Profile Icon" 
+                  width={160} 
+                  height={160}
+                  className="rounded-full w-[160px] h-[160px] object-cover" 
+                />
+              ) : (
+                <img 
+                  src="/img/default_icon.png" // 代替画像のパスを設定してください
+                  alt="Profile Icon" 
+                  className="rounded-full w-[160px] h-[160px] object-cover" 
+                />
+              )}
+              </div>
+              <div className="p-8">
+                <p className="text-xl">名前：{user.name}</p>
+                <p className="text-xl">年齢：{user.age}歳</p>
+                <p className="text-xl">性別：{user.sex}</p>
+                <p className="text-xl">在住：{user.place}</p>
+                <p className="text-xl">職種：{user.occupation}</p>
+                {user.top_teches && user.top_teches.map((tech, index) => (
+                  <p key={index} className="text-xl">{index === 0 ? `技術：${tech}` : `　　　${tech}`}</p>
+                ))}
+              </div>
             </div>
           </TinderCard>
         ))}

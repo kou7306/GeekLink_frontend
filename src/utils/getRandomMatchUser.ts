@@ -4,10 +4,10 @@ export interface User {
   user_id: string;
   name: string;
   sex: string;
-  age: number;
+  age: string;
   place: string;
   occupation: string;
-  topTeches: string[];
+  top_teches: string[];
   imageURL: string;
 }
 
