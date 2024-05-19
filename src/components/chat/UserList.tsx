@@ -57,9 +57,8 @@ const UserList = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="flex flex-col justify-start mt-2 ml-5">
+                  <div className="mt-7 ml-8">
                     <div className="font-semibold text-lg">{user.name}</div>
-                    <div className="text-gray-500 text-sm my-2">こんにちは</div>
                   </div>
                 </div>
               </Link>
