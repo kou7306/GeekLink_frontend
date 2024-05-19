@@ -102,7 +102,9 @@ const Home = () => {
       // console.log("user_id", user_id);
       if (user_id) {
         axios
-          .post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/check`, { user_id })
+          .post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/check`, {
+            user_id,
+          })
           .then((response) => {
             setUserExists(response.data.exists);
             if (!response.data.exists) {
@@ -131,16 +133,18 @@ const Home = () => {
                 key={character.id}
                 className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative"
               >
-                <div className="relative w-full h-40">
+                <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
                   <Image
                     src={character.url}
                     layout="fill"
                     objectFit="cover"
                     alt={character.name}
-                    className="rounded-lg"
+                    className="rounded-full"
                   />
                 </div>
-                <h2 className="mt-4 text-lg font-semibold text-center">{character.name}</h2>
+                <h2 className="mt-4 text-lg font-semibold text-center">
+                  {character.name}
+                </h2>
                 <p className="text-center">{character.place}</p>
               </div>
             ))}
@@ -155,18 +159,23 @@ const Home = () => {
                 key={character.id}
                 className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative"
               >
-                <div className="relative w-full h-40">
+                <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
                   <Image
                     src={character.url}
                     layout="fill"
                     objectFit="cover"
                     alt={character.name}
-                    className="rounded-lg"
+                    className="rounded-full"
                   />
                 </div>
-                <h2 className="mt-4 text-lg font-semibold text-center">{character.name}</h2>
+                <h2 className="mt-4 text-lg font-semibold text-center">
+                  {character.name}
+                </h2>
                 <ul className="text-center flex justify-center space-x-2 list-none p-0">
-                  {character.techs && character.techs.map((tech, index) => <li key={index}>{tech}</li>)}
+                  {character.techs &&
+                    character.techs.map((tech, index) => (
+                      <li key={index}>{tech}</li>
+                    ))}
                 </ul>
               </div>
             ))}
