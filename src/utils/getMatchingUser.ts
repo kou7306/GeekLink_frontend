@@ -18,7 +18,7 @@ export const getMatchingUser = async (): Promise<User[]> => {
     // APIからデータを取得
     const response = await fetch(`${apiUrl}/getMatchingUser`, {
       method: "POST",
-      mode: "cors",
+      mode: "no-cors",
       headers: {
         "Content-Type": "application/json",
       },
