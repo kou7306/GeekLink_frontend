@@ -1,6 +1,6 @@
 // components/SnsIDModal.tsx
-import React from 'react';
-import { ProfileForm } from './options';
+import React from "react";
+import { ProfileForm } from "./options";
 
 interface SnsIDModalProps {
   isOpen: boolean;
@@ -20,40 +20,40 @@ const SnsIDModal: React.FC<SnsIDModalProps> = ({ isOpen, onClose, profile, onCha
           <input
             type="text"
             placeholder="GitHub ID"
-            value={profile.githubID}
-            name="githubID"
+            value={profile.github}
+            name="github"
             onChange={onChange}
             className="w-full px-4 py-2 border rounded-md"
           />
           <input
             type="text"
             placeholder="Twitter ID"
-            value={profile.twitterID}
-            name="twitterID"
+            value={profile.twitter}
+            name="twitter"
             onChange={onChange}
             className="w-full px-4 py-2 border rounded-md"
           />
           <input
             type="text"
             placeholder="Zenn ID"
-            value={profile.zennID}
-            name="zennID"
+            value={profile.zenn}
+            name="zenn"
             onChange={onChange}
             className="w-full px-4 py-2 border rounded-md"
           />
           <input
             type="text"
             placeholder="Qiita ID"
-            value={profile.qiitaID}
-            name="qiitaID"
+            value={profile.qiita}
+            name="qiita"
             onChange={onChange}
             className="w-full px-4 py-2 border rounded-md"
           />
           <input
             type="text"
             placeholder="AtCoder ID"
-            value={profile.atcoderID}
-            name="atcoderID"
+            value={profile.atcoder}
+            name="atcoder"
             onChange={onChange}
             className="w-full px-4 py-2 border rounded-md"
           />

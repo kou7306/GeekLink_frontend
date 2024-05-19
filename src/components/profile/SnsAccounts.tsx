@@ -2,69 +2,76 @@
 import React from "react";
 
 interface SnsAccountsProps {
-  githubID: string;
-  twitterID: string;
-  zennID: string;
-  qiitaID: string;
-  atcoderID: string;
+  github: string;
+  twitter: string;
+  zenn: string;
+  qiita: string;
+  atcoder: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const SnsAccounts: React.FC<SnsAccountsProps> = ({ githubID, twitterID, zennID, qiitaID, atcoderID, onChange }) => {
+const SnsAccounts: React.FC<SnsAccountsProps> = ({
+  github,
+  twitter,
+  zenn,
+  qiita,
+  atcoder,
+  onChange,
+}) => {
   return (
     <div>
-      <label htmlFor="githubID" className="block text-sm font-medium text-gray-700 rounded-md">
+      <label htmlFor="github" className="block text-sm font-medium text-gray-700 rounded-md">
         GitHub
       </label>
       <input
         type="text"
-        id="githubID"
-        name="githubID"
-        value={githubID}
+        id="github"
+        name="github"
+        value={github}
         onChange={onChange}
         className="mt-1 px-2 block w-full border-b border-gray-300 focus:border-blue-500 focus:outline-none"
       />
-      <label htmlFor="twitterID" className="block text-sm font-medium text-gray-700 rounded-md">
+      <label htmlFor="twitter" className="block text-sm font-medium text-gray-700 rounded-md">
         X(Twitter)
       </label>
       <input
         type="text"
-        id="twitterID"
-        name="twitterID"
-        value={twitterID}
+        id="twitter"
+        name="twitter"
+        value={twitter}
         onChange={onChange}
         className="mt-1 px-2 block w-full border-b border-gray-300 focus:border-blue-500 focus:outline-none"
       />
-      <label htmlFor="zennID" className="block text-sm font-medium text-gray-700 rounded-md">
+      <label htmlFor="zenn" className="block text-sm font-medium text-gray-700 rounded-md">
         Zenn
       </label>
       <input
         type="text"
-        id="zennID"
-        name="zennID"
-        value={zennID}
+        id="zenn"
+        name="zenn"
+        value={zenn}
         onChange={onChange}
         className="mt-1 px-2 block w-full border-b border-gray-300 focus:border-blue-500 focus:outline-none"
       />
-      <label htmlFor="qiitaID" className="block text-sm font-medium text-gray-700 rounded-md">
+      <label htmlFor="qiita" className="block text-sm font-medium text-gray-700 rounded-md">
         Qiita
       </label>
       <input
         type="text"
-        id="qiitaID"
-        name="qiitaID"
-        value={qiitaID}
+        id="qiita"
+        name="qiita"
+        value={qiita}
         onChange={onChange}
         className="mt-1 px-2 block w-full border-b border-gray-300 focus:border-blue-500 focus:outline-none"
       />
-      <label htmlFor="atcoderID" className="block text-sm font-medium text-gray-700 rounded-md">
+      <label htmlFor="atcoder" className="block text-sm font-medium text-gray-700 rounded-md">
         AtCoder
       </label>
       <input
         type="text"
-        id="atcoderID"
-        name="atcoderID"
-        value={atcoderID}
+        id="atcoder"
+        name="atcoder"
+        value={atcoder}
         onChange={onChange}
         className="mt-1 px-2 block w-full border-b border-gray-300 focus:border-blue-500 focus:outline-none"
       />
