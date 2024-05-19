@@ -46,7 +46,7 @@ const Paga = () => {
       .then((data) => setData(data));
   }, []);
   console.log(data);
-  return <div>{data && data.user_id}</div>; // Access 'user_id' property from the first element of 'data' array
+  return <div>{data && data.name}</div>; // Access 'user_id' property from the first element of 'data' array
 };
 
 export default Paga;
