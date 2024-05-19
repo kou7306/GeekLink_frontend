@@ -19,6 +19,7 @@ export const getMatchingUser = async (): Promise<User[]> => {
     const response = await fetch(`${apiUrl}/getMatchingUser`, {
       method: "POST",
       mode: "cors",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },

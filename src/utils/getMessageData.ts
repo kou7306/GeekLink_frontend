@@ -17,6 +17,7 @@ export const getMessageData = async (
     // APIからデータを取得
     const response = await fetch(`${apiUrl}/getMessage/${conversationId}`, {
       method: "GET",
+      credentials: "include",
       mode: "cors",
     });
     console.log(response);
