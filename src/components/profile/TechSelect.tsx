@@ -4,14 +4,14 @@ import React from "react";
 interface TechSelectionProps {
   toggleModal: () => void;
   openTopTechModal: () => void;
-  topTech: string[];
+  top_teches: string[];
   selectedTech: string[];
 }
 
 const TechSelection: React.FC<TechSelectionProps> = ({
   toggleModal,
   openTopTechModal,
-  topTech,
+  top_teches,
   selectedTech,
 }) => {
   return (
@@ -29,7 +29,7 @@ const TechSelection: React.FC<TechSelectionProps> = ({
         Top 3 を選択
       </button>
       <div className="flex gap-2 flex-wrap mb-4">
-        {topTech.map((tech, index) => (
+        {top_teches.map((tech, index) => (
           <span key={tech} className="bg-blue-500 text-white rounded-full px-4 py-1">
             {index + 1}位. {tech}
           </span>

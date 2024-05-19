@@ -1,7 +1,7 @@
 // app/profile-initialization/page.tsx
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ages, places, technologies, occupations, ProfileForm } from "@/components/profile/options";
 import { TechModal } from "@/components/profile/TechModal";
 import { TopTechModal } from "@/components/profile/TopTechModal";
@@ -11,21 +11,51 @@ import AgeSelect from "@/components/profile/AgeSelect";
 import PlaceSelect from "@/components/profile/PlaceSelect";
 import OccupationSelect from "@/components/profile/OccupationSelect";
 import TechSelection from "@/components/profile/TechSelect";
+import { getUuidFromCookie } from "@/actions/users";
+import toast from "react-hot-toast";
 
 export default function Profile() {
   const [isTechModalOpen, setIsTechModalOpen] = useState(false);
   const [isTopTecnologyModalOpen, setIsTopTecnologyModalOpen] = useState(false);
   const [selectedTech, setSelectedTech] = useState<string[]>([]);
-  const [topTech, setTopTech] = useState<string[]>([]);
+  const [top_teches, setTopTech] = useState<string[]>([]);
   const [profile, setProfile] = useState<ProfileForm>({
+    user_id: "",
     name: "",
     sex: "",
     age: "",
     place: "",
-    techs: [],
-    topTechs: [],
+    teches: [],
+    top_teches: [],
     occupation: "",
+    editor: "",
+    affiliation: "",
+    hobby: "",
+    image_url: "",
+    qualification: [],
+    message: "",
+    portfolio: "",
+    graduate: "",
+    desiredOccupation: "",
+    faculty: "",
+    experience: [],
+    github: "",
+    twitter: "",
+    zenn: "",
+    qiita: "",
+    atcoder: "",
   });
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const uuid = await getUuidFromCookie();
+      if (uuid) {
+        setProfile((prev) => ({ ...prev, user_id: uuid }));
+      }
+    };
+
+    fetchUsers();
+  }, []);
 
   const toggleModal = () => setIsTechModalOpen(!isTechModalOpen);
   const openTopTechModal = () => {
@@ -75,20 +105,34 @@ export default function Profile() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // profile の techs と topTechs を更新する
-    setProfile((prevProfile) => ({
-      ...prevProfile,
-      techs: selectedTech,
-      topTechs: topTech,
-    }));
-    // 更新したプロファイルをコンソールに出力
-    console.log("Profile Data:", {
+    const updatedProfile = {
       ...profile,
-      techs: selectedTech,
-      topTechs: topTech,
-    });
+      teches: selectedTech,
+      top_teches: top_teches,
+    };
+    setProfile(updatedProfile);
+
+    console.log("Profile to be updated:", updatedProfile);
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/update`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedProfile),
+      });
+
+      if (response.ok) {
+        console.log("Profile updated successfully");
+        toast.success("プロフィールを更新しました");
+      } else {
+        console.error("Failed to update profile");
+      }
+    } catch (error) {
+      console.error("Error updating profile:", error);
+    }
   };
 
   return (
@@ -108,30 +152,6 @@ export default function Profile() {
             onChange={handleChange}
             occupations={occupations}
           />
-
-          <TechSelection
-            toggleModal={toggleModal}
-            openTopTechModal={openTopTechModal}
-            topTech={topTech}
-            selectedTech={selectedTech}
-          />
-
-          <TechModal
-            isOpen={isTechModalOpen}
-            technologies={technologies}
-            selectedTech={selectedTech}
-            onClose={toggleModal}
-            onSelect={handleSelectTech}
-            onNext={openTopTechModal}
-          />
-          <TopTechModal
-            isOpen={isTopTecnologyModalOpen}
-            selectedTech={selectedTech}
-            topTech={topTech}
-            onClose={closeTopTechModal}
-            onTopSelect={handleTopSelect}
-          />
-
           <button
             type="submit"
             className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -140,6 +160,29 @@ export default function Profile() {
           </button>
         </div>
       </form>
+      <div>
+        <TechSelection
+          toggleModal={toggleModal}
+          openTopTechModal={openTopTechModal}
+          top_teches={top_teches}
+          selectedTech={selectedTech}
+        />
+      </div>
+      <TechModal
+        isOpen={isTechModalOpen}
+        technologies={technologies}
+        selectedTech={selectedTech}
+        onClose={toggleModal}
+        onSelect={handleSelectTech}
+        onNext={openTopTechModal}
+      />
+      <TopTechModal
+        isOpen={isTopTecnologyModalOpen}
+        selectedTech={selectedTech}
+        top_teches={top_teches}
+        onClose={closeTopTechModal}
+        onTopSelect={handleTopSelect}
+      />
     </div>
   );
 }
