@@ -9,7 +9,7 @@ export interface ProfileForm {
   teches: string[];
   top_teches: string[];
   occupation: string;
-  image_url?: string;
+  image_url?: string | null;
   hobby?: string;
   editor?: string;
   affiliation?: string;
