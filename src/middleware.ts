@@ -12,7 +12,16 @@ export async function middleware(request: NextRequest) {
 
   const user = await getUser(request, response);
 
-  if (path === "/protected-route" && !user) {
+  if (
+    (path === "/" ||
+      path === "/protected-route" ||
+      path === "/conversation" ||
+      path === "/fetch" ||
+      path === "/my-page" ||
+      path === "/random-match" ||
+      path === "/profile-initialization") &&
+    !user
+  ) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
@@ -20,9 +29,7 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
-  ],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"],
 };
 
 async function getUser(request: NextRequest, response: NextResponse) {
