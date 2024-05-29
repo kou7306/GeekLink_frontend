@@ -59,6 +59,7 @@ const SnsIDModal: React.FC<SnsIDModalProps> = ({ isOpen, onClose, profile, onCha
           />
         </div>
         <button
+          type="button"
           onClick={onClose}
           className="mt-4 w-full bg-blue-500 hover:bg-blue-700 text-white py-2 rounded-md"
         >

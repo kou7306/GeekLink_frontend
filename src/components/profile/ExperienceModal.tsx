@@ -29,6 +29,7 @@ const ExperienceModal: React.FC<ExperienceModalProps> = ({
           {experiences.map((experience) => (
             <button
               key={experience}
+              type="button"
               onClick={() => handleSelect(experience)}
               className={`p-2 rounded-full ${
                 selectedExperiences.includes(experience) ? "bg-blue-300 text-white" : "bg-gray-200"
@@ -39,6 +40,7 @@ const ExperienceModal: React.FC<ExperienceModalProps> = ({
           ))}
         </div>
         <button
+          type="button"
           onClick={onClose}
           className="mt-4 py-2 px-4 bg-red-500 text-white rounded hover:bg-red-700"
         >

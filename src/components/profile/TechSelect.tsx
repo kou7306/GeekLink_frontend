@@ -17,12 +17,14 @@ const TechSelection: React.FC<TechSelectionProps> = ({
   return (
     <div>
       <button
+        type="button"
         onClick={toggleModal}
         className="my-4 py-2 px-4 bg-gray-600 text-white rounded hover:bg-gray-800"
       >
         技術を選択
       </button>
       <button
+        type="button"
         onClick={openTopTechModal}
         className="ml-4 py-2 px-4 bg-green-500 text-white rounded hover:bg-green-700"
       >

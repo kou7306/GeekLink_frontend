@@ -152,6 +152,29 @@ export default function Profile() {
             onChange={handleChange}
             occupations={occupations}
           />
+            <div>
+              <TechSelection
+                toggleModal={toggleModal}
+                openTopTechModal={openTopTechModal}
+                top_teches={top_teches}
+                selectedTech={selectedTech}
+              />
+            </div>
+            <TechModal
+              isOpen={isTechModalOpen}
+              technologies={technologies}
+              selectedTech={selectedTech}
+              onClose={toggleModal}
+              onSelect={handleSelectTech}
+              onNext={openTopTechModal}
+            />
+            <TopTechModal
+              isOpen={isTopTecnologyModalOpen}
+              selectedTech={selectedTech}
+              top_teches={top_teches}
+              onClose={closeTopTechModal}
+              onTopSelect={handleTopSelect}
+            />
           <button
             type="submit"
             className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -160,29 +183,6 @@ export default function Profile() {
           </button>
         </div>
       </form>
-      <div>
-        <TechSelection
-          toggleModal={toggleModal}
-          openTopTechModal={openTopTechModal}
-          top_teches={top_teches}
-          selectedTech={selectedTech}
-        />
-      </div>
-      <TechModal
-        isOpen={isTechModalOpen}
-        technologies={technologies}
-        selectedTech={selectedTech}
-        onClose={toggleModal}
-        onSelect={handleSelectTech}
-        onNext={openTopTechModal}
-      />
-      <TopTechModal
-        isOpen={isTopTecnologyModalOpen}
-        selectedTech={selectedTech}
-        top_teches={top_teches}
-        onClose={closeTopTechModal}
-        onTopSelect={handleTopSelect}
-      />
     </div>
   );
 }
