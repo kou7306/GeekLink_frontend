@@ -14,6 +14,7 @@ const ExperienceSelect: React.FC<ExperienceSelectProps> = ({
   return (
     <div>
       <button
+        type="button"
         onClick={toggleModal}
         className="my-4 py-2 px-4 bg-gray-600 text-white rounded hover:bg-gray-800"
       >

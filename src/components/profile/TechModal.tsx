@@ -31,6 +31,7 @@ export const TechModal: React.FC<ModalProps> = ({
           {technologies.map((tech) => (
             <button
               key={tech}
+              type="button"
               onClick={() => handleSelect(tech)}
               className={`p-2 rounded-full ${
                 selectedTech.includes(tech) ? "bg-blue-300 text-white" : "bg-gray-200"
@@ -41,12 +42,14 @@ export const TechModal: React.FC<ModalProps> = ({
           ))}
         </div>
         <button
+          type="button"
           onClick={onClose}
           className="mt-4 py-2 px-4 bg-red-500 text-white rounded hover:bg-red-700"
         >
           閉じる
         </button>
         <button
+          type="button"
           onClick={onNext}
           className="mt-4 ml-4 py-2 px-4 bg-green-500 text-white rounded hover:bg-green-700"
         >

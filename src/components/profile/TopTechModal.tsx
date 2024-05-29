@@ -30,6 +30,7 @@ export const TopTechModal: React.FC<TopTechModalProps> = ({
           {selectedTech.map((tech) => (
             <button
               key={tech}
+              type="button"
               onClick={() => onTopSelect(tech)}
               className={`p-2 rounded-full ${
                 top_teches.includes(tech) ? "bg-green-500 text-white" : "bg-gray-200"
@@ -40,6 +41,7 @@ export const TopTechModal: React.FC<TopTechModalProps> = ({
           ))}
         </div>
         <button
+          type="button"
           onClick={onClose}
           className="mt-4 py-2 px-4 bg-red-500 text-white rounded hover:bg-red-700"
         >
