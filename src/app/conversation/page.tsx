@@ -5,11 +5,8 @@ import React from "react";
 
 const Page = () => {
   return (
-    <div className="flex h-full mt-20">
-      <UserList />
-      <div className="flex-1">
-        <EmptyState />
-      </div>
+    <div className="hidden h-full lg:block lg:pl-96">
+      <EmptyState />
     </div>
   );
 };

@@ -3,12 +3,34 @@ import { useEffect, useRef, useState } from "react";
 import { getMessageData } from "../../utils/getMessageData";
 import { Message } from "../../utils/getMessageData";
 import { MdSend } from "react-icons/md";
+import { getUuidFromCookie } from "../../actions/users";
 
 const Chat = ({ params }: { params: any }) => {
+  const [uuid, setUuid] = useState<string>("");
+  useEffect(() => {
+    console.log("fetching users1");
+    const fetchUsers = async () => {
+      const uuid = await getUuidFromCookie();
+      if (uuid) {
+        setUuid(uuid);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
   console.log("params: ", params);
   const conversationId = params.conversationId;
-  const [receiver_id, uuid] = conversationId.split("!");
-  console.log({ uuid });
+  const [id1, id2] = conversationId.split("!");
+  console.log(uuid);
+  console.log(id1);
+  console.log(id2);
+  if (uuid === id1) {
+    var receiver_id = id2;
+  }
+  if (uuid === id2) {
+    var receiver_id = id1;
+  }
   // メッセージデータの管理
   const [messages, setMessages] = useState<Message[]>([]);
   // スクロール用のrefを作成
