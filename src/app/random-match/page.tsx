@@ -7,7 +7,6 @@ import UndoIcon from "@mui/icons-material/Undo";
 import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 import { getRandomUsers } from "../../utils/getRandomMatchUser";
 import { User } from "../../utils/getRandomMatchUser";
-import { postSwipedRightUserIds } from "../../utils/CreateLike"; // api.jsのパスに合わせて変更してください
 import { postSwipedRightUserIds } from '../../utils/CreateLike';
 import Image from 'next/image'; 
 
