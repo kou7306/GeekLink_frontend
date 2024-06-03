@@ -1,7 +1,7 @@
 // app/my-page/page.tsx
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import {
   ages,
@@ -31,6 +31,9 @@ import MessageInput from "@/components/profile/MessageInput";
 import QualificationInput from "@/components/profile/QualificationInput";
 import DesireOccupationSelect from "@/components/profile/DesireOccupationSelect";
 import { FaGithub, FaTwitter } from "react-icons/fa";
+import toast from "react-hot-toast";
+import { getUuidFromCookie } from "@/actions/users";
+import { UploadImage } from "../image/UploadImage";
 
 export default function ProfileInitialization() {
   const [isTechModalOpen, setIsTechModalOpen] = useState(false);
@@ -38,19 +41,19 @@ export default function ProfileInitialization() {
   const [isTopTecnologyModalOpen, setIsTopTecnologyModalOpen] = useState(false);
   const [selectedTech, setSelectedTech] = useState<string[]>([]);
   const [selectedExperiences, setSelectedExperiences] = useState<string[]>([]);
-  const [topTech, setTopTech] = useState<string[]>([]);
+  const [top_teches, setTopTech] = useState<string[]>([]);
   const [qualifications, setQualifications] = useState<string[]>([]);
-  const [showQualificationInput, setShowQualificationInput] =
-    useState<boolean>(false);
+  const [showQualificationInput, setShowQualificationInput] = useState<boolean>(false);
   const [profile, setProfile] = useState<ProfileForm>({
+    user_id: "",
     name: "", // 名前
     sex: "", // 性別
     age: "", // 年齢
     place: "", // 在住
-    techs: [], // スキル
-    topTechs: [], // トップスキル
+    teches: [], // スキル
+    top_teches: [], // トップスキル
     occupation: "", // 職業
-    imageUrl: "/user.svg", // 画像URL
+    image_url: "/user.svg", // 画像URL
     hobby: "", // 趣味
     editor: "", // エディタ
     affiliation: "", // 所属
@@ -61,12 +64,23 @@ export default function ProfileInitialization() {
     desiredOccupation: "", // 希望職種
     faculty: "", // 学部
     experience: [], // 経験
-    githubID: "", // GitHub ID
-    twitterID: "", // Twitter ID
-    zennID: "", // Zenn ID
-    qiitaID: "", // Qiita ID
-    atcoderID: "", // AtCoder ID
+    github: "", // GitHub ID
+    twitter: "", // Twitter ID
+    zenn: "", // Zenn ID
+    qiita: "", // Qiita ID
+    atcoder: "", // AtCoder ID
   });
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const uuid = await getUuidFromCookie();
+      if (uuid) {
+        setProfile((prev) => ({ ...prev, user_id: uuid }));
+      }
+    };
+
+    fetchUsers();
+  }, []);
 
   const [showGithubInput, setShowGithubInput] = useState(false);
   const [showTwitterInput, setShowTwitterInput] = useState(false);
@@ -94,21 +108,15 @@ export default function ProfileInitialization() {
     }
   };
 
-  const handleSnsIDChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    platform: string
-  ) => {
+  const handleSnsIDChange = (e: React.ChangeEvent<HTMLInputElement>, platform: string) => {
     const { value } = e.target;
     setProfile((prevProfile) => ({
       ...prevProfile,
-      [`${platform}ID`]: value,
+      [`${platform}`]: value,
     }));
   };
 
-  const handleKeyPress = (
-    e: React.KeyboardEvent<HTMLInputElement>,
-    platform: string
-  ) => {
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>, platform: string) => {
     if (e.key === "Enter") {
       handleIconClick(platform);
     }
@@ -119,8 +127,7 @@ export default function ProfileInitialization() {
   };
 
   const toggleTechModal = () => setIsTechModalOpen(!isTechModalOpen);
-  const toggleExperienceModal = () =>
-    setIsExperienceModalOpen(!isExperienceModalOpen);
+  const toggleExperienceModal = () => setIsExperienceModalOpen(!isExperienceModalOpen);
 
   const openTopTechModal = () => {
     setIsTechModalOpen(false);
@@ -175,9 +182,8 @@ export default function ProfileInitialization() {
     setQualifications((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
+    e.preventDefault();
     const { name, value } = e.target;
     if (name === "tech") {
       // select multiple のための特別なハンドリング
@@ -195,49 +201,87 @@ export default function ProfileInitialization() {
     }
   };
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        if (e.target?.result) {
-          setProfile((prevProfile) => ({
-            ...prevProfile,
-            userIcon: e.target?.result as string,
-          }));
-        }
-      };
-      reader.readAsDataURL(event.target.files[0]);
+  // const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   event.preventDefault();
+  //   if (event.target.files && event.target.files[0]) {
+  //     const reader = new FileReader();
+  //     reader.onload = (e) => {
+  //       if (e.target?.result) {
+  //         setProfile((prevProfile) => ({
+  //           ...prevProfile,
+  //           userIcon: e.target?.result as string,
+  //         }));
+  //       }
+  //     };
+  //     reader.readAsDataURL(event.target.files[0]);
+  //   }
+  // };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const updatedProfile = {
+      ...profile,
+      teches: selectedTech,
+      top_teches: top_teches,
+      experience: selectedExperiences,
+      qualification: qualifications,
+    };
+    setProfile(updatedProfile);
+
+    console.log("Profile to be updated:", updatedProfile);
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/update`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedProfile),
+      });
+
+      if (response.ok) {
+        console.log("Profile updated successfully");
+        toast.success("プロフィールを更新しました");
+      } else {
+        console.error("Failed to update profile");
+      }
+    } catch (error) {
+      console.error("Error updating profile:", error);
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // profile の設定を更新する
-    setProfile((prevProfile) => ({
-      ...prevProfile,
-      techs: selectedTech,
-      topTechs: topTech,
-      experience: selectedExperiences,
-      qualification: qualifications,
-    }));
-    // 更新したプロファイルをコンソールに出力
-    console.log("Profile Data:", { profile });
+  const [file, setFile] = useState("");
+  const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
+  
+  const handleFileChange = (e: any) => {
+    setFile(e.target.files[0]);
+    console.log(file);
+  };
+
+  const handleUpload = async () => {
+    console.log("Uploading image...");
+    try {
+      const url = await UploadImage(file);
+      console.log("Uploaded image URL: ", url);
+      // setUploadedUrl(url);
+      setProfile((prevProfile) => ({
+        ...prevProfile,
+        image_url: `https://vettovaznwdhefdeeglu.supabase.co/storage/v1/object/public/UserImage/${url}`,
+      }));
+      console.log("test test test");
+    } catch (error) {
+      console.error("Error uploading image: ", error);
+    }
   };
 
   return (
     <div className="min-h-screen my-4 bg-gray-50 flex flex-col items-center justify-center">
-      <h2 className="text-2xl font-bold mb-4 text-gray-800">
-        プロフィール設定
-      </h2>
-      <form
-        onSubmit={handleSubmit}
-        className="w-full max-w-lg p-8 bg-white shadow-xl rounded-lg"
-      >
+      <h2 className="text-2xl font-bold mb-4 text-gray-800">プロフィール設定</h2>
+      <form onSubmit={handleSubmit} className="w-full max-w-lg p-8 bg-white shadow-xl rounded-lg">
         <div className="space-y-8">
           <div className="flex flex-col items-center mb-4">
             <label htmlFor="upload-button">
               <Image
-                src={profile.imageUrl!}
+                src={profile.image_url!}
                 alt="Icon"
                 width={150}
                 height={150}
@@ -248,8 +292,9 @@ export default function ProfileInitialization() {
               type="file"
               id="upload-button"
               style={{ display: "none" }}
-              onChange={handleImageUpload}
+              onChange={handleFileChange}
             />
+            <button onClick={handleUpload}>Upload</button>
           </div>
           <div className="flex justify-center space-x-4 mb-4">
             <div onClick={() => handleIconClick("github")}>
@@ -259,40 +304,23 @@ export default function ProfileInitialization() {
               <FaTwitter size={30} />
             </div>
             <div onClick={() => handleIconClick("zenn")}>
-              <Image
-                src="/zenn-icon.svg"
-                alt="Zenn Icon"
-                width={30}
-                height={30}
-              />
+              <Image src="/zenn-icon.svg" alt="Zenn Icon" width={30} height={30} />
             </div>
             <div onClick={() => handleIconClick("qiita")}>
-              <Image
-                src="/qiita-icon.png"
-                alt="Qiita Icon"
-                width={30}
-                height={30}
-              />
+              <Image src="/qiita-icon.png" alt="Qiita Icon" width={30} height={30} />
             </div>
             <div onClick={() => handleIconClick("atcoder")}>
-              <Image
-                src="/atcoder-icon.png"
-                alt="AtCoder Icon"
-                width={30}
-                height={30}
-              />
+              <Image src="/atcoder-icon.png" alt="AtCoder Icon" width={30} height={30} />
             </div>
           </div>
 
           {showGithubInput && (
             <div className="flex items-center mb-2">
               <div className="flex items-center border rounded-md">
-                <span className="bg-gray-200 px-4 py-2">
-                  https://github.com/
-                </span>
+                <span className="bg-gray-200 px-4 py-2">https://github.com/</span>
                 <input
                   type="text"
-                  value={profile.githubID}
+                  value={profile.github}
                   onChange={(e) => handleSnsIDChange(e, "github")}
                   onKeyDown={(e) => handleKeyPress(e, "github")}
                   className="flex-1 px-4 py-2 border-none"
@@ -310,12 +338,10 @@ export default function ProfileInitialization() {
           {showTwitterInput && (
             <div className="flex items-center mb-2">
               <div className="flex items-center border rounded-md">
-                <span className="bg-gray-200 px-4 py-2">
-                  https://twitter.com/
-                </span>
+                <span className="bg-gray-200 px-4 py-2">https://x.com/</span>
                 <input
                   type="text"
-                  value={profile.twitterID}
+                  value={profile.twitter}
                   onChange={(e) => handleSnsIDChange(e, "twitter")}
                   onKeyDown={(e) => handleKeyPress(e, "twitter")}
                   className="flex-1 px-4 py-2 border-none"
@@ -336,7 +362,7 @@ export default function ProfileInitialization() {
                 <span className="bg-gray-200 px-4 py-2">https://zenn.dev/</span>
                 <input
                   type="text"
-                  value={profile.zennID}
+                  value={profile.zenn}
                   onChange={(e) => handleSnsIDChange(e, "zenn")}
                   onKeyDown={(e) => handleKeyPress(e, "zenn")}
                   className="flex-1 px-4 py-2 border-none"
@@ -354,12 +380,10 @@ export default function ProfileInitialization() {
           {showQiitaInput && (
             <div className="flex items-center mb-2">
               <div className="flex items-center border rounded-md">
-                <span className="bg-gray-200 px-4 py-2">
-                  https://qiita.com/
-                </span>
+                <span className="bg-gray-200 px-4 py-2">https://qiita.com/</span>
                 <input
                   type="text"
-                  value={profile.qiitaID}
+                  value={profile.qiita}
                   onChange={(e) => handleSnsIDChange(e, "qiita")}
                   onKeyDown={(e) => handleKeyPress(e, "qiita")}
                   className="flex-1 px-4 py-2 border-none"
@@ -377,12 +401,10 @@ export default function ProfileInitialization() {
           {showAtCoderInput && (
             <div className="flex items-center mb-2">
               <div className="flex items-center border rounded-md">
-                <span className="bg-gray-200 px-4 py-2">
-                  https://atcoder.jp/users/
-                </span>
+                <span className="bg-gray-200 px-4 py-2">https://atcoder.jp/users/</span>
                 <input
                   type="text"
-                  value={profile.atcoderID}
+                  value={profile.atcoder}
                   onChange={(e) => handleSnsIDChange(e, "atcoder")}
                   onKeyDown={(e) => handleKeyPress(e, "atcoder")}
                   className="flex-1 px-4 py-2 border-none"
@@ -404,11 +426,7 @@ export default function ProfileInitialization() {
           />
           <SexSelect sex={profile.sex} onChange={handleChange} />
           <AgeSelect age={profile.age} onChange={handleChange} ages={ages} />
-          <PlaceSelect
-            place={profile.place}
-            onChange={handleChange}
-            places={places}
-          />
+          <PlaceSelect place={profile.place} onChange={handleChange} places={places} />
           <OccupationSelect
             occupation={profile.occupation}
             onChange={handleChange}
@@ -422,18 +440,14 @@ export default function ProfileInitialization() {
               <div className="space-y-8">
                 <GraduateSelect
                   graduate={profile.graduate}
-                  onChange={(e) =>
-                    setProfile({ ...profile, graduate: e.target.value })
-                  }
+                  onChange={(e) => setProfile({ ...profile, graduate: e.target.value })}
                 />
                 <FacultySelect
                   faculty={profile.faculty}
-                  onChange={(e) =>
-                    setProfile({ ...profile, faculty: e.target.value })
-                  }
+                  onChange={(e) => setProfile({ ...profile, faculty: e.target.value })}
                 />
                 <DesireOccupationSelect
-                  desireOccupation={profile.desiredOccupation}
+                  desire_occupation={profile.desiredOccupation}
                   onChange={(e) =>
                     setProfile({
                       ...profile,
@@ -447,7 +461,7 @@ export default function ProfileInitialization() {
           <TechSelection
             toggleModal={toggleTechModal}
             openTopTechModal={openTopTechModal}
-            topTech={topTech}
+            top_teches={top_teches}
             selectedTech={selectedTech}
           />
 
@@ -457,17 +471,12 @@ export default function ProfileInitialization() {
           />
           <AffiliationInput
             affiliation={profile.affiliation}
-            onChange={(e) =>
-              setProfile({ ...profile, affiliation: e.target.value })
-            }
+            onChange={(e) => setProfile({ ...profile, affiliation: e.target.value })}
           />
 
           <ul className="flex gap-2 flex-wrap mb-4">
             {qualifications.map((qualification, index) => (
-              <li
-                key={index}
-                className="bg-blue-300 text-white rounded-full px-4 py-1"
-              >
+              <li key={index} className="bg-blue-300 text-white rounded-full px-4 py-1">
                 {qualification}
                 <button
                   onClick={() => handleRemoveQualification(index)}
@@ -501,15 +510,11 @@ export default function ProfileInitialization() {
 
           <PortfolioInput
             portfolio={profile.portfolio}
-            onChange={(e) =>
-              setProfile({ ...profile, portfolio: e.target.value })
-            }
+            onChange={(e) => setProfile({ ...profile, portfolio: e.target.value })}
           />
           <MessageInput
             message={profile.message}
-            onChange={(e) =>
-              setProfile({ ...profile, message: e.target.value })
-            }
+            onChange={(e) => setProfile({ ...profile, message: e.target.value })}
           />
 
           <button
@@ -531,7 +536,7 @@ export default function ProfileInitialization() {
       <TopTechModal
         isOpen={isTopTecnologyModalOpen}
         selectedTech={selectedTech}
-        topTech={topTech}
+        top_teches={top_teches}
         onClose={closeTopTechModal}
         onTopSelect={handleTopSelect}
       />

@@ -12,7 +12,6 @@ export interface User {
 // ログインしてるユーザーとマッチングしているユーザー一覧を取得する関数
 export const getMatchingUser = async (): Promise<User[]> => {
   try {
-    console.log("fetching users2");
     const uuid = await getUuidFromCookie();
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     console.log(uuid);
@@ -25,8 +24,6 @@ export const getMatchingUser = async (): Promise<User[]> => {
       },
       body: JSON.stringify({ uuid }),
     });
-
-    console.log("fetching users2");
     // レスポンスをJSONとしてパース
     const result = await response.json();
     // データが存在するかどうかを確認してから返す

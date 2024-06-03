@@ -3,7 +3,7 @@ import React from "react";
 interface TopTechModalProps {
   isOpen: boolean;
   selectedTech: string[];
-  topTech: string[];
+  top_teches: string[];
   onClose: () => void;
   onTopSelect: (tech: string) => void;
 }
@@ -11,7 +11,7 @@ interface TopTechModalProps {
 export const TopTechModal: React.FC<TopTechModalProps> = ({
   isOpen,
   selectedTech,
-  topTech,
+  top_teches,
   onClose,
   onTopSelect,
 }) => {
@@ -19,7 +19,7 @@ export const TopTechModal: React.FC<TopTechModalProps> = ({
 
   // 順位を付けて表示するためのマッピング
   const getTechWithRank = () => {
-    return topTech.map((tech, index) => `${index + 1}. ${tech}`);
+    return top_teches.map((tech, index) => `${index + 1}. ${tech}`);
   };
 
   return (
@@ -30,9 +30,10 @@ export const TopTechModal: React.FC<TopTechModalProps> = ({
           {selectedTech.map((tech) => (
             <button
               key={tech}
+              type="button"
               onClick={() => onTopSelect(tech)}
               className={`p-2 rounded-full ${
-                topTech.includes(tech) ? "bg-green-500 text-white" : "bg-gray-200"
+                top_teches.includes(tech) ? "bg-green-500 text-white" : "bg-gray-200"
               }`}
             >
               {tech}
@@ -40,13 +41,14 @@ export const TopTechModal: React.FC<TopTechModalProps> = ({
           ))}
         </div>
         <button
+          type="button"
           onClick={onClose}
           className="mt-4 py-2 px-4 bg-red-500 text-white rounded hover:bg-red-700"
         >
           閉じる
         </button>
       </div>
-      {topTech.length > 0 && (
+      {top_teches.length > 0 && (
         <div className="absolute bottom-4 left-4 bg-white p-4 rounded-lg">
           <h3 className="text-lg font-semibold">選択された Top 3</h3>
           <ul>

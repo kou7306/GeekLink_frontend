@@ -1,5 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  images: {
+    domains: ["vettovaznwdhefdeeglu.supabase.co"],
+  },
+
   reactStrictMode: true,
   // ⬇追加
   async headers() {
