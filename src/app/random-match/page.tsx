@@ -7,6 +7,7 @@ import UndoIcon from "@mui/icons-material/Undo";
 import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 import { getRandomUsers } from "../../utils/getRandomMatchUser";
 import { User } from "../../utils/getRandomMatchUser";
+import { postSwipedRightUserIds } from "../../utils/CreateLike"; // api.jsのパスに合わせて変更してください
 import { postSwipedRightUserIds } from '../../utils/CreateLike';
 import Image from 'next/image'; 
 
@@ -75,16 +76,15 @@ export default function Home() {
 
   const swipe = async (dir: string) => {
     if (canSwipe && currentIndex >= 0 && currentIndex < users.length) {
-    const user = users[currentIndex];
-    setCurrentUser(user);
-
+      const user = users[currentIndex];
+      setCurrentUser(user);
     if (dir === "right") {
       setSwipedRightUserIds([...swipedRightUserIds, user.user_id]);
     }
 
-    await childRefs[currentIndex].current?.swipe(dir);
-    updateCurrentIndex(currentIndex - 1);
-  }
+      await childRefs[currentIndex].current?.swipe(dir);
+      updateCurrentIndex(currentIndex - 1);
+    }
   };
 
   const goBack = async () => {
@@ -99,8 +99,12 @@ export default function Home() {
   const [users, setUsers] = useState<User[]>([]);
   useEffect(() => {
     const fetchUsers = async () => {
-      const users = await getRandomUsers();
-      setUsers(users);
+      try {
+        const users = await getRandomUsers();
+        setUsers(users);
+      } catch (error) {
+        console.error("Failed to fetch users:", error);
+      }
     };
 
     fetchUsers();
@@ -108,17 +112,19 @@ export default function Home() {
 
   return (
     <div className="flex flex-col justify-center items-center min-h-screen">
-      <link
+      {/* <link
         href="https://fonts.googleapis.com/css?family=Damion&display=swap"
         rel="stylesheet"
       />
       <link
         href="https://fonts.googleapis.com/css?family=Alatsi&display=swap"
         rel="stylesheet"
-      />
+      /> */}
+  
       <h1 className="text-3xl font-bold pb-6">Random-match</h1>
       <div className="flex items-center justify-center w-[200vw] max-w-[260px] h-[300px]">
-        {users.map((user, index) => (
+        {users.length > 0 ? (
+          users.map((user, index) => (
           <TinderCard
             ref={childRefs[index]}
             className="absolute"
@@ -156,7 +162,10 @@ export default function Home() {
               </div>
             </div>
           </TinderCard>
-        ))}
+          ))
+        ) : (
+          <div>No users available</div>
+        )}
       </div>
       {lastDirection ? (
         <h2 className="infoText">You swiped {lastDirection}</h2>
@@ -167,12 +176,14 @@ export default function Home() {
         <button
           className="transform transition-transform duration-200 active:scale-90"
           onClick={() => swipe("left")}
+          disabled={users.length === 0}
         >
           <ThumbDownAltIcon />
         </button>
         <button
           className="transform transition-transform duration-200 active:scale-90"
           onClick={goBack}
+          disabled={users.length === 0}
         >
           <UndoIcon />
         </button>
@@ -181,22 +192,28 @@ export default function Home() {
           onClick={() => {
             swipe("right");
           }}
+          disabled={users.length === 0}
         >
           <ThumbUpAltIcon />
         </button>
       </div>
       <div>
-        <button className="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700 transition duration-200"
-        onClick={async () => {
-          console.log(swipedRightUserIds);
-          // window.location.href = '/';
-          try {
-            const data = await postSwipedRightUserIds(swipedRightUserIds);
-            console.log(data);
-          } catch (error) {
-            console.error(error);
-          }
-        }}
+        <button
+          className="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700 transition duration-200"
+          onClick={async () => {
+            console.log(swipedRightUserIds);
+            // window.location.href = '/';
+            try {
+              if (swipedRightUserIds.length > 0) {
+                const data = await postSwipedRightUserIds(swipedRightUserIds);
+                console.log(data);
+              } else {
+                console.warn("No users swiped right");
+              }
+            } catch (error) {
+              console.error(error);
+            }
+          }}
         >
           終了
         </button>

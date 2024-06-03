@@ -17,14 +17,14 @@ export const getRandomUsers = async (): Promise<User[]> => {
     const uuid = await getUuidFromCookie();
     console.log(uuid);
     // APIからデータを取得
-    const api = process.env.NEXT_PUBLIC_API_URL;
-    const response = await fetch(api + "/random-match", {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    const response = await fetch(`${apiUrl}/random-match`, {
       method: "POST",
       mode: "cors",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ uuid }),
+      body: JSON.stringify({ uuid: uuid }),
     });
 
     // レスポンスをJSONとしてパース

@@ -26,7 +26,8 @@ export const getMatchingUser = async (): Promise<User[]> => {
     });
     // レスポンスをJSONとしてパース
     const result = await response.json();
-    return result;
+    // データが存在するかどうかを確認してから返す
+    return result && Array.isArray(result) ? result : [];
   } catch (error) {
     console.error("Error fetching messages:", error);
     return [];
