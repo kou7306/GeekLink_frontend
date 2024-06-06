@@ -1,11 +1,11 @@
 // components/SnsIDModal.tsx
 import React from "react";
-import { ProfileForm } from "./options";
+import { User } from "./options";
 
 interface SnsIDModalProps {
   isOpen: boolean;
   onClose: () => void;
-  profile: ProfileForm;
+  profile: User;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 

@@ -1,6 +1,6 @@
-// app/profile-initialization/options.ts
+// src/app/components/profile/options.ts
 
-export interface ProfileForm {
+export interface User {
   user_id: string;
   name: string;
   sex: string;
