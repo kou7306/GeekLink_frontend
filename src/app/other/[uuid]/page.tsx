@@ -13,7 +13,7 @@ const UserProfile: React.FC = () => {
   useEffect(() => {
     if (uuid) {
       axios
-        .get(`http://localhost:8080/user/${uuid}`)
+        .get(`${process.env.NEXT_PUBLIC_API_URL}/user/${uuid}`)
         .then((response) => {
           setUser(response.data);
         })
