@@ -113,7 +113,7 @@ const Chat = ({ params }: { params: any }) => {
             //TODO:message.sender_idが自分のUUIDだった場合に右側に表示する
             message.sender_id === uuid ? (
               <div key={index} className="text-right mr-5 my-2">
-                <li className="inline-block">
+                <li className="inline-block" key={uuid}>
                   <div className="bg-accent relative px-4 py-1 rounded-full inline-block">
                     <p>{message.content}</p>
                   </div>
@@ -124,7 +124,7 @@ const Chat = ({ params }: { params: any }) => {
               </div>
             ) : (
               <div key={index} className="ml-5 my-2">
-                <li className="inline-block">
+                <li className="inline-block" key={uuid}>
                   <div className="bg-primary relative px-4 py-1 rounded-full inline-block shadow">
                     <p>{message.content}</p>
                   </div>
