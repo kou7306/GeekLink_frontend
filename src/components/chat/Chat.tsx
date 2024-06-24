@@ -3,12 +3,34 @@ import { useEffect, useRef, useState } from "react";
 import { getMessageData } from "../../utils/getMessageData";
 import { Message } from "../../utils/getMessageData";
 import { MdSend } from "react-icons/md";
+import { getUuidFromCookie } from "../../actions/users";
 
 const Chat = ({ params }: { params: any }) => {
+  const [uuid, setUuid] = useState<string>("");
+  useEffect(() => {
+    console.log("fetching users1");
+    const fetchUsers = async () => {
+      const uuid = await getUuidFromCookie();
+      if (uuid) {
+        setUuid(uuid);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
   console.log("params: ", params);
   const conversationId = params.conversationId;
-  const [receiver_id, uuid] = conversationId.split("!");
-  console.log({ uuid });
+  const [id1, id2] = conversationId.split("!");
+  console.log(uuid);
+  console.log(id1);
+  console.log(id2);
+  if (uuid === id1) {
+    var receiver_id = id2;
+  }
+  if (uuid === id2) {
+    var receiver_id = id1;
+  }
   // メッセージデータの管理
   const [messages, setMessages] = useState<Message[]>([]);
   // スクロール用のrefを作成
@@ -91,7 +113,7 @@ const Chat = ({ params }: { params: any }) => {
             //TODO:message.sender_idが自分のUUIDだった場合に右側に表示する
             message.sender_id === uuid ? (
               <div key={index} className="text-right mr-5 my-2">
-                <li className="inline-block">
+                <li className="inline-block" key={uuid}>
                   <div className="bg-accent relative px-4 py-1 rounded-full inline-block">
                     <p>{message.content}</p>
                   </div>
@@ -102,7 +124,7 @@ const Chat = ({ params }: { params: any }) => {
               </div>
             ) : (
               <div key={index} className="ml-5 my-2">
-                <li className="inline-block">
+                <li className="inline-block" key={uuid}>
                   <div className="bg-primary relative px-4 py-1 rounded-full inline-block shadow">
                     <p>{message.content}</p>
                   </div>

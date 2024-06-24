@@ -8,7 +8,7 @@ import {
   places,
   technologies,
   occupations,
-  ProfileForm,
+  User,
   experienceOptions,
 } from "@/components/profile/options";
 import { TechModal } from "@/components/profile/TechModal";
@@ -44,7 +44,7 @@ export default function ProfileInitialization() {
   const [top_teches, setTopTech] = useState<string[]>([]);
   const [qualifications, setQualifications] = useState<string[]>([]);
   const [showQualificationInput, setShowQualificationInput] = useState<boolean>(false);
-  const [profile, setProfile] = useState<ProfileForm>({
+  const [profile, setProfile] = useState<User>({
     user_id: "",
     name: "", // 名前
     sex: "", // 性別
@@ -74,8 +74,13 @@ export default function ProfileInitialization() {
   useEffect(() => {
     const fetchUsers = async () => {
       const uuid = await getUuidFromCookie();
+      console.log("UUID fetched from cookie:", uuid); // UUIDをコンソールに出力
       if (uuid) {
-        setProfile((prev) => ({ ...prev, user_id: uuid }));
+        setProfile((prev) => {
+          const updatedProfile = { ...prev, user_id: uuid };
+          console.log("Updated profile:", updatedProfile); // 更新されたprofileをコンソールに出力
+          return updatedProfile;
+        });
       }
     };
 
@@ -196,8 +201,7 @@ export default function ProfileInitialization() {
       }
       setProfile((prev) => ({ ...prev, tech: values }));
     } else {
-      const newValue = name === "age" ? parseInt(value, 10) : value;
-      setProfile((prev) => ({ ...prev, [name]: newValue }));
+      setProfile((prev) => ({ ...prev, [name]: value }));
     }
   };
 
@@ -251,7 +255,7 @@ export default function ProfileInitialization() {
 
   const [file, setFile] = useState("");
   const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
-  
+
   const handleFileChange = (e: any) => {
     setFile(e.target.files[0]);
     console.log(file);

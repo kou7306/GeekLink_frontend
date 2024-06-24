@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { ages, places, technologies, occupations, ProfileForm } from "@/components/profile/options";
+import { ages, places, technologies, occupations, User } from "@/components/profile/options";
 import { TechModal } from "@/components/profile/TechModal";
 import { TopTechModal } from "@/components/profile/TopTechModal";
 import NameInput from "@/components/profile/NameInput";
@@ -19,7 +19,7 @@ export default function Profile() {
   const [isTopTecnologyModalOpen, setIsTopTecnologyModalOpen] = useState(false);
   const [selectedTech, setSelectedTech] = useState<string[]>([]);
   const [top_teches, setTopTech] = useState<string[]>([]);
-  const [profile, setProfile] = useState<ProfileForm>({
+  const [profile, setProfile] = useState<User>({
     user_id: "",
     name: "",
     sex: "",
@@ -152,29 +152,29 @@ export default function Profile() {
             onChange={handleChange}
             occupations={occupations}
           />
-            <div>
-              <TechSelection
-                toggleModal={toggleModal}
-                openTopTechModal={openTopTechModal}
-                top_teches={top_teches}
-                selectedTech={selectedTech}
-              />
-            </div>
-            <TechModal
-              isOpen={isTechModalOpen}
-              technologies={technologies}
-              selectedTech={selectedTech}
-              onClose={toggleModal}
-              onSelect={handleSelectTech}
-              onNext={openTopTechModal}
-            />
-            <TopTechModal
-              isOpen={isTopTecnologyModalOpen}
-              selectedTech={selectedTech}
+          <div>
+            <TechSelection
+              toggleModal={toggleModal}
+              openTopTechModal={openTopTechModal}
               top_teches={top_teches}
-              onClose={closeTopTechModal}
-              onTopSelect={handleTopSelect}
+              selectedTech={selectedTech}
             />
+          </div>
+          <TechModal
+            isOpen={isTechModalOpen}
+            technologies={technologies}
+            selectedTech={selectedTech}
+            onClose={toggleModal}
+            onSelect={handleSelectTech}
+            onNext={openTopTechModal}
+          />
+          <TopTechModal
+            isOpen={isTopTecnologyModalOpen}
+            selectedTech={selectedTech}
+            top_teches={top_teches}
+            onClose={closeTopTechModal}
+            onTopSelect={handleTopSelect}
+          />
           <button
             type="submit"
             className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"

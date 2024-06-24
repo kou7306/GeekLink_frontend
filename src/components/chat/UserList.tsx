@@ -14,7 +14,10 @@ const UserList = () => {
     console.log("fetching users1");
     const fetchUsers = async () => {
       const users = await getMatchingUser();
-      setUsers(users);
+      if (users.length > 0) {
+        setUsers(users);
+      }
+
       const uuid = await getUuidFromCookie();
       if (uuid) {
         setUuid(uuid);
@@ -29,9 +32,10 @@ const UserList = () => {
       <div className="px-5 flex-col text-center">
         <div className="font-bold py-4">トーク一覧</div>
         <div id="character-list">
-          {users &&
+          {users.length === 0 ? (
+            <p>No users found.</p>
+          ) : (
             users.map((user: User) => (
-              // 選択したユーザーのIDと自分のIDを足し合わせたIDをリンク先に指定
               <Link
                 key={user.user_id}
                 href={{
@@ -63,7 +67,9 @@ const UserList = () => {
                   </div>
                 </div>
               </Link>
-            ))}
+            ))
+          )}
+
         </div>
       </div>
     </aside>
