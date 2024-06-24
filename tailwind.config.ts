@@ -7,7 +7,8 @@ const config: Config = {
     extend: {
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        "gradient-conic":
+          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       colors: {
         primary: "#ffffff",
@@ -16,8 +17,12 @@ const config: Config = {
         accent: "#22d3ee",
         text: "#111827",
       },
+      fontFamily: {
+        Raleway: ["Raleway", "sans-serif"],
+      },
     },
   },
   plugins: [],
 };
+
 export default config;
