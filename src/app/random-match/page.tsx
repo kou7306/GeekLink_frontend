@@ -125,7 +125,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen">
+    <div className="flex flex-col justify-center items-center min-h-screen w-full bg-custom-gradient">
       <h1 className="text-3xl font-bold pb-6">Random-match</h1>
       <div className="flex items-center justify-center w-[200vw] max-w-[260px] h-[300px]">
         {users.length > 0 ? (
