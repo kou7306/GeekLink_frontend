@@ -61,7 +61,7 @@ export default function ProfileInitialization() {
     message: "", // メッセージ
     portfolio: "", // ポートフォリオ
     graduate: "", // 卒業年度
-    desiredOccupation: "", // 希望職種
+    desired_occupation: "", // 希望職種
     faculty: "", // 学部
     experience: [], // 経験
     github: "", // GitHub ID
@@ -234,7 +234,7 @@ export default function ProfileInitialization() {
 
     console.log("Profile to be updated:", updatedProfile);
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/update`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/profile/update-profile`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -451,11 +451,11 @@ export default function ProfileInitialization() {
                   onChange={(e) => setProfile({ ...profile, faculty: e.target.value })}
                 />
                 <DesireOccupationSelect
-                  desire_occupation={profile.desiredOccupation}
+                  desire_occupation={profile.desired_occupation}
                   onChange={(e) =>
                     setProfile({
                       ...profile,
-                      desiredOccupation: e.target.value,
+                      desired_occupation: e.target.value,
                     })
                   }
                 />

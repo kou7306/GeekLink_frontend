@@ -102,7 +102,7 @@ const Home = () => {
       // console.log("user_id", user_id);
       if (user_id) {
         axios
-          .post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/check`, {
+          .post(`${process.env.NEXT_PUBLIC_API_URL}/user/check-user-exists`, {
             user_id,
           })
           .then((response) => {

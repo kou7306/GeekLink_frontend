@@ -4,7 +4,7 @@ export async function postSwipedRightUserIds(IDs: string[]): Promise<any> {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const uuid = await getUuidFromCookie();
 
-  const response = await fetch(`${apiUrl}/createlike`, {
+  const response = await fetch(`${apiUrl}/likes/create-like`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

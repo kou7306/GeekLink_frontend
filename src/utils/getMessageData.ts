@@ -15,7 +15,7 @@ export const getMessageData = async (
   try {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     // APIからデータを取得
-    const response = await fetch(`${apiUrl}/getMessage/${conversationId}`, {
+    const response = await fetch(`${apiUrl}/user/get-messages/${conversationId}`, {
       method: "GET",
       mode: "cors",
     });
