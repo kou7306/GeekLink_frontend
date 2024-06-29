@@ -2,30 +2,38 @@
 import React, { useState } from "react";
 import LikedUsers from "./components/LikedUsers.tsx/page";
 import MatchingUsers from "./components/MatchingUsers.tsx/page";
+import { Box, Tabs, Tab, createTheme, ThemeProvider } from "@mui/material";
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#22d3ee",
+    },
+  },
+});
 
 const Page = () => {
-  const [activeTab, setActiveTab] = useState("liked");
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
 
   return (
-    <div className="text-center p-5">
-      <h1 className="text-2xl font-bold">いいね</h1>
-      <div className="flex justify-center mt-10">
-        <button
-          className={`px-4 py-2 ${activeTab === "liked" ? "font-bold text-accent" : ""}`}
-          onClick={() => setActiveTab("liked")}
+    <ThemeProvider theme={theme}>
+      <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          centered
+          sx={{ color: "#22d3ee" }}
         >
-          いいねされた人
-        </button>
-        <button
-          className={`px-4 py-2 ${activeTab === "matching" ? "font-bold text-accent" : ""}`}
-          onClick={() => setActiveTab("matching")}
-        >
-          マッチング中
-        </button>
-      </div>
-      <div className="w-full h-px bg-black my-2"></div>
-      {activeTab === "liked" ? <LikedUsers /> : <MatchingUsers />}
-    </div>
+          <Tab label="いいね" />
+          <Tab label="マッチング中" />
+        </Tabs>
+      </Box>
+      {value === 0 ? <LikedUsers /> : <MatchingUsers />}
+    </ThemeProvider>
   );
 };
 
