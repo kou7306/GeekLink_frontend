@@ -4,11 +4,12 @@ import { getMessageData } from "../../utils/getMessageData";
 import { Message } from "../../utils/getMessageData";
 import { MdSend } from "react-icons/md";
 import { getUuidFromCookie } from "../../actions/users";
+import io, { Socket } from "socket.io-client";
 
 const Chat = ({ params }: { params: any }) => {
   const [uuid, setUuid] = useState<string>("");
+  // userのuuidを取得
   useEffect(() => {
-    console.log("fetching users1");
     const fetchUsers = async () => {
       const uuid = await getUuidFromCookie();
       if (uuid) {
@@ -25,6 +26,7 @@ const Chat = ({ params }: { params: any }) => {
   console.log(uuid);
   console.log(id1);
   console.log(id2);
+  // socket.emit('joinRoom', roomId)
   if (uuid === id1) {
     var receiver_id = id2;
   }
@@ -48,14 +50,45 @@ const Chat = ({ params }: { params: any }) => {
   }, [conversationId]);
 
   // メッセージが更新されたときにスクロールする
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   // WebSocket通信
-  const socketRef = useRef<WebSocket>();
+  const socketRef = useRef<Socket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [socketData, setSocketData] = useState("");
+  useEffect(() => {
+    // Socket.IOクライアントの初期化
+    socketRef.current = io(`${apiUrl}`, {
+      query: { conversationId },
+    });
+    if (socketRef.current) {
+      socketRef.current.on("connect", () => {
+        setIsConnected(true);
+        console.log("Connected to Socket.IO server");
+        socketRef.current?.emit("joinRoom", conversationId);
+      });
+
+      socketRef.current.on("disconnect", () => {
+        setIsConnected(false);
+        console.log("Disconnected from Socket.IO server");
+      });
+
+      // メッセージを受信したときの処理
+      socketRef.current.on("message", (message) => {
+        console.log("Message received: ", message);
+        setMessages((prevMessages) => [...prevMessages, message]);
+      });
+    }
+
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.disconnect(); // コンポーネントがアンマウントされたときにSocket.IOから切断
+      }
+    };
+  }, [apiUrl, conversationId]);
 
   // 送信ボタンで発火
   const sendData = (event: any) => {
@@ -74,35 +107,8 @@ const Chat = ({ params }: { params: any }) => {
     setSocketData("");
 
     // メッセージオブジェクトをJSON文字列に変換して送信
-    socketRef.current?.send(JSON.stringify(message));
+    socketRef.current?.emit("message", JSON.stringify(message));
   };
-
-  useEffect(() => {
-    socketRef.current = new WebSocket(`${apiUrl}/ws/${conversationId}`);
-    socketRef.current.onopen = function () {
-      setIsConnected(true);
-      console.log("Connected");
-    };
-
-    socketRef.current.onclose = function () {
-      console.log("closed");
-      setIsConnected(false);
-    };
-
-    // server 側から送られてきたデータを受け取る
-    socketRef.current.onmessage = function (event) {
-      console.log("Message received: ", event.data);
-      const newMessage: Message = JSON.parse(event.data); // JSONをパースしてMessage型に変換
-      setMessages((prevMessages) => [...prevMessages, newMessage]); // 新しいメッセージをに追加
-    };
-
-    return () => {
-      if (socketRef.current == null) {
-        return;
-      }
-      socketRef.current.close();
-    };
-  }, []);
 
   return (
     <>
