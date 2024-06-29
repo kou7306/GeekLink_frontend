@@ -18,7 +18,7 @@ export const getRandomUsers = async (): Promise<User[]> => {
     console.log(uuid);
     // APIからデータを取得
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    const response = await fetch(`${apiUrl}/random-match`, {
+    const response = await fetch(`${apiUrl}/match/random-match`, {
       method: "POST",
       mode: "cors",
       headers: {

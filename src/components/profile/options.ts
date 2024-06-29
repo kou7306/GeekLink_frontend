@@ -17,7 +17,7 @@ export interface User {
   message?: string;
   portfolio?: string;
   graduate?: string;
-  desiredOccupation?: string;
+  desired_occupation?: string;
   faculty?: string;
   experience?: string[];
   github?: string;

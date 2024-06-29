@@ -36,7 +36,7 @@ export default function Profile() {
     message: "",
     portfolio: "",
     graduate: "",
-    desiredOccupation: "",
+    desired_occupation: "",
     faculty: "",
     experience: [],
     github: "",
@@ -116,7 +116,7 @@ export default function Profile() {
 
     console.log("Profile to be updated:", updatedProfile);
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/update`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/profile/update-profile`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

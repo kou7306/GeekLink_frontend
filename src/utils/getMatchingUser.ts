@@ -16,7 +16,7 @@ export const getMatchingUser = async (): Promise<User[]> => {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     console.log(uuid);
     // APIからデータを取得
-    const response = await fetch(`${apiUrl}/getMatchingUser`, {
+    const response = await fetch(`${apiUrl}/user/get-matching-users`, {
       method: "POST",
       mode: "cors",
       headers: {

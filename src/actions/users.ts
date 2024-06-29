@@ -30,7 +30,7 @@ export const loginAction = async (provider: Provider) => {
     const { data, error } = await getSupabaseAuth().signInWithOAuth({
       provider,
       options: {
-        redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth`,
+        redirectTo: `${process.env.NEXT_PUBLIC_API_URL}/auth/exchange-code`,
       },
     });
 
@@ -77,11 +77,9 @@ export const signInAction = async (email: string, password: string) => {
   } catch (error: any) {
     if (error.status === 400) {
       return {
-        errorMessage:
-          "無効なログイン情報です。メールアドレスとパスワードを確認してください。",
+        errorMessage: "無効なログイン情報です。メールアドレスとパスワードを確認してください。",
       };
     }
-    console.log(error);
     return { errorMessage: "サインインに失敗しました" };
   }
 };
@@ -102,11 +100,9 @@ export const signUpAction = async (email: string, password: string) => {
   } catch (error: any) {
     if (error.status === 429 && error.code === "over_email_send_rate_limit") {
       return {
-        errorMessage:
-          "リクエストの上限に達しました。しばらくしてから再度お試しください。",
+        errorMessage: "リクエストの上限に達しました。しばらくしてから再度お試しください。",
       };
     }
-    console.log(error);
     return { errorMessage: "サインアップに失敗しました" };
   }
 };
