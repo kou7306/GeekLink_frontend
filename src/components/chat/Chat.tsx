@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { getMessageData } from "../../utils/getMessageData";
-import { Message } from "../../utils/getMessageData";
 import { MdSend } from "react-icons/md";
 import { getUuidFromCookie } from "../../actions/users";
+import { getMessageAndRoomData } from "../../utils/getMessageAndRoomData";
+import { Message } from "../../utils/getMessageAndRoomData";
 
 const Chat = ({ params }: { params: any }) => {
   const [uuid, setUuid] = useState<string>("");
@@ -20,32 +20,26 @@ const Chat = ({ params }: { params: any }) => {
   }, []);
 
   console.log("params: ", params);
-  const conversationId = params.conversationId;
-  const [id1, id2] = conversationId.split("!");
-  console.log(uuid);
-  console.log(id1);
-  console.log(id2);
-  if (uuid === id1) {
-    var receiver_id = id2;
-  }
-  if (uuid === id2) {
-    var receiver_id = id1;
-  }
+  const partnerId = params.partnerId;
+
+  const [roomId, setRoomId] = useState<string>("");
   // メッセージデータの管理
   const [messages, setMessages] = useState<Message[]>([]);
+
   // スクロール用のrefを作成
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const apiUrl = process.env.NEXT_PUBLIC_WS_URL;
 
-  // 過去のメッセージデータを取得
+  // 過去のメッセージデータとルームIDを取得
   useEffect(() => {
     const fetchMessages = async () => {
-      const fetchedMessages = await getMessageData(conversationId);
-      setMessages(fetchedMessages);
+      const { roomId, messages } = await getMessageAndRoomData(uuid, partnerId);
+      setRoomId(roomId);
+      setMessages(messages);
     };
 
     fetchMessages();
-  }, [conversationId]);
+  }, [uuid, partnerId]);
 
   // メッセージが更新されたときにスクロールする
   useEffect(() => {
@@ -63,10 +57,10 @@ const Chat = ({ params }: { params: any }) => {
     const formMessage = event.target[0].value;
     const message: Message = {
       sender_id: uuid,
-      receiver_id: receiver_id,
+      receiver_id: partnerId,
       content: formMessage,
       created_at: new Date(),
-      conversation_id: conversationId,
+      room_id: roomId,
     };
 
     console.log("Sending message: ", message);
@@ -78,7 +72,7 @@ const Chat = ({ params }: { params: any }) => {
   };
 
   useEffect(() => {
-    socketRef.current = new WebSocket(`${apiUrl}/ws/${conversationId}`);
+    socketRef.current = new WebSocket(`${apiUrl}/ws/${roomId}`);
     socketRef.current.onopen = function () {
       setIsConnected(true);
       console.log("Connected");

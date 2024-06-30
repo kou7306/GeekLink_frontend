@@ -39,8 +39,7 @@ const UserList = () => {
               <Link
                 key={user.user_id}
                 href={{
-                  pathname: `conversation/${user.user_id}!${uuid}`,
-                  query: { name: user.name },
+                  pathname: `conversation/${user.user_id}`,
                 }}
               >
                 <div className="flex items-start mb-4 cursor-pointer">
@@ -69,7 +68,6 @@ const UserList = () => {
               </Link>
             ))
           )}
-
         </div>
       </div>
     </aside>
