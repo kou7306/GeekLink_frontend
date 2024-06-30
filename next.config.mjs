@@ -17,6 +17,10 @@ const nextConfig = {
             value: "http://localhost:3000",
           },
           {
+            key: "Access-Control-Allow-Origin",
+            value: "https://giiku5-frontend.vercel.app/",
+          },
+          {
             key: "Access-Control-Allow-Methods",
             value: "GET,OPTIONS,PATCH,DELETE,POST,PUT",
           },
@@ -29,7 +33,6 @@ const nextConfig = {
       },
     ];
   },
-  // ⬆追加
 };
 
 export default nextConfig;
