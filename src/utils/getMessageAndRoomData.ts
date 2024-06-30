@@ -15,11 +15,15 @@ export const getMessageAndRoomData = async (
 ): Promise<{ roomId: string; messages: Message[] }> => {
   try {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    console.log(uuid);
     // APIからデータを取得
-    const response = await fetch(`${apiUrl}/user/get-messages/${partnerId}`, {
-      method: "GET",
-      mode: "cors",
-    });
+    const response = await fetch(
+      `${apiUrl}/user/get-messages?uuid=${uuid}&&partnerId=${partnerId}`,
+      {
+        method: "GET",
+        mode: "cors",
+      }
+    );
     console.log(response);
     // レスポンスをJSONとしてパース
     const { roomId, messages }: { roomId: string; messages: Message[] } =
