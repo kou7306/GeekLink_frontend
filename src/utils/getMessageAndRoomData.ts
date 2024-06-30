@@ -5,35 +5,41 @@ export interface Message {
   receiver_id: string;
   content: string;
   created_at: Date; // Date 型に変更
-  conversation_id: string;
+  room_id: string;
 }
 
 // メッセージを取得してソートする関数
-export const getMessageData = async (
-  conversationId: string
-): Promise<Message[]> => {
+export const getMessageAndRoomData = async (
+  uuid: string,
+  partnerId: string
+): Promise<{ roomId: string; messages: Message[] }> => {
   try {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    console.log(uuid);
     // APIからデータを取得
-    const response = await fetch(`${apiUrl}/user/get-messages/${conversationId}`, {
-      method: "GET",
-      mode: "cors",
-    });
+    const response = await fetch(
+      `${apiUrl}/user/get-messages?uuid=${uuid}&&partnerId=${partnerId}`,
+      {
+        method: "GET",
+        mode: "cors",
+      }
+    );
     console.log(response);
     // レスポンスをJSONとしてパース
-    const data: Message[] = await response.json();
-    console.log(data);
+    const { roomId, messages }: { roomId: string; messages: Message[] } =
+      await response.json();
+
     // created_atをDate型に変換
-    data.forEach((message) => {
+    messages.forEach((message) => {
       message.created_at = new Date(message.created_at);
     });
 
     // タイムスタンプでソート (古い順)
-    data.sort((a, b) => a.created_at.getTime() - b.created_at.getTime());
+    messages.sort((a, b) => a.created_at.getTime() - b.created_at.getTime());
 
-    return data;
+    return { roomId, messages };
   } catch (error) {
     console.error("Error fetching messages:", error);
-    return [];
+    return { roomId: "", messages: [] };
   }
 };

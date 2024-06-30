@@ -4,7 +4,6 @@ import { useSearchParams } from "next/navigation";
 
 const Page = ({ params }: { params: any }) => {
   const searchParams = useSearchParams();
-  const name = searchParams.get("name");
   return (
     <div className="hidden h-full lg:block lg:pl-96">
       {/* <div className="fixed top-18 bg-white p-4 shadow-md w-full z-99 text-2xl">
