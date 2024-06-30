@@ -32,7 +32,7 @@ const QualificationInput: React.FC<QualificationInputProps> = ({ onAddQualificat
         onChange={handleChange}
         className="mt-1 px-2 block w-full border-b border-gray-300 focus:border-blue-500 focus:outline-none"
       />
-      <button onClick={handleAddClick} className="mt-2 bg-blue-500 text-white px-4 py-2 rounded-md">
+      <button type="button" onClick={handleAddClick} className="mt-2 bg-blue-500 text-white px-4 py-2 rounded-md">
         追加
       </button>
     </div>

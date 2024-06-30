@@ -148,7 +148,7 @@ export default function Home() {
                       className="rounded-full w-[120px] h-[120px] object-cover mr-8"
                     />
                   ) : (
-                    <img
+                    <Image
                       src="/img/default_icon.png" // 代替画像のパスを設定してください
                       alt="Profile Icon"
                       className="rounded-full w-[120px] h-[120px] object-cover mr-8"

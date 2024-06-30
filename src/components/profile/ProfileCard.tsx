@@ -6,9 +6,11 @@ import { FaGithub, FaTwitter } from "react-icons/fa";
 
 interface ProfileCardProps {
   user: User;
+  isMe: boolean;
+  onEdit?: () => void;
 }
 
-const ProfileCard: React.FC<ProfileCardProps> = ({ user }) => {
+const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
   return (
     <div className="max-w-7xl mx-auto p-6 bg-white rounded-lg shadow-lg grid grid-cols-3 gap-6">
       <div className="flex flex-col items-center">
@@ -51,6 +53,11 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user }) => {
             </a>
           )}
         </div>
+        {isMe && (
+          <button onClick={onEdit} className="mt-4 bg-blue-500 text-white py-2 px-4 rounded">
+            編集
+          </button>
+        )}
       </div>
       <div className="col-span-2 grid grid-cols-2 gap-6">
         <div className="space-y-4">
@@ -99,10 +106,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user }) => {
               </p>
             </div>
           )}
-          {user.desiredOccupation && (
+          {user.desired_occupation && (
             <div className="p-4 bg-gray-100 rounded-lg shadow-sm">
               <p className="text-gray-600">
-                <strong>目指している職種:</strong> {user.desiredOccupation}
+                <strong>目指している職種:</strong> {user.desired_occupation}
               </p>
             </div>
           )}

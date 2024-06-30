@@ -14,8 +14,8 @@ const SexSelect: React.FC<SexSelectProps> = ({ sex, onChange }) => {
       </label>
       <select name="sex" value={sex} onChange={onChange} className="mt-1 block w-full">
         <option value="">選択してください</option>
-        <option value="male">男性</option>
-        <option value="female">女性</option>
+        <option value="男性">男性</option>
+        <option value="女性">女性</option>
       </select>
     </div>
   );
