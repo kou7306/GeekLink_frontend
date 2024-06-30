@@ -29,7 +29,7 @@ const UserProfile: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 py-10">
-      <ProfileCard user={user} />
+      <ProfileCard user={user} isMe={false} />
     </div>
   );
 };

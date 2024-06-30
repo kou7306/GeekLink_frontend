@@ -25,7 +25,7 @@
 //   message: string; // メッセージ
 //   portfolio: string; // ポートフォリオ
 //   graduate: string; // 卒業年度
-//   desiredOccupation: string; // 希望職種
+//   desired_occupation: string; // 希望職種
 //   faculty: string; // 学部
 //   experience: string[]; // 経験
 // }
