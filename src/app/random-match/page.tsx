@@ -234,7 +234,7 @@ export default function Home() {
           }}
           disabled={users.length === 0}
         >
-          <ThumbUpAltIcon sx={{ fontSize: 40, mx: 2 }} />
+          <ThumbUpAltIcon sx={{ fontSize: 40 }} />
         </IconButton>
       </div>
       <div>
