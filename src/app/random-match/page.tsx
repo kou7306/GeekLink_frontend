@@ -9,7 +9,7 @@ import { getRandomUsers } from "../../utils/getRandomMatchUser";
 import { User } from "../../utils/getRandomMatchUser";
 import { postSwipedRightUserIds } from "../../utils/CreateLike";
 import Image from "next/image";
-import { Chip } from "@mui/material";
+import { Chip, IconButton } from "@mui/material";
 
 export default function Home() {
   const characters = [
@@ -213,29 +213,29 @@ export default function Home() {
         <h2 className="infoText" />
       )}
       <div className="flex space-x-4 mt-4">
-        <button
-          className="transform transition-transform duration-200 active:scale-90"
-          onClick={() => swipe("left")}
-          disabled={users.length === 0}
-        >
-          <ThumbDownAltIcon />
-        </button>
-        <button
-          className="transform transition-transform duration-200 active:scale-90"
-          onClick={goBack}
-          disabled={users.length === 0}
-        >
-          <UndoIcon />
-        </button>
-        <button
-          className="transform transition-transform duration-200 active:scale-90"
+        <IconButton
           onClick={() => {
             swipe("right");
           }}
           disabled={users.length === 0}
         >
-          <ThumbUpAltIcon />
-        </button>
+          <ThumbDownAltIcon sx={{ fontSize: 40 }} />
+        </IconButton>
+        {/* <button
+          className="transform transition-transform duration-200 active:scale-90"
+          onClick={goBack}
+          disabled={users.length === 0}
+        >
+          <UndoIcon />
+        </button> */}
+        <IconButton
+          onClick={() => {
+            swipe("right");
+          }}
+          disabled={users.length === 0}
+        >
+          <ThumbUpAltIcon sx={{ fontSize: 40 }} />
+        </IconButton>
       </div>
       <div>
         <button
