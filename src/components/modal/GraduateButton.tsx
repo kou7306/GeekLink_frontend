@@ -7,7 +7,9 @@ const GraduateButton = () => {
     <>
       <>
         {graduateOptions.map((graduateOption) => (
-          <Button sx={BoxStyle}>{graduateOption}</Button>
+          <Button key={graduateOption} sx={BoxStyle}>
+            {graduateOption}
+          </Button>
         ))}
       </>
     </>
