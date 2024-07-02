@@ -52,13 +52,22 @@ const FilterSearch = () => {
           <Box sx={style}>
             <Title />
             <Box mx={4} my={2}>
+              {/* 都道部県で探す */}
               <Area />
+              {/* 年齢層で探す */}
               <Age />
+              {/* 趣味で探す */}
               <Hobby />
+              {/* 得意言語一位で探す */}
+              {/* TODO:一位のもののデータを表示する */}
               <Tech />
+              {/* 職業で探す */}
               <Occupation />
+              {/* 卒業年度で探す */}
               <Graduate />
+              {/* 希望職種で探す */}
               <DesiredOccupation />
+              {/* 経験で探す */}
               <Experience />
               <SearchButton />
             </Box>
