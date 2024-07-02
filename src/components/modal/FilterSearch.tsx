@@ -35,7 +35,15 @@ const theme = createTheme({
   },
 });
 
-const FilterSearch = () => {
+type Props = {
+  handlePlaceClick: (place: string) => void;
+  selectedPlaces: string[];
+};
+
+const FilterSearch: React.FC<Props> = ({
+  handlePlaceClick,
+  selectedPlaces,
+}) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -69,7 +77,10 @@ const FilterSearch = () => {
             <Title />
             <Box mx={4} my={2}>
               {/* 都道部県で探す */}
-              <Area />
+              <Area
+                handlePlaceClick={handlePlaceClick}
+                selectedPlaces={selectedPlaces}
+              />
               {/* 年齢層で探す */}
               <Age />
               {/* 趣味で探す */}

@@ -95,6 +95,9 @@ const Home = () => {
   ];
 
   const [userExists, setUserExists] = useState(null);
+
+  const [selectedPlaces, setSelectedPlaces] = useState<string[]>([]);
+
   const router = useRouter();
 
   useEffect(() => {
@@ -121,9 +124,22 @@ const Home = () => {
     fetchUsers();
   }, [router]);
 
+  const handlePlaceClick = (place: string) => {
+    console.log(place);
+    setSelectedPlaces((prevSelectedPlaces) =>
+      prevSelectedPlaces.includes(place)
+        ? prevSelectedPlaces.filter((p) => p !== place)
+        : [...prevSelectedPlaces, place]
+    );
+    console.log(selectedPlaces);
+  };
+
   return (
     <>
-      <FilterSearch />
+      <FilterSearch
+        handlePlaceClick={handlePlaceClick}
+        selectedPlaces={selectedPlaces}
+      />
       {userExists ? (
         <div>
           <p className="flex justify-start text-2xl font-bold text-center mt-8 ml-8">
