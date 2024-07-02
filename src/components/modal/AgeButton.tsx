@@ -2,16 +2,7 @@ import { Button } from "@mui/material";
 import React from "react";
 
 const AgeButton = () => {
-  const ageGroups = ["~14歳", "15~17歳", "18~22歳", "23~29歳", "30歳~"];
-  return (
-    <>
-      <>
-        {ageGroups.map((ageGroup) => (
-          <Button sx={BoxStyle}>{ageGroup}</Button>
-        ))}
-      </>
-    </>
-  );
+  return <></>;
 };
 
 const BoxStyle = {
