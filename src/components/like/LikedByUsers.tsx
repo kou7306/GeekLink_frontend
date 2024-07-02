@@ -27,7 +27,7 @@ const LikedByUsers: React.FC<LikedByUsersProps> = ({ users }) => {
             image={user.image_url}
             sex={user.sex}
             place={user.place}
-            topTech={user.top_teches[0]}
+            topTech={user.top_tech}
           />
         ))}
       </div>
