@@ -1,8 +1,12 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
+import { getUuidFromCookie } from "@/actions/users";
+import axios from "axios";
 import { User } from "./options";
 import Image from "next/image";
 import { FaGithub, FaTwitter } from "react-icons/fa";
+import { PostLikeID } from "@/utils/CreateLike";
 
 interface ProfileCardProps {
   user: User;
@@ -10,7 +14,44 @@ interface ProfileCardProps {
   onEdit?: () => void;
 }
 
+interface LikeCheckResponse {
+  message: string;
+  data: boolean;
+}
+
 const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
+  const [isLiked, setIsLiked] = useState<boolean>(false);
+  const params = useParams();
+  const uuid = params.uuid;
+  useEffect(() => {
+    console.log("isliked = ", isLiked);
+  }, [isLiked]);
+
+  useEffect(() => {
+    const myID = getUuidFromCookie();
+
+    if (uuid && myID) {
+      axios
+        .post(`${process.env.NEXT_PUBLIC_API_URL}/profile/like-status`, {
+          myID,
+          uuid,
+        })
+        .then((response: {data: LikeCheckResponse}) => {
+          setIsLiked(response.data.data)
+        })
+        .catch((error) => {
+          console.error("Error fetching like status:", error);
+        });
+    } else {
+      if (!myID) {
+        console.error("Current user ID is not found.");
+      }
+      if (!uuid) {
+        console.error("UUID is not found.");
+      }
+    }
+  }, [uuid]);
+
   return (
     <div className="max-w-7xl mx-auto p-6 bg-white rounded-lg shadow-lg grid grid-cols-3 gap-6">
       <div className="flex flex-col items-center">
@@ -56,6 +97,25 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
         {isMe && (
           <button onClick={onEdit} className="mt-4 bg-blue-500 text-white py-2 px-4 rounded">
             編集
+          </button>
+        )}
+        {!isMe && (
+          <button 
+            className="bg-white rounded-full p-1"
+            onClick={() => {
+              if (isLiked === false) {
+                PostLikeID(user.user_id);
+                setIsLiked(true)
+              }
+            }}
+          >
+            <svg
+              className={`w-16 h-16 ${isLiked === true ? "text-red-500" : "text-gray-500"}`}
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
+            </svg>
           </button>
         )}
       </div>
