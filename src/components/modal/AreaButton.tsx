@@ -6,7 +6,9 @@ const AreaButton = () => {
   return (
     <>
       {places.map((place) => (
-        <Button sx={BoxStyle}>{place}</Button>
+        <Button key={place} sx={BoxStyle}>
+          {place}
+        </Button>
       ))}
     </>
   );
