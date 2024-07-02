@@ -9,7 +9,7 @@ export interface User {
   teches: string[];
   top_teches: string[];
   occupation: string;
-  image_url?: string | null;
+  image_url: string;
   hobby?: string;
   editor?: string;
   affiliation?: string;

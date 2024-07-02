@@ -1,22 +1,20 @@
 import Image from "next/image";
+import React from "react";
 
 type Props = {
   name: string;
   image: string;
   isLiked?: boolean;
+  sex: string;
+  place: string;
+  topTech: string;
 };
 
-const IconField: React.FC<Props> = ({ name, image, isLiked = false }) => {
+const IconField: React.FC<Props> = ({ name, image, isLiked = false, sex, place, topTech }) => {
   return (
-    <div className="flex flex-col items-center m-8">
+    <div className="flex flex-col items-center m-8 p-4 border rounded-lg shadow-lg w-64 transform transition-transform hover:scale-105 hover:shadow-2xl">
       <div className="relative">
-        <Image
-          src={image}
-          alt="name"
-          width={96}
-          height={96}
-          className="w-24 h-24 rounded-full"
-        />
+        <Image src={image} alt={name} width={96} height={96} className="w-24 h-24 rounded-full" />
         <button className="absolute top-0 right-0 mt-1 mr-1 bg-white rounded-full p-1">
           <svg
             className={`w-4 h-4 ${isLiked ? "text-red-500" : "text-gray-500"}`}
@@ -27,7 +25,10 @@ const IconField: React.FC<Props> = ({ name, image, isLiked = false }) => {
           </svg>
         </button>
       </div>
-      <div className="text-center mt-2 text-sm">{name}</div>
+      <div className="text-center mt-2 text-lg font-semibold">{name}</div>
+      <div className="text-center text-sm text-gray-600">{sex}</div>
+      <div className="text-center text-sm text-gray-600">{place}</div>
+      <div className="text-center mt-1 text-sm text-blue-500">{topTech}</div>
     </div>
   );
 };
