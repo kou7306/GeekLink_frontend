@@ -6,6 +6,7 @@ export interface User {
   sex: string;
   age: string;
   place: string;
+  top_tech: string;
   teches: string[];
   top_teches: string[];
   occupation: string;

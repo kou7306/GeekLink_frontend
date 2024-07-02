@@ -25,6 +25,7 @@ export default function Profile() {
     sex: "",
     age: "",
     place: "",
+    top_tech: "",
     teches: [],
     top_teches: [],
     occupation: "",
@@ -109,6 +110,7 @@ export default function Profile() {
     e.preventDefault();
     const updatedProfile = {
       ...profile,
+      top_tech: top_teches[0],
       teches: selectedTech,
       top_teches: top_teches,
     };

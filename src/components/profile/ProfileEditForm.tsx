@@ -210,6 +210,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ user, onSave, onCance
 
     const updatedProfile = {
       ...profile,
+      top_tech: top_teches[0],
       teches: selectedTech,
       experience: selectedExperiences,
       qualification: qualifications,

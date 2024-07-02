@@ -27,8 +27,8 @@ const MatchingUsers: React.FC<MatchingUsersProps> = ({ users }) => {
             image={user.image_url}
             sex={user.sex}
             place={user.place}
-            topTech={user.top_teches[0]}
-            isLiked // マッチングユーザーにはisLikedをtrueに設定
+            topTech={user.top_tech}
+            isLiked
           />
         ))}
       </div>

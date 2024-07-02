@@ -36,7 +36,6 @@ const MyPage: React.FC = () => {
   };
 
   const handleSave = async (updatedUser: User) => {
-    console.log("updatedUser", updatedUser);
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/profile/update-profile`, {
         method: "POST",
