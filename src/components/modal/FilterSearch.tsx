@@ -42,7 +42,23 @@ const FilterSearch = () => {
   return (
     <ThemeProvider theme={theme}>
       <div>
-        <Button onClick={handleOpen}>絞り込み</Button>
+        <Button
+          onClick={handleOpen}
+          variant="contained"
+          sx={{
+            backgroundColor: "#22d3ee",
+            color: "white",
+            borderRadius: "8px",
+            padding: "8px 16px",
+            fontWeight: "bold",
+            margin: "8px",
+            "&:hover": {
+              backgroundColor: "#1ca3c9",
+            },
+          }}
+        >
+          絞り込み
+        </Button>
         <Modal
           open={open}
           onClose={handleClose}
