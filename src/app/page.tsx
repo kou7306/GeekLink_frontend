@@ -97,6 +97,14 @@ const Home = () => {
   const [userExists, setUserExists] = useState(null);
 
   const [selectedPlaces, setSelectedPlaces] = useState<string[]>([]);
+  const [selectedAges, setSelectedAges] = useState<string[]>([]);
+  const [enteredHobby, setEnteredHobby] = useState("");
+  const [selectedOccupations, setSelectedOccupations] = useState<string[]>([]);
+  const [selectedGraduates, setSelectedGraduates] = useState<string[]>([]);
+  const [selectedDesiredOccupations, setSelectedDesiredOccupations] = useState<
+    string[]
+  >([]);
+  const [selectedExperiences, setSelectedExperiences] = useState<string[]>([]);
 
   const router = useRouter();
 
@@ -134,11 +142,79 @@ const Home = () => {
     console.log(selectedPlaces);
   };
 
+  const handleAgeClick = (age: string) => {
+    console.log(age);
+    setSelectedAges((prevSelectedAges) =>
+      prevSelectedAges.includes(age)
+        ? prevSelectedAges.filter((a) => a !== age)
+        : [...prevSelectedAges, age]
+    );
+    console.log(selectedAges);
+  };
+
+  const onChangeHobby = (hobby: string) => {
+    console.log(hobby);
+    setEnteredHobby(hobby);
+    console.log(enteredHobby);
+  };
+
+  const handleOccupationClick = (occupation: string) => {
+    console.log(occupation);
+    setSelectedOccupations((prevSelectedOccupations) =>
+      prevSelectedOccupations.includes(occupation)
+        ? prevSelectedOccupations.filter((o) => o !== occupation)
+        : [...prevSelectedOccupations, occupation]
+    );
+    console.log(selectedOccupations);
+  };
+
+  const handleGraduateClick = (graduateOption: string) => {
+    console.log(graduateOption);
+    setSelectedGraduates((prevSelectedGraduates) =>
+      prevSelectedGraduates.includes(graduateOption)
+        ? prevSelectedGraduates.filter((g) => g !== graduateOption)
+        : [...prevSelectedGraduates, graduateOption]
+    );
+    console.log(selectedGraduates);
+  };
+  const handleDesiredOccupationClick = (desiredOccupationOption: string) => {
+    console.log(desiredOccupationOption);
+    setSelectedDesiredOccupations((prevSelectedDesiredOccupations) =>
+      prevSelectedDesiredOccupations.includes(desiredOccupationOption)
+        ? prevSelectedDesiredOccupations.filter(
+            (d) => d !== desiredOccupationOption
+          )
+        : [...prevSelectedDesiredOccupations, desiredOccupationOption]
+    );
+    console.log(selectedDesiredOccupations);
+  };
+  const handleExperienceClick = (experienceOption: string) => {
+    console.log(experienceOption);
+    setSelectedExperiences((prevSelectedExperiences) =>
+      prevSelectedExperiences.includes(experienceOption)
+        ? prevSelectedExperiences.filter((e) => e !== experienceOption)
+        : [...prevSelectedExperiences, experienceOption]
+    );
+    console.log(selectedExperiences);
+  };
+
   return (
     <>
       <FilterSearch
         handlePlaceClick={handlePlaceClick}
         selectedPlaces={selectedPlaces}
+        handleAgeClick={handleAgeClick}
+        selectedAges={selectedAges}
+        onChangeHobby={onChangeHobby}
+        enteredHobby={enteredHobby}
+        handleOccupationClick={handleOccupationClick}
+        selectedOccupations={selectedOccupations}
+        handleGraduateClick={handleGraduateClick}
+        selectedGraduates={selectedGraduates}
+        handleDesiredOccupationClick={handleDesiredOccupationClick}
+        selectedDesiredOccupations={selectedDesiredOccupations}
+        handleExperienceClick={handleExperienceClick}
+        selectedExperiences={selectedExperiences}
       />
       {userExists ? (
         <div>

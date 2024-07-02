@@ -2,7 +2,12 @@ import { Box } from "@mui/material";
 import React from "react";
 import AgeButton from "./AgeButton";
 
-const Age = () => {
+type Props = {
+  handleAgeClick: (place: string) => void;
+  selectedAges: string[];
+};
+
+const Age: React.FC<Props> = ({ handleAgeClick, selectedAges }) => {
   return (
     <>
       <Box>
@@ -18,7 +23,10 @@ const Age = () => {
           年齢層で探す
         </Box>
         <Box pt={1} pb={3}>
-          <AgeButton />
+          <AgeButton
+            handleAgeClick={handleAgeClick}
+            selectedAges={selectedAges}
+          />
         </Box>
       </Box>
     </>

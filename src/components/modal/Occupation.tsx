@@ -2,7 +2,15 @@ import { Box } from "@mui/material";
 import React from "react";
 import OccupationButton from "./OccupationButton";
 
-const Occupation = () => {
+type Props = {
+  handleOccupationClick: (occupation: string) => void;
+  selectedOccupations: string[];
+};
+
+const Occupation: React.FC<Props> = ({
+  handleOccupationClick,
+  selectedOccupations,
+}) => {
   return (
     <>
       <Box>
@@ -18,7 +26,10 @@ const Occupation = () => {
           職業で探す
         </Box>
         <Box pt={1} pb={3}>
-          <OccupationButton />
+          <OccupationButton
+            handleOccupationClick={handleOccupationClick}
+            selectedOccupations={selectedOccupations}
+          />
         </Box>
       </Box>
     </>

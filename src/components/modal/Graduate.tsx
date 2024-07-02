@@ -2,7 +2,15 @@ import { Box } from "@mui/material";
 import React from "react";
 import GraduateButton from "./GraduateButton";
 
-const Graduate = () => {
+type Props = {
+  handleGraduateClick: (place: string) => void;
+  selectedGraduates: string[];
+};
+
+const Graduate: React.FC<Props> = ({
+  handleGraduateClick,
+  selectedGraduates,
+}) => {
   return (
     <>
       <Box>
@@ -18,7 +26,10 @@ const Graduate = () => {
           卒業年度で探す
         </Box>
         <Box pt={1} pb={3}>
-          <GraduateButton />
+          <GraduateButton
+            handleGraduateClick={handleGraduateClick}
+            selectedGraduates={selectedGraduates}
+          />
         </Box>
       </Box>
     </>

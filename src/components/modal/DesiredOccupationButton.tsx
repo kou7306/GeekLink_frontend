@@ -2,12 +2,38 @@ import { Button } from "@mui/material";
 import React from "react";
 import { desiredOccupationOptions } from "../profile/options";
 
-const DesiredOccupationButton = () => {
+type Props = {
+  handleDesiredOccupationClick: (place: string) => void;
+  selectedDesiredOccupations: string[];
+};
+
+const DesiredOccupationButton: React.FC<Props> = ({
+  handleDesiredOccupationClick,
+  selectedDesiredOccupations,
+}) => {
   return (
     <>
       <>
         {desiredOccupationOptions.map((desiredOccupationOption) => (
-          <Button key={desiredOccupationOption} sx={BoxStyle}>
+          <Button
+            key={desiredOccupationOption}
+            onClick={() =>
+              handleDesiredOccupationClick(desiredOccupationOption)
+            }
+            sx={{
+              ...BoxStyle,
+              backgroundColor: selectedDesiredOccupations.includes(
+                desiredOccupationOption
+              )
+                ? "#22d3ee"
+                : "white",
+              color: selectedDesiredOccupations.includes(
+                desiredOccupationOption
+              )
+                ? "white"
+                : "#22d3ee",
+            }}
+          >
             {desiredOccupationOption}
           </Button>
         ))}
