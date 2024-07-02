@@ -6,7 +6,9 @@ const AgeButton = () => {
   return (
     <>
       {ageGroups.map((ageGroup) => (
-        <Button sx={BoxStyle}>{ageGroup}</Button>
+        <Button key={ageGroup} sx={BoxStyle}>
+          {ageGroup}
+        </Button>
       ))}
     </>
   );
