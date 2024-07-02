@@ -173,7 +173,14 @@ export const editors = [
   "Notepad++",
 ];
 
-export const graduateOptions = ["25卒", "26卒", "27卒", "28卒", "29卒", "30卒以降"];
+export const graduateOptions = [
+  "25卒",
+  "26卒",
+  "27卒",
+  "28卒",
+  "29卒",
+  "30卒以降",
+];
 
 export const desiredOccupationOptions = [
   "フロントエンドエンジニア",

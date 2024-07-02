@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import FilterSearch from "@/components/top-modal/FilterSearch";
 
 const Home = () => {
   const characters = [
@@ -122,6 +123,7 @@ const Home = () => {
 
   return (
     <>
+      <FilterSearch />
       {userExists ? (
         <div>
           <p className="flex justify-start text-2xl font-bold text-center mt-8 ml-8">
