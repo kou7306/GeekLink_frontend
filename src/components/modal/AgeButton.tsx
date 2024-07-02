@@ -6,13 +6,13 @@ const AgeButton = () => {
   return (
     <>
       {ageGroups.map((ageGroup) => (
-        <Button sx={BoxStyle}>{ageGroup}</Button>
+        <Button sx={boxStyle}>{ageGroup}</Button>
       ))}
     </>
   );
 };
 
-const BoxStyle = {
+const boxStyle = {
   border: "1px solid #22d3ee",
   borderRadius: "8px",
   padding: "8px 16px",
