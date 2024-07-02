@@ -35,7 +35,39 @@ const theme = createTheme({
   },
 });
 
-const FilterSearch = () => {
+type Props = {
+  handlePlaceClick: (place: string) => void;
+  selectedPlaces: string[];
+  handleAgeClick: (age: string) => void;
+  selectedAges: string[];
+  onChangeHobby: (hobby: string) => void;
+  enteredHobby: string;
+  handleOccupationClick: (occupation: string) => void;
+  selectedOccupations: string[];
+  handleGraduateClick: (graduateOption: string) => void;
+  selectedGraduates: string[];
+  handleDesiredOccupationClick: (desiredOccupationOption: string) => void;
+  selectedDesiredOccupations: string[];
+  handleExperienceClick: (experienceOption: string) => void;
+  selectedExperiences: string[];
+};
+
+const FilterSearch: React.FC<Props> = ({
+  handlePlaceClick,
+  selectedPlaces,
+  handleAgeClick,
+  selectedAges,
+  onChangeHobby,
+  enteredHobby,
+  handleOccupationClick,
+  selectedOccupations,
+  handleGraduateClick,
+  selectedGraduates,
+  handleDesiredOccupationClick,
+  selectedDesiredOccupations,
+  handleExperienceClick,
+  selectedExperiences,
+}) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -69,22 +101,43 @@ const FilterSearch = () => {
             <Title />
             <Box mx={4} my={2}>
               {/* 都道部県で探す */}
-              <Area />
+              <Area
+                handlePlaceClick={handlePlaceClick}
+                selectedPlaces={selectedPlaces}
+              />
               {/* 年齢層で探す */}
-              <Age />
+              <Age
+                handleAgeClick={handleAgeClick}
+                selectedAges={selectedAges}
+              />
               {/* 趣味で探す */}
-              <Hobby />
+              <Hobby
+                onChangeHobby={onChangeHobby}
+                enteredHobby={enteredHobby}
+              />
               {/* 得意言語一位で探す */}
               {/* TODO:一位のもののデータを表示する */}
               <Tech />
               {/* 職業で探す */}
-              <Occupation />
+              <Occupation
+                handleOccupationClick={handleOccupationClick}
+                selectedOccupations={selectedOccupations}
+              />
               {/* 卒業年度で探す */}
-              <Graduate />
+              <Graduate
+                handleGraduateClick={handleGraduateClick}
+                selectedGraduates={selectedGraduates}
+              />
               {/* 希望職種で探す */}
-              <DesiredOccupation />
+              <DesiredOccupation
+                handleDesiredOccupationClick={handleDesiredOccupationClick}
+                selectedDesiredOccupations={selectedDesiredOccupations}
+              />
               {/* 経験で探す */}
-              <Experience />
+              <Experience
+                handleExperienceClick={handleExperienceClick}
+                selectedExperiences={selectedExperiences}
+              />
               <SearchButton />
             </Box>
           </Box>

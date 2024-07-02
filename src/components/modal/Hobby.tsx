@@ -1,7 +1,12 @@
 import { Box, TextField } from "@mui/material";
 import React from "react";
 
-const Hobby = () => {
+type Props = {
+  onChangeHobby: (hobby: string) => void;
+  enteredHobby: string;
+};
+
+const Hobby: React.FC<Props> = ({ onChangeHobby, enteredHobby }) => {
   return (
     <>
       <Box>
@@ -21,6 +26,7 @@ const Hobby = () => {
             id="hobby"
             label="趣味を入力"
             variant="outlined"
+            onChange={(e) => onChangeHobby(e.target.value)}
             sx={{
               "& .MuiOutlinedInput-root": {
                 "& fieldset": {

@@ -2,11 +2,26 @@ import { Button } from "@mui/material";
 import React from "react";
 import { places } from "../profile/options";
 
-const AreaButton = () => {
+type Props = {
+  handlePlaceClick: (place: string) => void;
+  selectedPlaces: string[];
+};
+
+const AreaButton: React.FC<Props> = ({ handlePlaceClick, selectedPlaces }) => {
   return (
     <>
       {places.map((place) => (
-        <Button key={place} sx={BoxStyle}>
+        <Button
+          key={place}
+          onClick={() => handlePlaceClick(place)}
+          sx={{
+            ...BoxStyle,
+            backgroundColor: selectedPlaces.includes(place)
+              ? "#22d3ee"
+              : "white",
+            color: selectedPlaces.includes(place) ? "white" : "#22d3ee",
+          }}
+        >
           {place}
         </Button>
       ))}
