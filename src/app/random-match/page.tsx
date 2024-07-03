@@ -1,9 +1,8 @@
 "use client";
-import React, { useMemo } from "react";
+import React from "react";
 import { useEffect, useState, useRef } from "react";
 import TinderCard from "react-tinder-card";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
-import UndoIcon from "@mui/icons-material/Undo";
 import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 import { getRandomUsers } from "../../utils/getRandomMatchUser";
 import { User } from "../../utils/getRandomMatchUser";
@@ -81,7 +80,7 @@ export default function Home() {
   };
 
   const outOfFrame = (name: string) => {
-    console.log(name + " left the screen!");
+    console.log(name + " をスワイプしました！");
   };
 
   useEffect(() => {
@@ -217,7 +216,7 @@ export default function Home() {
       <div className="flex space-x-4 mt-4">
         <IconButton
           onClick={() => {
-            swipe("right");
+            swipe("left");
           }}
           disabled={users.length === 0}
         >
