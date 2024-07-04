@@ -17,9 +17,9 @@ const AreaButton: React.FC<Props> = ({ handlePlaceClick, selectedPlaces }) => {
           sx={{
             ...BoxStyle,
             backgroundColor: selectedPlaces.includes(place)
-              ? "#22d3ee"
+              ? "#25276D"
               : "white",
-            color: selectedPlaces.includes(place) ? "white" : "#22d3ee",
+            color: selectedPlaces.includes(place) ? "white" : "#25276D",
           }}
         >
           {place}
@@ -30,11 +30,11 @@ const AreaButton: React.FC<Props> = ({ handlePlaceClick, selectedPlaces }) => {
 };
 
 const BoxStyle = {
-  border: "1px solid #22d3ee",
+  border: "1px solid #25276D",
   borderRadius: "8px",
   padding: "8px 16px",
   display: "inline-block",
-  color: "#22d3ee",
+  color: "#25276D",
   textAlign: "center",
   marginX: 1,
   marginBottom: 1,

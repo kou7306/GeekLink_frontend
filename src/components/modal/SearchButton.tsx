@@ -7,12 +7,12 @@ const SearchButton = () => {
       <Button
         variant="contained"
         sx={{
-          backgroundColor: "#22d3ee",
+          backgroundColor: "#25276D",
           color: "white",
           borderRadius: "8px",
           padding: "8px 16px",
           "&:hover": {
-            backgroundColor: "#1ca3c9",
+            backgroundColor: "#1f235a",
           },
         }}
       >

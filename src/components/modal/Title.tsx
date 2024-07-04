@@ -5,7 +5,7 @@ const Title = () => {
   return (
     <Box
       sx={{
-        bgcolor: "#22d3ee",
+        bgcolor: "#25276D",
         color: "white",
         padding: "16px",
         display: "flex",
