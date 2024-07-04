@@ -91,8 +91,8 @@ const GroupChat = ({ params }: { params: any }) => {
   }, [messages]);
 
   return (
-    <div className="bg-secondary px-4 py-10 sm:px-6 lg:px-8 h-full">
-      <ul className="h-[85vh] overflow-y-auto overflow-x-hidden">
+    <div className="bg-secondary px-4 py-10 sm:px-6 lg:px-8">
+      <ul className="h-[100vh] overflow-y-auto overflow-x-hidden z-10">
         {messages.map((message, index) => (
           <div
             key={index}
@@ -118,7 +118,7 @@ const GroupChat = ({ params }: { params: any }) => {
       </ul>
       <form
         onSubmit={sendData}
-        className="fixed bottom-0 w-4/5 p-2 bg-secondary z-99 flex justify-center items-center"
+        className="fixed bottom-0 w-full p-2 bg-secondary z-99 flex justify-center items-center"
       >
         <input
           className="w-3/5 bg-primary rounded-xl px-2 py-3 border-0 active:border-2 active:border-accent leading-tight"
