@@ -78,14 +78,14 @@ const FilterSearch: React.FC<Props> = ({
           onClick={handleOpen}
           variant="contained"
           sx={{
-            backgroundColor: "#22d3ee",
+            backgroundColor: "#25276D",
             color: "white",
             borderRadius: "8px",
             padding: "8px 16px",
             fontWeight: "bold",
             margin: "8px",
             "&:hover": {
-              backgroundColor: "#1ca3c9",
+              backgroundColor: "#1f235a",
             },
           }}
         >

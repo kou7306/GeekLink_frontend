@@ -25,13 +25,13 @@ const DesiredOccupationButton: React.FC<Props> = ({
               backgroundColor: selectedDesiredOccupations.includes(
                 desiredOccupationOption
               )
-                ? "#22d3ee"
+                ? "#25276D"
                 : "white",
               color: selectedDesiredOccupations.includes(
                 desiredOccupationOption
               )
                 ? "white"
-                : "#22d3ee",
+                : "#25276D",
             }}
           >
             {desiredOccupationOption}
@@ -43,11 +43,11 @@ const DesiredOccupationButton: React.FC<Props> = ({
 };
 
 const BoxStyle = {
-  border: "1px solid #22d3ee",
+  border: "1px solid #25276D",
   borderRadius: "8px",
   padding: "8px 16px",
   display: "inline-block",
-  color: "#22d3ee",
+  color: "#25276D",
   textAlign: "center",
   marginX: 1,
   marginBottom: 1,

@@ -21,11 +21,11 @@ const GraduateButton: React.FC<Props> = ({
             sx={{
               ...BoxStyle,
               backgroundColor: selectedGraduates.includes(graduateOption)
-                ? "#22d3ee"
+                ? "#25276D"
                 : "white",
               color: selectedGraduates.includes(graduateOption)
                 ? "white"
-                : "#22d3ee",
+                : "#25276D",
             }}
           >
             {graduateOption}
@@ -37,11 +37,11 @@ const GraduateButton: React.FC<Props> = ({
 };
 
 const BoxStyle = {
-  border: "1px solid #22d3ee",
+  border: "1px solid #25276D",
   borderRadius: "8px",
   padding: "8px 16px",
   display: "inline-block",
-  color: "#22d3ee",
+  color: "#25276D",
   textAlign: "center",
   marginX: 1,
   marginBottom: 1,
