@@ -1,6 +1,6 @@
 import { Box, Button, Checkbox } from "@mui/material";
 import React, { useState } from "react";
-import { areaPlaces, places } from "../profile/options";
+import { areaPlaces } from "../profile/options";
 
 type Props = {
   handlePlaceClick: (place: string) => void;
@@ -44,7 +44,13 @@ const AreaButton: React.FC<Props> = ({ handlePlaceClick, selectedPlaces }) => {
             <Checkbox
               checked={selectedAreas.includes(area)}
               onChange={() => handleAreaCheckboxClick(area, places)}
-              sx={{ marginBottom: "3px" }}
+              sx={{
+                marginBottom: "3px",
+                color: "#25276D",
+                "&.Mui-checked": {
+                  color: "#25276D",
+                },
+              }}
             />
             <Box
               sx={{
