@@ -1,8 +1,9 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 import { MdSend } from "react-icons/md";
 import { getUuidFromCookie } from "@/actions/users";
 import { getMessageData, Message } from "@/utils/getMessageData";
+import { getGroupMembers } from "@/utils/getGroupMembers";
 import { Socket } from "socket.io-client";
 import socketIOClient from "socket.io-client";
 
@@ -25,6 +26,7 @@ const GroupChat = ({ params }: { params: any }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  // メッセージを取得してソートする
   useEffect(() => {
     const fetchMessages = async () => {
       const { messages } = await getMessageData(groupId);
@@ -34,6 +36,16 @@ const GroupChat = ({ params }: { params: any }) => {
 
     fetchMessages();
   }, [uuid, groupId]);
+
+  // グループメンバーを取得する
+  useEffect(() => {
+    const fetchMembers = async () => {
+      const { group } = await getGroupMembers(groupId);
+      console.log(group.member_ids);
+    };
+
+    fetchMembers();
+  }, [apiUrl, groupId]);
 
   // socket通信を行う
   const socketRef = useRef<Socket | null>(null);
