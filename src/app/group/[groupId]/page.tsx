@@ -6,9 +6,9 @@ import { useSearchParams } from "next/navigation";
 const Page = ({ params }: { params: any }) => {
   const searchParams = useSearchParams();
   return (
-    <div>
+    <>
       <GroupChat params={params} />
-    </div>
+    </>
   );
 };
 
