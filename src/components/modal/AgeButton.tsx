@@ -7,24 +7,42 @@ type Props = {
 };
 
 const AgeButton: React.FC<Props> = ({ handleAgeClick, selectedAges }) => {
-  const ageGroups = ["~14歳", "15~17歳", "18~22歳", "23~29歳", "30歳~"];
+  const ageGroups = [
+    "15歳",
+    "16歳",
+    "17歳",
+    "18歳",
+    "19歳",
+    "20歳",
+    "21歳",
+    "22歳",
+    "23歳",
+    "24歳",
+    "25歳",
+    "26歳",
+    "27歳",
+    "28歳",
+  ];
   return (
     <>
-      {ageGroups.map((ageGroup) => (
-        <Button
-          key={ageGroup}
-          onClick={() => handleAgeClick(ageGroup)}
-          sx={{
-            ...BoxStyle,
-            backgroundColor: selectedAges.includes(ageGroup)
-              ? "#25276D"
-              : "white",
-            color: selectedAges.includes(ageGroup) ? "white" : "#25276D",
-          }}
-        >
-          {ageGroup}
-        </Button>
-      ))}
+      {ageGroups.map((ageGroup) => {
+        const ageNumber = ageGroup.replace("歳", ""); // "歳"を除去
+        return (
+          <Button
+            key={ageGroup}
+            onClick={() => handleAgeClick(ageGroup)}
+            sx={{
+              ...BoxStyle,
+              backgroundColor: selectedAges.includes(ageNumber)
+                ? "#25276D"
+                : "white",
+              color: selectedAges.includes(ageNumber) ? "white" : "#25276D",
+            }}
+          >
+            {ageGroup}
+          </Button>
+        );
+      })}
     </>
   );
 };
@@ -37,6 +55,7 @@ const BoxStyle = {
   color: "#25276D",
   textAlign: "center",
   marginX: 1,
+  marginBottom: 1,
 };
 
 export default AgeButton;

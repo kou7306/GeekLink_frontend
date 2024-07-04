@@ -143,11 +143,12 @@ const Home = () => {
   };
 
   const handleAgeClick = (age: string) => {
-    console.log(age);
+    const ageNumber = age.replace("歳", "");
+    console.log(ageNumber);
     setSelectedAges((prevSelectedAges) =>
-      prevSelectedAges.includes(age)
-        ? prevSelectedAges.filter((a) => a !== age)
-        : [...prevSelectedAges, age]
+      prevSelectedAges.includes(ageNumber)
+        ? prevSelectedAges.filter((a) => a !== ageNumber)
+        : [...prevSelectedAges, ageNumber]
     );
     console.log(selectedAges);
   };
