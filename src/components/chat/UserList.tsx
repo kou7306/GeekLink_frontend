@@ -11,7 +11,6 @@ const UserList = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [uuid, setUuid] = useState<string>("");
   useEffect(() => {
-    console.log("fetching users1");
     const fetchUsers = async () => {
       const users = await getMatchingUser();
       if (users.length > 0) {
