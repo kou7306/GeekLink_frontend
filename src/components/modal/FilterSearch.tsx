@@ -42,6 +42,8 @@ type Props = {
   selectedAges: string[];
   onChangeHobby: (hobby: string) => void;
   enteredHobby: string;
+  handleFirstTechClick: (firstTech: string) => void;
+  selectedFirstTechs: string[];
   handleOccupationClick: (occupation: string) => void;
   selectedOccupations: string[];
   handleGraduateClick: (graduateOption: string) => void;
@@ -59,6 +61,8 @@ const FilterSearch: React.FC<Props> = ({
   selectedAges,
   onChangeHobby,
   enteredHobby,
+  handleFirstTechClick,
+  selectedFirstTechs,
   handleOccupationClick,
   selectedOccupations,
   handleGraduateClick,
@@ -117,7 +121,10 @@ const FilterSearch: React.FC<Props> = ({
               />
               {/* 得意言語一位で探す */}
               {/* TODO:一位のもののデータを表示する */}
-              <Tech />
+              <Tech
+                handleFirstTechClick={handleFirstTechClick}
+                selectedFirstTechs={selectedFirstTechs}
+              />
               {/* 職業で探す */}
               <Occupation
                 handleOccupationClick={handleOccupationClick}

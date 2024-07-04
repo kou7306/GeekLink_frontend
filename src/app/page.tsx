@@ -99,6 +99,7 @@ const Home = () => {
   const [selectedPlaces, setSelectedPlaces] = useState<string[]>([]);
   const [selectedAges, setSelectedAges] = useState<string[]>([]);
   const [enteredHobby, setEnteredHobby] = useState("");
+  const [selectedFirstTechs, setSelectedFirstTechs] = useState<string[]>([]);
   const [selectedOccupations, setSelectedOccupations] = useState<string[]>([]);
   const [selectedGraduates, setSelectedGraduates] = useState<string[]>([]);
   const [selectedDesiredOccupations, setSelectedDesiredOccupations] = useState<
@@ -159,6 +160,16 @@ const Home = () => {
     console.log(enteredHobby);
   };
 
+  const handleFirstTechClick = (firstTech: string) => {
+    console.log(firstTech);
+    setSelectedFirstTechs((prevSelectedFirstTechs) =>
+      prevSelectedFirstTechs.includes(firstTech)
+        ? prevSelectedFirstTechs.filter((f) => f !== firstTech)
+        : [...prevSelectedFirstTechs, firstTech]
+    );
+    console.log(selectedFirstTechs);
+  };
+
   const handleOccupationClick = (occupation: string) => {
     console.log(occupation);
     setSelectedOccupations((prevSelectedOccupations) =>
@@ -208,6 +219,8 @@ const Home = () => {
         selectedAges={selectedAges}
         onChangeHobby={onChangeHobby}
         enteredHobby={enteredHobby}
+        handleFirstTechClick={handleFirstTechClick}
+        selectedFirstTechs={selectedFirstTechs}
         handleOccupationClick={handleOccupationClick}
         selectedOccupations={selectedOccupations}
         handleGraduateClick={handleGraduateClick}

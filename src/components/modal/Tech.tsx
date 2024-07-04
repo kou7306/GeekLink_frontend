@@ -1,7 +1,16 @@
 import { Box } from "@mui/material";
 import React from "react";
+import TechButton from "./TechButton";
 
-const Tech = () => {
+type Props = {
+  handleFirstTechClick: (firstTech: string) => void;
+  selectedFirstTechs: string[];
+};
+
+const Tech: React.FC<Props> = ({
+  handleFirstTechClick,
+  selectedFirstTechs,
+}) => {
   return (
     <>
       <Box>
@@ -17,7 +26,10 @@ const Tech = () => {
           技術で探す
         </Box>
         <Box pt={1} pb={3}>
-          {/* <AgeButton /> */}
+          <TechButton
+            handleFirstTechClick={handleFirstTechClick}
+            selectedFirstTechs={selectedFirstTechs}
+          />
         </Box>
       </Box>
     </>
