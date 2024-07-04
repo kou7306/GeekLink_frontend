@@ -1,12 +1,12 @@
+"use client";
 import { useEffect, useRef, useState } from "react";
 import { MdSend } from "react-icons/md";
 import { getUuidFromCookie } from "@/actions/users";
-import { getMessageAndRoomData, Message } from "@/utils/getMessageAndRoomData";
-import createSocket from "@/utils/socket";
+import { getMessageData, Message } from "@/utils/getMessageData";
 import { Socket } from "socket.io-client";
 import socketIOClient from "socket.io-client";
 
-const Chat = ({ params }: { params: any }) => {
+const GroupChat = ({ params }: { params: any }) => {
   const [uuid, setUuid] = useState<string>("");
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   useEffect(() => {
@@ -20,32 +20,31 @@ const Chat = ({ params }: { params: any }) => {
     fetchUsers();
   }, []);
 
-  const partnerId = params.partnerId;
+  const groupId = params.groupId;
 
-  const [roomId, setRoomId] = useState<string>("");
   const [messages, setMessages] = useState<Message[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchMessages = async () => {
-      const { roomId, messages } = await getMessageAndRoomData(uuid, partnerId);
-      console.log(roomId, messages);
-      setRoomId(roomId);
+      const { messages } = await getMessageData(groupId);
+      console.log(messages);
       setMessages(messages);
     };
 
     fetchMessages();
-  }, [uuid, partnerId]);
+  }, [uuid, groupId]);
 
   // socket通信を行う
   const socketRef = useRef<Socket | null>(null);
   const [socketData, setSocketData] = useState("");
+
   useEffect(() => {
-    socketRef.current = socketIOClient(`${apiUrl}/ws/chat`);
+    socketRef.current = socketIOClient(`${apiUrl}/ws/group-chat`);
 
     socketRef.current.on("connect", () => {
-      console.log("Connected to /chat namespace");
-      socketRef.current?.emit("joinRoom", roomId); // ルームに参加する
+      console.log("Connected to /group-chat namespace");
+      socketRef.current?.emit("joinRoom", groupId); // ルームに参加する
     });
 
     socketRef.current.on("message", (message: Message) => {
@@ -56,7 +55,7 @@ const Chat = ({ params }: { params: any }) => {
     return () => {
       socketRef.current?.disconnect();
     };
-  }, [roomId, apiUrl]);
+  }, [groupId, apiUrl]);
 
   const sendData = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -65,10 +64,10 @@ const Chat = ({ params }: { params: any }) => {
 
     const message: Message = {
       sender_id: uuid,
-      receiver_id: partnerId,
+      receiver_id: groupId,
       content: formMessage,
       created_at: new Date(),
-      room_id: roomId,
+      room_id: groupId,
     };
 
     socketRef.current?.emit("message", message);
@@ -128,4 +127,4 @@ const Chat = ({ params }: { params: any }) => {
   );
 };
 
-export default Chat;
+export default GroupChat;
