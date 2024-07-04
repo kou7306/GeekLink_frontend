@@ -26,7 +26,7 @@ const AgeButton: React.FC<Props> = ({ handleAgeClick, selectedAges }) => {
   return (
     <>
       {ageGroups.map((ageGroup) => {
-        const ageNumber = ageGroup.replace("歳", ""); // "歳"を除去
+        const ageNumber = ageGroup.replace("歳", "");
         return (
           <Button
             key={ageGroup}
