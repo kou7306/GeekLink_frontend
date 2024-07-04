@@ -1,6 +1,6 @@
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import React from "react";
-import { places } from "../profile/options";
+import { areaPlaces, places } from "../profile/options";
 
 type Props = {
   handlePlaceClick: (place: string) => void;
@@ -10,20 +10,37 @@ type Props = {
 const AreaButton: React.FC<Props> = ({ handlePlaceClick, selectedPlaces }) => {
   return (
     <>
-      {places.map((place) => (
-        <Button
-          key={place}
-          onClick={() => handlePlaceClick(place)}
-          sx={{
-            ...BoxStyle,
-            backgroundColor: selectedPlaces.includes(place)
-              ? "#25276D"
-              : "white",
-            color: selectedPlaces.includes(place) ? "white" : "#25276D",
-          }}
-        >
-          {place}
-        </Button>
+      {Object.entries(areaPlaces).map(([area, places]) => (
+        <div key={area} style={{ marginBottom: "16px" }}>
+          <Box
+            sx={{
+              fontSize: "1rem",
+              fontWeight: "bold",
+              color: "#25276D",
+              paddingBottom: "4px",
+              marginBottom: "8px",
+              marginLeft: "8px",
+            }}
+          >
+            {area}
+          </Box>
+          {places.map((place) => (
+            <Button
+              key={place}
+              onClick={() => handlePlaceClick(place)}
+              sx={{
+                ...BoxStyle,
+                backgroundColor: selectedPlaces.includes(place)
+                  ? "#25276D"
+                  : "white",
+                color: selectedPlaces.includes(place) ? "white" : "#25276D",
+                textTransform: "none",
+              }}
+            >
+              {place}
+            </Button>
+          ))}
+        </div>
       ))}
     </>
   );
