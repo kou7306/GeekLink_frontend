@@ -24,7 +24,6 @@ export const getMessageAndRoomData = async (
         mode: "cors",
       }
     );
-    console.log(response);
     // レスポンスをJSONとしてパース
     const { roomId, messages }: { roomId: string; messages: Message[] } =
       await response.json();
