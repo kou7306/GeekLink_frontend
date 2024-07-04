@@ -20,7 +20,7 @@ const Age: React.FC<Props> = ({ handleAgeClick, selectedAges }) => {
             marginBottom: "8px",
           }}
         >
-          年齢層で探す
+          年齢で探す
         </Box>
         <Box pt={1} pb={3}>
           <AgeButton
