@@ -8,10 +8,12 @@ import { Socket } from "socket.io-client";
 import socketIOClient from "socket.io-client";
 import SubHeader from "./SubHeader";
 import { User } from "../profile/options";
+import { Snackbar, Alert } from "@mui/material";
 
 const GroupChat = ({ params }: { params: any }) => {
   const [uuid, setUuid] = useState<string>("");
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const [openSnackbar, setOpenSnackbar] = useState(false);
   useEffect(() => {
     const fetchUsers = async () => {
       const uuid = await getUuidFromCookie();
@@ -101,6 +103,16 @@ const GroupChat = ({ params }: { params: any }) => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  const handleInputFocus = () => {
+    if (!groupData.member_ids.includes(uuid) && groupData.owner_id !== uuid) {
+      setOpenSnackbar(true);
+    }
+  };
+
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false);
+  };
+
   return (
     <>
       <SubHeader
@@ -148,15 +160,33 @@ const GroupChat = ({ params }: { params: any }) => {
             value={socketData}
             placeholder="メッセージを入力"
             onChange={(e) => setSocketData(e.target.value)}
+            onFocus={handleInputFocus}
           />
           <button
             type="submit"
             className="ml-2 pb-3 bg-accent text-white rounded-lg p-2"
+            disabled={
+              !groupData.member_ids.includes(uuid) &&
+              groupData.owner_id !== uuid
+            }
           >
             <MdSend className="h-5 w-5 ml-1 mt-1" />
           </button>
         </form>
       </div>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={null}
+        onClose={handleCloseSnackbar}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity="warning"
+          sx={{ width: "100%" }}
+        >
+          コメントするにはメンバーになる必要があります
+        </Alert>
+      </Snackbar>
     </>
   );
 };
