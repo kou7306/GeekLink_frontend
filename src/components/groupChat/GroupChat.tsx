@@ -135,7 +135,13 @@ const GroupChat = ({ params }: { params: any }) => {
             );
             return (
               <div key={index} className={`my-2 ml-5 flex items-start`}>
-                <Link href={`/other/${member?.user_id}`}>
+                <Link
+                  href={
+                    member?.user_id === uuid
+                      ? "/my-page"
+                      : `/other/${member?.user_id}`
+                  }
+                >
                   <Avatar
                     alt={member?.name || "Unknown"}
                     src={
@@ -145,9 +151,17 @@ const GroupChat = ({ params }: { params: any }) => {
                   />
                 </Link>
                 <li className="inline-block">
-                  <p className="text-md font-bold mb-1">
-                    {member?.name || "Unknown"}
-                  </p>
+                  <Link
+                    href={
+                      member?.user_id === uuid
+                        ? "/my-page"
+                        : `/other/${member?.user_id}`
+                    }
+                  >
+                    <p className="text-md font-bold mb-1">
+                      {member?.name || "Unknown"}
+                    </p>
+                  </Link>
                   <div>
                     <p>{message.content}</p>
                   </div>
