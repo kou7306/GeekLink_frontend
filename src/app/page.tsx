@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import FilterSearch from "@/components/modal/FilterSearch";
 import { User } from "@supabase/supabase-js";
+import CreateGroup from "@/components/groupChat/CreateGroup";
 
 interface Profile {
   user_id: string;
@@ -47,7 +48,6 @@ interface UsersResponse {
 }
 
 const Home = () => {
-  
   const [userExists, setUserExists] = useState(null);
 
   const [selectedPlaces, setSelectedPlaces] = useState<string[]>([]);
@@ -80,7 +80,7 @@ const Home = () => {
             user_id,
           })
           .then((response) => {
-            console.log(response.data.exists)
+            console.log(response.data.exists);
             setUserExists(response.data.exists);
             if (!response.data.exists) {
               router.push("/profile-initialization");
@@ -120,19 +120,26 @@ const Home = () => {
       const cachedData: string | null = localStorage.getItem(CACHE_KEY);
       const cacheExpiry: string | null = localStorage.getItem(CACHE_EXPIRY_KEY);
 
-      if (cachedData && cacheExpiry && new Date().getTime() < parseInt(cacheExpiry)) {
+      if (
+        cachedData &&
+        cacheExpiry &&
+        new Date().getTime() < parseInt(cacheExpiry)
+      ) {
         // キャッシュが有効であればそれを使用
         console.log("Using cached data");
         setUsers(JSON.parse(cachedData));
       } else {
         // キャッシュが存在しないor有効期限が切れている場合はAPIを呼び出す
-        const response: Response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/suggest/all?uuid=${uuid}`, {
-          method: "GET",
-          mode: "cors",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const response: Response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/suggest/all?uuid=${uuid}`,
+          {
+            method: "GET",
+            mode: "cors",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -142,7 +149,10 @@ const Home = () => {
 
         // データをキャッシュに保存し、有効期限を設定
         localStorage.setItem(CACHE_KEY, JSON.stringify(data));
-        localStorage.setItem(CACHE_EXPIRY_KEY, (new Date().getTime() + CACHE_DURATION).toString());
+        localStorage.setItem(
+          CACHE_EXPIRY_KEY,
+          (new Date().getTime() + CACHE_DURATION).toString()
+        );
 
         console.log(data);
         setUsers(data);
@@ -231,6 +241,7 @@ const Home = () => {
 
   return (
     <>
+      <CreateGroup />
       <FilterSearch
         handlePlaceClick={handlePlaceClick}
         selectedPlaces={selectedPlaces}
@@ -263,7 +274,7 @@ const Home = () => {
               >
                 <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
                   <Image
-                    src={user.user.image_url ?? '/user.svg'}
+                    src={user.user.image_url ?? "/user.svg"}
                     layout="fill"
                     objectFit="cover"
                     alt={user.user.name}
@@ -294,7 +305,7 @@ const Home = () => {
               >
                 <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
                   <Image
-                    src={user.image_url ?? '/user.svg'}
+                    src={user.image_url ?? "/user.svg"}
                     layout="fill"
                     objectFit="cover"
                     alt={user.name}
@@ -320,7 +331,7 @@ const Home = () => {
               >
                 <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
                   <Image
-                    src={user.image_url ?? '/user.svg'}
+                    src={user.image_url ?? "/user.svg"}
                     layout="fill"
                     objectFit="cover"
                     alt={user.name}
@@ -346,7 +357,7 @@ const Home = () => {
               >
                 <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
                   <Image
-                    src={user.image_url ?? '/user.svg'}
+                    src={user.image_url ?? "/user.svg"}
                     layout="fill"
                     objectFit="cover"
                     alt={user.name}
@@ -372,7 +383,7 @@ const Home = () => {
               >
                 <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
                   <Image
-                    src={user.image_url ?? '/user.svg'}
+                    src={user.image_url ?? "/user.svg"}
                     layout="fill"
                     objectFit="cover"
                     alt={user.name}
@@ -398,7 +409,7 @@ const Home = () => {
               >
                 <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
                   <Image
-                    src={user.image_url ?? '/user.svg'}
+                    src={user.image_url ?? "/user.svg"}
                     layout="fill"
                     objectFit="cover"
                     alt={user.name}
