@@ -74,7 +74,7 @@ const SubHeader: React.FC<Props> = ({
         グループ名
       </Typography>
       <Box ml={"auto"} display={"flex"} alignItems={"center"}>
-        {!groupData.member_ids.includes(uuid) ? (
+        {groupData && !groupData.member_ids?.includes(uuid) ? (
           <Button
             onClick={handleAddMember}
             sx={{
