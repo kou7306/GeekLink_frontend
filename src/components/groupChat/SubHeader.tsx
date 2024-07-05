@@ -64,12 +64,34 @@ const SubHeader: React.FC<Props> = ({ params, groupData, setGroupData }) => {
         グループ名
       </Typography>
       {!groupData.member_ids.includes(uuid) ? (
-        <Button onClick={handleAddMember} sx={{ ml: "auto", pr: 2 }}>
+        <Button
+          onClick={handleAddMember}
+          sx={{
+            ml: "auto",
+            mr: 2,
+            paddingX: 2,
+            backgroundColor: "#007BFF",
+            color: "white",
+            borderRadius: "20px",
+            textTransform: "none",
+            "&:hover": {
+              backgroundColor: "#0056b3",
+            },
+          }}
+        >
           メンバーになる
         </Button>
       ) : (
         <>
-          <Typography sx={{ ml: "auto", pr: 2 }}>
+          <Typography
+            sx={{
+              ml: "auto",
+              pr: 2,
+              fontSize: "1rem",
+              fontWeight: "bold",
+              color: "green",
+            }}
+          >
             あなたはメンバーです
           </Typography>
         </>
