@@ -5,6 +5,46 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import FilterSearch from "@/components/modal/FilterSearch";
+import { User } from "@supabase/supabase-js";
+
+interface Profile {
+  user_id: string;
+  created_at: Date;
+  name: string;
+  sex: string;
+  age: string;
+  place: string;
+  top_tech: string;
+  top_teches: string[];
+  teches: string[];
+  hobby?: string;
+  occupation?: string;
+  affiliation?: string;
+  qualification: string[];
+  editor?: string;
+  github?: string;
+  twitter?: string;
+  qiita?: string;
+  zenn?: string;
+  atcoder?: string;
+  message?: string;
+  updated_at: Date;
+  portfolio?: string;
+  graduate?: string;
+  desired_occupation?: string;
+  faculty?: string;
+  experience: string[];
+  image_url?: string;
+}
+
+interface UsersResponse {
+  samePlaceUsers: Profile[];
+  sameAgeUsers: Profile[];
+  sameGraduateYearUsers: Profile[];
+  sameJobTypeUsers: Profile[];
+  sameTopTechUsers: Profile[];
+  sortedUsers: { user: Profile; score: number }[];
+}
 
 const Home = () => {
   const characters = [
@@ -71,27 +111,6 @@ const Home = () => {
       place: "東京都",
       techs: ["Angular", "JavaScript"],
     },
-    {
-      id: 9,
-      name: "Misato Katsuragi",
-      url: "/img/KaoruNagisa.jpg",
-      place: "愛知県",
-      techs: ["React", "TypeScript"],
-    },
-    {
-      id: 10,
-      name: "Kaji Ryoji",
-      url: "/img/GendoIkari.jpg",
-      place: "京都府",
-      techs: ["Svelte", "JavaScript"],
-    },
-    {
-      id: 11,
-      name: "Hikari Horaki",
-      url: "/img/GendoIkari.jpg",
-      place: "奈良県",
-      techs: ["Vue", "JavaScript"],
-    },
   ];
 
   const [userExists, setUserExists] = useState(null);
@@ -105,6 +124,13 @@ const Home = () => {
     string[]
   >([]);
   const [selectedExperiences, setSelectedExperiences] = useState<string[]>([]);
+  const [uuid, setUuid] = useState<string>("");
+  const [users, setUsers] = useState<UsersResponse | null>(null);
+  const [placeUsers, setplaceUsers] = useState<Profile[] | null>(null);
+  const [ageUsers, setageUsers] = useState<Profile[] | null>(null);
+  const [graduateUsers, setgraduateUsers] = useState<Profile[] | null>(null);
+  const [jobUsers, setjobUsers] = useState<Profile[] | null>(null);
+  const [sortUsers, setsortUsers] = useState<Profile[] | null>(null);
 
   const router = useRouter();
 
@@ -118,6 +144,7 @@ const Home = () => {
             user_id,
           })
           .then((response) => {
+            console.log(response.data.exists)
             setUserExists(response.data.exists);
             if (!response.data.exists) {
               router.push("/profile-initialization");
@@ -131,6 +158,44 @@ const Home = () => {
 
     fetchUsers();
   }, [router]);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const uuid = await getUuidFromCookie();
+      console.log(uuid);
+      if (uuid) {
+        setUuid(uuid);
+      }
+    };
+
+    fetchUsers();
+  }, []); // 初回マウント時に実行する
+
+  useEffect(() => {
+    const fetchAndSetData = async () => {
+      const uuid = await getUuidFromCookie();
+      if (!uuid) return; // UUIDが存在しない場合は実行しない
+
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/suggest/all?uuid=${uuid}`, {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+
+      console.log(data);
+      setUsers(data)
+    };
+
+    fetchAndSetData();
+  }, []); // UUIDが設定されたときに実行する
 
   const handlePlaceClick = (place: string) => {
     console.log(place);
@@ -217,61 +282,160 @@ const Home = () => {
         handleExperienceClick={handleExperienceClick}
         selectedExperiences={selectedExperiences}
       />
-      {userExists ? (
+      {userExists && users ? (
         <div>
+          <p className="flex justify-start text-2xl font-bold text-center mt-8 ml-8">
+            総合的な一致度が高いお相手
+          </p>
+          <div className="flex overflow-x-scroll space-x-4 p-4">
+            {users.sortedUsers.map((user) => (
+              <div
+                key={user.user.user_id}
+                className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative"
+              >
+                <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
+                  <Image
+                    src={user.user.image_url ?? '/user.svg'}
+                    layout="fill"
+                    objectFit="cover"
+                    alt={user.user.name}
+                    className="rounded-full"
+                  />
+                </div>
+                <h2 className="mt-4 text-lg font-semibold text-center">
+                  {user.user.name}
+                </h2>
+                <ul className="text-center flex justify-center space-x-2 list-none p-0">
+                  {user.user.top_teches &&
+                    user.user.top_teches.map((tech: string) => (
+                      <li key={tech}>{tech}</li>
+                    ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+          <p className="flex justify-start text-2xl font-bold text-center mt-8 ml-8">
+            技術スタックが一致しているお相手
+          </p>
+          <div className="flex overflow-x-scroll space-x-4 p-4">
+            {users.sameTopTechUsers.map((user) => (
+              <div
+                key={user.user_id}
+                className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative"
+              >
+                <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
+                  <Image
+                    src={user.image_url ?? '/user.svg'}
+                    layout="fill"
+                    objectFit="cover"
+                    alt={user.name}
+                    className="rounded-full"
+                  />
+                </div>
+                <h2 className="mt-4 text-lg font-semibold text-center">
+                  {user.name}
+                </h2>
+                <p className="text-center">{user.top_tech}</p>
+              </div>
+            ))}
+          </div>
           <p className="flex justify-start text-2xl font-bold text-center mt-8 ml-8">
             居住地が近いお相手
           </p>
           <div className="flex overflow-x-scroll space-x-4 p-4">
-            {characters.map((character) => (
+            {users.samePlaceUsers.map((user) => (
               <div
-                key={character.id}
-                className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative"
+                key={user.user_id}
+                className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative z-0"
               >
                 <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
                   <Image
-                    src={character.url}
+                    src={user.image_url ?? '/user.svg'}
                     layout="fill"
                     objectFit="cover"
-                    alt={character.name}
+                    alt={user.name}
                     className="rounded-full"
                   />
                 </div>
                 <h2 className="mt-4 text-lg font-semibold text-center">
-                  {character.name}
+                  {user.name}
                 </h2>
-                <p className="text-center">{character.place}</p>
+                <p className="text-center">{user.place}</p>
               </div>
             ))}
           </div>
-
           <p className="flex justify-start text-2xl font-bold text-center mt-8 ml-8">
-            技術スタックが似ているお相手
+            年齢が同じお相手
           </p>
           <div className="flex overflow-x-scroll space-x-4 p-4">
-            {characters.map((character) => (
+            {users.sameAgeUsers.map((user) => (
               <div
-                key={character.id}
+                key={user.user_id}
                 className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative"
               >
                 <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
                   <Image
-                    src={character.url}
+                    src={user.image_url ?? '/user.svg'}
                     layout="fill"
                     objectFit="cover"
-                    alt={character.name}
+                    alt={user.name}
                     className="rounded-full"
                   />
                 </div>
                 <h2 className="mt-4 text-lg font-semibold text-center">
-                  {character.name}
+                  {user.name}
                 </h2>
-                <ul className="text-center flex justify-center space-x-2 list-none p-0">
-                  {character.techs &&
-                    character.techs.map((tech, index) => (
-                      <li key={index}>{tech}</li>
-                    ))}
-                </ul>
+                <p className="text-center">{user.age}</p>
+              </div>
+            ))}
+          </div>
+          <p className="flex justify-start text-2xl font-bold text-center mt-8 ml-8">
+            卒業年度が同じお相手
+          </p>
+          <div className="flex overflow-x-scroll space-x-4 p-4">
+            {users.sameGraduateYearUsers.map((user) => (
+              <div
+                key={user.user_id}
+                className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative"
+              >
+                <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
+                  <Image
+                    src={user.image_url ?? '/user.svg'}
+                    layout="fill"
+                    objectFit="cover"
+                    alt={user.name}
+                    className="rounded-full"
+                  />
+                </div>
+                <h2 className="mt-4 text-lg font-semibold text-center">
+                  {user.name}
+                </h2>
+                <p className="text-center">{user.graduate}</p>
+              </div>
+            ))}
+          </div>
+          <p className="flex justify-start text-2xl font-bold text-center mt-8 ml-8">
+            希望職種が同じお相手
+          </p>
+          <div className="flex overflow-x-scroll space-x-4 p-4">
+            {users.sameJobTypeUsers.map((user) => (
+              <div
+                key={user.user_id}
+                className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative"
+              >
+                <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
+                  <Image
+                    src={user.image_url ?? '/user.svg'}
+                    layout="fill"
+                    objectFit="cover"
+                    alt={user.name}
+                    className="rounded-full"
+                  />
+                </div>
+                <h2 className="mt-4 text-lg font-semibold text-center">
+                  {user.name}
+                </h2>
+                <p className="text-center">{user.desired_occupation}</p>
               </div>
             ))}
           </div>
