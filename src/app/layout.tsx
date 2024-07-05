@@ -22,7 +22,7 @@ export default async function RootLayout({
     <html lang="ja">
       <body className={inter.className}>
         {user != null && <Header />}
-        <main className="my-20">{children}</main>
+        <main className="py-20">{children}</main>
 
         <Toaster />
       </body>

@@ -9,7 +9,7 @@ const Page = ({ params }: { params: any }) => {
       {/* <div className="fixed top-18 bg-white p-4 shadow-md w-full z-99 text-2xl">
         {name}
       </div> */}
-      <div className="pt-16">
+      <div>
         <Chat params={params} />
       </div>
     </div>

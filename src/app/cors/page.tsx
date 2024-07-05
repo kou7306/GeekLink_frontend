@@ -45,7 +45,6 @@ const Page = () => {
 
     fetchAndSetData();
   }, [apiUrl, uuid]);
-
   return (
     <div>
       {data === null ? (

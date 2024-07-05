@@ -290,7 +290,7 @@ const Home = () => {
           </div>
         </div>
       ) : (
-        <p>Loading...</p>
+        <p></p>
       )}
     </>
   );
