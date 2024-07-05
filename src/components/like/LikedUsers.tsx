@@ -23,6 +23,7 @@ const LikedUsers: React.FC<LikedUsersProps> = ({ users }) => {
         {displayedUsers.map((user, index) => (
           <IconField
             key={index}
+            id={user.user_id}
             name={user.name}
             image={user.image_url}
             sex={user.sex}
