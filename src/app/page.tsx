@@ -243,8 +243,9 @@ const Home = () => {
           </p>
           <div className="flex overflow-x-scroll space-x-4 p-4">
             {users.sortedUsers.map((user) => (
-              <div
+              <a
                 key={user.user.user_id}
+                href={`/other/${user.user.user_id}`}
                 className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative"
               >
                 <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
@@ -265,7 +266,7 @@ const Home = () => {
                       <li key={tech}>{tech}</li>
                     ))}
                 </ul>
-              </div>
+              </a>
             ))}
           </div>
           <p className="flex justify-start text-2xl font-bold text-center mt-8 ml-8">
@@ -273,8 +274,9 @@ const Home = () => {
           </p>
           <div className="flex overflow-x-scroll space-x-4 p-4">
             {users.sameTopTechUsers.map((user) => (
-              <div
+              <a
                 key={user.user_id}
+                href={`/other/${user.user_id}`}
                 className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative"
               >
                 <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
@@ -290,7 +292,7 @@ const Home = () => {
                   {user.name}
                 </h2>
                 <p className="text-center">{user.top_tech}</p>
-              </div>
+              </a>
             ))}
           </div>
           <p className="flex justify-start text-2xl font-bold text-center mt-8 ml-8">
@@ -298,8 +300,9 @@ const Home = () => {
           </p>
           <div className="flex overflow-x-scroll space-x-4 p-4">
             {users.samePlaceUsers.map((user) => (
-              <div
+              <a
                 key={user.user_id}
+                href={`/other/${user.user_id}`}
                 className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative z-0"
               >
                 <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
@@ -315,7 +318,7 @@ const Home = () => {
                   {user.name}
                 </h2>
                 <p className="text-center">{user.place}</p>
-              </div>
+              </a>
             ))}
           </div>
           <p className="flex justify-start text-2xl font-bold text-center mt-8 ml-8">
@@ -323,8 +326,9 @@ const Home = () => {
           </p>
           <div className="flex overflow-x-scroll space-x-4 p-4">
             {users.sameAgeUsers.map((user) => (
-              <div
+              <a
                 key={user.user_id}
+                href={`/other/${user.user_id}`}
                 className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative"
               >
                 <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
@@ -340,7 +344,7 @@ const Home = () => {
                   {user.name}
                 </h2>
                 <p className="text-center">{user.age}</p>
-              </div>
+              </a>
             ))}
           </div>
           <p className="flex justify-start text-2xl font-bold text-center mt-8 ml-8">
@@ -348,8 +352,9 @@ const Home = () => {
           </p>
           <div className="flex overflow-x-scroll space-x-4 p-4">
             {users.sameGraduateYearUsers.map((user) => (
-              <div
+              <a
                 key={user.user_id}
+                href={`/other/${user.user_id}`}
                 className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative"
               >
                 <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
@@ -365,7 +370,7 @@ const Home = () => {
                   {user.name}
                 </h2>
                 <p className="text-center">{user.graduate}</p>
-              </div>
+              </a>
             ))}
           </div>
           <p className="flex justify-start text-2xl font-bold text-center mt-8 ml-8">
@@ -373,8 +378,9 @@ const Home = () => {
           </p>
           <div className="flex overflow-x-scroll space-x-4 p-4">
             {users.sameJobTypeUsers.map((user) => (
-              <div
+              <a
                 key={user.user_id}
+                href={`/other/${user.user_id}`}
                 className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative"
               >
                 <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
@@ -390,7 +396,7 @@ const Home = () => {
                   {user.name}
                 </h2>
                 <p className="text-center">{user.desired_occupation}</p>
-              </div>
+              </a>
             ))}
           </div>
         </div>
