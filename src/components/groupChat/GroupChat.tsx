@@ -7,11 +7,14 @@ import { Group, getGroupMembers } from "@/utils/getGroupMembers";
 import { Socket } from "socket.io-client";
 import socketIOClient from "socket.io-client";
 import SubHeader from "./SubHeader";
-import { User } from "@supabase/supabase-js";
+import { User } from "../profile/options";
+import { Snackbar, Alert, Avatar } from "@mui/material";
+import Link from "next/link";
 
 const GroupChat = ({ params }: { params: any }) => {
   const [uuid, setUuid] = useState<string>("");
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const [openSnackbar, setOpenSnackbar] = useState(false);
   useEffect(() => {
     const fetchUsers = async () => {
       const uuid = await getUuidFromCookie();
@@ -27,8 +30,11 @@ const GroupChat = ({ params }: { params: any }) => {
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [groupData, setGroupData] = useState<Group>({
+    id: "",
     owner_id: "",
     member_ids: [],
+    name: "",
+    description: "",
   });
   const [members, setMembers] = useState<User[]>([]);
 
@@ -51,8 +57,8 @@ const GroupChat = ({ params }: { params: any }) => {
       const { group, members } = await getGroupMembers(groupId);
       setGroupData(group);
       setMembers(members);
-      console.log(group.member_ids);
-      console.log(members);
+      console.log("groupData", group?.member_ids);
+      console.log("members", members);
     };
 
     fetchMembers();
@@ -101,38 +107,57 @@ const GroupChat = ({ params }: { params: any }) => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  const handleInputFocus = () => {
+    if (!groupData.member_ids.includes(uuid) && groupData.owner_id !== uuid) {
+      setOpenSnackbar(true);
+    }
+  };
+
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false);
+  };
+
   return (
     <>
       <SubHeader
         params={params}
         groupData={groupData}
         setGroupData={setGroupData}
+        members={members}
+        setMembers={setMembers}
       />
-      <div className="bg-secondary px-4 py-10 sm:px-6 lg:px-8">
-        <ul className="h-[100vh] overflow-y-auto overflow-x-hidden z-10">
-          {messages.map((message, index) => (
-            <div
-              key={index}
-              className={`my-2 ${
-                message.sender_id === uuid ? "text-right mr-5" : "ml-5"
-              }`}
-            >
-              <li className="inline-block">
-                <div
-                  className={`relative px-4 py-1 rounded-full inline-block ${
-                    message.sender_id === uuid
-                      ? "bg-accent"
-                      : "bg-primary shadow"
-                  }`}
-                >
-                  <p>{message.content}</p>
-                </div>
-                <p className="text-sm text-secondary">
-                  {new Date(message.created_at).toLocaleString()}
-                </p>
-              </li>
-            </div>
-          ))}
+      <div className="bg-secondary px-4 py-10 sm:px-6 lg:px-8 h-[100vh] overflow-y-auto overflow-x-hidden z-10">
+        <ul>
+          {messages.map((message, index) => {
+            // message.sender_idに対応するメンバーを見つける
+            const member = members?.find(
+              (m) => m.user_id === message.sender_id
+            );
+            return (
+              <div key={index} className={`my-2 ml-5 flex items-start`}>
+                <Link href={`/other/${member?.user_id}`}>
+                  <Avatar
+                    alt={member?.name || "Unknown"}
+                    src={
+                      member?.image_url || "/static/images/avatar/default.jpg"
+                    }
+                    className="mr-2"
+                  />
+                </Link>
+                <li className="inline-block">
+                  <p className="text-md font-bold mb-1">
+                    {member?.name || "Unknown"}
+                  </p>
+                  <div>
+                    <p>{message.content}</p>
+                  </div>
+                  <p className="text-sm text-secondary">
+                    {new Date(message.created_at).toLocaleString()}
+                  </p>
+                </li>
+              </div>
+            );
+          })}
           <div ref={messagesEndRef} />
         </ul>
         <form
@@ -146,15 +171,35 @@ const GroupChat = ({ params }: { params: any }) => {
             value={socketData}
             placeholder="メッセージを入力"
             onChange={(e) => setSocketData(e.target.value)}
+            onClick={handleInputFocus}
+            onFocus={handleInputFocus}
           />
           <button
             type="submit"
             className="ml-2 pb-3 bg-accent text-white rounded-lg p-2"
+            disabled={
+              groupData &&
+              !groupData.member_ids?.includes(uuid) &&
+              groupData.owner_id !== uuid
+            }
           >
             <MdSend className="h-5 w-5 ml-1 mt-1" />
           </button>
         </form>
       </div>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={null}
+        onClose={handleCloseSnackbar}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity="warning"
+          sx={{ width: "100%" }}
+        >
+          コメントするにはメンバーになる必要があります
+        </Alert>
+      </Snackbar>
     </>
   );
 };

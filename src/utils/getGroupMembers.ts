@@ -1,10 +1,12 @@
-import { User } from "@supabase/supabase-js";
+import { User } from "@/components/profile/options";
 
 // メッセージデータの型を定義
 export interface Group {
   id?: string;
   owner_id: string;
   member_ids: string[];
+  name: string;
+  description: string;
 }
 
 // メッセージを取得してソートする関数
@@ -27,6 +29,15 @@ export const getGroupMembers = async (
     return { group, members };
   } catch (error) {
     console.error("Error fetching group members:", error);
-    return { group: { owner_id: "", member_ids: [] }, members: [] };
+    return {
+      group: {
+        id: "",
+        owner_id: "",
+        member_ids: [],
+        name: "",
+        description: "",
+      },
+      members: [],
+    };
   }
 };
