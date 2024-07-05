@@ -135,7 +135,13 @@ const GroupChat = ({ params }: { params: any }) => {
             );
             return (
               <div key={index} className={`my-2 ml-5 flex items-start`}>
-                <Link href={`/other/${member?.user_id}`}>
+                <Link
+                  href={
+                    member?.user_id === uuid
+                      ? "/my-page"
+                      : `/other/${member?.user_id}`
+                  }
+                >
                   <Avatar
                     alt={member?.name || "Unknown"}
                     src={
