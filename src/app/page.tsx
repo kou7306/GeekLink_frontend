@@ -266,11 +266,12 @@ const Home = () => {
             総合的な一致度が高いお相手
           </p>
           <div className="flex overflow-x-scroll space-x-4 p-4">
-            {users.sortedUsers.map((user) => (
+          {users.sortedUsers.length > 0 ? (
+            users.sortedUsers.map((user) => (
               <a
                 key={user.user.user_id}
                 href={`/other/${user.user.user_id}`}
-                className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative"
+                className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative z-0"
               >
                 <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
                   <Image
@@ -291,39 +292,17 @@ const Home = () => {
                     ))}
                 </ul>
               </a>
-            ))}
+            ))
+          ) : (
+            <p className="text-center mt-4 ml-8">該当者がいません</p>
+          )}
           </div>
           <p className="flex justify-start text-2xl font-bold text-center mt-8 ml-8">
             技術スタックが一致しているお相手
           </p>
           <div className="flex overflow-x-scroll space-x-4 p-4">
-            {users.sameTopTechUsers.map((user) => (
-              <a
-                key={user.user_id}
-                href={`/other/${user.user_id}`}
-                className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative"
-              >
-                <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
-                  <Image
-                    src={user.image_url ?? "/user.svg"}
-                    layout="fill"
-                    objectFit="cover"
-                    alt={user.name}
-                    className="rounded-full"
-                  />
-                </div>
-                <h2 className="mt-4 text-lg font-semibold text-center">
-                  {user.name}
-                </h2>
-                <p className="text-center">{user.top_tech}</p>
-              </a>
-            ))}
-          </div>
-          <p className="flex justify-start text-2xl font-bold text-center mt-8 ml-8">
-            居住地が近いお相手
-          </p>
-          <div className="flex overflow-x-scroll space-x-4 p-4">
-            {users.samePlaceUsers.map((user) => (
+          {users.sameTopTechUsers.length > 0 ? (
+            users.sameTopTechUsers.map((user) => (
               <a
                 key={user.user_id}
                 href={`/other/${user.user_id}`}
@@ -341,19 +320,63 @@ const Home = () => {
                 <h2 className="mt-4 text-lg font-semibold text-center">
                   {user.name}
                 </h2>
-                <p className="text-center">{user.place}</p>
+                <ul className="text-center flex justify-center space-x-2 list-none p-0">
+                  {user.top_teches &&
+                    user.top_teches.map((tech: string) => (
+                      <li key={tech}>{tech}</li>
+                    ))}
+                </ul>
               </a>
-            ))}
+            ))
+          ) : (
+            <p className="text-center mt-4 ml-8">該当者がいません</p>
+          )}
+          </div>
+          <p className="flex justify-start text-2xl font-bold text-center mt-8 ml-8">
+            居住地が近いお相手
+          </p>
+          <div className="flex overflow-x-scroll space-x-4 p-4">
+          {users.samePlaceUsers.length > 0 ? (
+            users.samePlaceUsers.map((user) => (
+              <a
+                key={user.user_id}
+                href={`/other/${user.user_id}`}
+                className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative z-0"
+              >
+                <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
+                  <Image
+                    src={user.image_url ?? "/user.svg"}
+                    layout="fill"
+                    objectFit="cover"
+                    alt={user.name}
+                    className="rounded-full"
+                  />
+                </div>
+                <h2 className="mt-4 text-lg font-semibold text-center">
+                  {user.name}
+                </h2>
+                <ul className="text-center flex justify-center space-x-2 list-none p-0">
+                  {user.top_teches &&
+                    user.top_teches.map((tech: string) => (
+                      <li key={tech}>{tech}</li>
+                    ))}
+                </ul>
+              </a>
+            ))
+          ) : (
+            <p className="text-center mt-4 ml-8">該当者がいません</p>
+          )}
           </div>
           <p className="flex justify-start text-2xl font-bold text-center mt-8 ml-8">
             年齢が同じお相手
           </p>
           <div className="flex overflow-x-scroll space-x-4 p-4">
-            {users.sameAgeUsers.map((user) => (
+          {users.sameAgeUsers.length > 0 ? (
+            users.sameAgeUsers.map((user) => (
               <a
                 key={user.user_id}
                 href={`/other/${user.user_id}`}
-                className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative"
+                className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative z-0"
               >
                 <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
                   <Image
@@ -367,19 +390,28 @@ const Home = () => {
                 <h2 className="mt-4 text-lg font-semibold text-center">
                   {user.name}
                 </h2>
-                <p className="text-center">{user.age}</p>
+                <ul className="text-center flex justify-center space-x-2 list-none p-0">
+                  {user.top_teches &&
+                    user.top_teches.map((tech: string) => (
+                      <li key={tech}>{tech}</li>
+                    ))}
+                </ul>
               </a>
-            ))}
+            ))
+          ) : (
+            <p className="text-center mt-4 ml-8">該当者がいません</p>
+          )}
           </div>
           <p className="flex justify-start text-2xl font-bold text-center mt-8 ml-8">
             卒業年度が同じお相手
           </p>
           <div className="flex overflow-x-scroll space-x-4 p-4">
-            {users.sameGraduateYearUsers.map((user) => (
+          {users.sameGraduateYearUsers.length > 0 ? (
+            users.sameGraduateYearUsers.map((user) => (
               <a
                 key={user.user_id}
                 href={`/other/${user.user_id}`}
-                className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative"
+                className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative z-0"
               >
                 <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
                   <Image
@@ -393,19 +425,28 @@ const Home = () => {
                 <h2 className="mt-4 text-lg font-semibold text-center">
                   {user.name}
                 </h2>
-                <p className="text-center">{user.graduate}</p>
+                <ul className="text-center flex justify-center space-x-2 list-none p-0">
+                  {user.top_teches &&
+                    user.top_teches.map((tech: string) => (
+                      <li key={tech}>{tech}</li>
+                    ))}
+                </ul>
               </a>
-            ))}
+            ))
+          ) : (
+            <p className="text-center mt-4 ml-8">該当者がいません</p>
+          )}
           </div>
           <p className="flex justify-start text-2xl font-bold text-center mt-8 ml-8">
             希望職種が同じお相手
           </p>
           <div className="flex overflow-x-scroll space-x-4 p-4">
-            {users.sameJobTypeUsers.map((user) => (
+          {users.sameJobTypeUsers.length > 0 ? (
+            users.sameJobTypeUsers.map((user) => (
               <a
                 key={user.user_id}
                 href={`/other/${user.user_id}`}
-                className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative"
+                className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative z-0"
               >
                 <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
                   <Image
@@ -419,9 +460,17 @@ const Home = () => {
                 <h2 className="mt-4 text-lg font-semibold text-center">
                   {user.name}
                 </h2>
-                <p className="text-center">{user.desired_occupation}</p>
+                <ul className="text-center flex justify-center space-x-2 list-none p-0">
+                  {user.top_teches &&
+                    user.top_teches.map((tech: string) => (
+                      <li key={tech}>{tech}</li>
+                    ))}
+                </ul>
               </a>
-            ))}
+            ))
+          ) : (
+            <p className="text-center mt-4 ml-8">該当者がいません</p>
+          )}
           </div>
         </div>
       ) : (
