@@ -8,7 +8,8 @@ import { Socket } from "socket.io-client";
 import socketIOClient from "socket.io-client";
 import SubHeader from "./SubHeader";
 import { User } from "../profile/options";
-import { Snackbar, Alert } from "@mui/material";
+import { Snackbar, Alert, Avatar } from "@mui/material";
+import Link from "next/link";
 
 const GroupChat = ({ params }: { params: any }) => {
   const [uuid, setUuid] = useState<string>("");
@@ -122,31 +123,36 @@ const GroupChat = ({ params }: { params: any }) => {
         members={members}
         setMembers={setMembers}
       />
-      <div className="bg-secondary px-4 py-10 sm:px-6 lg:px-8">
-        <ul className="h-[100vh] overflow-y-auto overflow-x-hidden z-10">
-          {messages.map((message, index) => (
-            <div
-              key={index}
-              className={`my-2 ${
-                message.sender_id === uuid ? "text-right mr-5" : "ml-5"
-              }`}
-            >
-              <li className="inline-block">
-                <div
-                  className={`relative px-4 py-1 rounded-full inline-block ${
-                    message.sender_id === uuid
-                      ? "bg-accent"
-                      : "bg-primary shadow"
-                  }`}
-                >
-                  <p>{message.content}</p>
-                </div>
-                <p className="text-sm text-secondary">
-                  {new Date(message.created_at).toLocaleString()}
-                </p>
-              </li>
-            </div>
-          ))}
+      <div className="bg-secondary px-4 py-10 sm:px-6 lg:px-8 h-[100vh] overflow-y-auto overflow-x-hidden z-10">
+        <ul>
+          {messages.map((message, index) => {
+            // message.sender_idに対応するメンバーを見つける
+            const member = members.find((m) => m.user_id === message.sender_id);
+            return (
+              <div key={index} className={`my-2 ml-5 flex items-start`}>
+                <Link href={`/other/${member?.user_id}`}>
+                  <Avatar
+                    alt={member?.name || "Unknown"}
+                    src={
+                      member?.image_url || "/static/images/avatar/default.jpg"
+                    }
+                    className="mr-2"
+                  />
+                </Link>
+                <li className="inline-block">
+                  <p className="text-md font-bold mb-1">
+                    {member?.name || "Unknown"}
+                  </p>
+                  <div>
+                    <p>{message.content}</p>
+                  </div>
+                  <p className="text-sm text-secondary">
+                    {new Date(message.created_at).toLocaleString()}
+                  </p>
+                </li>
+              </div>
+            );
+          })}
           <div ref={messagesEndRef} />
         </ul>
         <form
