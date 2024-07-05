@@ -5,6 +5,15 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import FilterSearch from "@/components/modal/FilterSearch";
+import {
+  ageToIndex,
+  desiredOccupationToIndex,
+  experienceToIndex,
+  graduateToIndex,
+  occupationToIndex,
+  placeToIndex,
+  techToIndex,
+} from "@/utils/mapping";
 
 const Home = () => {
   const characters = [
@@ -102,9 +111,7 @@ const Home = () => {
   const [selectedFirstTechs, setSelectedFirstTechs] = useState<string[]>([]);
   const [selectedOccupations, setSelectedOccupations] = useState<string[]>([]);
   const [selectedGraduates, setSelectedGraduates] = useState<string[]>([]);
-  const [selectedDesiredOccupations, setSelectedDesiredOccupations] = useState<
-    string[]
-  >([]);
+  const [selectedDesiredOccupations, setSelectedDesiredOccupations] = useState<string[]>([]);
   const [selectedExperiences, setSelectedExperiences] = useState<string[]>([]);
 
   const router = useRouter();
@@ -193,9 +200,7 @@ const Home = () => {
     console.log(desiredOccupationOption);
     setSelectedDesiredOccupations((prevSelectedDesiredOccupations) =>
       prevSelectedDesiredOccupations.includes(desiredOccupationOption)
-        ? prevSelectedDesiredOccupations.filter(
-            (d) => d !== desiredOccupationOption
-          )
+        ? prevSelectedDesiredOccupations.filter((d) => d !== desiredOccupationOption)
         : [...prevSelectedDesiredOccupations, desiredOccupationOption]
     );
     console.log(selectedDesiredOccupations);
@@ -208,6 +213,19 @@ const Home = () => {
         : [...prevSelectedExperiences, experienceOption]
     );
     console.log(selectedExperiences);
+  };
+  const handleSearch = () => {
+    const placesQuery = selectedPlaces.map(placeToIndex).join(",");
+    const agesQuery = selectedAges.map(ageToIndex).join(",");
+    const techsQuery = selectedFirstTechs.map(techToIndex).join(",");
+    const occupationsQuery = selectedOccupations.map(occupationToIndex).join(",");
+    const graduatesQuery = selectedGraduates.map(graduateToIndex).join(",");
+    const desiredOccupationsQuery = selectedDesiredOccupations.map(desiredOccupationToIndex).join(",");
+    const experiencesQuery = selectedExperiences.map(experienceToIndex).join(",");
+
+    const query = `places=${placesQuery}&ages=${agesQuery}&hobby=${enteredHobby}&techs=${techsQuery}&occupations=${occupationsQuery}&graduates=${graduatesQuery}&desiredOccupations=${desiredOccupationsQuery}&experiences=${experiencesQuery}`;
+
+    router.push(`/filter?${query}`);
   };
 
   return (
@@ -229,6 +247,7 @@ const Home = () => {
         selectedDesiredOccupations={selectedDesiredOccupations}
         handleExperienceClick={handleExperienceClick}
         selectedExperiences={selectedExperiences}
+        onSearch={handleSearch}
       />
       {userExists ? (
         <div>
@@ -250,9 +269,7 @@ const Home = () => {
                     className="rounded-full"
                   />
                 </div>
-                <h2 className="mt-4 text-lg font-semibold text-center">
-                  {character.name}
-                </h2>
+                <h2 className="mt-4 text-lg font-semibold text-center">{character.name}</h2>
                 <p className="text-center">{character.place}</p>
               </div>
             ))}
@@ -276,14 +293,9 @@ const Home = () => {
                     className="rounded-full"
                   />
                 </div>
-                <h2 className="mt-4 text-lg font-semibold text-center">
-                  {character.name}
-                </h2>
+                <h2 className="mt-4 text-lg font-semibold text-center">{character.name}</h2>
                 <ul className="text-center flex justify-center space-x-2 list-none p-0">
-                  {character.techs &&
-                    character.techs.map((tech, index) => (
-                      <li key={index}>{tech}</li>
-                    ))}
+                  {character.techs && character.techs.map((tech, index) => <li key={index}>{tech}</li>)}
                 </ul>
               </div>
             ))}
