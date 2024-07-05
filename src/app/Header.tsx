@@ -15,6 +15,9 @@ const Header = () => {
           <a href="/conversation" className="text-black hover:text-accent">
             メッセージ
           </a>
+          <a href="/group-list" className="text-black hover:text-accent">
+            グループ
+          </a>
           <a href="/random-match" className="text-black hover:text-accent">
             ランダムマッチ
           </a>
