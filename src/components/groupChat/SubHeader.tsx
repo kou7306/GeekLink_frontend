@@ -1,6 +1,6 @@
 import { Box, Button, Typography } from "@mui/material";
 import Link from "next/link";
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { getUuidFromCookie } from "@/actions/users";
 import { addGroupMember } from "@/utils/addGroupMember";
@@ -29,8 +29,8 @@ const SubHeader: React.FC<Props> = ({ params, groupData, setGroupData }) => {
   const groupId = params.groupId;
 
   const handleAddMember = async () => {
-    if (uuid && params.groupId) {
-      const response = await addGroupMember(params.groupId, uuid);
+    if (uuid && groupId) {
+      const response = await addGroupMember(groupId, uuid);
       console.log(response.message);
       if (response.message === "success") {
         setGroupData((prevGroupData) => ({
