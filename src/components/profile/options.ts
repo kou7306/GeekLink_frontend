@@ -28,7 +28,7 @@ export interface User {
   atcoder?: string;
 }
 
-export const ages = Array.from({ length: 66 }, (_, i) => (i + 15).toString());
+export const ages = ["15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28"]
 
 export const places = [
   "北海道",

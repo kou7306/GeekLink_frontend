@@ -1,10 +1,16 @@
 import { Box, Button } from "@mui/material";
 import React from "react";
 
-const SearchButton = () => {
+interface Props {
+  onClick: () => void;
+}
+
+const SearchButton = (props: Props) => {
+  const { onClick } = props;
   return (
     <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
       <Button
+        onClick={onClick}
         variant="contained"
         sx={{
           backgroundColor: "#25276D",

@@ -52,6 +52,7 @@ type Props = {
   selectedDesiredOccupations: string[];
   handleExperienceClick: (experienceOption: string) => void;
   selectedExperiences: string[];
+  onSearch: () => void;
 };
 
 const FilterSearch: React.FC<Props> = ({
@@ -71,10 +72,14 @@ const FilterSearch: React.FC<Props> = ({
   selectedDesiredOccupations,
   handleExperienceClick,
   selectedExperiences,
+  onSearch,
 }) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  
+
   return (
     <ThemeProvider theme={theme}>
       <div>
@@ -145,7 +150,7 @@ const FilterSearch: React.FC<Props> = ({
                 handleExperienceClick={handleExperienceClick}
                 selectedExperiences={selectedExperiences}
               />
-              <SearchButton />
+              <SearchButton onClick={onSearch} />
             </Box>
           </Box>
         </Modal>
