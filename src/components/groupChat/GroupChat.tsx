@@ -7,6 +7,7 @@ import { Group, getGroupMembers } from "@/utils/getGroupMembers";
 import { Socket } from "socket.io-client";
 import socketIOClient from "socket.io-client";
 import SubHeader from "./SubHeader";
+import { User } from "@supabase/supabase-js";
 
 const GroupChat = ({ params }: { params: any }) => {
   const [uuid, setUuid] = useState<string>("");
@@ -29,6 +30,8 @@ const GroupChat = ({ params }: { params: any }) => {
     owner_id: "",
     member_ids: [],
   });
+  const [members, setMembers] = useState<User[]>([]);
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // メッセージを取得してソートする
@@ -45,9 +48,11 @@ const GroupChat = ({ params }: { params: any }) => {
   // グループメンバーを取得する
   useEffect(() => {
     const fetchMembers = async () => {
-      const { group } = await getGroupMembers(groupId);
+      const { group, members } = await getGroupMembers(groupId);
       setGroupData(group);
+      setMembers(members);
       console.log(group.member_ids);
+      console.log(members);
     };
 
     fetchMembers();
