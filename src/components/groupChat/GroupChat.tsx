@@ -160,6 +160,7 @@ const GroupChat = ({ params }: { params: any }) => {
             value={socketData}
             placeholder="メッセージを入力"
             onChange={(e) => setSocketData(e.target.value)}
+            onClick={handleInputFocus}
             onFocus={handleInputFocus}
           />
           <button
