@@ -71,7 +71,7 @@ const SubHeader: React.FC<Props> = ({
         />
       </Link>
       <Typography paddingY={1} paddingLeft={2} fontWeight={"bold"}>
-        グループ名
+        {groupData.name}
       </Typography>
       <Box ml={"auto"} display={"flex"} alignItems={"center"}>
         {groupData && !groupData.member_ids?.includes(uuid) ? (
