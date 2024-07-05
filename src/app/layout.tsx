@@ -9,7 +9,7 @@ import { getUser } from "@/lib/auth";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Giiku5",
+  title: "GeekLink",
 };
 
 export default async function RootLayout({
