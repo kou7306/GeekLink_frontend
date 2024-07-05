@@ -7,7 +7,7 @@ import { Group, getGroupMembers } from "@/utils/getGroupMembers";
 import { Socket } from "socket.io-client";
 import socketIOClient from "socket.io-client";
 import SubHeader from "./SubHeader";
-import { User } from "@supabase/supabase-js";
+import { User } from "../profile/options";
 
 const GroupChat = ({ params }: { params: any }) => {
   const [uuid, setUuid] = useState<string>("");
@@ -107,6 +107,8 @@ const GroupChat = ({ params }: { params: any }) => {
         params={params}
         groupData={groupData}
         setGroupData={setGroupData}
+        members={members}
+        setMembers={setMembers}
       />
       <div className="bg-secondary px-4 py-10 sm:px-6 lg:px-8">
         <ul className="h-[100vh] overflow-y-auto overflow-x-hidden z-10">

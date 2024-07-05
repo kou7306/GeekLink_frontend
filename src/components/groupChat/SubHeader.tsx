@@ -1,18 +1,28 @@
 import { Box, Button, Typography } from "@mui/material";
 import Link from "next/link";
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { getUuidFromCookie } from "@/actions/users";
 import { addGroupMember } from "@/utils/addGroupMember";
 import { Group } from "@/utils/getGroupMembers";
+import AvatarList from "./AvatarList";
+import { User } from "../profile/options";
 
 type Props = {
   params: any;
   groupData: Group;
   setGroupData: React.Dispatch<React.SetStateAction<Group>>;
+  members: User[];
+  setMembers: React.Dispatch<React.SetStateAction<User[]>>;
 };
 
-const SubHeader: React.FC<Props> = ({ params, groupData, setGroupData }) => {
+const SubHeader: React.FC<Props> = ({
+  params,
+  groupData,
+  setGroupData,
+  members,
+  setMembers,
+}) => {
   const [uuid, setUuid] = useState<string>("");
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   useEffect(() => {
@@ -63,39 +73,41 @@ const SubHeader: React.FC<Props> = ({ params, groupData, setGroupData }) => {
       <Typography paddingY={1} paddingLeft={2} fontWeight={"bold"}>
         グループ名
       </Typography>
-      {!groupData.member_ids.includes(uuid) ? (
-        <Button
-          onClick={handleAddMember}
-          sx={{
-            ml: "auto",
-            mr: 2,
-            paddingX: 2,
-            backgroundColor: "#007BFF",
-            color: "white",
-            borderRadius: "20px",
-            textTransform: "none",
-            "&:hover": {
-              backgroundColor: "#0056b3",
-            },
-          }}
-        >
-          メンバーになる
-        </Button>
-      ) : (
-        <>
-          <Typography
+      <Box ml={"auto"} display={"flex"} alignItems={"center"}>
+        {!groupData.member_ids.includes(uuid) ? (
+          <Button
+            onClick={handleAddMember}
             sx={{
-              ml: "auto",
-              pr: 2,
-              fontSize: "1rem",
-              fontWeight: "bold",
-              color: "green",
+              mr: 2,
+              paddingX: 2,
+              marginY: 1,
+              backgroundColor: "#007BFF",
+              color: "white",
+              borderRadius: "20px",
+              textTransform: "none",
+              "&:hover": {
+                backgroundColor: "#0056b3",
+              },
             }}
           >
-            あなたはメンバーです
-          </Typography>
-        </>
-      )}
+            メンバーになる
+          </Button>
+        ) : (
+          <>
+            <Typography
+              sx={{
+                pr: 2,
+                fontSize: "1rem",
+                fontWeight: "bold",
+                color: "green",
+              }}
+            >
+              あなたはメンバーです
+            </Typography>
+          </>
+        )}
+        <AvatarList groupData={groupData} members={members} />
+      </Box>
     </Box>
   );
 };

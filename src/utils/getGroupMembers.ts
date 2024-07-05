@@ -1,4 +1,4 @@
-import { User } from "@supabase/supabase-js";
+import { User } from "@/components/profile/options";
 
 // メッセージデータの型を定義
 export interface Group {
