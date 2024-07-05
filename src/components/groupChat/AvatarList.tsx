@@ -8,7 +8,7 @@ type Props = { groupData: Group; members: User[] };
 const AvatarList: React.FC<Props> = ({ groupData, members }) => {
   return (
     <AvatarGroup max={3} sx={{ paddingY: 1, paddingX: 2 }}>
-      {members.map((member) => (
+      {members?.map((member) => (
         <Avatar
           key={member.user_id}
           alt={member.name}

@@ -30,8 +30,11 @@ const GroupChat = ({ params }: { params: any }) => {
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [groupData, setGroupData] = useState<Group>({
+    id: "",
     owner_id: "",
     member_ids: [],
+    name: "",
+    description: "",
   });
   const [members, setMembers] = useState<User[]>([]);
 
@@ -54,8 +57,8 @@ const GroupChat = ({ params }: { params: any }) => {
       const { group, members } = await getGroupMembers(groupId);
       setGroupData(group);
       setMembers(members);
-      console.log(group.member_ids);
-      console.log(members);
+      console.log("groupData", group?.member_ids);
+      console.log("members", members);
     };
 
     fetchMembers();
@@ -127,7 +130,9 @@ const GroupChat = ({ params }: { params: any }) => {
         <ul>
           {messages.map((message, index) => {
             // message.sender_idに対応するメンバーを見つける
-            const member = members.find((m) => m.user_id === message.sender_id);
+            const member = members?.find(
+              (m) => m.user_id === message.sender_id
+            );
             return (
               <div key={index} className={`my-2 ml-5 flex items-start`}>
                 <Link href={`/other/${member?.user_id}`}>
@@ -173,7 +178,8 @@ const GroupChat = ({ params }: { params: any }) => {
             type="submit"
             className="ml-2 pb-3 bg-accent text-white rounded-lg p-2"
             disabled={
-              !groupData.member_ids.includes(uuid) &&
+              groupData &&
+              !groupData.member_ids?.includes(uuid) &&
               groupData.owner_id !== uuid
             }
           >
