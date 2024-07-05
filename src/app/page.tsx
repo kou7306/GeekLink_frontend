@@ -47,72 +47,7 @@ interface UsersResponse {
 }
 
 const Home = () => {
-  const characters = [
-    {
-      id: 0,
-      name: "Asuka",
-      url: "/img/pi.jpg",
-      place: "東京都",
-      techs: ["React", "TypeScript"],
-    },
-    {
-      id: 1,
-      name: "Gendo Ikari",
-      url: "/img/ima.jpg",
-      place: "福井県",
-      techs: ["Vue", "JavaScript"],
-    },
-    {
-      id: 2,
-      name: "Kaoru Nagisa",
-      url: "/img/hu.png",
-      place: "大阪府",
-      techs: ["Angular", "JavaScript"],
-    },
-    {
-      id: 3,
-      name: "Rei Ayanami",
-      url: "/img/light.jpg",
-      place: "東京都",
-      techs: ["React", "TypeScript"],
-    },
-    {
-      id: 4,
-      name: "Shinji Ikari",
-      url: "/img/poke.png",
-      place: "東京都",
-      techs: ["React", "TypeScript"],
-    },
-    {
-      id: 5,
-      name: "Mari Makinami",
-      url: "/img/cat.png",
-      place: "北海道",
-      techs: ["Svelte", "JavaScript"],
-    },
-    {
-      id: 6,
-      name: "Kensuke Aida",
-      url: "/img/ka.png",
-      place: "福岡県",
-      techs: ["React", "TypeScript"],
-    },
-    {
-      id: 7,
-      name: "Toji Suzuhara",
-      url: "/img/GendoIkari.jpg",
-      place: "千葉県",
-      techs: ["Vue", "JavaScript"],
-    },
-    {
-      id: 8,
-      name: "Ritsuko Akagi",
-      url: "/img/AsukaSouryu.jpg",
-      place: "東京都",
-      techs: ["Angular", "JavaScript"],
-    },
-  ];
-
+  
   const [userExists, setUserExists] = useState(null);
 
   const [selectedPlaces, setSelectedPlaces] = useState<string[]>([]);
@@ -176,26 +111,45 @@ const Home = () => {
       const uuid = await getUuidFromCookie();
       if (!uuid) return; // UUIDが存在しない場合は実行しない
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/suggest/all?uuid=${uuid}`, {
-        method: "GET",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const CACHE_KEY = `suggestData_${uuid}`;
+      const CACHE_EXPIRY_KEY = `cacheExpiry_${uuid}`;
+      const CACHE_DURATION = 24 * 60 * 60 * 1000; // 有効期限を1日に設定
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
+      // キャッシュを確認
+      const cachedData: string | null = localStorage.getItem(CACHE_KEY);
+      const cacheExpiry: string | null = localStorage.getItem(CACHE_EXPIRY_KEY);
+
+      if (cachedData && cacheExpiry && new Date().getTime() < parseInt(cacheExpiry)) {
+        // キャッシュが有効であればそれを使用
+        console.log("Using cached data");
+        setUsers(JSON.parse(cachedData));
+      } else {
+        // キャッシュが存在しないor有効期限が切れている場合はAPIを呼び出す
+        const response: Response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/suggest/all?uuid=${uuid}`, {
+          method: "GET",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const data: UsersResponse = await response.json();
+
+        // データをキャッシュに保存し、有効期限を設定
+        localStorage.setItem(CACHE_KEY, JSON.stringify(data));
+        localStorage.setItem(CACHE_EXPIRY_KEY, (new Date().getTime() + CACHE_DURATION).toString());
+
+        console.log(data);
+        setUsers(data);
       }
-
-      const data = await response.json();
-
-      console.log(data);
-      setUsers(data)
     };
 
     fetchAndSetData();
-  }, []); // UUIDが設定されたときに実行する
+  }, [uuid]);
 
   const handlePlaceClick = (place: string) => {
     console.log(place);
