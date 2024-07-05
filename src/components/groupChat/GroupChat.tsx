@@ -3,9 +3,10 @@ import { use, useEffect, useRef, useState } from "react";
 import { MdSend } from "react-icons/md";
 import { getUuidFromCookie } from "@/actions/users";
 import { getMessageData, Message } from "@/utils/getMessageData";
-import { getGroupMembers } from "@/utils/getGroupMembers";
+import { Group, getGroupMembers } from "@/utils/getGroupMembers";
 import { Socket } from "socket.io-client";
 import socketIOClient from "socket.io-client";
+import SubHeader from "./SubHeader";
 
 const GroupChat = ({ params }: { params: any }) => {
   const [uuid, setUuid] = useState<string>("");
@@ -24,6 +25,10 @@ const GroupChat = ({ params }: { params: any }) => {
   const groupId = params.groupId;
 
   const [messages, setMessages] = useState<Message[]>([]);
+  const [groupData, setGroupData] = useState<Group>({
+    owner_id: "",
+    member_ids: [],
+  });
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // メッセージを取得してソートする
@@ -41,6 +46,7 @@ const GroupChat = ({ params }: { params: any }) => {
   useEffect(() => {
     const fetchMembers = async () => {
       const { group } = await getGroupMembers(groupId);
+      setGroupData(group);
       console.log(group.member_ids);
     };
 
@@ -91,51 +97,60 @@ const GroupChat = ({ params }: { params: any }) => {
   }, [messages]);
 
   return (
-    <div className="bg-secondary px-4 py-10 sm:px-6 lg:px-8">
-      <ul className="h-[100vh] overflow-y-auto overflow-x-hidden z-10">
-        {messages.map((message, index) => (
-          <div
-            key={index}
-            className={`my-2 ${
-              message.sender_id === uuid ? "text-right mr-5" : "ml-5"
-            }`}
-          >
-            <li className="inline-block">
-              <div
-                className={`relative px-4 py-1 rounded-full inline-block ${
-                  message.sender_id === uuid ? "bg-accent" : "bg-primary shadow"
-                }`}
-              >
-                <p>{message.content}</p>
-              </div>
-              <p className="text-sm text-secondary">
-                {new Date(message.created_at).toLocaleString()}
-              </p>
-            </li>
-          </div>
-        ))}
-        <div ref={messagesEndRef} />
-      </ul>
-      <form
-        onSubmit={sendData}
-        className="fixed bottom-0 w-full p-2 bg-secondary z-99 flex justify-center items-center"
-      >
-        <input
-          className="w-3/5 bg-primary rounded-xl px-2 py-3 border-0 active:border-2 active:border-accent leading-tight"
-          type="text"
-          name="socketData"
-          value={socketData}
-          placeholder="メッセージを入力"
-          onChange={(e) => setSocketData(e.target.value)}
-        />
-        <button
-          type="submit"
-          className="ml-2 pb-3 bg-accent text-white rounded-lg p-2"
+    <>
+      <SubHeader
+        params={params}
+        groupData={groupData}
+        setGroupData={setGroupData}
+      />
+      <div className="bg-secondary px-4 py-10 sm:px-6 lg:px-8">
+        <ul className="h-[100vh] overflow-y-auto overflow-x-hidden z-10">
+          {messages.map((message, index) => (
+            <div
+              key={index}
+              className={`my-2 ${
+                message.sender_id === uuid ? "text-right mr-5" : "ml-5"
+              }`}
+            >
+              <li className="inline-block">
+                <div
+                  className={`relative px-4 py-1 rounded-full inline-block ${
+                    message.sender_id === uuid
+                      ? "bg-accent"
+                      : "bg-primary shadow"
+                  }`}
+                >
+                  <p>{message.content}</p>
+                </div>
+                <p className="text-sm text-secondary">
+                  {new Date(message.created_at).toLocaleString()}
+                </p>
+              </li>
+            </div>
+          ))}
+          <div ref={messagesEndRef} />
+        </ul>
+        <form
+          onSubmit={sendData}
+          className="fixed bottom-0 w-full p-2 bg-secondary z-99 flex justify-center items-center"
         >
-          <MdSend className="h-5 w-5 ml-1 mt-1" />
-        </button>
-      </form>
-    </div>
+          <input
+            className="w-3/5 bg-primary rounded-xl px-2 py-3 border-0 active:border-2 active:border-accent leading-tight"
+            type="text"
+            name="socketData"
+            value={socketData}
+            placeholder="メッセージを入力"
+            onChange={(e) => setSocketData(e.target.value)}
+          />
+          <button
+            type="submit"
+            className="ml-2 pb-3 bg-accent text-white rounded-lg p-2"
+          >
+            <MdSend className="h-5 w-5 ml-1 mt-1" />
+          </button>
+        </form>
+      </div>
+    </>
   );
 };
 
