@@ -1,3 +1,5 @@
+import { User } from "@supabase/supabase-js";
+
 // メッセージデータの型を定義
 export interface Group {
   id?: string;
@@ -8,7 +10,7 @@ export interface Group {
 // メッセージを取得してソートする関数
 export const getGroupMembers = async (
   groupId: string
-): Promise<{ group: Group }> => {
+): Promise<{ group: Group; members: User[] }> => {
   try {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     // APIからデータを取得
@@ -20,10 +22,11 @@ export const getGroupMembers = async (
       }
     );
     // レスポンスをJSONとしてパース
-    const { group }: { group: Group } = await response.json();
-    return { group };
+    const { group, members }: { group: Group; members: User[] } =
+      await response.json();
+    return { group, members };
   } catch (error) {
-    console.error("Error fetching messages:", error);
-    return { group: { owner_id: "", member_ids: [] } };
+    console.error("Error fetching group members:", error);
+    return { group: { owner_id: "", member_ids: [] }, members: [] };
   }
 };
