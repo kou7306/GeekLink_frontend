@@ -4,6 +4,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+import CreateGroup from "@/components/groupChat/CreateGroup";
 
 interface Group {
   id: String
@@ -33,6 +34,7 @@ const Page = () => {
 
   return (
     <div className="p-4">
+      <CreateGroup />
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 justify-center">
         {groups?.map((group) => (
           <div key={group.id.toString()} className="flex justify-center">
@@ -43,7 +45,7 @@ const Page = () => {
                     <Typography variant="h5" component="div" className="text-xl font-semibold mb-8">
                       {group.name}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary" className="text-gray-600 mb-4">
+                    <Typography variant="body2" color="text.secondary" className="text-gray-600 mb-2">
                       概要：{group.description}
                     </Typography>
                     <Typography variant="body2" color="text.secondary" className="text-gray-600">
