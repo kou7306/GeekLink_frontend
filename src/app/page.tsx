@@ -16,6 +16,7 @@ import {
 } from "@/utils/mapping";
 import { User } from "@supabase/supabase-js";
 import CreateGroup from "@/components/groupChat/CreateGroup";
+import Loading from "@/components/core/Loading";
 
 interface Profile {
   user_id: string;
@@ -65,7 +66,9 @@ const Home = () => {
   const [selectedFirstTechs, setSelectedFirstTechs] = useState<string[]>([]);
   const [selectedOccupations, setSelectedOccupations] = useState<string[]>([]);
   const [selectedGraduates, setSelectedGraduates] = useState<string[]>([]);
-  const [selectedDesiredOccupations, setSelectedDesiredOccupations] = useState<string[]>([]);
+  const [selectedDesiredOccupations, setSelectedDesiredOccupations] = useState<
+    string[]
+  >([]);
   const [selectedExperiences, setSelectedExperiences] = useState<string[]>([]);
   const [uuid, setUuid] = useState<string>("");
   const [users, setUsers] = useState<UsersResponse | null>(null);
@@ -229,7 +232,9 @@ const Home = () => {
     console.log(desiredOccupationOption);
     setSelectedDesiredOccupations((prevSelectedDesiredOccupations) =>
       prevSelectedDesiredOccupations.includes(desiredOccupationOption)
-        ? prevSelectedDesiredOccupations.filter((d) => d !== desiredOccupationOption)
+        ? prevSelectedDesiredOccupations.filter(
+            (d) => d !== desiredOccupationOption
+          )
         : [...prevSelectedDesiredOccupations, desiredOccupationOption]
     );
     console.log(selectedDesiredOccupations);
@@ -247,10 +252,16 @@ const Home = () => {
     const placesQuery = selectedPlaces.map(placeToIndex).join(",");
     const agesQuery = selectedAges.map(ageToIndex).join(",");
     const techsQuery = selectedFirstTechs.map(techToIndex).join(",");
-    const occupationsQuery = selectedOccupations.map(occupationToIndex).join(",");
+    const occupationsQuery = selectedOccupations
+      .map(occupationToIndex)
+      .join(",");
     const graduatesQuery = selectedGraduates.map(graduateToIndex).join(",");
-    const desiredOccupationsQuery = selectedDesiredOccupations.map(desiredOccupationToIndex).join(",");
-    const experiencesQuery = selectedExperiences.map(experienceToIndex).join(",");
+    const desiredOccupationsQuery = selectedDesiredOccupations
+      .map(desiredOccupationToIndex)
+      .join(",");
+    const experiencesQuery = selectedExperiences
+      .map(experienceToIndex)
+      .join(",");
 
     const query = `places=${placesQuery}&ages=${agesQuery}&hobby=${enteredHobby}&techs=${techsQuery}&occupations=${occupationsQuery}&graduates=${graduatesQuery}&desiredOccupations=${desiredOccupationsQuery}&experiences=${experiencesQuery}`;
 
@@ -285,215 +296,215 @@ const Home = () => {
             総合的な一致度が高いお相手
           </p>
           <div className="flex overflow-x-scroll space-x-4 p-4">
-          {users.sortedUsers.length > 0 ? (
-            users.sortedUsers.map((user) => (
-              <a
-                key={user.user.user_id}
-                href={`/other/${user.user.user_id}`}
-                className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative z-0"
-              >
-                <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
-                  <Image
-                    src={user.user.image_url ?? "/user.svg"}
-                    layout="fill"
-                    objectFit="cover"
-                    alt={user.user.name}
-                    className="rounded-full"
-                  />
-                </div>
-                <h2 className="mt-4 text-lg font-semibold text-center">
-                  {user.user.name}
-                </h2>
-                <ul className="text-center flex justify-center space-x-2 list-none p-0">
-                  {user.user.top_teches &&
-                    user.user.top_teches.map((tech: string) => (
-                      <li key={tech}>{tech}</li>
-                    ))}
-                </ul>
-              </a>
-            ))
-          ) : (
-            <p className="text-center mt-4 ml-8">該当者がいません</p>
-          )}
+            {users.sortedUsers.length > 0 ? (
+              users.sortedUsers.map((user) => (
+                <a
+                  key={user.user.user_id}
+                  href={`/other/${user.user.user_id}`}
+                  className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative z-0"
+                >
+                  <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
+                    <Image
+                      src={user.user.image_url ?? "/user.svg"}
+                      layout="fill"
+                      objectFit="cover"
+                      alt={user.user.name}
+                      className="rounded-full"
+                    />
+                  </div>
+                  <h2 className="mt-4 text-lg font-semibold text-center">
+                    {user.user.name}
+                  </h2>
+                  <ul className="text-center flex justify-center space-x-2 list-none p-0">
+                    {user.user.top_teches &&
+                      user.user.top_teches.map((tech: string) => (
+                        <li key={tech}>{tech}</li>
+                      ))}
+                  </ul>
+                </a>
+              ))
+            ) : (
+              <p className="text-center mt-4 ml-8">該当者がいません</p>
+            )}
           </div>
           <p className="flex justify-start text-2xl font-bold text-center mt-8 ml-8">
             技術スタックが一致しているお相手
           </p>
           <div className="flex overflow-x-scroll space-x-4 p-4">
-          {users.sameTopTechUsers.length > 0 ? (
-            users.sameTopTechUsers.map((user) => (
-              <a
-                key={user.user_id}
-                href={`/other/${user.user_id}`}
-                className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative z-0"
-              >
-                <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
-                  <Image
-                    src={user.image_url ?? "/user.svg"}
-                    layout="fill"
-                    objectFit="cover"
-                    alt={user.name}
-                    className="rounded-full"
-                  />
-                </div>
-                <h2 className="mt-4 text-lg font-semibold text-center">
-                  {user.name}
-                </h2>
-                <ul className="text-center flex justify-center space-x-2 list-none p-0">
-                  {user.top_teches &&
-                    user.top_teches.map((tech: string) => (
-                      <li key={tech}>{tech}</li>
-                    ))}
-                </ul>
-              </a>
-            ))
-          ) : (
-            <p className="text-center mt-4 ml-8">該当者がいません</p>
-          )}
+            {users.sameTopTechUsers.length > 0 ? (
+              users.sameTopTechUsers.map((user) => (
+                <a
+                  key={user.user_id}
+                  href={`/other/${user.user_id}`}
+                  className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative z-0"
+                >
+                  <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
+                    <Image
+                      src={user.image_url ?? "/user.svg"}
+                      layout="fill"
+                      objectFit="cover"
+                      alt={user.name}
+                      className="rounded-full"
+                    />
+                  </div>
+                  <h2 className="mt-4 text-lg font-semibold text-center">
+                    {user.name}
+                  </h2>
+                  <ul className="text-center flex justify-center space-x-2 list-none p-0">
+                    {user.top_teches &&
+                      user.top_teches.map((tech: string) => (
+                        <li key={tech}>{tech}</li>
+                      ))}
+                  </ul>
+                </a>
+              ))
+            ) : (
+              <p className="text-center mt-4 ml-8">該当者がいません</p>
+            )}
           </div>
           <p className="flex justify-start text-2xl font-bold text-center mt-8 ml-8">
             居住地が近いお相手
           </p>
           <div className="flex overflow-x-scroll space-x-4 p-4">
-          {users.samePlaceUsers.length > 0 ? (
-            users.samePlaceUsers.map((user) => (
-              <a
-                key={user.user_id}
-                href={`/other/${user.user_id}`}
-                className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative z-0"
-              >
-                <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
-                  <Image
-                    src={user.image_url ?? "/user.svg"}
-                    layout="fill"
-                    objectFit="cover"
-                    alt={user.name}
-                    className="rounded-full"
-                  />
-                </div>
-                <h2 className="mt-4 text-lg font-semibold text-center">
-                  {user.name}
-                </h2>
-                <ul className="text-center flex justify-center space-x-2 list-none p-0">
-                  {user.top_teches &&
-                    user.top_teches.map((tech: string) => (
-                      <li key={tech}>{tech}</li>
-                    ))}
-                </ul>
-              </a>
-            ))
-          ) : (
-            <p className="text-center mt-4 ml-8">該当者がいません</p>
-          )}
+            {users.samePlaceUsers.length > 0 ? (
+              users.samePlaceUsers.map((user) => (
+                <a
+                  key={user.user_id}
+                  href={`/other/${user.user_id}`}
+                  className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative z-0"
+                >
+                  <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
+                    <Image
+                      src={user.image_url ?? "/user.svg"}
+                      layout="fill"
+                      objectFit="cover"
+                      alt={user.name}
+                      className="rounded-full"
+                    />
+                  </div>
+                  <h2 className="mt-4 text-lg font-semibold text-center">
+                    {user.name}
+                  </h2>
+                  <ul className="text-center flex justify-center space-x-2 list-none p-0">
+                    {user.top_teches &&
+                      user.top_teches.map((tech: string) => (
+                        <li key={tech}>{tech}</li>
+                      ))}
+                  </ul>
+                </a>
+              ))
+            ) : (
+              <p className="text-center mt-4 ml-8">該当者がいません</p>
+            )}
           </div>
           <p className="flex justify-start text-2xl font-bold text-center mt-8 ml-8">
             年齢が同じお相手
           </p>
           <div className="flex overflow-x-scroll space-x-4 p-4">
-          {users.sameAgeUsers.length > 0 ? (
-            users.sameAgeUsers.map((user) => (
-              <a
-                key={user.user_id}
-                href={`/other/${user.user_id}`}
-                className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative z-0"
-              >
-                <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
-                  <Image
-                    src={user.image_url ?? "/user.svg"}
-                    layout="fill"
-                    objectFit="cover"
-                    alt={user.name}
-                    className="rounded-full"
-                  />
-                </div>
-                <h2 className="mt-4 text-lg font-semibold text-center">
-                  {user.name}
-                </h2>
-                <ul className="text-center flex justify-center space-x-2 list-none p-0">
-                  {user.top_teches &&
-                    user.top_teches.map((tech: string) => (
-                      <li key={tech}>{tech}</li>
-                    ))}
-                </ul>
-              </a>
-            ))
-          ) : (
-            <p className="text-center mt-4 ml-8">該当者がいません</p>
-          )}
+            {users.sameAgeUsers.length > 0 ? (
+              users.sameAgeUsers.map((user) => (
+                <a
+                  key={user.user_id}
+                  href={`/other/${user.user_id}`}
+                  className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative z-0"
+                >
+                  <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
+                    <Image
+                      src={user.image_url ?? "/user.svg"}
+                      layout="fill"
+                      objectFit="cover"
+                      alt={user.name}
+                      className="rounded-full"
+                    />
+                  </div>
+                  <h2 className="mt-4 text-lg font-semibold text-center">
+                    {user.name}
+                  </h2>
+                  <ul className="text-center flex justify-center space-x-2 list-none p-0">
+                    {user.top_teches &&
+                      user.top_teches.map((tech: string) => (
+                        <li key={tech}>{tech}</li>
+                      ))}
+                  </ul>
+                </a>
+              ))
+            ) : (
+              <p className="text-center mt-4 ml-8">該当者がいません</p>
+            )}
           </div>
           <p className="flex justify-start text-2xl font-bold text-center mt-8 ml-8">
             卒業年度が同じお相手
           </p>
           <div className="flex overflow-x-scroll space-x-4 p-4">
-          {users.sameGraduateYearUsers.length > 0 ? (
-            users.sameGraduateYearUsers.map((user) => (
-              <a
-                key={user.user_id}
-                href={`/other/${user.user_id}`}
-                className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative z-0"
-              >
-                <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
-                  <Image
-                    src={user.image_url ?? "/user.svg"}
-                    layout="fill"
-                    objectFit="cover"
-                    alt={user.name}
-                    className="rounded-full"
-                  />
-                </div>
-                <h2 className="mt-4 text-lg font-semibold text-center">
-                  {user.name}
-                </h2>
-                <ul className="text-center flex justify-center space-x-2 list-none p-0">
-                  {user.top_teches &&
-                    user.top_teches.map((tech: string) => (
-                      <li key={tech}>{tech}</li>
-                    ))}
-                </ul>
-              </a>
-            ))
-          ) : (
-            <p className="text-center mt-4 ml-8">該当者がいません</p>
-          )}
+            {users.sameGraduateYearUsers.length > 0 ? (
+              users.sameGraduateYearUsers.map((user) => (
+                <a
+                  key={user.user_id}
+                  href={`/other/${user.user_id}`}
+                  className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative z-0"
+                >
+                  <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
+                    <Image
+                      src={user.image_url ?? "/user.svg"}
+                      layout="fill"
+                      objectFit="cover"
+                      alt={user.name}
+                      className="rounded-full"
+                    />
+                  </div>
+                  <h2 className="mt-4 text-lg font-semibold text-center">
+                    {user.name}
+                  </h2>
+                  <ul className="text-center flex justify-center space-x-2 list-none p-0">
+                    {user.top_teches &&
+                      user.top_teches.map((tech: string) => (
+                        <li key={tech}>{tech}</li>
+                      ))}
+                  </ul>
+                </a>
+              ))
+            ) : (
+              <p className="text-center mt-4 ml-8">該当者がいません</p>
+            )}
           </div>
           <p className="flex justify-start text-2xl font-bold text-center mt-8 ml-8">
             希望職種が同じお相手
           </p>
           <div className="flex overflow-x-scroll space-x-4 p-4">
-          {users.sameJobTypeUsers.length > 0 ? (
-            users.sameJobTypeUsers.map((user) => (
-              <a
-                key={user.user_id}
-                href={`/other/${user.user_id}`}
-                className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative z-0"
-              >
-                <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
-                  <Image
-                    src={user.image_url ?? "/user.svg"}
-                    layout="fill"
-                    objectFit="cover"
-                    alt={user.name}
-                    className="rounded-full"
-                  />
-                </div>
-                <h2 className="mt-4 text-lg font-semibold text-center">
-                  {user.name}
-                </h2>
-                <ul className="text-center flex justify-center space-x-2 list-none p-0">
-                  {user.top_teches &&
-                    user.top_teches.map((tech: string) => (
-                      <li key={tech}>{tech}</li>
-                    ))}
-                </ul>
-              </a>
-            ))
-          ) : (
-            <p className="text-center mt-4 ml-8">該当者がいません</p>
-          )}
+            {users.sameJobTypeUsers.length > 0 ? (
+              users.sameJobTypeUsers.map((user) => (
+                <a
+                  key={user.user_id}
+                  href={`/other/${user.user_id}`}
+                  className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative z-0"
+                >
+                  <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
+                    <Image
+                      src={user.image_url ?? "/user.svg"}
+                      layout="fill"
+                      objectFit="cover"
+                      alt={user.name}
+                      className="rounded-full"
+                    />
+                  </div>
+                  <h2 className="mt-4 text-lg font-semibold text-center">
+                    {user.name}
+                  </h2>
+                  <ul className="text-center flex justify-center space-x-2 list-none p-0">
+                    {user.top_teches &&
+                      user.top_teches.map((tech: string) => (
+                        <li key={tech}>{tech}</li>
+                      ))}
+                  </ul>
+                </a>
+              ))
+            ) : (
+              <p className="text-center mt-4 ml-8">該当者がいません</p>
+            )}
           </div>
         </div>
       ) : (
-        <p></p>
+        <Loading />
       )}
     </>
   );

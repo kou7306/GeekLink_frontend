@@ -4,6 +4,7 @@ import axios from "axios";
 import { useParams } from "next/navigation";
 import ProfileCard from "@/components/profile/ProfileCard";
 import { User } from "@/components/profile/options";
+import Loading from "@/components/core/Loading";
 
 const UserProfile: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -24,12 +25,12 @@ const UserProfile: React.FC = () => {
   }, [uuid]);
 
   if (!user) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return (
     <div className="min-h-screen bg-gray-100 py-10">
-      <ProfileCard user={user} isMe={false}/>
+      <ProfileCard user={user} isMe={false} />
     </div>
   );
 };
