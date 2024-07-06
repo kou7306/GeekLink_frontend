@@ -15,7 +15,6 @@ import {
   techToIndex,
 } from "@/utils/mapping";
 import { User } from "@supabase/supabase-js";
-import CreateGroup from "@/components/groupChat/CreateGroup";
 
 interface Profile {
   user_id: string;
@@ -259,7 +258,6 @@ const Home = () => {
 
   return (
     <>
-      <CreateGroup />
       <FilterSearch
         handlePlaceClick={handlePlaceClick}
         selectedPlaces={selectedPlaces}
