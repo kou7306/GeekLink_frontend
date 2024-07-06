@@ -61,7 +61,7 @@ const SubHeader: React.FC<Props> = ({
       sx={{ backgroundColor: "rgba(211, 211, 211, 0.5)" }}
     >
       {/* TODO: グループ一覧画面が出来次第ここをそこのリンクに変更 */}
-      <Link href={"/"}>
+      <Link href={"/group-list"}>
         <ArrowBackIosNewIcon
           sx={{
             paddingLeft: 1,

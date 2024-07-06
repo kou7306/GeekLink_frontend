@@ -10,8 +10,8 @@ import {
   indexToDesiredOccupation,
   indexToExperience,
 } from "@/utils/mapping";
-import { User } from "@/components/profile/options";
 import FilteredUsers from "./FilteredUsers";
+import { User } from "@/components/profile/options";
 
 const Filter = () => {
   const searchParams = useSearchParams();
@@ -23,30 +23,30 @@ const Filter = () => {
       return param.split(",");
     };
 
-    const placesParam = searchParams.get("places");
-    const agesParam = searchParams.get("ages");
-    const techsParam = searchParams.get("techs");
-    const occupationsParam = searchParams.get("occupations");
-    const graduatesParam = searchParams.get("graduates");
-    const desiredOccupationsParam = searchParams.get("desiredOccupations");
-    const experiencesParam = searchParams.get("experiences");
-    const hobbyParam = searchParams.get("hobby");
-
-    const places = parseQueryParam(placesParam).map((index) => indexToPlace(parseInt(index)));
-    const ages = parseQueryParam(agesParam).map((index) => indexToAge(parseInt(index)));
-    const techs = parseQueryParam(techsParam).map((index) => indexToTech(parseInt(index)));
-    const occupations = parseQueryParam(occupationsParam).map((index) =>
-      indexToOccupation(parseInt(index))
-    );
-    const graduates = parseQueryParam(graduatesParam).map((index) => indexToGraduate(parseInt(index)));
-    const desiredOccupations = parseQueryParam(desiredOccupationsParam).map((index) =>
-      indexToDesiredOccupation(parseInt(index))
-    );
-    const experiences = parseQueryParam(experiencesParam).map((index) =>
-      indexToExperience(parseInt(index))
-    );
-
     const fetchFilteredUsers = async () => {
+      const placesParam = searchParams.get("places");
+      const agesParam = searchParams.get("ages");
+      const techsParam = searchParams.get("techs");
+      const occupationsParam = searchParams.get("occupations");
+      const graduatesParam = searchParams.get("graduates");
+      const desiredOccupationsParam = searchParams.get("desiredOccupations");
+      const experiencesParam = searchParams.get("experiences");
+      const hobbyParam = searchParams.get("hobby");
+
+      const places = parseQueryParam(placesParam).map((index) => indexToPlace(parseInt(index)));
+      const ages = parseQueryParam(agesParam).map((index) => indexToAge(parseInt(index)));
+      const techs = parseQueryParam(techsParam).map((index) => indexToTech(parseInt(index)));
+      const occupations = parseQueryParam(occupationsParam).map((index) =>
+        indexToOccupation(parseInt(index))
+      );
+      const graduates = parseQueryParam(graduatesParam).map((index) => indexToGraduate(parseInt(index)));
+      const desiredOccupations = parseQueryParam(desiredOccupationsParam).map((index) =>
+        indexToDesiredOccupation(parseInt(index))
+      );
+      const experiences = parseQueryParam(experiencesParam).map((index) =>
+        indexToExperience(parseInt(index))
+      );
+
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/filter-users`, {
           method: "POST",
@@ -76,7 +76,7 @@ const Filter = () => {
       }
     };
 
-    fetchFilteredUsers();
+      fetchFilteredUsers();
   }, [searchParams]);
 
   return (
