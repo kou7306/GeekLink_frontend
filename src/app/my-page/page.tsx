@@ -7,6 +7,7 @@ import ProfileCard from "@/components/profile/ProfileCard";
 import { getUuidFromCookie } from "@/actions/users";
 import toast from "react-hot-toast";
 import ProfileEditForm from "@/components/profile/ProfileEditForm";
+import Loading from "@/components/core/Loading";
 
 const MyPage: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -37,14 +38,17 @@ const MyPage: React.FC = () => {
 
   const handleSave = async (updatedUser: User) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/profile/update-profile`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Cache-Control": "no-cache",
-        },
-        body: JSON.stringify(updatedUser),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/profile/update-profile`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Cache-Control": "no-cache",
+          },
+          body: JSON.stringify(updatedUser),
+        }
+      );
 
       if (response.status === 200) {
         toast.success("プロフィールを更新しました");
@@ -60,13 +64,17 @@ const MyPage: React.FC = () => {
   };
 
   if (!user) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return (
     <div className="min-h-screen bg-gray-100 py-10">
       {isEditing ? (
-        <ProfileEditForm user={user} onSave={handleSave} onCancel={() => setIsEditing(false)} />
+        <ProfileEditForm
+          user={user}
+          onSave={handleSave}
+          onCancel={() => setIsEditing(false)}
+        />
       ) : (
         <ProfileCard user={user} isMe={true} onEdit={handleEdit} />
       )}
