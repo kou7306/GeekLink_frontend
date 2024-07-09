@@ -15,7 +15,6 @@ import {
   techToIndex,
 } from "@/utils/mapping";
 import { User } from "@supabase/supabase-js";
-import CreateGroup from "@/components/groupChat/CreateGroup";
 import Loading from "@/components/core/Loading";
 
 interface Profile {
@@ -270,7 +269,6 @@ const Home = () => {
 
   return (
     <>
-      <CreateGroup />
       <FilterSearch
         handlePlaceClick={handlePlaceClick}
         selectedPlaces={selectedPlaces}
