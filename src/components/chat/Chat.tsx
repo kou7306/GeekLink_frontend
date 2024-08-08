@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { MdSend } from "react-icons/md";
 import { getUuidFromCookie } from "@/actions/users";
-import { getMessageAndRoomData, Message } from "@/utils/getMessageAndRoomData";
-import createSocket from "@/utils/socket";
-import { Socket } from "socket.io-client";
+import { getMessageAndRoomData } from "@/utils/getMessageAndRoomData";
 import socketIOClient from "socket.io-client";
+import MessageComponent from "./MessageComponent";
+import { Message } from "../../../types/message";
+import { Socket } from "socket.io-client";
 
 const Chat = ({ params }: { params: any }) => {
   const [uuid, setUuid] = useState<string>("");
@@ -29,7 +30,6 @@ const Chat = ({ params }: { params: any }) => {
   useEffect(() => {
     const fetchMessages = async () => {
       const { roomId, messages } = await getMessageAndRoomData(uuid, partnerId);
-      console.log(roomId, messages);
       setRoomId(roomId);
       setMessages(messages);
     };
@@ -41,15 +41,14 @@ const Chat = ({ params }: { params: any }) => {
   const socketRef = useRef<Socket | null>(null);
   const [socketData, setSocketData] = useState("");
   useEffect(() => {
+    if (!apiUrl) return;
     socketRef.current = socketIOClient(`${apiUrl}/ws/chat`);
 
     socketRef.current.on("connect", () => {
-      console.log("Connected to /chat namespace");
       socketRef.current?.emit("joinRoom", roomId); // ルームに参加する
     });
 
     socketRef.current.on("message", (message: Message) => {
-      console.log("Received message from server:", message);
       setMessages((prevMessages) => [...prevMessages, message]);
     });
 
@@ -82,26 +81,8 @@ const Chat = ({ params }: { params: any }) => {
   return (
     <div className="bg-secondary px-4 py-10 sm:px-6 lg:px-8 h-full">
       <ul className="h-[85vh] overflow-y-auto overflow-x-hidden">
-        {messages.map((message, index) => (
-          <div
-            key={index}
-            className={`my-2 ${
-              message.sender_id === uuid ? "text-right mr-5" : "ml-5"
-            }`}
-          >
-            <li className="inline-block">
-              <div
-                className={`relative px-4 py-1 rounded-full inline-block ${
-                  message.sender_id === uuid ? "bg-accent" : "bg-primary shadow"
-                }`}
-              >
-                <p>{message.content}</p>
-              </div>
-              <p className="text-sm text-secondary">
-                {new Date(message.created_at).toLocaleString()}
-              </p>
-            </li>
-          </div>
+        {messages.map((message) => (
+          <MessageComponent key={message.id} message={message} uuid={uuid} />
         ))}
         <div ref={messagesEndRef} />
       </ul>
