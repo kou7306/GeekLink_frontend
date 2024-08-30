@@ -2,7 +2,8 @@
 import { use, useEffect, useRef, useState } from "react";
 import { MdSend } from "react-icons/md";
 import { getUuidFromCookie } from "@/actions/users";
-import { getMessageData, Message } from "@/utils/getMessageData";
+import { getMessageData } from "@/utils/getMessageData";
+import { Message } from "../../../types/message";
 import { Group, getGroupMembers } from "@/utils/getGroupMembers";
 import { Socket } from "socket.io-client";
 import socketIOClient from "socket.io-client";
