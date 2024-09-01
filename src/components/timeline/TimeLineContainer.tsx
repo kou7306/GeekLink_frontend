@@ -1,12 +1,12 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import TimeLinePost from "./TimeLinePost";
+import PostModal from "./PostModal"; // Import the new component
 import { Post } from "../../../types/post";
 import { getPosts, createPost } from "../../utils/actionPost";
 
 const TimeLineContainer: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
-  const [newPost, setNewPost] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -27,21 +27,17 @@ const TimeLineContainer: React.FC = () => {
     }
   };
 
-  const handlePostSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (newPost.trim()) {
-      try {
-        const createdPost = await createPost(newPost);
-        if (createdPost) {
-          setPosts([createdPost, ...posts]);
-          setNewPost("");
-          setIsModalOpen(false); // Close modal after submitting the post
-        } else {
-          throw new Error("Failed to create post");
-        }
-      } catch (err) {
-        setError("Failed to create post. Please try again.");
+  const handlePostSubmit = async (content: string) => {
+    try {
+      const createdPost = await createPost(content);
+      if (createdPost) {
+        setPosts([createdPost, ...posts]);
+        setIsModalOpen(false); // Close modal after submitting the post
+      } else {
+        throw new Error("Failed to create post");
       }
+    } catch (err) {
+      setError("Failed to create post. Please try again.");
     }
   };
 
@@ -66,37 +62,11 @@ const TimeLineContainer: React.FC = () => {
       </button>
 
       {/* Modal */}
-      {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md">
-            <h2 className="text-xl font-semibold mb-4">新しい投稿</h2>
-            <form onSubmit={handlePostSubmit}>
-              <input
-                type="text"
-                value={newPost}
-                onChange={(e) => setNewPost(e.target.value)}
-                placeholder="何か投稿してみましょう..."
-                className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 mb-4"
-              />
-              <div className="flex justify-end">
-                <button
-                  type="button"
-                  onClick={() => setIsModalOpen(false)}
-                  className="bg-gray-300 text-black px-4 py-2 rounded-lg mr-2 hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300"
-                >
-                  キャンセル
-                </button>
-                <button
-                  type="submit"
-                  className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
-                >
-                  投稿
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+      <PostModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSubmit={handlePostSubmit}
+      />
     </div>
   );
 };
