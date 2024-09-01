@@ -1,47 +1,61 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import TimeLinePost from "./TimeLinePost";
-import PostModal from "./PostModal"; // Import the new component
+import PostModal from "./PostModal";
 import { Post } from "../../../types/post";
 import { getPosts, createPost } from "../../utils/actionPost";
+import { useInView } from "react-intersection-observer";
 
 const TimeLineContainer: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [page, setPage] = useState(1); // ページネーション用
+  const [limit] = useState(10); // 一度に取得する投稿の数
+
+  const { ref, inView } = useInView({
+    threshold: 1.0,
+  });
 
   useEffect(() => {
     fetchPosts();
-  }, []);
+  }, [page]);
 
-  const fetchPosts = async () => {
+  useEffect(() => {
+    if (inView) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  }, [inView]);
+
+  const fetchPosts = useCallback(async () => {
     try {
-      const fetchedPosts = await getPosts();
+      setIsLoading(true);
+      const fetchedPosts = await getPosts(page, limit);
       console.log("fetchedPosts", fetchedPosts);
-      setPosts(fetchedPosts);
+      setPosts((prevPosts) => [...prevPosts, ...fetchedPosts]);
       setIsLoading(false);
     } catch (err) {
-      setError("Failed to fetch posts. Please try again later.");
+      setError("投稿の取得に失敗しました。後で再試行してください。");
       setIsLoading(false);
     }
-  };
+  }, [page, limit]);
 
   const handlePostSubmit = async (content: string) => {
     try {
       const createdPost = await createPost(content);
       if (createdPost) {
         setPosts([createdPost, ...posts]);
-        setIsModalOpen(false); // Close modal after submitting the post
+        setIsModalOpen(false); // 投稿後にモーダルを閉じる
       } else {
-        throw new Error("Failed to create post");
+        throw new Error("投稿の作成に失敗しました");
       }
     } catch (err) {
-      setError("Failed to create post. Please try again.");
+      setError("投稿の作成に失敗しました。後で再試行してください。");
     }
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading && posts.length === 0) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
 
   return (
@@ -51,9 +65,11 @@ const TimeLineContainer: React.FC = () => {
         {posts.map((post) => (
           <TimeLinePost key={post.id} post={post} />
         ))}
+        {/* スクロールの検出用のダミー要素 */}
+        <div ref={ref} />
       </div>
 
-      {/* Button to open modal */}
+      {/* 投稿するボタン */}
       <button
         onClick={() => setIsModalOpen(true)}
         className="fixed bottom-20 right-4 bg-blue-500 text-white px-4 py-2 rounded-full shadow-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
@@ -61,7 +77,7 @@ const TimeLineContainer: React.FC = () => {
         投稿する
       </button>
 
-      {/* Modal */}
+      {/* モーダル */}
       <PostModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
