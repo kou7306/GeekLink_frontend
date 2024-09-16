@@ -9,10 +9,21 @@ import {
 import React from "react";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 
-const TimeLineItem = () => {
+//具体的な型が決まったらtypesフォルダに移動
+type TimeLinePost = {
+  name: string;
+  content: string;
+  like: number;
+};
+
+type Props = {
+  timeLinePost: TimeLinePost;
+};
+
+const TimeLineItem = ({ timeLinePost }: Props) => {
   return (
     <Card>
-      <CardHeader avatar={<Avatar></Avatar>} title="名前" />
+      <CardHeader avatar={<Avatar></Avatar>} title={timeLinePost.name} />
       <CardContent>
         <Typography
           variant="body2"
@@ -21,14 +32,12 @@ const TimeLineItem = () => {
         >
           今日やったこと
         </Typography>
-        <Typography variant="body1">
-          個人開発のアプリのフロント部分を開発しました
-        </Typography>
+        <Typography variant="body1">{timeLinePost.content}</Typography>
         <IconButton aria-label="like" size="small">
           <ThumbUpAltIcon fontSize="inherit" />
         </IconButton>
         <Typography variant="caption" color="text.secondary">
-          1
+          {timeLinePost.like}
         </Typography>
       </CardContent>
     </Card>
