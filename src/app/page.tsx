@@ -17,6 +17,8 @@ import {
 import { User } from "@supabase/supabase-js";
 import Loading from "@/components/core/Loading";
 import TimeLine from "@/components/TimeLine";
+import RightSide from "@/components/RightSide";
+import { Box } from "@mui/material";
 
 interface Profile {
   user_id: string;
@@ -170,9 +172,14 @@ const Home = () => {
   return (
     <>
       {userExists && users ? (
-        <div>
-          <TimeLine />
-        </div>
+        <Box sx={{ display: "flex", height: "100vh" }}>
+          <Box sx={{ width: "60%" }}>
+            <TimeLine />
+          </Box>
+          <Box sx={{ width: "40%" }}>
+            <RightSide />
+          </Box>
+        </Box>
       ) : (
         <Loading />
       )}
