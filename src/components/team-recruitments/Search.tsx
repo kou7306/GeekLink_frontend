@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
-import { Box, Modal, Typography } from "@mui/material";
+import { Box, Modal, TextField, Typography } from "@mui/material";
 
 const style = {
   position: "absolute" as "absolute",
@@ -30,11 +30,11 @@ const Search = () => {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
+            キーワードで検索
           </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography>
+          <Box id="modal-modal-description" sx={{ mt: 2 }}>
+            <TextField fullWidth label="検索" variant="outlined" />
+          </Box>
         </Box>
       </Modal>
     </>
