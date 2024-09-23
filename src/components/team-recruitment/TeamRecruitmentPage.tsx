@@ -23,7 +23,6 @@ const TeamRecruitmentPage = () => {
             {data.title}
           </Typography>
         </Grid>
-
         <Grid item xs={6}>
           <Typography variant="subtitle1" sx={{ fontSize: "1.25rem" }}>
             参加者
@@ -36,7 +35,6 @@ const TeamRecruitmentPage = () => {
             <Avatar sx={{ width: 32, height: 32, marginLeft: -0.5 }} />
           </Box>
         </Grid>
-
         <Grid item xs={6}>
           <Box
             display="flex"
@@ -52,7 +50,6 @@ const TeamRecruitmentPage = () => {
             </Box>
           </Box>
         </Grid>
-
         <Grid item xs={12}>
           <Typography variant="subtitle1" sx={{ fontSize: "1.25rem" }}>
             募集目的
@@ -61,7 +58,6 @@ const TeamRecruitmentPage = () => {
             {data.description}
           </Typography>
         </Grid>
-
         <Grid item xs={12}>
           <Typography variant="subtitle1" sx={{ fontSize: "1.25rem" }}>
             歓迎条件
@@ -76,7 +72,7 @@ const TeamRecruitmentPage = () => {
             </Typography>
           ))}
         </Grid>
-
+        {/* ボタン */}
         <Grid item xs={12}>
           {data.host ? (
             <Box display="flex" gap={2}>
