@@ -1,5 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
+import UsersRanking from "../UsersRanking";
+import UsersRankings from "./UsersRankings";
 
 type Props = {
   value: string;
@@ -17,19 +19,15 @@ const RankingPanels = ({ value }: Props) => {
     const { children, value, index, ...other } = props;
 
     return (
-      <div
+      <Box
         role="tabpanel"
         hidden={value !== index}
         id={`full-width-tabpanel-${index}`}
         aria-labelledby={`full-width-tab-${index}`}
         {...other}
       >
-        {value === index && (
-          <Box sx={{ p: 3 }}>
-            <Typography>{children}</Typography>
-          </Box>
-        )}
-      </div>
+        {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+      </Box>
     );
   }
 
@@ -37,15 +35,15 @@ const RankingPanels = ({ value }: Props) => {
     <>
       {/* デイリー */}
       <TabPanel value={value} index="1">
-        Item One
+        <UsersRankings />
       </TabPanel>
       {/* 週間 */}
       <TabPanel value={value} index="2">
-        Item Two
+        <UsersRankings />
       </TabPanel>
       {/* 月間 */}
       <TabPanel value={value} index="3">
-        Item Three
+        <UsersRankings />
       </TabPanel>
     </>
   );
