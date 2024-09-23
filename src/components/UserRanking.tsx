@@ -8,18 +8,15 @@ type User = {
 
 type Props = {
   user: User;
-  key: number;
 };
 
-const UserRanking = ({ user, key }: Props) => {
+const UserRanking = ({ user }: Props) => {
   return (
-    <ListItem key={key}>
+    <ListItem>
       <ListItemAvatar>
         <Avatar
           sx={{ bgcolor: "warning.light", color: "warning.contrastText" }}
-        >
-          {key}
-        </Avatar>
+        ></Avatar>
       </ListItemAvatar>
       <ListItemText primary={user.name} />
     </ListItem>

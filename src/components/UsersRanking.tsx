@@ -1,11 +1,4 @@
-import {
-  Avatar,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-} from "@mui/material";
-import React from "react";
+import React, { Fragment } from "react";
 import UserRanking from "./UserRanking";
 
 const UsersRanking = () => {
@@ -16,11 +9,13 @@ const UsersRanking = () => {
   ];
 
   return (
-    <List disablePadding>
+    <div>
       {users.map((user) => (
-        <UserRanking key={user.id} user={user} />
+        <Fragment key={user.id}>
+          <UserRanking user={user} />
+        </Fragment>
       ))}
-    </List>
+    </div>
   );
 };
 
