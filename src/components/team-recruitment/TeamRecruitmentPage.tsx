@@ -4,7 +4,7 @@ import { Box, Typography, Grid, Avatar, Button, Paper } from "@mui/material";
 const TeamRecruitmentPage = () => {
   const data = {
     title: "初心者募集！",
-    createdAt: "2024-08-15",
+    createdAt: "8月15日",
     currentMember: 2,
     maxMember: 5,
     description: "初めてのハッカソンにでたい",
@@ -13,40 +13,65 @@ const TeamRecruitmentPage = () => {
   };
 
   return (
-    <Paper elevation={3} sx={{ maxWidth: 400, margin: "auto", padding: 3 }}>
-      <Grid container spacing={2}>
+    <Paper elevation={3} sx={{ maxWidth: 600, margin: "auto", padding: 4 }}>
+      <Grid container spacing={3}>
         <Grid item xs={12}>
-          <Typography variant="subtitle1">{data.createdAt}</Typography>
-          <Typography variant="h5" fontWeight="bold">
+          <Typography variant="subtitle1" sx={{ fontSize: "1.25rem" }}>
+            {data.createdAt}
+          </Typography>
+          <Typography variant="h4" fontWeight="bold">
             {data.title}
           </Typography>
         </Grid>
 
         <Grid item xs={6}>
-          <Typography variant="subtitle1">参加者</Typography>
+          <Typography variant="subtitle1" sx={{ fontSize: "1.25rem" }}>
+            参加者
+          </Typography>
           <Box display="flex" alignItems="center">
-            <Typography variant="body1" mr={1}>
+            <Typography variant="body1" mr={1} sx={{ fontSize: "1.25rem" }}>
               {data.currentMember}/{data.maxMember}人
             </Typography>
-            <Avatar sx={{ width: 24, height: 24 }} />
-            <Avatar sx={{ width: 24, height: 24, marginLeft: -0.5 }} />
+            <Avatar sx={{ width: 32, height: 32 }} />
+            <Avatar sx={{ width: 32, height: 32, marginLeft: -0.5 }} />
           </Box>
         </Grid>
 
         <Grid item xs={6}>
-          <Typography variant="subtitle1">主催者</Typography>
-          <Avatar sx={{ width: 40, height: 40 }} />
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+          >
+            <Box textAlign="center">
+              <Typography variant="subtitle1" sx={{ fontSize: "1.25rem" }}>
+                主催者
+              </Typography>
+              <Avatar sx={{ width: 56, height: 56, margin: "auto" }} />
+            </Box>
+          </Box>
         </Grid>
 
         <Grid item xs={12}>
-          <Typography variant="subtitle1">募集目的</Typography>
-          <Typography variant="body1">{data.description}</Typography>
+          <Typography variant="subtitle1" sx={{ fontSize: "1.25rem" }}>
+            募集目的
+          </Typography>
+          <Typography variant="body1" sx={{ fontSize: "1.25rem" }}>
+            {data.description}
+          </Typography>
         </Grid>
 
         <Grid item xs={12}>
-          <Typography variant="subtitle1">歓迎条件</Typography>
+          <Typography variant="subtitle1" sx={{ fontSize: "1.25rem" }}>
+            歓迎条件
+          </Typography>
           {data.welcomeConditions.map((condition) => (
-            <Typography variant="body1" key={condition}>
+            <Typography
+              variant="body1"
+              key={condition}
+              sx={{ fontSize: "1.25rem" }}
+            >
               {condition}
             </Typography>
           ))}
@@ -55,15 +80,23 @@ const TeamRecruitmentPage = () => {
         <Grid item xs={12}>
           {data.host ? (
             <Box display="flex" gap={2}>
-              <Button variant="contained" fullWidth>
+              <Button
+                variant="contained"
+                fullWidth
+                sx={{ fontSize: "1.25rem" }}
+              >
                 締め切る
               </Button>
-              <Button variant="contained" fullWidth>
+              <Button
+                variant="contained"
+                fullWidth
+                sx={{ fontSize: "1.25rem" }}
+              >
                 編集
               </Button>
             </Box>
           ) : (
-            <Button variant="contained" fullWidth>
+            <Button variant="contained" fullWidth sx={{ fontSize: "1.25rem" }}>
               申し込み
             </Button>
           )}
