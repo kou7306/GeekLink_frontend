@@ -35,12 +35,15 @@ const RankingPanels = ({ value }: Props) => {
 
   return (
     <>
+      {/* デイリー */}
       <TabPanel value={value} index="1">
         Item One
       </TabPanel>
+      {/* 週間 */}
       <TabPanel value={value} index="2">
         Item Two
       </TabPanel>
+      {/* 月間 */}
       <TabPanel value={value} index="3">
         Item Three
       </TabPanel>

@@ -21,7 +21,7 @@ const RankingTabs = ({ value, setValue }: Props) => {
       >
         <Tab value="1" label="デイリー" />
         <Tab value="2" label="週間" />
-        <Tab value="3" label="月刊" />
+        <Tab value="3" label="月間" />
       </Tabs>
     </Box>
   );
