@@ -1,17 +1,7 @@
-"use client";
-
-import React, { useState } from "react";
-import TeamRecruitmentTabs from "./TeamRecruitmentTabs";
-import TeamRecruitmentPanels from "./TeamRecruitmentPanels";
+import React from "react";
 
 const TeamRecruitmentPage = () => {
-  const [value, setValue] = useState("1");
-  return (
-    <>
-      <TeamRecruitmentTabs value={value} setValue={setValue} />
-      <TeamRecruitmentPanels value={value} />
-    </>
-  );
+  return <div>TeamRecruitmentPage</div>;
 };
 
 export default TeamRecruitmentPage;
