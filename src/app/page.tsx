@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import axios from "axios";
-
+import TimeLineContainer from "@/components/timeline/TimeLineContainer";
 import {
   ageToIndex,
   desiredOccupationToIndex,
@@ -174,7 +174,7 @@ const Home = () => {
       {userExists && users ? (
         <Box sx={{ display: "flex", height: "100vh" }}>
           <Box sx={{ width: "60%" }}>
-            <TimeLine />
+            <TimeLineContainer />
           </Box>
           <Box sx={{ width: "40%" }}>
             <RightSide />
