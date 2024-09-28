@@ -9,8 +9,11 @@ const TeamRecruitmentPage = () => {
   const [value, setValue] = useState("1");
   return (
     <>
+      {/* タブ */}
       <TeamRecruitmentTabs value={value} setValue={setValue} />
+      {/* ソートと検索のアイコン */}
       <Options />
+      {/* チーム募集 */}
       <TeamRecruitmentPanels value={value} />
     </>
   );
