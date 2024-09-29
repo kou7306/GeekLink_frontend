@@ -279,15 +279,19 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
       </div>
       {/* グラフ */}
       <Grid container spacing={2} mt={2}>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={6} my={2}>
           {/* リポジトリ一覧 */}
           <RepositoryList />
+        </Grid>
+        <Grid item xs={12} md={6} my={2}>
+          {/* Qiita */}
+          <QiitaList />
+        </Grid>
+        <Grid item xs={12} my={2}>
           {/* アクティビティログ */}
           <ActivityLog />
         </Grid>
-        <Grid item xs={12} md={6}>
-          {/* Qiita */}
-          <QiitaList />
+        <Grid item xs={12} my={2}>
           {/* 週間アクティビティログ */}
           <WeeklyActivityLog />
         </Grid>
