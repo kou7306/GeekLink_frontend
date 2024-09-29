@@ -270,10 +270,15 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
           )}
         </div>
       </div>
+      {/* グラフ */}
       <Box>
+        {/* リポジトリ一覧 */}
         <RepositoryList />
+        {/* Qiita */}
         <QiitaList />
+        {/* アクティビティログ */}
         <ActivityLog />
+        {/* 週間アクティビティログ */}
         <WeeklyActivityLog />
       </Box>
     </div>
