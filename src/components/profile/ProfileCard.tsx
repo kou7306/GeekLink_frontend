@@ -7,6 +7,11 @@ import { User } from "./options";
 import Image from "next/image";
 import { FaGithub, FaTwitter } from "react-icons/fa";
 import { PostLikeID } from "@/utils/CreateLike";
+import { Box } from "@mui/material";
+import RepositoryList from "./RepositoryList";
+import QiitaList from "./QiitaList";
+import ActivityLog from "./ActivityLog";
+import WeeklyActivityLog from "./WeeklyActivityLog";
 
 interface ProfileCardProps {
   user: User;
@@ -36,8 +41,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
           myID,
           uuid,
         })
-        .then((response: {data: LikeCheckResponse}) => {
-          setIsLiked(response.data.data)
+        .then((response: { data: LikeCheckResponse }) => {
+          setIsLiked(response.data.data);
         })
         .catch((error) => {
           console.error("Error fetching like status:", error);
@@ -65,22 +70,38 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
         <h2 className="text-2xl font-bold mb-2">{user.name}</h2>
         <div className="flex space-x-4">
           {user.github && (
-            <a href={`https://github.com/${user.github}`} className="text-black" aria-label="GitHub">
+            <a
+              href={`https://github.com/${user.github}`}
+              className="text-black"
+              aria-label="GitHub"
+            >
               <FaGithub size={30} />
             </a>
           )}
           {user.twitter && (
-            <a href={`https://x.com/${user.twitter}`} className="text-blue-400" aria-label="Twitter">
+            <a
+              href={`https://x.com/${user.twitter}`}
+              className="text-blue-400"
+              aria-label="Twitter"
+            >
               <FaTwitter size={30} />
             </a>
           )}
           {user.zenn && (
-            <a href={`https://zenn.dev/${user.zenn}`} className="text-blue-600" aria-label="Zenn">
+            <a
+              href={`https://zenn.dev/${user.zenn}`}
+              className="text-blue-600"
+              aria-label="Zenn"
+            >
               <Image src="/zenn-icon.svg" alt="Zenn" width={30} height={30} />
             </a>
           )}
           {user.qiita && (
-            <a href={`https://qiita.com/${user.qiita}`} className="text-green-500" aria-label="Qiita">
+            <a
+              href={`https://qiita.com/${user.qiita}`}
+              className="text-green-500"
+              aria-label="Qiita"
+            >
               <Image src="/qiita-icon.png" alt="Qiita" width={30} height={30} />
             </a>
           )}
@@ -90,27 +111,37 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
               className="text-purple-500"
               aria-label="AtCoder"
             >
-              <Image src="/atcoder-icon.png" alt="AtCoder" width={30} height={30} />
+              <Image
+                src="/atcoder-icon.png"
+                alt="AtCoder"
+                width={30}
+                height={30}
+              />
             </a>
           )}
         </div>
         {isMe && (
-          <button onClick={onEdit} className="mt-4 bg-blue-500 text-white py-2 px-4 rounded">
+          <button
+            onClick={onEdit}
+            className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
+          >
             編集
           </button>
         )}
         {!isMe && (
-          <button 
+          <button
             className="bg-white rounded-full p-1"
             onClick={() => {
               if (isLiked === false) {
                 PostLikeID(user.user_id);
-                setIsLiked(true)
+                setIsLiked(true);
               }
             }}
           >
             <svg
-              className={`w-16 h-16 ${isLiked === true ? "text-red-500" : "text-gray-500"}`}
+              className={`w-16 h-16 ${
+                isLiked === true ? "text-red-500" : "text-gray-500"
+              }`}
               fill="currentColor"
               viewBox="0 0 24 24"
             >
@@ -239,6 +270,12 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
           )}
         </div>
       </div>
+      <Box>
+        <RepositoryList />
+        <QiitaList />
+        <ActivityLog />
+        <WeeklyActivityLog />
+      </Box>
     </div>
   );
 };
