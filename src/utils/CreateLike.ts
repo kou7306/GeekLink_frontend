@@ -25,11 +25,35 @@ export async function postSwipedRightUserIds(IDs: string[]): Promise<any> {
 }
 
 // ユーザーページからいいねを送る場合
-export async function PostLikeID(ID: string): Promise<any> {
+export async function postLikeID(ID: string): Promise<any> {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const uuid = await getUuidFromCookie();
 
   const response = await fetch(`${apiUrl}/likes/create-like-one`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    mode: "cors",
+    body: JSON.stringify({
+      uuid: uuid,
+      ID: ID,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error("API request failed");
+  }
+
+  return await response.json();
+}
+
+// いいねを取り消す場合
+export async function deleteLikeID(ID: string): Promise<any> {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const uuid = await getUuidFromCookie();
+
+  const response = await fetch(`${apiUrl}/likes/delete-like`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
