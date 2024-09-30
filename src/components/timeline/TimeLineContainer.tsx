@@ -32,7 +32,6 @@ const TimeLineContainer: React.FC = () => {
     try {
       setIsLoading(true);
       const fetchedPosts = await getPosts(page, limit);
-      console.log("fetchedPosts", fetchedPosts);
       setPosts((prevPosts) => [...prevPosts, ...fetchedPosts]);
       setIsLoading(false);
     } catch (err) {

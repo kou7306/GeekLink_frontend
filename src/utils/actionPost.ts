@@ -25,7 +25,6 @@ export const getPosts = async (
     }
 
     const result = await response.json();
-    console.log("result", result.posts);
     return result.posts;
   } catch (error) {
     console.error("Error fetching posts:", error);
