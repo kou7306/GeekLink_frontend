@@ -7,7 +7,6 @@ import { User } from "./options";
 import Image from "next/image";
 import { FaGithub, FaTwitter } from "react-icons/fa";
 import { postLikeID, deleteLikeID } from "@/utils/CreateLike";
-import { deleteLike } from "../../../../GeekLink_backend/src/controllers/likeController";
 
 interface ProfileCardProps {
   user: User;
