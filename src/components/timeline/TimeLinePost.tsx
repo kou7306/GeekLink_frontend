@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { format } from "date-fns";
+import { format } from "path";
 import { ja } from "date-fns/locale";
 import { Post } from "../../../types/post";
 import { sendReaction, getPosts } from "../../utils/actionPost";
