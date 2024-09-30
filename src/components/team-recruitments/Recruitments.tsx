@@ -1,6 +1,7 @@
 import React from "react";
 import Recruitment from "./Recruitment";
 import { Box } from "@mui/material";
+import Link from "next/link";
 
 const Recruitments = () => {
   const data = [
@@ -24,7 +25,9 @@ const Recruitments = () => {
       <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
         {data.map((recruitment) => (
           <Box key={recruitment.title} sx={{ flexBasis: "calc(50% - 1rem)" }}>
-            <Recruitment recruitment={recruitment} />
+            <Link href={"/team-recruitment/hoge"}>
+              <Recruitment recruitment={recruitment} />
+            </Link>
           </Box>
         ))}
       </Box>

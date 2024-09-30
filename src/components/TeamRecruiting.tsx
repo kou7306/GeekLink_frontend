@@ -5,11 +5,11 @@ import {
   List,
   ListItem,
   Divider,
-  Link,
   keyframes,
 } from "@mui/material";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import Team from "./Team";
+import Link from "next/link";
 
 const TeamRecruiting = () => {
   const teams = [
@@ -39,17 +39,14 @@ const TeamRecruiting = () => {
         <Typography variant="h6" component="h2">
           新規チーム募集
         </Typography>
-        <Link
-          href="#"
-          underline="none"
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            color: "text.secondary",
-          }}
-        >
-          <Typography variant="body2">詳しく見る</Typography>
-          <ArrowForwardIosIcon fontSize="small" sx={{ ml: 0.5 }} />
+        <Link href="/team-recruitments">
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ display: "flex", alignItems: "center" }}
+          >
+            詳しく見る <ArrowForwardIosIcon fontSize="small" sx={{ ml: 0.5 }} />
+          </Typography>
         </Link>
       </Box>
       <List disablePadding>

@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { format } from "path";
+import React, { useState, useEffect, useCallback } from "react";
+import { format } from "date-fns";
 import { ja } from "date-fns/locale";
 import { Post } from "../../../types/post";
 import { sendReaction, getPosts } from "../../utils/actionPost";
 
-interface TimeLinePostProps {
+type TimeLinePostProps = {
   post: Post;
-}
+};
 
 const emojis = ["👍", "❤️"]; // Example emojis
 const currentUserId = "test"; // Example user ID
@@ -18,34 +18,8 @@ const TimeLinePost: React.FC<TimeLinePostProps> = ({ post }) => {
   const [reactionCounts, setReactionCounts] = useState<{
     [emoji: string]: number;
   }>({});
-
-  // Update reactions when post data changes
-  useEffect(() => {
-    const updateReactions = () => {
-      const newSelectedReactions = new Set<string>();
-      const newReactionCounts: { [emoji: string]: number } = {};
-
-      for (const emoji of emojis) {
-        const emojiReactions = post.reactions[emoji];
-        if (emojiReactions) {
-          const userIds = emojiReactions;
-          newReactionCounts[emoji] = userIds.length;
-          if (userIds.includes(currentUserId)) {
-            newSelectedReactions.add(emoji);
-          }
-        } else {
-          newReactionCounts[emoji] = 0;
-        }
-      }
-
-      setSelectedReactions(newSelectedReactions);
-      setReactionCounts(newReactionCounts);
-    };
-
-    updateReactions();
-  }, [post]);
-
-  const handleReaction = async (emoji: string) => {
+  // リアクションを送信する関数
+  const handleReaction = async (postId: string, emoji: string) => {
     const isAdding = !selectedReactions.has(emoji);
 
     // Optimistic UI update
@@ -61,52 +35,14 @@ const TimeLinePost: React.FC<TimeLinePostProps> = ({ post }) => {
     }));
 
     try {
-      // Send reaction to the server
-      await sendReaction(post.id, currentUserId, emoji);
-
-      // Fetch the updated post data to ensure the state is correct
-      const updatedPosts = await getPosts();
-      const updatedPost = updatedPosts.find((p) => p.id === post.id);
-
-      if (updatedPost) {
-        // Update local state with the updated post data
-        const newSelectedReactions = new Set<string>();
-        const newReactionCounts: { [emoji: string]: number } = {};
-
-        for (const emoji of emojis) {
-          const emojiReactions = updatedPost.reactions[emoji];
-          if (emojiReactions) {
-            const userIds = emojiReactions;
-            newReactionCounts[emoji] = userIds.length;
-            if (userIds.includes(currentUserId)) {
-              newSelectedReactions.add(emoji);
-            }
-          } else {
-            newReactionCounts[emoji] = 0;
-          }
-        }
-
-        setSelectedReactions(newSelectedReactions);
-        setReactionCounts(newReactionCounts);
-      }
+      await sendReaction(postId, currentUserId, emoji);
     } catch (error) {
       console.error("Failed to send reaction", error);
-      // Revert optimistic updates on error
-      setSelectedReactions((prev) => {
-        const newSet = new Set(prev);
-        isAdding ? newSet.delete(emoji) : newSet.add(emoji);
-        return newSet;
-      });
-
-      setReactionCounts((prev) => ({
-        ...prev,
-        [emoji]: Math.max(0, (prev[emoji] || 0) + (isAdding ? -1 : 1)),
-      }));
     }
   };
 
   return (
-    <div className="border rounded-lg p-4 shadow">
+    <div key={post.id} className="border rounded-lg p-4 shadow">
       <div className="flex items-start">
         <div>
           <div className="flex items-center">
@@ -124,7 +60,7 @@ const TimeLinePost: React.FC<TimeLinePostProps> = ({ post }) => {
         {emojis.map((emoji) => (
           <button
             key={emoji}
-            onClick={() => handleReaction(emoji)}
+            onClick={() => handleReaction(post.id, emoji)}
             className={`text-xl ${
               selectedReactions.has(emoji) ? "text-blue-500" : "text-gray-500"
             }`}
