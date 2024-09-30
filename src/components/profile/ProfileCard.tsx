@@ -6,8 +6,8 @@ import axios from "axios";
 import { User } from "./options";
 import Image from "next/image";
 import { FaGithub, FaTwitter } from "react-icons/fa";
-import { PostLikeID } from "@/utils/CreateLike";
-import { Box, Grid } from "@mui/material";
+import { postLikeID, deleteLikeID } from "@/utils/CreateLike";
+import { Box, dividerClasses, Grid } from "@mui/material";
 import RepositoryList from "./RepositoryList";
 import QiitaList from "./QiitaList";
 import ActivityLog from "./ActivityLog";
@@ -59,7 +59,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
 
   return (
     <Box bgcolor="white">
-      <div className="max-w-7xl mx-auto p-6 bg-white rounded-lg grid grid-cols-3 gap-6">
+      <div className="max-w-7xl mx-auto p-6 bg-white rounded-lg shadow-lg grid grid-cols-3 gap-6">
         <div className="flex flex-col items-center">
           <Image
             className="w-64 h-64 object-cover rounded-full mb-4"
@@ -139,8 +139,11 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
               className="bg-white rounded-full p-1"
               onClick={() => {
                 if (isLiked === false) {
-                  PostLikeID(user.user_id);
+                  postLikeID(user.user_id);
                   setIsLiked(true);
+                } else {
+                  deleteLikeID(user.user_id);
+                  setIsLiked(false);
                 }
               }}
             >
@@ -172,108 +175,58 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
                 <strong>年齢:</strong> {user.age}
               </p>
             </div>
-            {user.affiliation && (
+            <div className="space-y-4">
               <div className="p-4 bg-gray-100 rounded-lg shadow-sm">
-                <p className="text-gray-600">
-                  <strong>所属:</strong> {user.affiliation}
-                </p>
-              </div>
-            )}
-            {user.faculty && (
-              <div className="p-4 bg-gray-100 rounded-lg shadow-sm">
-                <p className="text-gray-600">
-                  <strong>学部:</strong> {user.faculty}
-                </p>
-              </div>
-            )}
-            {user.graduate && (
-              <div className="p-4 bg-gray-100 rounded-lg shadow-sm">
-                <p className="text-gray-600">
-                  <strong>卒業見込み:</strong> {user.graduate}
-                </p>
-              </div>
-            )}
-            {user.portfolio && (
-              <div className="p-4 bg-gray-100 rounded-lg shadow-sm">
-                <p className="text-gray-600">
-                  <strong>ポートフォリオ:</strong>{" "}
-                  <a href={user.portfolio} className="text-blue-500">
-                    {user.portfolio}
-                  </a>
-                </p>
-              </div>
-            )}
-            {user.desired_occupation && (
-              <div className="p-4 bg-gray-100 rounded-lg shadow-sm">
-                <p className="text-gray-600">
-                  <strong>目指している職種:</strong> {user.desired_occupation}
-                </p>
-              </div>
-            )}
-            {user.experience && (
-              <div className="p-4 bg-gray-100 rounded-lg shadow-sm">
-                <h3 className="text-xl font-semibold">経験</h3>
+                <h3 className="text-xl font-semibold">TOP3</h3>
                 <ul className="list-disc list-inside">
-                  {user.experience.map((exp, index) => (
+                  {user.top_teches.map((tech, index) => (
                     <li key={index} className="text-gray-700">
-                      {exp}
+                      {tech}
                     </li>
                   ))}
                 </ul>
               </div>
-            )}
-          </div>
-          <div className="space-y-4">
-            <div className="p-4 bg-gray-100 rounded-lg shadow-sm">
-              <h3 className="text-xl font-semibold">TOP3</h3>
-              <ul className="list-disc list-inside">
-                {user.top_teches.map((tech, index) => (
-                  <li key={index} className="text-gray-700">
-                    {tech}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="p-4 bg-gray-100 rounded-lg shadow-sm">
-              <h3 className="text-xl font-semibold">技術スタック</h3>
-              <ul className="list-disc list-inside">
-                {user.teches.map((tech, index) => (
-                  <li key={index} className="text-gray-700">
-                    {tech}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            {user.hobby && (
               <div className="p-4 bg-gray-100 rounded-lg shadow-sm">
-                <h3 className="text-xl font-semibold">趣味</h3>
-                <p className="text-gray-700">{user.hobby}</p>
-              </div>
-            )}
-            {user.editor && (
-              <div className="p-4 bg-gray-100 rounded-lg shadow-sm">
-                <h3 className="text-xl font-semibold">好きなエディター</h3>
-                <p className="text-gray-700">{user.editor}</p>
-              </div>
-            )}
-            {user.qualification && (
-              <div className="p-4 bg-gray-100 rounded-lg shadow-sm">
-                <h3 className="text-xl font-semibold">資格</h3>
+                <h3 className="text-xl font-semibold">技術スタック</h3>
                 <ul className="list-disc list-inside">
-                  {user.qualification.map((qual, index) => (
+                  {user.teches.map((tech, index) => (
                     <li key={index} className="text-gray-700">
-                      {qual}
+                      {tech}
                     </li>
                   ))}
                 </ul>
               </div>
-            )}
-            {user.message && (
-              <div className="p-4 bg-gray-100 rounded-lg shadow-sm">
-                <h3 className="text-xl font-semibold">一言</h3>
-                <p className="text-gray-700">{user.message}</p>
-              </div>
-            )}
+              {user.hobby && (
+                <div className="p-4 bg-gray-100 rounded-lg shadow-sm">
+                  <h3 className="text-xl font-semibold">趣味</h3>
+                  <p className="text-gray-700">{user.hobby}</p>
+                </div>
+              )}
+              {user.editor && (
+                <div className="p-4 bg-gray-100 rounded-lg shadow-sm">
+                  <h3 className="text-xl font-semibold">好きなエディター</h3>
+                  <p className="text-gray-700">{user.editor}</p>
+                </div>
+              )}
+              {user.qualification && (
+                <div className="p-4 bg-gray-100 rounded-lg shadow-sm">
+                  <h3 className="text-xl font-semibold">資格</h3>
+                  <ul className="list-disc list-inside">
+                    {user.qualification.map((qual, index) => (
+                      <li key={index} className="text-gray-700">
+                        {qual}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {user.message && (
+                <div className="p-4 bg-gray-100 rounded-lg shadow-sm">
+                  <h3 className="text-xl font-semibold">一言</h3>
+                  <p className="text-gray-700">{user.message}</p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
