@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import UsersRanking from "./UsersRanking";
+import Link from "next/link";
 
 const DailyRanking = () => {
   return (
@@ -26,15 +27,17 @@ const DailyRanking = () => {
           <Typography variant="h6" component="h2">
             デイリーランキング
           </Typography>
-          {/* リンクをつける */}
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            sx={{ display: "flex", alignItems: "center" }}
-          >
-            詳しく見る
-            <ArrowForwardIosIcon fontSize="small" sx={{ ml: 0.5 }} />
-          </Typography>
+
+          <Link href="/ranking">
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{ display: "flex", alignItems: "center" }}
+            >
+              詳しく見る
+              <ArrowForwardIosIcon fontSize="small" sx={{ ml: 0.5 }} />
+            </Typography>
+          </Link>
         </Box>
         <UsersRanking />
       </Box>
