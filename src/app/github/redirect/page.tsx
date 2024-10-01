@@ -24,12 +24,9 @@ export default function GithubCallback() {
     const api_url = process.env.NEXT_PUBLIC_API_URL;
 
     if (code && uuid) {
-      console.log("GitHub Auth Code:", code);
-      console.log("UUID:", uuid);
       axios
         .post(`${api_url}/github/callback`, { uuid, code })
         .then((response) => {
-          console.log("GitHub Token saved:", response.data);
           router.push("/");
         })
         .catch((error) => {
