@@ -59,8 +59,6 @@ type Props = {
 };
 
 const UsersPage = ({ isUserIdExist = false }: Props) => {
-  console.log("isUserIdExist", isUserIdExist);
-
   const [selectedPlaces, setSelectedPlaces] = useState<string[]>([]);
   const [selectedAges, setSelectedAges] = useState<string[]>([]);
   const [enteredHobby, setEnteredHobby] = useState("");
@@ -80,7 +78,6 @@ const UsersPage = ({ isUserIdExist = false }: Props) => {
   useEffect(() => {
     const fetchUsers = async () => {
       const uuid = await getUuidFromCookie();
-      console.log(uuid);
       if (uuid) {
         setUuid(uuid);
       }
@@ -107,8 +104,6 @@ const UsersPage = ({ isUserIdExist = false }: Props) => {
         cacheExpiry &&
         new Date().getTime() < parseInt(cacheExpiry)
       ) {
-        // キャッシュが有効であればそれを使用
-        console.log("Using cached data");
         setUsers(JSON.parse(cachedData));
       } else {
         // キャッシュが存在しないor有効期限が切れている場合はAPIを呼び出す
@@ -136,7 +131,6 @@ const UsersPage = ({ isUserIdExist = false }: Props) => {
           (new Date().getTime() + CACHE_DURATION).toString()
         );
 
-        console.log(data);
         setUsers(data);
       }
     };
@@ -145,63 +139,50 @@ const UsersPage = ({ isUserIdExist = false }: Props) => {
   }, [uuid]);
 
   const handlePlaceClick = (place: string) => {
-    console.log(place);
     setSelectedPlaces((prevSelectedPlaces) =>
       prevSelectedPlaces.includes(place)
         ? prevSelectedPlaces.filter((p) => p !== place)
         : [...prevSelectedPlaces, place]
     );
-    console.log(selectedPlaces);
   };
 
   const handleAgeClick = (age: string) => {
     const ageNumber = age.replace("歳", "");
-    console.log(ageNumber);
     setSelectedAges((prevSelectedAges) =>
       prevSelectedAges.includes(ageNumber)
         ? prevSelectedAges.filter((a) => a !== ageNumber)
         : [...prevSelectedAges, ageNumber]
     );
-    console.log(selectedAges);
   };
 
   const onChangeHobby = (hobby: string) => {
-    console.log(hobby);
     setEnteredHobby(hobby);
-    console.log(enteredHobby);
   };
 
   const handleFirstTechClick = (firstTech: string) => {
-    console.log(firstTech);
     setSelectedFirstTechs((prevSelectedFirstTechs) =>
       prevSelectedFirstTechs.includes(firstTech)
         ? prevSelectedFirstTechs.filter((f) => f !== firstTech)
         : [...prevSelectedFirstTechs, firstTech]
     );
-    console.log(selectedFirstTechs);
   };
 
   const handleOccupationClick = (occupation: string) => {
-    console.log(occupation);
     setSelectedOccupations((prevSelectedOccupations) =>
       prevSelectedOccupations.includes(occupation)
         ? prevSelectedOccupations.filter((o) => o !== occupation)
         : [...prevSelectedOccupations, occupation]
     );
-    console.log(selectedOccupations);
   };
 
   const handleGraduateClick = (graduateOption: string) => {
-    console.log(graduateOption);
     setSelectedGraduates((prevSelectedGraduates) =>
       prevSelectedGraduates.includes(graduateOption)
         ? prevSelectedGraduates.filter((g) => g !== graduateOption)
         : [...prevSelectedGraduates, graduateOption]
     );
-    console.log(selectedGraduates);
   };
   const handleDesiredOccupationClick = (desiredOccupationOption: string) => {
-    console.log(desiredOccupationOption);
     setSelectedDesiredOccupations((prevSelectedDesiredOccupations) =>
       prevSelectedDesiredOccupations.includes(desiredOccupationOption)
         ? prevSelectedDesiredOccupations.filter(
@@ -209,16 +190,13 @@ const UsersPage = ({ isUserIdExist = false }: Props) => {
           )
         : [...prevSelectedDesiredOccupations, desiredOccupationOption]
     );
-    console.log(selectedDesiredOccupations);
   };
   const handleExperienceClick = (experienceOption: string) => {
-    console.log(experienceOption);
     setSelectedExperiences((prevSelectedExperiences) =>
       prevSelectedExperiences.includes(experienceOption)
         ? prevSelectedExperiences.filter((e) => e !== experienceOption)
         : [...prevSelectedExperiences, experienceOption]
     );
-    console.log(selectedExperiences);
   };
   const handleSearch = () => {
     const placesQuery = selectedPlaces.map(placeToIndex).join(",");
