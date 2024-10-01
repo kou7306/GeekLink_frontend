@@ -13,7 +13,6 @@ import {
 } from "@/utils/mapping";
 import { useRouter } from "next/navigation";
 import { getUuidFromCookie } from "@/actions/users";
-import axios from "axios";
 import Loading from "../core/Loading";
 
 interface Profile {
@@ -55,8 +54,12 @@ interface UsersResponse {
   sortedUsers: { user: Profile; score: number }[];
 }
 
-const UsersPage = () => {
-  const [userExists, setUserExists] = useState(null);
+type Props = {
+  isUserIdExist: boolean;
+};
+
+const UsersPage = ({ isUserIdExist = false }: Props) => {
+  console.log("isUserIdExist", isUserIdExist);
 
   const [selectedPlaces, setSelectedPlaces] = useState<string[]>([]);
   const [selectedAges, setSelectedAges] = useState<string[]>([]);
@@ -73,31 +76,6 @@ const UsersPage = () => {
   const [users, setUsers] = useState<UsersResponse | null>(null);
 
   const router = useRouter();
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const user_id = await getUuidFromCookie();
-      //   console.log("user_id", user_id);
-      if (user_id) {
-        axios
-          .post(`${process.env.NEXT_PUBLIC_API_URL}/user/check-user-exists`, {
-            user_id,
-          })
-          .then((response) => {
-            console.log(response.data.exists);
-            setUserExists(response.data.exists);
-            if (!response.data.exists) {
-              router.push("/profile-initialization");
-            }
-          })
-          .catch((error) => console.error("Error:", error));
-      } else {
-        router.push("/login");
-      }
-    };
-
-    fetchUsers();
-  }, [router]);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -282,7 +260,7 @@ const UsersPage = () => {
         selectedExperiences={selectedExperiences}
         onSearch={handleSearch}
       />
-      {userExists && users ? (
+      {isUserIdExist && users ? (
         <div>
           <p className="flex justify-start text-2xl font-bold text-center mt-8 ml-8">
             総合的な一致度が高いお相手
