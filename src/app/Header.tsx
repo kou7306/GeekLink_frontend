@@ -18,8 +18,8 @@ const Header = () => {
           <a href="/group-list" className="text-black hover:text-accent">
             グループ
           </a>
-          <a href="/random-match" className="text-black hover:text-accent">
-            ランダムマッチ
+          <a href="/suggest-users" className="text-black hover:text-accent">
+            おすすめユーザー
           </a>
           <a href="/like" className="text-black hover:text-accent">
             いいね
