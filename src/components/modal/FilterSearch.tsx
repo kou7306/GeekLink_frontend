@@ -13,6 +13,7 @@ import DesiredOccupation from "./DesiredOccupation";
 import Experience from "./Experience";
 import SearchButton from "./SearchButton";
 import Title from "./Title";
+import { useRouter } from "next/navigation";
 
 const style = {
   position: "absolute" as "absolute",
@@ -78,7 +79,7 @@ const FilterSearch: React.FC<Props> = ({
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  
+  const router = useRouter();
 
   return (
     <ThemeProvider theme={theme}>
@@ -99,6 +100,25 @@ const FilterSearch: React.FC<Props> = ({
           }}
         >
           絞り込み
+        </Button>
+        <Button
+          onClick={() => {
+            router.push("/random-match");
+          }}
+          variant="contained"
+          sx={{
+            backgroundColor: "#25276D",
+            color: "white",
+            borderRadius: "8px",
+            padding: "8px 16px",
+            fontWeight: "bold",
+            margin: "8px",
+            "&:hover": {
+              backgroundColor: "#1f235a",
+            },
+          }}
+        >
+          ランダムマッチ
         </Button>
         <Modal
           open={open}
