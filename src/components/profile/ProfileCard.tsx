@@ -15,6 +15,7 @@ import WeeklyActivityLog from "./WeeklyActivityLog";
 import UserMainInformation from "./UserMainInformation";
 import SocialMediaIntegration from "./SocialMediaIntegration";
 import CommentComponent from "./CommentComponent";
+import QiitaNumberOfContributions from "./QiitaNumberOfContributions";
 
 interface ProfileCardProps {
   user: User;
@@ -165,6 +166,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
               </svg>
             </button>
           )}
+          <QiitaNumberOfContributions />
         </div>
         <UserMainInformation user={user} />
       </div>
