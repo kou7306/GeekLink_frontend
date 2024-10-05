@@ -1,13 +1,22 @@
 import TeamRecruitmentPage from "@/components/team-recruitments/TeamRecruitmentsPage";
 
-import React from "react";
+async function fetchEvents(eventType: 'EVENT' | 'HACKATHON') {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events/type/${eventType}`, {
+    method: 'GET',
+    mode: 'cors',
+  });
+  const events = await response.json();
+  return events;
+}
 
-const page = () => {
+export default async function Page() {
+  const hackathonEvents = await fetchEvents('HACKATHON');
+  const eventEvents = await fetchEvents('EVENT');
+
   return (
-    <>
-      <TeamRecruitmentPage />
-    </>
-  );
-};
-
-export default page;
+    <TeamRecruitmentPage
+      hackathonEvents={hackathonEvents}
+      eventEvents={eventEvents}
+    />
+  )
+}

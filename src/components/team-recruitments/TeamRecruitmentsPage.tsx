@@ -4,8 +4,14 @@ import React, { useState } from "react";
 import TeamRecruitmentTabs from "./TeamRecruitmentsTabs";
 import TeamRecruitmentPanels from "./TeamRecruitmentsPanels";
 import Options from "./Options";
+import { Event } from "@/types/event";
 
-const TeamRecruitmentPage = () => {
+interface TeamRecruitmentPageProps {
+  hackathonEvents: Event[];
+  eventEvents: Event[];
+}
+
+const TeamRecruitmentPage = ({ hackathonEvents, eventEvents }: TeamRecruitmentPageProps) => {
   const [value, setValue] = useState("1");
   return (
     <>
@@ -14,7 +20,7 @@ const TeamRecruitmentPage = () => {
       {/* ソートと検索のアイコン */}
       <Options />
       {/* チーム募集 */}
-      <TeamRecruitmentPanels value={value} />
+      <TeamRecruitmentPanels value={value} hackathonEvents={hackathonEvents} eventEvents={eventEvents} />
     </>
   );
 };

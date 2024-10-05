@@ -1,10 +1,13 @@
 import { Box } from "@mui/material";
 import React from "react";
 import Recruitments from "./Recruitments";
+import { Event } from "@/types/event";
 
-type Props = {
+interface TeamRecruitmentPanelsProps {
   value: string;
-};
+  hackathonEvents: Event[];
+  eventEvents: Event[];
+}
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -13,7 +16,7 @@ interface TabPanelProps {
   value: string;
 }
 
-const TeamRecruitmentPanels = ({ value }: Props) => {
+const TeamRecruitmentPanels = ({ value, hackathonEvents, eventEvents }: TeamRecruitmentPanelsProps) => {
   function TabPanel(props: TabPanelProps) {
     const { children, value, index, ...other } = props;
 
@@ -33,11 +36,11 @@ const TeamRecruitmentPanels = ({ value }: Props) => {
     <>
       {/* チーム開発 */}
       <TabPanel value={value} index="1">
-        <Recruitments />
+        <Recruitments events={hackathonEvents} />
       </TabPanel>
       {/* イベント参加 */}
       <TabPanel value={value} index="2">
-        two
+        <Recruitments events={eventEvents} />
       </TabPanel>
       {/* 自分の募集 */}
       <TabPanel value={value} index="3">

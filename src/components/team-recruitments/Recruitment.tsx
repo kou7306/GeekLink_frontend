@@ -1,18 +1,12 @@
+import { Event } from "@/types/event";
 import { Box, Typography, Grid } from "@mui/material";
 import React from "react";
 
-//型が決まり次第、typesフォルダに定義
-type Props = {
-  recruitment: {
-    title: string;
-    createdAt: string;
-    currentMember: number;
-    maxMember: number;
-    description: string;
-  };
-};
+interface RecruitmentProps {
+  event: Event;
+}
 
-const Recruitment = ({ recruitment }: Props) => {
+const Recruitment = ({ event }: RecruitmentProps) => {
   return (
     <Box
       sx={{
@@ -25,20 +19,20 @@ const Recruitment = ({ recruitment }: Props) => {
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-            {recruitment.title}
+            {event.title}
           </Typography>
         </Grid>
         <Grid item xs={12}>
           <Typography variant="body2" color="text.secondary">
-            募集日: {recruitment.createdAt}
+            募集日: {new Date(event.created_at).toLocaleDateString()}
           </Typography>
         </Grid>
         <Grid item xs={12}>
-          <Typography variant="body1">{recruitment.description}</Typography>
+          <Typography variant="body1">{event.purpose}</Typography>
         </Grid>
         <Grid item xs={12}>
           <Typography variant="body2" align="right">
-            {recruitment.currentMember}/{recruitment.maxMember}人
+            {event.participant_ids.length}/{event.max_participants}人
           </Typography>
         </Grid>
       </Grid>
