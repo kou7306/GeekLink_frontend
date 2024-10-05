@@ -17,6 +17,7 @@ import SocialMediaIntegration from "./SocialMediaIntegration";
 import CommentComponent from "./CommentComponent";
 import QiitaNumberOfContributions from "./QiitaNumberOfContributions";
 import GitHubContributions from "./GitHubContributions";
+import PercentageOfLanguages from "./PercentageOfLanguages";
 
 interface ProfileCardProps {
   user: User;
@@ -169,6 +170,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
           )}
           <GitHubContributions />
           <QiitaNumberOfContributions />
+          <PercentageOfLanguages />
         </div>
         <UserMainInformation user={user} />
       </div>
