@@ -136,14 +136,6 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
             <SocialMediaIntegration />
           </div>
           {user.message && <CommentComponent message={user.message} />}
-          {isMe && (
-            <button
-              onClick={onEdit}
-              className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
-            >
-              編集
-            </button>
-          )}
           {!isMe && (
             <button
               className="bg-white rounded-full p-1"
@@ -172,7 +164,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
           <QiitaNumberOfContributions />
           <PercentageOfLanguages />
         </div>
-        <UserMainInformation user={user} />
+        <UserMainInformation user={user} onEdit={onEdit} isMe={isMe} />
       </div>
       {/* グラフ */}
       <Grid container spacing={2} mt={2}>
