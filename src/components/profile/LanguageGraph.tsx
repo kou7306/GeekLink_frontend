@@ -38,7 +38,7 @@ const LanguageGraph: React.FC<Props> = ({ GitHubLanguages }) => {
   };
 
   const chartData: ChartData<"bar"> = {
-    labels: ["Language Usage"],
+    labels: [""],
     datasets: GitHubLanguages.map((lang) => ({
       label: lang.name,
       data: [lang.percentage],
@@ -63,7 +63,12 @@ const LanguageGraph: React.FC<Props> = ({ GitHubLanguages }) => {
     },
     plugins: {
       legend: {
-        position: "right" as const,
+        position: "bottom" as const,
+        align: "start" as const,
+        labels: {
+          boxWidth: 15,
+          padding: 15,
+        },
       },
       tooltip: {
         callbacks: {
@@ -74,6 +79,11 @@ const LanguageGraph: React.FC<Props> = ({ GitHubLanguages }) => {
     },
     responsive: true,
     maintainAspectRatio: false,
+    layout: {
+      padding: {
+        bottom: 20,
+      },
+    },
   };
 
   return <Bar data={chartData} options={options} />;
