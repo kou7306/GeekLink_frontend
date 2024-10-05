@@ -10,6 +10,14 @@ import {
 } from "chart.js";
 import { getUuidFromCookie } from "@/actions/users";
 import RepositoryGraph from "./RepositoryGraph";
+import {
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Box,
+  Typography,
+} from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 ChartJS.register(
   CategoryScale,
@@ -45,13 +53,68 @@ const RepositoryList = () => {
   }, []);
 
   return (
-    <div style={{ width: "80%", marginLeft: "auto", marginRight: "auto" }}>
-      {/* 一つあたりのグラフ */}
-      {repositories.length > 0 &&
-        repositories.map((repository, index) => (
-          <RepositoryGraph key={index} repository={repository} />
-        ))}
-    </div>
+    <>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1-content"
+          id="panel1-header"
+          sx={{
+            flexDirection: "column",
+            alignItems: "center",
+            "& .MuiAccordionSummary-content": {
+              margin: 0,
+              flexDirection: "column",
+              width: "100%",
+            },
+            minHeight: "auto",
+            height: "auto",
+          }}
+        >
+          <Box>
+            <Typography variant="h5" marginY={4}>
+              レポジトリ一覧
+            </Typography>
+            {repositories.length > 0 &&
+              repositories.slice(0, 3).map((repository, index) => (
+                <Box
+                  key={index}
+                  display={"flex"}
+                  justifyContent={"center"}
+                  sx={{
+                    mb: 2,
+                    height: "200px",
+                    border: "1px solid #ccc",
+                    borderRadius: "20px",
+                  }}
+                >
+                  <RepositoryGraph repository={repository} />
+                </Box>
+              ))}
+          </Box>
+        </AccordionSummary>
+        <AccordionDetails>
+          {repositories.length > 3 &&
+            repositories
+              .slice(4, repositories.length)
+              .map((repository, index) => (
+                <Box
+                  key={index}
+                  display={"flex"}
+                  justifyContent={"center"}
+                  sx={{
+                    mb: 2,
+                    height: "200px",
+                    border: "1px solid #ccc",
+                    borderRadius: "20px",
+                  }}
+                >
+                  <RepositoryGraph repository={repository} />
+                </Box>
+              ))}
+        </AccordionDetails>
+      </Accordion>
+    </>
   );
 };
 

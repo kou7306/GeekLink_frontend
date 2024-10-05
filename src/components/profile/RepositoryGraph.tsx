@@ -81,11 +81,7 @@ const RepositoryGraph = ({ repository }: Props) => {
       },
     },
   };
-  return (
-    <Box sx={{ width: "100%", height: "200px" }}>
-      <Bar data={repositoryData} options={options} />
-    </Box>
-  );
+  return <Bar data={repositoryData} options={options} />;
 };
 
 export default RepositoryGraph;
