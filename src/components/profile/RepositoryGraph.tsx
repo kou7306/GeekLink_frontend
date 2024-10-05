@@ -76,6 +76,12 @@ const RepositoryGraph = ({ repository }: Props) => {
         },
         align: "start" as const,
       },
+      customCanvasBackgroundColor: {
+        color: "white",
+      },
+      commitCount: {
+        commits: repository.commitCount,
+      },
     },
     layout: {
       padding: {
@@ -84,6 +90,25 @@ const RepositoryGraph = ({ repository }: Props) => {
       },
     },
   };
+
+  const commitCountPlugin = {
+    id: "commitCount",
+    afterDraw: (chart: any, args: any, options: any) => {
+      const { ctx } = chart;
+      const { top, right } = chart.chartArea;
+
+      ctx.save();
+      ctx.font = "14px Arial";
+      ctx.fillStyle = "black";
+      ctx.textAlign = "right";
+      ctx.fillText(`${options.commits} commits`, right, top - 10);
+      ctx.restore();
+    },
+  };
+
+  // プラグインを登録
+  ChartJS.register(commitCountPlugin);
+
   return <Bar data={repositoryData} options={options} />;
 };
 
