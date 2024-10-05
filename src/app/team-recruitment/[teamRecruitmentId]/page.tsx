@@ -6,6 +6,7 @@ async function fetchEventById(eventId: string) {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events/${eventId}`, {
     method: "GET",
     mode: "cors",
+    cache: "no-cache",
   });
   if (!response.ok) {
     throw new Error("Failed to fetch event");

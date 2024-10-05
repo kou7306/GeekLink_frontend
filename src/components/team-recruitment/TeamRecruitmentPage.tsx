@@ -1,6 +1,9 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import { Box, Typography, Grid, Avatar, Button, Paper } from "@mui/material";
 import { Event } from "@/types/event";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 type Props = {
   event: Event;
@@ -8,8 +11,66 @@ type Props = {
 };
 
 const TeamRecruitmentPage = ({ event, currentUserId }: Props) => {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const isHost = currentUserId === event.owner_id;
   const isParticipant = event.participant_ids.includes(currentUserId || "");
+
+  const handleJoinEvent = async () => {
+    if (!currentUserId) {
+      toast.error("ログインが必要です");
+      return;
+    }
+    setIsLoading(true);
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events/${event.id}/join`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: currentUserId }),
+      });
+
+      if (!response.ok) {
+        throw new Error("イベントへの参加に失敗しました");
+      }
+
+      toast.success("イベントに参加しました");
+      router.refresh();
+    } catch (error) {
+      toast.error("エラーが発生しました");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleLeaveEvent = async () => {
+    if (!currentUserId) {
+      toast.error("ログインが必要です");
+      return;
+    }
+    setIsLoading(true);
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events/${event.id}/leave`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: currentUserId }),
+      });
+
+      if (!response.ok) {
+        throw new Error("イベントからの退出に失敗しました");
+      }
+
+      toast.success("イベントから退出しました");
+      router.refresh();
+    } catch (error) {
+      toast.error("エラーが発生しました");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <Paper elevation={3} sx={{ maxWidth: 600, margin: "auto", padding: 4 }}>
@@ -84,12 +145,26 @@ const TeamRecruitmentPage = ({ event, currentUserId }: Props) => {
               </Button>
             </Box>
           ) : isParticipant ? (
-            <Button variant="contained" fullWidth sx={{ fontSize: "1.25rem" }} color="secondary">
-              キャンセル
+            <Button
+              variant="contained"
+              fullWidth
+              sx={{ fontSize: "1.25rem" }}
+              color="primary"
+              onClick={handleLeaveEvent}
+              disabled={isLoading}
+            >
+              {isLoading ? "処理中..." : "キャンセル"}
             </Button>
           ) : (
-            <Button variant="contained" fullWidth sx={{ fontSize: "1.25rem" }} color="primary">
-              申し込み
+            <Button
+              variant="contained"
+              fullWidth
+              sx={{ fontSize: "1.25rem" }}
+              color="primary"
+              onClick={handleJoinEvent}
+              disabled={isLoading}
+            >
+              {isLoading ? "処理中..." : "申し込み"}
             </Button>
           )}
         </Grid>
