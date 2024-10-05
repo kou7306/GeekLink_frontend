@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { format } from "date-fns";
 import { ja } from "date-fns/locale";
-import { Post } from "../../../types/post";
+import { Post } from "../../types/post";
 import { sendReaction, getPosts } from "../../utils/actionPost";
 
 type TimeLinePostProps = {
@@ -12,9 +12,7 @@ const emojis = ["👍", "❤️"]; // Example emojis
 const currentUserId = "test"; // Example user ID
 
 const TimeLinePost: React.FC<TimeLinePostProps> = ({ post }) => {
-  const [selectedReactions, setSelectedReactions] = useState<Set<string>>(
-    new Set<string>()
-  );
+  const [selectedReactions, setSelectedReactions] = useState<Set<string>>(new Set<string>());
   const [reactionCounts, setReactionCounts] = useState<{
     [emoji: string]: number;
   }>({});
@@ -61,9 +59,7 @@ const TimeLinePost: React.FC<TimeLinePostProps> = ({ post }) => {
           <button
             key={emoji}
             onClick={() => handleReaction(post.id, emoji)}
-            className={`text-xl ${
-              selectedReactions.has(emoji) ? "text-blue-500" : "text-gray-500"
-            }`}
+            className={`text-xl ${selectedReactions.has(emoji) ? "text-blue-500" : "text-gray-500"}`}
           >
             {emoji} {reactionCounts[emoji] || 0}
           </button>

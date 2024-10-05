@@ -1,19 +1,14 @@
-import { Message } from "../../types/message";
+import { Message } from "../types/message";
 
 // メッセージを取得してソートする関数
-export const getMessageData = async (
-  groupId: string
-): Promise<{ messages: Message[] }> => {
+export const getMessageData = async (groupId: string): Promise<{ messages: Message[] }> => {
   try {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     // APIからデータを取得
-    const response = await fetch(
-      `${apiUrl}/group/get-group-messages?groupId=${groupId}`,
-      {
-        method: "GET",
-        mode: "cors",
-      }
-    );
+    const response = await fetch(`${apiUrl}/group/get-group-messages?groupId=${groupId}`, {
+      method: "GET",
+      mode: "cors",
+    });
     // レスポンスをJSONとしてパース
     const { messages }: { messages: Message[] } = await response.json();
     // メッセージが空の場合、そのまま返す

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Message } from "../../../types/message";
+import { Message } from "../../types/message";
 
 interface MessageProps {
   message: Message;
@@ -9,9 +9,7 @@ interface MessageProps {
 const mockReactions = [{ id: 1, reaction: "👍", count: 5 }];
 
 const MessageComponent: React.FC<MessageProps> = ({ message, uuid }) => {
-  const [reactions, setReactions] = useState<
-    { reaction: string; count: number; id: number }[]
-  >([]);
+  const [reactions, setReactions] = useState<{ reaction: string; count: number; id: number }[]>([]);
 
   useEffect(() => {
     fetchReactions();
@@ -28,29 +26,18 @@ const MessageComponent: React.FC<MessageProps> = ({ message, uuid }) => {
     // Mocking an API call with a timeout
     setTimeout(() => {
       setReactions((prevReactions) => {
-        const existingReaction = prevReactions.find(
-          (r) => r.reaction === reaction
-        );
+        const existingReaction = prevReactions.find((r) => r.reaction === reaction);
         if (existingReaction) {
-          return prevReactions.map((r) =>
-            r.reaction === reaction ? { ...r, count: r.count + 1 } : r
-          );
+          return prevReactions.map((r) => (r.reaction === reaction ? { ...r, count: r.count + 1 } : r));
         } else {
-          return [
-            ...prevReactions,
-            { reaction, count: 1, id: prevReactions.length + 1 },
-          ];
+          return [...prevReactions, { reaction, count: 1, id: prevReactions.length + 1 }];
         }
       });
     }, 500);
   };
 
   return (
-    <div
-      className={`my-2 ${
-        message.sender_id === uuid ? "text-right mr-5" : "ml-5"
-      }`}
-    >
+    <div className={`my-2 ${message.sender_id === uuid ? "text-right mr-5" : "ml-5"}`}>
       <div className="inline-block">
         <p
           className={`relative px-4 py-1 rounded-full ${
@@ -69,9 +56,7 @@ const MessageComponent: React.FC<MessageProps> = ({ message, uuid }) => {
           ))}
         </div>
       </div>
-      <p className="text-sm text-secondary">
-        {new Date(message.created_at).toLocaleString()}
-      </p>
+      <p className="text-sm text-secondary">{new Date(message.created_at).toLocaleString()}</p>
     </div>
   );
 };

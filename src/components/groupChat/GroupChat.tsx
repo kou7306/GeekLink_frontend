@@ -3,7 +3,7 @@ import { use, useEffect, useRef, useState } from "react";
 import { MdSend } from "react-icons/md";
 import { getUuidFromCookie } from "@/actions/users";
 import { getMessageData } from "@/utils/getMessageData";
-import { Message } from "../../../types/message";
+import { Message } from "../../types/message";
 import { Group, getGroupMembers } from "@/utils/getGroupMembers";
 import { Socket } from "socket.io-client";
 import socketIOClient from "socket.io-client";
@@ -131,18 +131,10 @@ const GroupChat = ({ params }: { params: any }) => {
         <ul>
           {messages.map((message, index) => {
             // message.sender_idに対応するメンバーを見つける
-            const member = members?.find(
-              (m) => m.user_id === message.sender_id
-            );
+            const member = members?.find((m) => m.user_id === message.sender_id);
             return (
               <div key={index} className={`my-2 ml-5 flex items-start`}>
-                <Link
-                  href={
-                    member?.user_id === uuid
-                      ? "/my-page"
-                      : `/other/${member?.user_id}`
-                  }
-                >
+                <Link href={member?.user_id === uuid ? "/my-page" : `/other/${member?.user_id}`}>
                   <Avatar
                     alt={member?.name || "Unknown"}
                     src={member?.image_url || "/img/default_icon.png"}
@@ -150,9 +142,7 @@ const GroupChat = ({ params }: { params: any }) => {
                   />
                 </Link>
                 <li className="inline-block">
-                  <p className="text-md font-bold mb-1">
-                    {member?.name || "Unknown"}
-                  </p>
+                  <p className="text-md font-bold mb-1">{member?.name || "Unknown"}</p>
                   <div>
                     <p>{message.content}</p>
                   </div>
@@ -182,26 +172,14 @@ const GroupChat = ({ params }: { params: any }) => {
           <button
             type="submit"
             className="ml-2 pb-3 bg-accent text-white rounded-lg p-2"
-            disabled={
-              groupData &&
-              !groupData.member_ids?.includes(uuid) &&
-              groupData.owner_id !== uuid
-            }
+            disabled={groupData && !groupData.member_ids?.includes(uuid) && groupData.owner_id !== uuid}
           >
             <MdSend className="h-5 w-5 ml-1 mt-1" />
           </button>
         </form>
       </div>
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={null}
-        onClose={handleCloseSnackbar}
-      >
-        <Alert
-          onClose={handleCloseSnackbar}
-          severity="warning"
-          sx={{ width: "100%" }}
-        >
+      <Snackbar open={openSnackbar} autoHideDuration={null} onClose={handleCloseSnackbar}>
+        <Alert onClose={handleCloseSnackbar} severity="warning" sx={{ width: "100%" }}>
           コメントするにはメンバーになる必要があります
         </Alert>
       </Snackbar>
