@@ -47,7 +47,6 @@ const RepositoryList = () => {
       );
       const data = await res.json();
       setRepositories(data);
-      console.log(data);
     };
     fetchRepositories();
   }, []);
