@@ -1,37 +1,24 @@
-export const getQiitaActivity = async (
+export const getGeekLinkActivity = async (
   uuid: string
-): Promise<{
-  monthlyPostCounts: number[]; // 年間の月ごとの投稿数
-  postDetails: {
-    title: string;
-    url: string;
-    date: string | number | Date;
-  }[]; // 1ヶ月前からの投稿の詳細情報
-}> => {
+): Promise<{ monthlyActivityCounts: number[]; activities: any[] }> => {
   try {
-    console.log(uuid);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    const cacheKey = `qiita-${uuid}`;
-    const cacheExpirationKey = `qiita-expiration-${uuid}`;
-    const oneWeekInMs = 24 * 60 * 60 * 1000;
-
-    // 現在の時刻と1ヶ月前のカットオフ日を取得
-    const now = new Date().getTime();
-    const oneMonthAgo = new Date();
-    oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
-    const cutoffDate = oneMonthAgo.getTime();
+    const cacheKey = `geeklink-${uuid}-year`;
+    const cacheExpirationKey = `geeklink-expiration-${uuid}-year`;
+    const cacheTime = 4 * 60 * 60 * 1000;
+    const now = new Date().getTime(); // 現在の時刻を取得
 
     // キャッシュが存在し、有効期限内の場合はキャッシュからデータを取得
-    const cachedData = localStorage.getItem(cacheKey);
-    const cacheExpiration = localStorage.getItem(cacheExpirationKey);
+    // const cachedData = localStorage.getItem(cacheKey);
+    // const cacheExpiration = localStorage.getItem(cacheExpirationKey);
 
-    if (cachedData && cacheExpiration && now < Number(cacheExpiration)) {
-      return JSON.parse(cachedData); // キャッシュが有効ならそれを返す
-    }
+    // if (cachedData && cacheExpiration && now < Number(cacheExpiration)) {
+    //   return JSON.parse(cachedData); // キャッシュが有効ならそれを返す
+    // }
 
-    // キャッシュがないか有効期限が切れている場合、新たにデータを取得
+    const time = 365 * 24; // 1年間のアクティビティを取得
     const response = await fetch(
-      `${apiUrl}/activity/qiita?uuid=${uuid}&time=${time}`,
+      `${apiUrl}/activity/app?uuid=${uuid}&time=${time}`,
       {
         method: "GET",
         headers: {
@@ -41,46 +28,43 @@ export const getQiitaActivity = async (
     );
 
     if (!response.ok) {
-      throw new Error("Failed to fetch contributions");
+      throw new Error("Failed to fetch user activity");
     }
 
-    const qiita_info = await response.json();
-    const monthlyPostCounts = qiita_info.monthlyPostCounts;
-    const posts = qiita_info.postDetails;
-    // 月別の投稿数（年間）と詳細データ（1ヶ月前以降）を初期化
-    const postDetails: {
-      title: string;
-      url: string;
-      date: string | number | Date;
-    }[] = [];
+    const activities = await response.json();
 
-    // 投稿データをループし、投稿月に応じてカウントを更新
-    posts.forEach(
-      (post: { date: string | number | Date; title: string; url: string }) => {
-        const postDate = new Date(post.date);
+    console.log(activities);
 
-        // 1ヶ月前以降の投稿のみ詳細を追加
-        if (postDate.getTime() >= cutoffDate) {
-          postDetails.push({
-            title: post.title,
-            url: post.url,
-            date: post.date,
-          });
-        }
-      }
-    );
+    // 1ヶ月前以降のアクティビティのみをフィルタリング
+    const oneMonthAgo = new Date();
+    oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+    const filteredActivities = activities.filter((activity: any) => {
+      const activityDate = new Date(activity.created_at); // created_atフィールドを使用
+      return activityDate >= oneMonthAgo;
+    });
 
-    // データをキャッシュに保存し、有効期限を設定
+    // 月ごとのアクティビティ数を計算
+    const monthlyActivityCounts = Array(12).fill(0); // 12ヶ月分のカウント用配列を初期化
+
+    activities.forEach((activity: any) => {
+      const activityDate = new Date(activity.created_at);
+      const monthIndex = activityDate.getMonth(); // 月のインデックスを取得 (0 - 11)
+      monthlyActivityCounts[monthIndex] += 1; // 該当月のカウントを増やす
+    });
+
+    // データをキャッシュに保存
     localStorage.setItem(
       cacheKey,
-      JSON.stringify({ monthlyPostCounts, postDetails })
+      JSON.stringify({ monthlyActivityCounts, activities: filteredActivities })
     );
-    localStorage.setItem(cacheExpirationKey, (now + oneWeekInMs).toString());
+    localStorage.setItem(cacheExpirationKey, (now + cacheTime).toString());
 
-    // 結果を返す
-    return { monthlyPostCounts, postDetails };
+    return {
+      monthlyActivityCounts,
+      activities: filteredActivities,
+    };
   } catch (error) {
-    console.error("Error fetching contributions:", error);
-    return { monthlyPostCounts: [], postDetails: [] };
+    console.error("Error fetching user activity:", error);
+    return { monthlyActivityCounts: [], activities: [] }; // デフォルトで空配列を返す
   }
 };

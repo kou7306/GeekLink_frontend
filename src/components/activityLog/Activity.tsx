@@ -9,6 +9,7 @@ import {
 import ActivityLogGraph from "./ActivityLogGraph";
 import ActivityLog from "./ActivityLog";
 import { getQiitaActivity } from "../../utils/getQiitaActivity";
+import { getGeekLinkActivity } from "../../utils/getGeekLinkActivity";
 
 interface ActivityProps {
   uuid: string;
@@ -22,6 +23,12 @@ const Activity: React.FC<ActivityProps> = ({ uuid }) => {
   );
   const [yearlyQiitaPosts, setYearlyQiitaPosts] = useState<number[]>([]); // Qiitaの年間投稿数
   const [monthlyQiitaActivity, setMonthlyQiitaActivity] = useState<any[]>([]); // Qiitaの月間の投稿情報
+  const [yearlyGeekLinkActivity, setYearlyGeekLinkActivity] = useState<
+    number[]
+  >([]); // GeekLinkの年間投稿数
+  const [monthlyGeekLinkActivity, setMonthlyGeekLinkActivity] = useState<any[]>(
+    []
+  ); // GeekLinkの月間の投稿情報
   const [loading, setLoading] = useState<boolean>(true); // ローディング状態の管理
 
   useEffect(() => {
@@ -55,6 +62,16 @@ const Activity: React.FC<ActivityProps> = ({ uuid }) => {
 
         // Qiitaの月間の投稿情報を取得
         const monthlyQiitaActivity = qiitaActivity.postDetails;
+
+        // アプリ内の年間のデータを取得
+        const geekLinkActivity = await getGeekLinkActivity(uuid);
+        setYearlyGeekLinkActivity(geekLinkActivity.monthlyActivityCounts);
+
+        // アプリ内の月間のデータを取得
+        const monthlyGeekLinkActivity = geekLinkActivity.activities;
+        setMonthlyGeekLinkActivity(monthlyGeekLinkActivity);
+        console.log(monthlyGeekLinkActivity);
+        console.log(geekLinkActivity);
       }
       setLoading(false); // ローディング完了
     };
@@ -75,6 +92,10 @@ const Activity: React.FC<ActivityProps> = ({ uuid }) => {
       kind: "qiita",
       data: monthlyQiitaActivity,
     },
+    {
+      kind: "geeklink",
+      data: monthlyGeekLinkActivity,
+    },
   ];
 
   // グラフ用データを作成
@@ -86,6 +107,10 @@ const Activity: React.FC<ActivityProps> = ({ uuid }) => {
     {
       kind: "qiita",
       data: yearlyQiitaPosts,
+    },
+    {
+      kind: "geeklink",
+      data: yearlyGeekLinkActivity,
     },
   ];
 

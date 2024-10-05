@@ -57,7 +57,8 @@ const ActivityLogGraph: React.FC<{ propsArray: ActivityLogGraphProps[] }> = ({
   const colors: { [key in ActivityLogGraphProps["kind"] | "other"]: string } = {
     github: "rgb(255, 99, 132)",
     qiita: "rgb(54, 162, 235)",
-    other: "rgb(75, 192, 192)",
+    geeklink: "rgb(75, 192, 192)",
+    other: "rgb(201, 203, 207)",
   };
 
   // datasetsに各kindのデータを追加

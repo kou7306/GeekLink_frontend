@@ -9,7 +9,6 @@ export const getQiitaActivity = async (
   }[]; // 1ヶ月前からの投稿の詳細情報
 }> => {
   try {
-    console.log(uuid);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     const cacheKey = `qiita-${uuid}`;
     const cacheExpirationKey = `qiita-expiration-${uuid}`;
