@@ -11,16 +11,12 @@ const QiitaList = () => {
     queryFn: async () => {
       const uuid = await getUuidFromCookie();
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/activity/qiita`,
+        `${process.env.NEXT_PUBLIC_API_URL}/activity/qiita?uuid=${uuid}&period=all`,
         {
-          method: "POST",
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            uuid: uuid,
-            period: "1yr",
-          }),
         }
       );
       if (!response.ok) {
