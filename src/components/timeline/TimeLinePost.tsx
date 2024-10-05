@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { ja } from "date-fns/locale";
@@ -7,12 +8,16 @@ import { sendReaction } from "../../utils/actionPost";
 interface TimeLinePostProps {
   post: Post;
   isOwnPost: boolean;
+  uuid: string | null;
 }
 
 const emojis = ["👍", "❤️"]; // Example emojis
-const currentUserId = "test"; // Example user ID
 
-const TimeLinePost: React.FC<TimeLinePostProps> = ({ post, isOwnPost }) => {
+const TimeLinePost: React.FC<TimeLinePostProps> = ({
+  post,
+  isOwnPost,
+  uuid,
+}) => {
   const [selectedReactions, setSelectedReactions] = useState<Set<string>>(
     new Set<string>()
   );
@@ -26,7 +31,7 @@ const TimeLinePost: React.FC<TimeLinePostProps> = ({ post, isOwnPost }) => {
     const selected = new Set<string>();
     post.reactions.forEach((reaction) => {
       counts[reaction.emoji] = (counts[reaction.emoji] || 0) + 1;
-      if (reaction.userId === currentUserId) {
+      if (reaction.userId === uuid) {
         selected.add(reaction.emoji);
       }
     });
@@ -37,6 +42,9 @@ const TimeLinePost: React.FC<TimeLinePostProps> = ({ post, isOwnPost }) => {
   const handleReaction = async (postId: string, emoji: string) => {
     if (isOwnPost) {
       console.log("自分の投稿にはリアクションできません");
+      return;
+    }
+    if (uuid == undefined) {
       return;
     }
 
@@ -55,7 +63,7 @@ const TimeLinePost: React.FC<TimeLinePostProps> = ({ post, isOwnPost }) => {
     }));
 
     try {
-      await sendReaction(postId, currentUserId, emoji);
+      await sendReaction(postId, uuid, emoji);
     } catch (error) {
       console.error("Failed to send reaction", error);
       // Revert optimistic update on error

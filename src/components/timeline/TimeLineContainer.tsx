@@ -1,9 +1,11 @@
+"use client";
 import React, { useState, useEffect, useCallback } from "react";
 import TimeLinePost from "./TimeLinePost";
 import PostModal from "./PostModal";
 import { Post } from "../../../types/timeline";
 import { getPosts, createPost } from "../../utils/actionPost";
 import { useInView } from "react-intersection-observer";
+import { getUuidFromCookie } from "@/actions/users";
 
 const TimeLineContainer: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -13,15 +15,25 @@ const TimeLineContainer: React.FC = () => {
   const [page, setPage] = useState(1);
   const [limit] = useState(10);
   const [hasMore, setHasMore] = useState(true);
-
   // ログインユーザーのIDを取得（実際の実装に合わせて調整してください）
-  const currentUserId = "現在のユーザーID"; // 例: useContext(UserContext) などで取得
+  const [uuid, setUuid] = useState<string | null>(null);
 
   const { ref, inView } = useInView({
     threshold: 1.0,
   });
 
   useEffect(() => {
+    const getUuid = async () => {
+      const userId = await getUuidFromCookie();
+      if (userId) {
+        try {
+          setUuid(userId);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      }
+    };
+    getUuid();
     if (hasMore) {
       fetchPosts();
     }
@@ -90,7 +102,8 @@ const TimeLineContainer: React.FC = () => {
           <TimeLinePost
             key={post.id}
             post={post}
-            isOwnPost={post.userId === currentUserId}
+            isOwnPost={post.userId === uuid}
+            uuid={uuid}
           />
         ))}
         {hasMore && <div ref={ref} />}
