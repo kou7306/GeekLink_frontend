@@ -47,18 +47,18 @@ const LanguageGraph: React.FC<Props> = ({ GitHubLanguages }) => {
   };
 
   const options: ChartOptions<"bar"> = {
-    indexAxis: "x" as const,
+    indexAxis: "y" as const,
     scales: {
       x: {
-        stacked: true,
-      },
-      y: {
         stacked: true,
         beginAtZero: true,
         max: 100,
         ticks: {
           callback: (value) => `${value}%`,
         },
+      },
+      y: {
+        stacked: true,
       },
     },
     plugins: {
@@ -68,7 +68,7 @@ const LanguageGraph: React.FC<Props> = ({ GitHubLanguages }) => {
       tooltip: {
         callbacks: {
           label: (context) =>
-            `${context.dataset.label}: ${context.parsed.y.toFixed(1)}%`,
+            `${context.dataset.label}: ${context.parsed.x.toFixed(1)}%`,
         },
       },
     },
