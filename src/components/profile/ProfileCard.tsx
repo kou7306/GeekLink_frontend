@@ -14,6 +14,7 @@ import ActivityLog from "./ActivityLog";
 import WeeklyActivityLog from "./WeeklyActivityLog";
 import UserMainInformation from "./UserMainInformation";
 import SocialMediaIntegration from "./SocialMediaIntegration";
+import CommentComponent from "./CommentComponent";
 
 interface ProfileCardProps {
   user: User;
@@ -128,8 +129,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
                 />
               </a>
             )}
+            {/* 連携 */}
             <SocialMediaIntegration />
           </div>
+          {user.message && <CommentComponent message={user.message} />}
           {isMe && (
             <button
               onClick={onEdit}
