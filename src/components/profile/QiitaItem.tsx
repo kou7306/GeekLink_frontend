@@ -1,11 +1,9 @@
 import { Paper, Typography } from "@mui/material";
 import React from "react";
+import { QiitaArticle } from "../../../types/qiitaArticle";
 
 type Props = {
-  item: {
-    title: string;
-    date: string;
-  };
+  item: QiitaArticle;
 };
 
 const QiitaItem = ({ item }: Props) => {
@@ -21,9 +19,6 @@ const QiitaItem = ({ item }: Props) => {
       }}
     >
       <Typography variant="body2" color="text.secondary" gutterBottom>
-        {item.date}
-      </Typography>
-      <Typography variant="h6" component="h2">
         {item.title}
       </Typography>
     </Paper>
