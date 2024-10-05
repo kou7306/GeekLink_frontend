@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import React from "react";
 import QiitaItem from "./QiitaItem";
 import { QueryClient, useQuery } from "@tanstack/react-query";
@@ -36,6 +36,9 @@ const QiitaList = () => {
 
   return (
     <Box sx={{ maxWidth: 400, margin: "auto" }}>
+      <Typography variant="h5" marginY={4}>
+        Qiita
+      </Typography>
       {data.postDetails.map((item: QiitaArticle, index: number) => (
         <QiitaItem item={item} key={index} />
       ))}
