@@ -14,6 +14,8 @@ import Experience from "./Experience";
 import SearchButton from "./SearchButton";
 import Title from "./Title";
 import { useRouter } from "next/navigation";
+import Search from "../team-recruitments/Search";
+import UsersSearch from "../suggest-users/UsersSearch";
 
 const style = {
   position: "absolute" as "absolute",
@@ -101,6 +103,7 @@ const FilterSearch: React.FC<Props> = ({
         >
           絞り込み
         </Button>
+        <UsersSearch />
         <Button
           onClick={() => {
             router.push("/random-match");
