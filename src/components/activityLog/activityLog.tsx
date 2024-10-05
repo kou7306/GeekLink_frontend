@@ -1,79 +1,58 @@
-import { useState, useEffect } from "react";
+"use client";
+import React, { useState, useEffect } from "react";
+import {
+  getYearlyContribution,
+  getContributionsSinceLastUpdate,
+} from "../../utils/getActivity";
+import ActivityLogGraph from "./ActivityLogGraph";
 
-interface Contribution {
-  date: string;
-  count: number;
+interface ActivityLogProps {
+  uuid: string;
 }
 
-interface ContributionsResponse {
-  contributions: Contribution[];
-}
+// ActivityLogコンポーネント
+const ActivityLog: React.FC<ActivityLogProps> = ({ uuid }) => {
+  const [yearlyContribution, setYearlyContribution] = useState<number[]>([]);
+  const [loading, setLoading] = useState<boolean>(true); // ローディング状態の管理
 
-// APIからデータを取得する共通関数
-const fetchContributions = async (
-  endpoint: string,
-  cacheTime: number
-): Promise<ContributionsResponse> => {
-  const response = await fetch(endpoint, {
-    cache: "force-cache", // ブラウザにキャッシュされたデータを強制的に使用する
-    headers: {
-      "Cache-Control": `max-age=${cacheTime}`, // キャッシュ期間を指定
-    },
-  });
-  return response.json();
-};
+  useEffect(() => {
+    const fetchData = async () => {
+      if (uuid) {
+        // 年間コントリビューションを取得
+        const yearlyData = await getYearlyContribution(uuid);
+        setYearlyContribution(yearlyData);
 
-// 1ヶ月のデータを1日1回取得する
-const fetchOneMonthContributions = async () => {
-  return await fetchContributions("/api/one-month", 24 * 60 * 60); // 1日キャッシュ
-};
+        // 更新以来のコントリビューションを取得
+        const contributionsSinceLastUpdate =
+          await getContributionsSinceLastUpdate(uuid);
 
-// 8時間前のデータを取得
-const fetchEightHourContributions = async () => {
-  return await fetchContributions("/api/eight-hours", 8 * 60 * 60); // 8時間キャッシュ
-};
+        // logs が配列で返される場合、length を取得して最後の値に加算
+        if (Array.isArray(contributionsSinceLastUpdate)) {
+          const newContributionCount = contributionsSinceLastUpdate.length;
+          console.log(contributionsSinceLastUpdate.length);
+          setYearlyContribution((prev) => {
+            const updatedData = [...prev]; // 前のデータをコピー
+            updatedData[updatedData.length - 1] += newContributionCount; // 最後の値に加算
+            return updatedData;
+          });
+        }
+      }
+      setLoading(false); // ローディング完了
+    };
 
-// ActivityLog コンポーネントで表示部分を分離
-const ActivityLog = ({ contributions }: { contributions: Contribution[] }) => {
+    fetchData();
+  }, [uuid]);
+
+  if (loading) {
+    return <div>Loading...</div>; // ローディング中の表示
+  }
+
   return (
     <div>
-      <h1>GitHub Contributions</h1>
-      <h2>All Contributions</h2>
-      <ul>
-        {contributions.map((contribution, index) => (
-          <li key={index}>
-            {contribution.date}: {contribution.count} contributions
-          </li>
-        ))}
-      </ul>
+      <h2>年間コントリビューション数</h2>
+      <ActivityLogGraph kind="github" data={yearlyContribution} />
     </div>
   );
 };
 
-export default function Home() {
-  const [contributions, setContributions] = useState<Contribution[]>([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      // 1ヶ月前のデータを1日1回取得
-      const oneMonthData = await fetchOneMonthContributions();
-      setContributions(oneMonthData.contributions); // データをStateにセット
-
-      // 8時間前のデータを取得して追加
-      const eightHourData = await fetchEightHourContributions();
-      setContributions((prevContributions) => [
-        ...prevContributions,
-        ...eightHourData.contributions,
-      ]); // 新しいデータを追加
-    };
-
-    fetchData();
-
-    // 8時間ごとにデータを更新
-    const timeoutId = setTimeout(fetchData, 8 * 60 * 60 * 1000); // 8時間後に再実行
-
-    return () => clearTimeout(timeoutId); // クリーンアップ
-  }, []);
-
-  return <ActivityLog contributions={contributions} />;
-}
+export default ActivityLog;
