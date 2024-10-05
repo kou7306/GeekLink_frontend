@@ -38,41 +38,37 @@ const LanguageGraph: React.FC<Props> = ({ GitHubLanguages }) => {
   };
 
   const chartData: ChartData<"bar"> = {
-    labels: GitHubLanguages.map((lang) => lang.name),
-    datasets: [
-      {
-        label: "Language Usage",
-        data: GitHubLanguages.map((lang) => lang.percentage),
-        backgroundColor: GitHubLanguages.map((lang) =>
-          getLanguageColor(lang.name)
-        ),
-      },
-    ],
+    labels: ["Language Usage"],
+    datasets: GitHubLanguages.map((lang) => ({
+      label: lang.name,
+      data: [lang.percentage],
+      backgroundColor: getLanguageColor(lang.name),
+    })),
   };
 
   const options: ChartOptions<"bar"> = {
-    indexAxis: "y" as const,
+    indexAxis: "x" as const,
     scales: {
       x: {
         stacked: true,
-        min: 0,
+      },
+      y: {
+        stacked: true,
+        beginAtZero: true,
         max: 100,
         ticks: {
           callback: (value) => `${value}%`,
         },
       },
-      y: {
-        stacked: true,
-      },
     },
     plugins: {
       legend: {
-        display: false,
+        position: "right" as const,
       },
       tooltip: {
         callbacks: {
           label: (context) =>
-            `${context.dataset.label}: ${context.parsed.x.toFixed(1)}%`,
+            `${context.dataset.label}: ${context.parsed.y.toFixed(1)}%`,
         },
       },
     },
