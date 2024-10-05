@@ -7,11 +7,16 @@ import { useTransition } from "react";
 import toast from "react-hot-toast";
 
 interface SignInButtonProps {
-  email: string;
-  password: string;
+  email?: string;
+  password?: string;
+  isGuest?: boolean;
 }
 
-function SignInButton({ email, password }: SignInButtonProps) {
+function SignInButton({
+  email = "test1@gmail.com",
+  password = "test1234",
+  isGuest = false,
+}: SignInButtonProps) {
   const router = useRouter();
 
   const [isPending, startTransition] = useTransition();
@@ -34,7 +39,13 @@ function SignInButton({ email, password }: SignInButtonProps) {
       disabled={isPending}
       className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 ease-in-out"
     >
-      {isPending ? "Signing in..." : "Sign In"}
+      {isGuest
+        ? isPending
+          ? "Signing in..."
+          : "ゲストログイン"
+        : isPending
+        ? "Signing in..."
+        : "Sign In"}
     </button>
   );
 }
