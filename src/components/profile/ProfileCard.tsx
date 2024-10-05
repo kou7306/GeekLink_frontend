@@ -10,7 +10,7 @@ import { postLikeID, deleteLikeID } from "@/utils/CreateLike";
 import { Box, Grid } from "@mui/material";
 import RepositoryList from "./RepositoryList";
 import QiitaList from "./QiitaList";
-import ActivityLog from "../activityLog/ActivityLog";
+import Activity from "../activityLog/Activity";
 import WeeklyActivityLog from "./WeeklyActivityLog";
 
 interface ProfileCardProps {
@@ -247,7 +247,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
           <QiitaList />
         </Grid>
         <Grid item xs={12} my={2}>
-          <ActivityLog uuid={uuid || ""} />
+          <Activity uuid={uuid || ""} />
           <WeeklyActivityLog />
         </Grid>
       </Grid>
