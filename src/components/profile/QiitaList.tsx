@@ -1,27 +1,59 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import React from "react";
 import QiitaItem from "./QiitaItem";
+import { useQuery } from "@tanstack/react-query";
+import { getUuidFromCookie } from "@/actions/users";
+import { QiitaArticle } from "../../../types/qiitaArticle";
 
 const QiitaList = () => {
-  const data = [
-    {
-      title: "GitHub APIの使い方",
-      date: "2021-09-05",
+  const { isPending, isError, error, data } = useQuery({
+    queryKey: ["qiita"],
+    queryFn: async () => {
+      const uuid = await getUuidFromCookie();
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/activity/qiita`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            uuid: uuid,
+            period: "1yr",
+          }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch Qiita activity");
+      }
+      return response.json();
     },
-    {
-      title: "Reactの使い方",
-      date: "2021-09-01",
-    },
-    {
-      title: "TypeScriptの使い方",
-      date: "2021-09-017",
-    },
-  ];
+  });
+
+  if (isPending) return <div>Loading...</div>;
+
+  if (isError) return <div>Error: {error.message}</div>;
+
   return (
-    <Box sx={{ maxWidth: 400, margin: "auto" }}>
-      {data.map((item, index) => (
-        <QiitaItem item={item} key={index} />
-      ))}
+    <Box
+      sx={{
+        maxWidth: 400,
+        height: 700,
+        margin: "auto",
+        overflowY: "auto",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <Typography variant="h5" marginY={4}>
+        Qiita
+      </Typography>
+      <Box sx={{ flexGrow: 1, overflowY: "auto" }}>
+        {/* // スクロール可能な内部コンテナ */}
+        {data.postDetails.map((item: QiitaArticle, index: number) => (
+          <QiitaItem item={item} key={index} />
+        ))}
+      </Box>
     </Box>
   );
 };

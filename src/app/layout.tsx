@@ -3,8 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import Header from "./Header";
-import { getUuidFromCookie } from "@/actions/users";
 import { getUser } from "@/lib/auth";
+import Providers from "./Providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,8 +22,9 @@ export default async function RootLayout({
     <html lang="ja">
       <body className={inter.className}>
         {user != null && <Header />}
-        <main className="py-20">{children}</main>
-
+        <Providers>
+          <main className="py-20">{children}</main>
+        </Providers>
         <Toaster />
       </body>
     </html>
