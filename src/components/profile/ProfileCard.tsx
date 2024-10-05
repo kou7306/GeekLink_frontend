@@ -12,6 +12,7 @@ import RepositoryList from "./RepositoryList";
 import QiitaList from "./QiitaList";
 import ActivityLog from "./ActivityLog";
 import WeeklyActivityLog from "./WeeklyActivityLog";
+import UserMainInformation from "./UserMainInformation";
 
 interface ProfileCardProps {
   user: User;
@@ -56,6 +57,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
       }
     }
   }, [uuid]);
+  console.log(user);
 
   return (
     <Box bgcolor="white">
@@ -159,76 +161,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
             </button>
           )}
         </div>
-        <div className="col-span-2 grid grid-cols-2 gap-6">
-          <div className="space-y-4">
-            <div className="p-4 bg-gray-100 rounded-lg shadow-sm">
-              <p className="text-gray-600">
-                <strong>職業:</strong> {user.occupation}
-              </p>
-              <p className="text-gray-600">
-                <strong>場所:</strong> {user.place}
-              </p>
-              <p className="text-gray-600">
-                <strong>性別:</strong> {user.sex}
-              </p>
-              <p className="text-gray-600">
-                <strong>年齢:</strong> {user.age}
-              </p>
-            </div>
-            <div className="space-y-4">
-              <div className="p-4 bg-gray-100 rounded-lg shadow-sm">
-                <h3 className="text-xl font-semibold">TOP3</h3>
-                <ul className="list-disc list-inside">
-                  {user.top_teches.map((tech, index) => (
-                    <li key={index} className="text-gray-700">
-                      {tech}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="p-4 bg-gray-100 rounded-lg shadow-sm">
-                <h3 className="text-xl font-semibold">技術スタック</h3>
-                <ul className="list-disc list-inside">
-                  {user.teches.map((tech, index) => (
-                    <li key={index} className="text-gray-700">
-                      {tech}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              {user.hobby && (
-                <div className="p-4 bg-gray-100 rounded-lg shadow-sm">
-                  <h3 className="text-xl font-semibold">趣味</h3>
-                  <p className="text-gray-700">{user.hobby}</p>
-                </div>
-              )}
-              {user.editor && (
-                <div className="p-4 bg-gray-100 rounded-lg shadow-sm">
-                  <h3 className="text-xl font-semibold">好きなエディター</h3>
-                  <p className="text-gray-700">{user.editor}</p>
-                </div>
-              )}
-              {user.qualification && (
-                <div className="p-4 bg-gray-100 rounded-lg shadow-sm">
-                  <h3 className="text-xl font-semibold">資格</h3>
-                  <ul className="list-disc list-inside">
-                    {user.qualification.map((qual, index) => (
-                      <li key={index} className="text-gray-700">
-                        {qual}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              {user.message && (
-                <div className="p-4 bg-gray-100 rounded-lg shadow-sm">
-                  <h3 className="text-xl font-semibold">一言</h3>
-                  <p className="text-gray-700">{user.message}</p>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
+        <UserMainInformation user={user} />
       </div>
       {/* グラフ */}
       <Grid container spacing={2} mt={2}>
