@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
 import QiitaItem from "./QiitaItem";
-import { QueryClient, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getUuidFromCookie } from "@/actions/users";
 import { QiitaArticle } from "../../../types/qiitaArticle";
 
@@ -35,13 +35,25 @@ const QiitaList = () => {
   if (isError) return <div>Error: {error.message}</div>;
 
   return (
-    <Box sx={{ maxWidth: 400, margin: "auto" }}>
+    <Box
+      sx={{
+        maxWidth: 400,
+        height: 700,
+        margin: "auto",
+        overflowY: "auto",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       <Typography variant="h5" marginY={4}>
         Qiita
       </Typography>
-      {data.postDetails.map((item: QiitaArticle, index: number) => (
-        <QiitaItem item={item} key={index} />
-      ))}
+      <Box sx={{ flexGrow: 1, overflowY: "auto" }}>
+        {/* // スクロール可能な内部コンテナ */}
+        {data.postDetails.map((item: QiitaArticle, index: number) => (
+          <QiitaItem item={item} key={index} />
+        ))}
+      </Box>
     </Box>
   );
 };
