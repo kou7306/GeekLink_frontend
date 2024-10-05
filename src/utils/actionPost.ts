@@ -1,5 +1,5 @@
 import { getUuidFromCookie } from "@/actions/users";
-import { Post } from "../../types/post";
+import { Post } from "../../types/timeline";
 import axios from "axios";
 
 // 投稿一覧を取得する関数
@@ -33,7 +33,11 @@ export const getPosts = async (
 };
 
 // 新しい投稿を作成する関数
-export const createPost = async (content: string): Promise<Post | null> => {
+export const createPost = async (postData: {
+  title: string;
+  time: string;
+  comment: string;
+}): Promise<Post | null> => {
   try {
     let uuid = await getUuidFromCookie();
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -49,7 +53,7 @@ export const createPost = async (content: string): Promise<Post | null> => {
       },
       body: JSON.stringify({
         uuid, // UUIDをリクエストボディにも含める
-        content,
+        postData,
       }),
     });
 
