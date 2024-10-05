@@ -9,7 +9,6 @@ import {
   BarElement,
   Title,
 } from "chart.js";
-import { Box } from "@mui/material";
 import { languages } from "@/constants/language";
 
 ChartJS.register(
@@ -67,11 +66,15 @@ const RepositoryGraph = ({ repository }: Props) => {
     responsive: true,
     plugins: {
       legend: {
-        position: "top" as const,
+        position: "bottom" as const,
       },
       title: {
         display: true,
         text: `${repository.name}`,
+        font: {
+          size: 16,
+        },
+        align: "start" as const,
       },
     },
     layout: {

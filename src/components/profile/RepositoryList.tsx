@@ -75,6 +75,7 @@ const RepositoryList = () => {
             <Typography variant="h5" marginY={4}>
               レポジトリ一覧
             </Typography>
+            {/* 先頭3つだけデフォルトで見せる */}
             {repositories.length > 0 &&
               repositories.slice(0, 3).map((repository, index) => (
                 <Box
@@ -94,6 +95,7 @@ const RepositoryList = () => {
           </Box>
         </AccordionSummary>
         <AccordionDetails>
+          {/* 残りのレポジトリを表示 */}
           {repositories.length > 3 &&
             repositories
               .slice(4, repositories.length)
