@@ -3,7 +3,7 @@ import React from "react";
 import QiitaItem from "./QiitaItem";
 import { useQuery } from "@tanstack/react-query";
 import { getUuidFromCookie } from "@/actions/users";
-import { QiitaArticle } from "../../../types/qiitaArticle";
+import { QiitaArticle } from "../../types/qiitaArticle";
 
 const QiitaList = () => {
   const { isPending, isError, error, data } = useQuery({
