@@ -9,6 +9,7 @@ import {
   BarElement,
   Title,
 } from "chart.js";
+import { Box } from "@mui/material";
 
 ChartJS.register(
   CategoryScale,
@@ -94,7 +95,11 @@ const RepositoryGraph = ({ repository }: Props) => {
       },
     },
   };
-  return <Bar data={repositoryData} options={options} />;
+  return (
+    <Box sx={{ width: "100%", height: "200px" }}>
+      <Bar data={repositoryData} options={options} />
+    </Box>
+  );
 };
 
 export default RepositoryGraph;

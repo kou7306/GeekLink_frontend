@@ -45,7 +45,7 @@ const RepositoryList = () => {
   }, []);
 
   return (
-    <div style={{ width: "80%", height: "200px", margin: "auto" }}>
+    <div style={{ width: "80%", marginLeft: "auto", marginRight: "auto" }}>
       {/* 一つあたりのグラフ */}
       {repositories.length > 0 &&
         repositories.map((repository, index) => (
