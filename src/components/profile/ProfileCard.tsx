@@ -7,12 +7,13 @@ import { User } from "./options";
 import Image from "next/image";
 import { FaGithub, FaTwitter } from "react-icons/fa";
 import { postLikeID, deleteLikeID } from "@/utils/CreateLike";
-import { Box, dividerClasses, Grid } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import RepositoryList from "./RepositoryList";
 import QiitaList from "./QiitaList";
 import ActivityLog from "./ActivityLog";
 import WeeklyActivityLog from "./WeeklyActivityLog";
 import UserMainInformation from "./UserMainInformation";
+import SocialMediaIntegration from "./SocialMediaIntegration";
 
 interface ProfileCardProps {
   user: User;
@@ -127,6 +128,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
                 />
               </a>
             )}
+            <SocialMediaIntegration />
           </div>
           {isMe && (
             <button
