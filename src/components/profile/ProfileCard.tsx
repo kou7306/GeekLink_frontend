@@ -18,6 +18,7 @@ import CommentComponent from "./CommentComponent";
 import QiitaNumberOfContributions from "./QiitaNumberOfContributions";
 import GitHubContributions from "./GitHubContributions";
 import PercentageOfLanguages from "./PercentageOfLanguages";
+import UserRank from "./UserRank";
 
 interface ProfileCardProps {
   user: User;
@@ -163,6 +164,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
           <GitHubContributions />
           <QiitaNumberOfContributions />
           <PercentageOfLanguages />
+          <UserRank />
         </div>
         <UserMainInformation user={user} onEdit={onEdit} isMe={isMe} />
       </div>
