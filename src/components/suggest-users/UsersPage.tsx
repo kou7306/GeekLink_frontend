@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
 import FilterSearch from "../modal/FilterSearch";
 import {
   ageToIndex,
@@ -14,36 +13,8 @@ import {
 import { useRouter } from "next/navigation";
 import { getUuidFromCookie } from "@/actions/users";
 import Loading from "../core/Loading";
-
-interface Profile {
-  user_id: string;
-  created_at: Date;
-  name: string;
-  sex: string;
-  age: string;
-  place: string;
-  top_tech: string;
-  top_teches: string[];
-  teches: string[];
-  hobby?: string;
-  occupation?: string;
-  affiliation?: string;
-  qualification: string[];
-  editor?: string;
-  github?: string;
-  twitter?: string;
-  qiita?: string;
-  zenn?: string;
-  atcoder?: string;
-  message?: string;
-  updated_at: Date;
-  portfolio?: string;
-  graduate?: string;
-  desired_occupation?: string;
-  faculty?: string;
-  experience: string[];
-  image_url?: string;
-}
+import UserCard from "./UserCard";
+import { Profile } from "../../../types/user";
 
 interface UsersResponse {
   samePlaceUsers: Profile[];
@@ -246,30 +217,11 @@ const UsersPage = ({ isUserIdExist = false }: Props) => {
           <div className="flex overflow-x-scroll space-x-4 p-4">
             {users.sortedUsers.length > 0 ? (
               users.sortedUsers.map((user) => (
-                <a
+                <UserCard
                   key={user.user.user_id}
-                  href={`/other/${user.user.user_id}`}
-                  className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative z-0"
-                >
-                  <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
-                    <Image
-                      src={user.user.image_url ?? "/user.svg"}
-                      layout="fill"
-                      objectFit="cover"
-                      alt={user.user.name}
-                      className="rounded-full"
-                    />
-                  </div>
-                  <h2 className="mt-4 text-lg font-semibold text-center">
-                    {user.user.name}
-                  </h2>
-                  <ul className="text-center flex justify-center space-x-2 list-none p-0">
-                    {user.user.top_teches &&
-                      user.user.top_teches.map((tech: string) => (
-                        <li key={tech}>{tech}</li>
-                      ))}
-                  </ul>
-                </a>
+                  user={user.user}
+                  chipOption="overAll"
+                />
               ))
             ) : (
               <p className="text-center mt-4 ml-8">該当者がいません</p>
@@ -281,30 +233,11 @@ const UsersPage = ({ isUserIdExist = false }: Props) => {
           <div className="flex overflow-x-scroll space-x-4 p-4">
             {users.sameTopTechUsers.length > 0 ? (
               users.sameTopTechUsers.map((user) => (
-                <a
+                <UserCard
                   key={user.user_id}
-                  href={`/other/${user.user_id}`}
-                  className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative z-0"
-                >
-                  <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
-                    <Image
-                      src={user.image_url ?? "/user.svg"}
-                      layout="fill"
-                      objectFit="cover"
-                      alt={user.name}
-                      className="rounded-full"
-                    />
-                  </div>
-                  <h2 className="mt-4 text-lg font-semibold text-center">
-                    {user.name}
-                  </h2>
-                  <ul className="text-center flex justify-center space-x-2 list-none p-0">
-                    {user.top_teches &&
-                      user.top_teches.map((tech: string) => (
-                        <li key={tech}>{tech}</li>
-                      ))}
-                  </ul>
-                </a>
+                  user={user}
+                  chipOption="sameTech"
+                />
               ))
             ) : (
               <p className="text-center mt-4 ml-8">該当者がいません</p>
@@ -316,30 +249,11 @@ const UsersPage = ({ isUserIdExist = false }: Props) => {
           <div className="flex overflow-x-scroll space-x-4 p-4">
             {users.samePlaceUsers.length > 0 ? (
               users.samePlaceUsers.map((user) => (
-                <a
+                <UserCard
                   key={user.user_id}
-                  href={`/other/${user.user_id}`}
-                  className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative z-0"
-                >
-                  <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
-                    <Image
-                      src={user.image_url ?? "/user.svg"}
-                      layout="fill"
-                      objectFit="cover"
-                      alt={user.name}
-                      className="rounded-full"
-                    />
-                  </div>
-                  <h2 className="mt-4 text-lg font-semibold text-center">
-                    {user.name}
-                  </h2>
-                  <ul className="text-center flex justify-center space-x-2 list-none p-0">
-                    {user.top_teches &&
-                      user.top_teches.map((tech: string) => (
-                        <li key={tech}>{tech}</li>
-                      ))}
-                  </ul>
-                </a>
+                  user={user}
+                  chipOption="samePlace"
+                />
               ))
             ) : (
               <p className="text-center mt-4 ml-8">該当者がいません</p>
@@ -351,30 +265,7 @@ const UsersPage = ({ isUserIdExist = false }: Props) => {
           <div className="flex overflow-x-scroll space-x-4 p-4">
             {users.sameAgeUsers.length > 0 ? (
               users.sameAgeUsers.map((user) => (
-                <a
-                  key={user.user_id}
-                  href={`/other/${user.user_id}`}
-                  className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative z-0"
-                >
-                  <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
-                    <Image
-                      src={user.image_url ?? "/user.svg"}
-                      layout="fill"
-                      objectFit="cover"
-                      alt={user.name}
-                      className="rounded-full"
-                    />
-                  </div>
-                  <h2 className="mt-4 text-lg font-semibold text-center">
-                    {user.name}
-                  </h2>
-                  <ul className="text-center flex justify-center space-x-2 list-none p-0">
-                    {user.top_teches &&
-                      user.top_teches.map((tech: string) => (
-                        <li key={tech}>{tech}</li>
-                      ))}
-                  </ul>
-                </a>
+                <UserCard key={user.user_id} user={user} chipOption="sameAge" />
               ))
             ) : (
               <p className="text-center mt-4 ml-8">該当者がいません</p>
@@ -386,30 +277,11 @@ const UsersPage = ({ isUserIdExist = false }: Props) => {
           <div className="flex overflow-x-scroll space-x-4 p-4">
             {users.sameGraduateYearUsers.length > 0 ? (
               users.sameGraduateYearUsers.map((user) => (
-                <a
+                <UserCard
                   key={user.user_id}
-                  href={`/other/${user.user_id}`}
-                  className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative z-0"
-                >
-                  <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
-                    <Image
-                      src={user.image_url ?? "/user.svg"}
-                      layout="fill"
-                      objectFit="cover"
-                      alt={user.name}
-                      className="rounded-full"
-                    />
-                  </div>
-                  <h2 className="mt-4 text-lg font-semibold text-center">
-                    {user.name}
-                  </h2>
-                  <ul className="text-center flex justify-center space-x-2 list-none p-0">
-                    {user.top_teches &&
-                      user.top_teches.map((tech: string) => (
-                        <li key={tech}>{tech}</li>
-                      ))}
-                  </ul>
-                </a>
+                  user={user}
+                  chipOption="sameGraduate"
+                />
               ))
             ) : (
               <p className="text-center mt-4 ml-8">該当者がいません</p>
@@ -421,30 +293,11 @@ const UsersPage = ({ isUserIdExist = false }: Props) => {
           <div className="flex overflow-x-scroll space-x-4 p-4">
             {users.sameJobTypeUsers.length > 0 ? (
               users.sameJobTypeUsers.map((user) => (
-                <a
+                <UserCard
                   key={user.user_id}
-                  href={`/other/${user.user_id}`}
-                  className="flex-none w-64 bg-primary rounded-lg p-4 shadow-md relative z-0"
-                >
-                  <div className="flex justify-center items-center relative w-40 h-40 overflow-hidden rounded-full mx-auto">
-                    <Image
-                      src={user.image_url ?? "/user.svg"}
-                      layout="fill"
-                      objectFit="cover"
-                      alt={user.name}
-                      className="rounded-full"
-                    />
-                  </div>
-                  <h2 className="mt-4 text-lg font-semibold text-center">
-                    {user.name}
-                  </h2>
-                  <ul className="text-center flex justify-center space-x-2 list-none p-0">
-                    {user.top_teches &&
-                      user.top_teches.map((tech: string) => (
-                        <li key={tech}>{tech}</li>
-                      ))}
-                  </ul>
-                </a>
+                  user={user}
+                  chipOption="sameDesiredOccupation"
+                />
               ))
             ) : (
               <p className="text-center mt-4 ml-8">該当者がいません</p>

@@ -11,6 +11,9 @@ const theme = createTheme({
       main: "#25276D",
       contrastText: "white",
     },
+    text: {
+      primary: "#111827",
+    },
   },
 });
 
