@@ -1,12 +1,33 @@
 import React, { Fragment } from "react";
 import UserRanking from "./UserRanking";
+import { useQuery } from "@tanstack/react-query";
+
 
 const UsersRanking = () => {
-  const users = [
-    { id: 1, name: "ユーザー1" },
-    { id: 2, name: "ユーザー2" },
-    { id: 3, name: "ユーザー3" },
-  ];
+  const { isPending, isError, error, data } = useQuery({
+    queryKey: ["rank"],
+    queryFn: async () => {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/ranking/top`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch TopRanking");
+      }
+      return response.json();
+    },
+  });
+
+  const users: any[] = data;
+
+  if (isPending) return <div>Loading...</div>;
+
+  if (isError) return <div>Error: {error.message}</div>;
 
   return (
     <div>
