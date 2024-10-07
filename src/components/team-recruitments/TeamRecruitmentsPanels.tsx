@@ -7,6 +7,7 @@ interface TeamRecruitmentPanelsProps {
   value: string;
   hackathonEvents: Event[];
   eventEvents: Event[];
+  currentUserEvents: Event[];
 }
 
 interface TabPanelProps {
@@ -16,7 +17,12 @@ interface TabPanelProps {
   value: string;
 }
 
-const TeamRecruitmentPanels = ({ value, hackathonEvents, eventEvents }: TeamRecruitmentPanelsProps) => {
+const TeamRecruitmentPanels = ({
+  value,
+  hackathonEvents,
+  eventEvents,
+  currentUserEvents,
+}: TeamRecruitmentPanelsProps) => {
   function TabPanel(props: TabPanelProps) {
     const { children, value, index, ...other } = props;
 
@@ -44,7 +50,7 @@ const TeamRecruitmentPanels = ({ value, hackathonEvents, eventEvents }: TeamRecr
       </TabPanel>
       {/* 自分の募集 */}
       <TabPanel value={value} index="3">
-        three
+        <Recruitments events={currentUserEvents} />
       </TabPanel>
     </>
   );
