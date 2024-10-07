@@ -9,7 +9,7 @@ import {
   Avatar,
 } from "@mui/material";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import UsersRanking from "./UsersRanking";
+import TopUsersRanking from "./TopUsersRanking";
 import Link from "next/link";
 
 
@@ -45,7 +45,7 @@ const DailyRanking = () => {
             </Typography>
           </Link>
         </Box>
-        <UsersRanking />
+        <TopUsersRanking />
       </Box>
       <hr />
     </>
