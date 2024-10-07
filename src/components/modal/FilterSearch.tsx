@@ -2,7 +2,6 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
-import { ThemeProvider, createTheme } from "@mui/material";
 import Area from "./Area";
 import Age from "./Age";
 import Hobby from "./Hobby";
@@ -27,14 +26,6 @@ const style = {
   overflowY: "auto",
   borderRadius: "16px",
 };
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#22d3ee",
-    },
-  },
-});
 
 type Props = {
   handlePlaceClick: (place: string) => void;
