@@ -19,8 +19,9 @@ const QiitaItem = ({ item }: Props) => {
         marginBottom={2}
       >
         <Typography variant="body2" color="text.secondary" gutterBottom>
-          {formatDate(item.createdAt)} {/* 何月何日の形にフォーマット */}
+          {formatDate(item.date)} {/* 何月何日の形にフォーマット */}
         </Typography>
+
         <Box
           display={"flex"}
           justifyContent={"space-between"}

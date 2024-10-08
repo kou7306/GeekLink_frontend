@@ -30,8 +30,9 @@ ChartJS.register(
 
 const RepositoryList = () => {
   const [repositories, setRepositories] = useState<Repository[]>([]);
+  const [expanded, setExpanded] = useState(false); // アコーディオンの開閉状態を管理
 
-  //個人のリポジトリを上から十件取得
+  // 個人のリポジトリを上から十件取得
   useEffect(() => {
     const fetchRepositories = async () => {
       const uuid = await getUuidFromCookie();
@@ -51,11 +52,25 @@ const RepositoryList = () => {
     fetchRepositories();
   }, []);
 
+  const handleAccordionChange = () => {
+    setExpanded(!expanded); // アコーディオンの状態を切り替え
+  };
+
   return (
     <>
-      <Accordion>
+      <Accordion
+        expanded={expanded}
+        onChange={handleAccordionChange}
+        sx={{
+          marginLeft: 2, // 右にマージンを追加
+          transition: "height 0.3s ease", // スムーズな高さの変化
+          height: expanded ? "auto" : "800px", // 開く前の高さを指定
+          boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)", // ここでシャドウを追加
+          borderRadius: 2, // 角を少し丸める場合は追加
+          padding: 2, // パディングを追加
+        }}
+      >
         <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1-content"
           id="panel1-header"
           sx={{
@@ -84,7 +99,7 @@ const RepositoryList = () => {
                   sx={{
                     mb: 2,
                     height: "200px",
-                    border: "1px solid #ccc",
+                    border: "1px solid #e5e7eb",
                     borderRadius: "20px",
                   }}
                 >
@@ -92,27 +107,34 @@ const RepositoryList = () => {
                 </Box>
               ))}
           </Box>
+          {/* 矢印アイコンをコンテンツの下に配置し、回転させる */}
+          <ExpandMoreIcon
+            sx={{
+              mt: 2,
+              mx: "auto", // 中央寄せ
+              transform: expanded ? "rotate(180deg)" : "rotate(0deg)",
+              transition: "transform 0.3s ease",
+            }}
+          />
         </AccordionSummary>
         <AccordionDetails>
           {/* 残りのレポジトリを表示 */}
           {repositories.length > 3 &&
-            repositories
-              .slice(4, repositories.length)
-              .map((repository, index) => (
-                <Box
-                  key={index}
-                  display={"flex"}
-                  justifyContent={"center"}
-                  sx={{
-                    mb: 2,
-                    height: "200px",
-                    border: "1px solid #ccc",
-                    borderRadius: "20px",
-                  }}
-                >
-                  <RepositoryGraph repository={repository} />
-                </Box>
-              ))}
+            repositories.slice(3).map((repository, index) => (
+              <Box
+                key={index}
+                display={"flex"}
+                justifyContent={"center"}
+                sx={{
+                  mb: 2,
+                  height: "200px",
+                  border: "1px solid #ccc",
+                  borderRadius: "20px",
+                }}
+              >
+                <RepositoryGraph repository={repository} />
+              </Box>
+            ))}
         </AccordionDetails>
       </Accordion>
     </>

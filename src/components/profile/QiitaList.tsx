@@ -11,16 +11,13 @@ const QiitaList = () => {
     queryFn: async () => {
       const uuid = await getUuidFromCookie();
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/activity/qiita`,
+        `${process.env.NEXT_PUBLIC_API_URL}/activity/qiita?uuid=${uuid}&period=all`,
         {
-          method: "POST",
+          next: { revalidate: 60 * 60 * 24 },
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            uuid: uuid,
-            period: "1yr",
-          }),
         }
       );
       if (!response.ok) {
@@ -37,12 +34,15 @@ const QiitaList = () => {
   return (
     <Box
       sx={{
-        maxWidth: 400,
-        height: 700,
-        margin: "auto",
+        marginRight: 2,
+        width: "100%",
+        height: 800,
         overflowY: "auto",
         display: "flex",
         flexDirection: "column",
+        boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)", // ここでシャドウを追加
+        borderRadius: 2, // 角を少し丸める場合は追加
+        padding: 2, // パディングを追加
       }}
     >
       <Typography variant="h5" marginY={4}>

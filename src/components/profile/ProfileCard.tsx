@@ -66,7 +66,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
 
   return (
     <Box bgcolor="white">
-      <div className="max-w-7xl mx-auto p-6 bg-white rounded-lg shadow-lg grid grid-cols-3 gap-6">
+      <div className="max-w-7xl mx-auto p-12 bg-white rounded-lg shadow-lg grid grid-cols-2 gap-32 ">
         <div className="flex flex-col items-center">
           <Image
             className="w-64 h-64 object-cover rounded-full mb-4"
@@ -179,10 +179,6 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
         <Grid item xs={12} my={2}>
           {/* アクティビティログ */}
           <ActivityLog />
-        </Grid>
-        <Grid item xs={12} my={2}>
-          {/* 週間アクティビティログ */}
-          <WeeklyActivityLog />
         </Grid>
       </Grid>
     </Box>
