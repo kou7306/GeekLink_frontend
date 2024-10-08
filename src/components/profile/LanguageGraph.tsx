@@ -37,13 +37,19 @@ const LanguageGraph: React.FC<Props> = ({ GitHubLanguages }) => {
     return language ? language.color : "#808080";
   };
 
+  if (!Array.isArray(GitHubLanguages) || GitHubLanguages.length === 0) {
+    return null;
+  }
+
   const chartData: ChartData<"bar"> = {
     labels: [""],
-    datasets: GitHubLanguages.map((lang) => ({
-      label: lang.name,
-      data: [lang.percentage],
-      backgroundColor: getLanguageColor(lang.name),
-    })),
+    datasets: Array.isArray(GitHubLanguages)
+      ? GitHubLanguages.map((lang) => ({
+          label: lang.name,
+          data: [lang.percentage],
+          backgroundColor: getLanguageColor(lang.name),
+        }))
+      : [],
   };
 
   const options: ChartOptions<"bar"> = {
