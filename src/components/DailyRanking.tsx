@@ -47,7 +47,7 @@ const DailyRanking = () => {
         </Box>
         <TopUsersRanking />
       </Box>
-      <hr />
+      <Box sx={{ my: 4 }} />
     </>
   );
 };
