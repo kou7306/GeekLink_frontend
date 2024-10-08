@@ -126,7 +126,7 @@ const Activity: React.FC<ActivityProps> = ({ uuid }) => {
         </Typography>
 
         {/* 年間コントリビューションのグラフ */}
-        <Box my={4} display={"flex"} justifyContent={"center"} px={12}>
+        <Box my={4} display={"flex"} justifyContent={"center"} px={24}>
           <ActivityLogGraph propsArray={graphData} />
         </Box>
 

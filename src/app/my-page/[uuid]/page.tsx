@@ -1,5 +1,5 @@
 "use client";
-
+import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { User } from "@/components/profile/options";
@@ -9,28 +9,42 @@ import toast from "react-hot-toast";
 import ProfileEditForm from "@/components/profile/ProfileEditForm";
 import Loading from "@/components/core/Loading";
 
-const MyPage: React.FC = () => {
+const ProfilePage: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [uuid, setUuid] = useState<string | null>(null);
+  const [isMe, setIsMe] = useState<boolean>(false);
+
+  const params = useParams();
+  const paramUuid = params.uuid as string;
 
   useEffect(() => {
     const fetchProfile = async () => {
-      const userId = await getUuidFromCookie();
-      if (userId) {
-        try {
-          setUuid(userId);
-          const response = await axios.get(
-            `${process.env.NEXT_PUBLIC_API_URL}/profile/get-profile/${userId}`
-          );
-          setUser(response.data);
-        } catch (error) {
-          console.error("Error fetching user data:", error);
+      let userId: string;
+
+      if (paramUuid === "my") {
+        const uuid = await getUuidFromCookie();
+        if (!uuid) {
+          throw new Error("UUID not found in cookie");
         }
+        userId = uuid;
+        setIsMe(true);
+      } else {
+        userId = paramUuid;
+        setIsMe(false);
+      }
+
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/profile/get-profile/${userId}`
+        );
+        setUser(response.data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
       }
     };
+
     fetchProfile();
-  }, []);
+  }, [paramUuid]);
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -76,10 +90,10 @@ const MyPage: React.FC = () => {
           onCancel={() => setIsEditing(false)}
         />
       ) : (
-        <ProfileCard user={user} isMe={true} onEdit={handleEdit} />
+        <ProfileCard user={user} isMe={isMe} onEdit={handleEdit} />
       )}
     </div>
   );
 };
 
-export default MyPage;
+export default ProfilePage;

@@ -23,14 +23,17 @@ ChartJS.register(
   Legend
 );
 
-const RepositoryList = () => {
+interface RepositoryListProps {
+  uuid: string;
+}
+
+const RepositoryList: React.FC<RepositoryListProps> = ({ uuid }) => {
   const [repositories, setRepositories] = useState<Repository[]>([]);
   const [expanded, setExpanded] = useState(false); // 展開状態を管理
 
   // リポジトリを取得
   useEffect(() => {
     const fetchRepositories = async () => {
-      const uuid = await getUuidFromCookie();
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/github/repo`,
         {
@@ -45,15 +48,20 @@ const RepositoryList = () => {
       setRepositories(data);
     };
     fetchRepositories();
-  }, []);
+  }, [uuid]);
 
   // 展開状態の切り替え
   const handleToggle = () => {
     setExpanded(!expanded);
   };
 
-  // 展開状態によって表示するリポジトリの数を変更
-  const repositoriesToShow = expanded ? repositories : repositories.slice(0, 3);
+  // リポジトリが存在するかチェックし、sliceによるエラーを防ぐ
+  const repositoriesToShow =
+    repositories.length > 0
+      ? expanded
+        ? repositories
+        : repositories.slice(0, 3)
+      : [];
 
   return (
     <Box
@@ -71,24 +79,30 @@ const RepositoryList = () => {
           レポジトリ一覧
         </Typography>
 
-        {/* 展開状態に応じてリポジトリを表示 */}
-        {repositoriesToShow.map((repository, index) => (
-          <Box
-            key={index}
-            display={"flex"}
-            justifyContent={"center"}
-            sx={{
-              mb: 2,
-              height: "200px",
-              border: "1px solid #e5e7eb",
-              borderRadius: "20px",
-            }}
-          >
-            <RepositoryGraph repository={repository} />
-          </Box>
-        ))}
+        {/* リポジトリがない場合でもスペースを確保 */}
+        {repositoriesToShow.length > 0 ? (
+          repositoriesToShow.map((repository, index) => (
+            <Box
+              key={index}
+              display={"flex"}
+              justifyContent={"center"}
+              sx={{
+                mb: 2,
+                height: "200px",
+                border: "1px solid #e5e7eb",
+                borderRadius: "20px",
+              }}
+            >
+              <RepositoryGraph repository={repository} />
+            </Box>
+          ))
+        ) : (
+          <Typography variant="body2" color="textSecondary" align="center">
+            No repositories available.
+          </Typography>
+        )}
 
-        {/* リポジトリが3つ以上ある場合に展開ボタンを表示 */}
+        {/* 常にスペースを確保し、リポジトリが3つ以上ある場合に展開ボタンを表示 */}
         <IconButton
           onClick={handleToggle}
           sx={{

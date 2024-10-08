@@ -11,7 +11,6 @@ import { Box, Grid } from "@mui/material";
 import RepositoryList from "./RepositoryList";
 import QiitaList from "./QiitaList";
 import Activity from "../activityLog/Activity";
-import WeeklyActivityLog from "./WeeklyActivityLog";
 import UserMainInformation from "./UserMainInformation";
 import SocialMediaIntegration from "./SocialMediaIntegration";
 import CommentComponent from "./CommentComponent";
@@ -55,7 +54,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
   }, [isLiked]);
 
   useEffect(() => {
-    if (uuid) {
+    if (uuid && !isMe) {
       axios
         .post(`${process.env.NEXT_PUBLIC_API_URL}/profile/like-status`, {
           myID: uuid,
@@ -177,14 +176,14 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
       <Grid container spacing={2} mt={2}>
         <Grid item xs={12} md={6} my={2}>
           {/* リポジトリ一覧 */}
-          <RepositoryList />
+          <RepositoryList uuid={user.user_id} />
         </Grid>
         <Grid item xs={12} md={6} my={2}>
           {/* Qiita リスト */}
-          <QiitaList />
+          <QiitaList uuid={user.user_id} />
         </Grid>
         <Grid item xs={12} my={2}>
-          <Activity uuid={uuid || ""} />
+          <Activity uuid={user.user_id || ""} />
         </Grid>
       </Grid>
     </Box>
