@@ -85,7 +85,7 @@ const RepositoryList = () => {
             height: "auto",
           }}
         >
-          <Box>
+          <Box marginX={4}>
             <Typography variant="h5" marginY={4}>
               レポジトリ一覧
             </Typography>

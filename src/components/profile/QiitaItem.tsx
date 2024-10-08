@@ -17,6 +17,7 @@ const QiitaItem = ({ item }: Props) => {
         borderRadius={"20px"}
         padding={2}
         marginBottom={2}
+        marginX={4}
       >
         <Typography variant="body2" color="text.secondary" gutterBottom>
           {formatDate(item.date)} {/* 何月何日の形にフォーマット */}
