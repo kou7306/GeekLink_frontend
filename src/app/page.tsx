@@ -176,7 +176,12 @@ const Home = () => {
           <Box sx={{ width: "60%" }}>
             <TimeLineContainer />
           </Box>
-          <Box sx={{ width: "40%" }}>
+          <Box sx={{
+            width: "40%",
+            position: "fixed",
+            right: 0,
+            overflowY: "auto",
+          }}>
             <RightSide />
           </Box>
         </Box>

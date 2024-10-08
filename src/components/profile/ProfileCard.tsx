@@ -10,7 +10,7 @@ import { postLikeID, deleteLikeID } from "@/utils/CreateLike";
 import { Box, Grid } from "@mui/material";
 import RepositoryList from "./RepositoryList";
 import QiitaList from "./QiitaList";
-import ActivityLog from "./ActivityLog";
+import Activity from "../activityLog/Activity";
 import WeeklyActivityLog from "./WeeklyActivityLog";
 import UserMainInformation from "./UserMainInformation";
 import SocialMediaIntegration from "./SocialMediaIntegration";
@@ -33,20 +33,33 @@ interface LikeCheckResponse {
 
 const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
   const [isLiked, setIsLiked] = useState<boolean>(false);
-  const params = useParams();
-  const uuid = params.uuid;
+  const [uuid, setUuid] = useState<string>();
+
+  // Get UUID from cookie on component mount
   useEffect(() => {
-    console.log("isliked = ", isLiked);
+    const getUuid = async () => {
+      const userId = await getUuidFromCookie();
+      if (userId) {
+        try {
+          setUuid(userId);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      }
+    };
+    getUuid();
+  }, []);
+
+  useEffect(() => {
+    console.log("isLiked =", isLiked);
   }, [isLiked]);
 
   useEffect(() => {
-    const myID = getUuidFromCookie();
-
-    if (uuid && myID) {
+    if (uuid) {
       axios
         .post(`${process.env.NEXT_PUBLIC_API_URL}/profile/like-status`, {
-          myID,
-          uuid,
+          myID: uuid,
+          uuid: user.user_id, // Assuming user.user_id is the target UUID
         })
         .then((response: { data: LikeCheckResponse }) => {
           setIsLiked(response.data.data);
@@ -54,16 +67,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
         .catch((error) => {
           console.error("Error fetching like status:", error);
         });
-    } else {
-      if (!myID) {
-        console.error("Current user ID is not found.");
-      }
-      if (!uuid) {
-        console.error("UUID is not found.");
-      }
     }
-  }, [uuid]);
-  console.log(user);
+  }, [uuid, user.user_id]);
 
   return (
     <Box bgcolor="white">
@@ -175,15 +180,11 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
           <RepositoryList />
         </Grid>
         <Grid item xs={12} md={6} my={2}>
-          {/* Qiita */}
+          {/* Qiita リスト */}
           <QiitaList />
         </Grid>
         <Grid item xs={12} my={2}>
-          {/* アクティビティログ */}
-          <ActivityLog />
-        </Grid>
-        <Grid item xs={12} my={2}>
-          {/* 週間アクティビティログ */}
+          <Activity uuid={uuid || ""} />
           <WeeklyActivityLog />
         </Grid>
       </Grid>

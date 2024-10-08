@@ -9,8 +9,9 @@ import {
   Avatar,
 } from "@mui/material";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import UsersRanking from "./UsersRanking";
+import TopUsersRanking from "./TopUsersRanking";
 import Link from "next/link";
+
 
 const DailyRanking = () => {
   return (
@@ -24,9 +25,14 @@ const DailyRanking = () => {
             mb: 2,
           }}
         >
-          <Typography variant="h6" component="h2">
-            デイリーランキング
-          </Typography>
+          <Box>
+            <Typography variant="h5" component="h2" sx={{ fontWeight: "bold" }}>
+              デイリーランキング
+            </Typography>
+            <Typography variant="h6" component="span" sx={{ color: "text.secondary" }}>
+              GitHub Contributions
+            </Typography>
+          </Box>
 
           <Link href="/ranking">
             <Typography
@@ -39,9 +45,9 @@ const DailyRanking = () => {
             </Typography>
           </Link>
         </Box>
-        <UsersRanking />
+        <TopUsersRanking />
       </Box>
-      <hr />
+      <Box sx={{ my: 4 }} />
     </>
   );
 };
