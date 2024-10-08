@@ -29,7 +29,7 @@ const SocialMediaIntegration = () => {
       <Button
         onClick={handleOpen}
         variant="contained"
-        color="primary"
+        color="secondary"
         sx={{
           borderRadius: "50%",
           minWidth: "35px",
