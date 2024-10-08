@@ -33,6 +33,7 @@ const QiitaList: React.FC<QiitaListProps> = ({ uuid }) => {
       }
 
       const jsonData = await response.json();
+      console.log(jsonData.postDetails);
 
       // データが存在しない場合のデフォルト値
       return {
@@ -49,8 +50,8 @@ const QiitaList: React.FC<QiitaListProps> = ({ uuid }) => {
   const articlesToShow =
     data?.postDetails?.length > 0
       ? expanded
-        ? data.postDetails
-        : data.postDetails.slice(0, 3)
+        ? data?.postDetails ?? []
+        : (data?.postDetails ?? []).slice(0, 3)
       : [];
 
   // 展開状態の切り替え
