@@ -9,12 +9,12 @@ export const getGeekLinkActivity = async (
     const now = new Date().getTime(); // 現在の時刻を取得
 
     // キャッシュが存在し、有効期限内の場合はキャッシュからデータを取得
-    // const cachedData = localStorage.getItem(cacheKey);
-    // const cacheExpiration = localStorage.getItem(cacheExpirationKey);
+    const cachedData = localStorage.getItem(cacheKey);
+    const cacheExpiration = localStorage.getItem(cacheExpirationKey);
 
-    // if (cachedData && cacheExpiration && now < Number(cacheExpiration)) {
-    //   return JSON.parse(cachedData); // キャッシュが有効ならそれを返す
-    // }
+    if (cachedData && cacheExpiration && now < Number(cacheExpiration)) {
+      return JSON.parse(cachedData); // キャッシュが有効ならそれを返す
+    }
 
     const time = 365 * 24; // 1年間のアクティビティを取得
     const response = await fetch(
@@ -32,8 +32,6 @@ export const getGeekLinkActivity = async (
     }
 
     const activities = await response.json();
-
-    console.log(activities);
 
     // 1ヶ月前以降のアクティビティのみをフィルタリング
     const oneMonthAgo = new Date();
@@ -71,7 +69,7 @@ export const getGeekLinkActivity = async (
     );
 
     return {
-      monthlyActivityCounts,
+      monthlyActivityCounts: reorderedMonthlyActivityCounts,
       activities: filteredActivities,
     };
   } catch (error) {

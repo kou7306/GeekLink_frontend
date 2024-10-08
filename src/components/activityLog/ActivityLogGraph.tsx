@@ -54,18 +54,19 @@ const ActivityLogGraph: React.FC<{ propsArray: ActivityLogGraphProps[] }> = ({
   ];
 
   // 色の配列（kindごとに異なる色を指定）
-  const colors: { [key in ActivityLogGraphProps["kind"] | "other"]: string } = {
+  const colors: { [key in ActivityLogGraphProps["kind"]]: string } = {
     github: "rgb(255, 99, 132)",
     qiita: "rgb(54, 162, 235)",
     geeklink: "rgb(75, 192, 192)",
   };
 
+  console.log(propsArray);
   // datasetsに各kindのデータを追加
   const datasets = propsArray
     .filter((activity) => activity.data.length === 12) // データが12個のものだけを残す
     .map((activity) => ({
       label: `${activity.kind} Contributions`,
-      backgroundColor: colors[activity.kind] || colors["other"], // kindによって色を決定
+      backgroundColor: colors[activity.kind], // kindによって色を決定
       data: activity.data,
     }));
 
