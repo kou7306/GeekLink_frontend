@@ -31,7 +31,7 @@ const UserRank = () => {
         }
       );
       if (!response.ok) {
-        throw new Error("Failed to fetch Qiita activity");
+        throw new Error("Failed to fetch UserRank");
       }
       return response.json();
     },
@@ -88,23 +88,18 @@ const UserRank = () => {
     <Box
       sx={{
         maxWidth: 300,
-        margin: "auto",
-        padding: 4,
         textAlign: "center",
-        boxShadow: 3,
-        borderRadius: 2,
-        backgroundColor: "#fafafa",
       }}
     >
       <Box sx={{ display: "flex", justifyContent: "center" }}>
         {image && <Image src={image} alt={rank} width={135} height={135} />}
       </Box>
 
-      <Typography variant="h5" marginTop={2}>
+      <Typography variant="h5" marginTop={1}>
         {rank} - Level {level}
       </Typography>
 
-      <Box sx={{ marginTop: 3, width: "100%" }}>
+      <Box sx={{ marginTop: 1, width: "100%" }}>
         <Typography variant="body1" gutterBottom>
           次のレベルまで: {nextLevelPoints}ポイント
         </Typography>
