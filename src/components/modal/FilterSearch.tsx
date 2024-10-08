@@ -73,7 +73,7 @@ const FilterSearch: React.FC<Props> = ({
   const router = useRouter();
 
   return (
-    <div>
+    <>
       <Button
         onClick={handleOpen}
         variant="contained"
@@ -158,7 +158,7 @@ const FilterSearch: React.FC<Props> = ({
           </Box>
         </Box>
       </Modal>
-    </div>
+    </>
   );
 };
 
