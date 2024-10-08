@@ -10,22 +10,35 @@ import {
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import Team from "./Team";
 import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
 
 const TeamRecruiting = () => {
-  const teams = [
-    {
-      id: 1,
-      name: "チーム1",
+  const { isPending, isError, error, data } = useQuery({
+    queryKey: ["events"],
+    queryFn: async () => {
+      const response = await fetch(
+        // TODO:最新3件の募集を取得するAPIを作成・変更予定⇒このルートだと全てのイベントを取ってきてしまう
+        `${process.env.NEXT_PUBLIC_API_URL}/events/`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch NewEvents");
+      }
+      return response.json();
     },
-    {
-      id: 2,
-      name: "チーム2",
-    },
-    {
-      id: 3,
-      name: "チーム3",
-    },
-  ];
+  });
+  
+  const events: any[] = data;
+
+  if (isPending) return <div>Loading...</div>;
+
+  if (isError) return <div>Error: {error.message}</div>;
+
   return (
     <Box sx={{ bgcolor: "background.paper", p: 2, borderRadius: 1 }}>
       <Box
@@ -36,7 +49,7 @@ const TeamRecruiting = () => {
           mb: 2,
         }}
       >
-        <Typography variant="h6" component="h2">
+        <Typography variant="h5" component="h2" sx={{ fontWeight: "bold" }}>
           新規チーム募集
         </Typography>
         <Link href="/team-recruitments">
@@ -50,7 +63,7 @@ const TeamRecruiting = () => {
         </Link>
       </Box>
       <List disablePadding>
-        {teams.map((item, index) => (
+        {events.map((item) => (
           <Team item={item} key={item.id} />
         ))}
       </List>
