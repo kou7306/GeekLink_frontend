@@ -140,7 +140,7 @@ const GroupChat = ({ params }: { params: any }) => {
                   href={
                     member?.user_id === uuid
                       ? "/my-page"
-                      : `/other/${member?.user_id}`
+                      : `/my-page/${member?.user_id}`
                   }
                 >
                   <Avatar

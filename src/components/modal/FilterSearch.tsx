@@ -2,7 +2,6 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
-import { ThemeProvider, createTheme } from "@mui/material";
 import Area from "./Area";
 import Age from "./Age";
 import Hobby from "./Hobby";
@@ -27,14 +26,6 @@ const style = {
   overflowY: "auto",
   borderRadius: "16px",
 };
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#22d3ee",
-    },
-  },
-});
 
 type Props = {
   handlePlaceClick: (place: string) => void;
@@ -82,100 +73,92 @@ const FilterSearch: React.FC<Props> = ({
   const router = useRouter();
 
   return (
-    <ThemeProvider theme={theme}>
-      <div>
-        <Button
-          onClick={handleOpen}
-          variant="contained"
-          sx={{
-            backgroundColor: "#25276D",
-            color: "white",
-            borderRadius: "8px",
-            padding: "8px 16px",
-            fontWeight: "bold",
-            margin: "8px",
-            "&:hover": {
-              backgroundColor: "#1f235a",
-            },
-          }}
-        >
-          絞り込み
-        </Button>
-        <Button
-          onClick={() => {
-            router.push("/random-match");
-          }}
-          variant="contained"
-          sx={{
-            backgroundColor: "#25276D",
-            color: "white",
-            borderRadius: "8px",
-            padding: "8px 16px",
-            fontWeight: "bold",
-            margin: "8px",
-            "&:hover": {
-              backgroundColor: "#1f235a",
-            },
-          }}
-        >
-          ランダムマッチ
-        </Button>
-        <Modal
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box sx={style}>
-            <Title />
-            <Box mx={4} my={2}>
-              {/* 都道部県で探す */}
-              <Area
-                handlePlaceClick={handlePlaceClick}
-                selectedPlaces={selectedPlaces}
-              />
-              {/* 年齢層で探す */}
-              <Age
-                handleAgeClick={handleAgeClick}
-                selectedAges={selectedAges}
-              />
-              {/* 趣味で探す */}
-              <Hobby
-                onChangeHobby={onChangeHobby}
-                enteredHobby={enteredHobby}
-              />
-              {/* 得意言語一位で探す */}
-              {/* TODO:一位のもののデータを表示する */}
-              <Tech
-                handleFirstTechClick={handleFirstTechClick}
-                selectedFirstTechs={selectedFirstTechs}
-              />
-              {/* 職業で探す */}
-              <Occupation
-                handleOccupationClick={handleOccupationClick}
-                selectedOccupations={selectedOccupations}
-              />
-              {/* 卒業年度で探す */}
-              <Graduate
-                handleGraduateClick={handleGraduateClick}
-                selectedGraduates={selectedGraduates}
-              />
-              {/* 希望職種で探す */}
-              <DesiredOccupation
-                handleDesiredOccupationClick={handleDesiredOccupationClick}
-                selectedDesiredOccupations={selectedDesiredOccupations}
-              />
-              {/* 経験で探す */}
-              <Experience
-                handleExperienceClick={handleExperienceClick}
-                selectedExperiences={selectedExperiences}
-              />
-              <SearchButton onClick={onSearch} />
-            </Box>
+    <>
+      <Button
+        onClick={handleOpen}
+        variant="contained"
+        sx={{
+          color: "secondary.contrastText",
+          backgroundColor: "secondary.main",
+          borderRadius: "8px",
+          padding: "8px 16px",
+          fontWeight: "bold",
+          margin: "8px",
+          "&:hover": {
+            backgroundColor: "#1f235a",
+          },
+        }}
+      >
+        絞り込み
+      </Button>
+      <Button
+        onClick={() => {
+          router.push("/random-match");
+        }}
+        variant="contained"
+        sx={{
+          backgroundColor: "secondary.main",
+          color: "secondary.contrastText",
+          borderRadius: "8px",
+          padding: "8px 16px",
+          fontWeight: "bold",
+          margin: "8px",
+          "&:hover": {
+            backgroundColor: "#1f235a",
+          },
+        }}
+      >
+        ランダムマッチ
+      </Button>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Title />
+          <Box mx={4} my={2}>
+            {/* 都道部県で探す */}
+            <Area
+              handlePlaceClick={handlePlaceClick}
+              selectedPlaces={selectedPlaces}
+            />
+            {/* 年齢層で探す */}
+            <Age handleAgeClick={handleAgeClick} selectedAges={selectedAges} />
+            {/* 趣味で探す */}
+            <Hobby onChangeHobby={onChangeHobby} enteredHobby={enteredHobby} />
+            {/* 得意言語一位で探す */}
+            {/* TODO:一位のもののデータを表示する */}
+            <Tech
+              handleFirstTechClick={handleFirstTechClick}
+              selectedFirstTechs={selectedFirstTechs}
+            />
+            {/* 職業で探す */}
+            <Occupation
+              handleOccupationClick={handleOccupationClick}
+              selectedOccupations={selectedOccupations}
+            />
+            {/* 卒業年度で探す */}
+            <Graduate
+              handleGraduateClick={handleGraduateClick}
+              selectedGraduates={selectedGraduates}
+            />
+            {/* 希望職種で探す */}
+            <DesiredOccupation
+              handleDesiredOccupationClick={handleDesiredOccupationClick}
+              selectedDesiredOccupations={selectedDesiredOccupations}
+            />
+            {/* 経験で探す */}
+            <Experience
+              handleExperienceClick={handleExperienceClick}
+              selectedExperiences={selectedExperiences}
+            />
+            <SearchButton onClick={onSearch} />
           </Box>
-        </Modal>
-      </div>
-    </ThemeProvider>
+        </Box>
+      </Modal>
+    </>
   );
 };
 
