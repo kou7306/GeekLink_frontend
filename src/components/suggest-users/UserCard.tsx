@@ -69,7 +69,7 @@ const UserCard = ({ user, chipOption }: Props) => {
       </Box>
       <Chips user={user} chipOption={chipOption} />
       <Box sx={{ display: "flex", width: "100%", gap: "8px" }}>
-        <Link href={`/other/${user.user_id}`}>
+        <Link href={`/my-page/${user.user_id}`}>
           <Button
             variant="contained"
             sx={{
