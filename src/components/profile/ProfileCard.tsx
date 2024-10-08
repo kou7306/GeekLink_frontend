@@ -139,7 +139,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
               </a>
             )}
             {/* 連携 */}
-            <SocialMediaIntegration />
+            {isMe ? <SocialMediaIntegration /> : null}
           </div>
           {user.message && <CommentComponent message={user.message} />}
           {!isMe && (
