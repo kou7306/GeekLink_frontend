@@ -25,7 +25,7 @@ const IconField: React.FC<Props> = ({
   const defaultImage = "/img/default_icon.png"; // public フォルダに配置されたデフォルト画像
 
   return (
-    <Link href={`/other/${id}`}>
+    <Link href={`/my-page/${id}`}>
       <div className="flex flex-col items-center m-8 p-4 border rounded-lg shadow-lg w-64 transform transition-transform hover:scale-105 hover:shadow-2xl">
         <div className="relative">
           {/* image が null の場合にデフォルト画像を使用 */}
