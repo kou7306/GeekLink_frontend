@@ -1,29 +1,34 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Card,
-  CardContent,
-  Typography,
-  Divider,
-  Paper,
-  Button,
-} from "@mui/material";
+import { Box, Typography, Divider, IconButton } from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { GitHubActivityCard } from "./ActivityGtihubCard";
+import { GeekLinkActivityCard } from "./ActivityGeekLinkCard";
 
 interface ActivityProps {
-  kind: string; // データの種類（例: 'github'）
-  data: any[]; // データ
+  kind: string;
+  data: any[];
 }
 
-// Activityコンポーネント
-const Activity: React.FC<ActivityProps> = ({ kind, data }) => {
-  // 日付でソート（新しい順）
-  const sortedActivities = data.sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-  );
+const Activity: React.FC<{ activities: ActivityProps[] }> = ({
+  activities,
+}) => {
+  const [showAll, setShowAll] = useState(false);
+  const initialDisplayCount = 3;
 
-  // 日ごとにグループ化する
+  const sortedActivities = activities
+    .flatMap((activity) =>
+      activity.data.map((item) => ({ ...item, kind: activity.kind }))
+    )
+    .sort((a, b) => {
+      const dateA = a.date ? new Date(a.date).getTime() : 0;
+      const dateB = b.date ? new Date(b.date).getTime() : 0;
+      return dateB - dateA;
+    });
+
   const groupedActivities = sortedActivities.reduce((acc, activity) => {
-    const date = new Date(activity.date).toLocaleDateString(); // 日付をフォーマット
+    const date = new Date(
+      activity.date || activity.created_at || ""
+    ).toLocaleDateString();
     if (!acc[date]) {
       acc[date] = [];
     }
@@ -31,54 +36,42 @@ const Activity: React.FC<ActivityProps> = ({ kind, data }) => {
     return acc;
   }, {} as Record<string, any[]>);
 
+  const dates = Object.keys(groupedActivities);
+  const displayDates = showAll ? dates : dates.slice(0, initialDisplayCount);
+
   return (
     <Box>
-      {Object.keys(groupedActivities).map((date) => (
+      {displayDates.map((date) => (
         <Box key={date} mb={4}>
-          {/* 日付を表示 */}
           <Typography variant="h6" color="textSecondary" gutterBottom>
             {date}
           </Typography>
           <Divider sx={{ mb: 2 }} />
 
-          {/* 同じ日付のアクティビティを表示 */}
-          {groupedActivities[date].slice(0, 5).map((activity, index) => (
-            <Paper elevation={3} key={index} sx={{ mb: 2, ml: 4 }}>
-              <Card
-                sx={{
-                  border: "1px solid rgba(0, 0, 0, 0.12)", // 薄い枠線
-                }}
-              >
-                <CardContent>
-                  <Typography variant="subtitle1" color="black">
-                    {activity.title}
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary">
-                    {new Date(activity.date).toLocaleTimeString()}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Paper>
-          ))}
-
-          {/* それ以降のアクティビティを表示 */}
-          {groupedActivities[date].length > 5 && (
-            <Box sx={{ ml: 4 }}>
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={() => {
-                  // ここに表示するロジックを追加
-                  // 今回は簡単にコンソールに出力
-                  console.log(`Showing more activities for ${date}`);
-                }}
-              >
-                他のアクティビティを表示
-              </Button>
-            </Box>
-          )}
+          {groupedActivities[date].map((activity: any, index: number) => {
+            if (activity.kind === "github") {
+              return <GitHubActivityCard key={index} activity={activity} />;
+            } else if (activity.kind === "geeklink") {
+              return <GeekLinkActivityCard key={index} activity={activity} />;
+            } else if (activity.kind === "qiita") {
+              return n;
+            }
+            return null;
+          })}
         </Box>
       ))}
+
+      {!showAll && dates.length > initialDisplayCount && (
+        <Box display="flex" justifyContent="center" mt={2}>
+          <IconButton
+            onClick={() => setShowAll(true)}
+            aria-label="show more"
+            size="large"
+          >
+            <ExpandMoreIcon fontSize="large" />
+          </IconButton>
+        </Box>
+      )}
     </Box>
   );
 };

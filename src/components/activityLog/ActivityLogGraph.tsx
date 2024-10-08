@@ -26,7 +26,9 @@ interface ActivityLogGraphProps {
   data: number[]; // データ（1年前から今月までの12個）
 }
 
-const ActivityLogGraph: React.FC<ActivityLogGraphProps> = ({ kind, data }) => {
+const ActivityLogGraph: React.FC<{ propsArray: ActivityLogGraphProps[] }> = ({
+  propsArray,
+}) => {
   const currentMonth = new Date().getMonth(); // 現在の月を取得 (0-11)
 
   // 月のラベル
@@ -51,22 +53,26 @@ const ActivityLogGraph: React.FC<ActivityLogGraphProps> = ({ kind, data }) => {
     ...monthLabels.slice(0, currentMonth + 1), // 年始から今月まで
   ];
 
-  // データをラベルの順番に合わせて並び替え
-  const adjustedData = [
-    ...data.slice(currentMonth + 1), // 今月の次の月から年末までのデータ
-    ...data.slice(0, currentMonth + 1), // 年始から今月までのデータ
-  ];
+  // 色の配列（kindごとに異なる色を指定）
+  const colors: { [key in ActivityLogGraphProps["kind"] | "other"]: string } = {
+    github: "rgb(255, 99, 132)",
+    qiita: "rgb(54, 162, 235)",
+    geeklink: "rgb(75, 192, 192)",
+  };
 
-  // kindによるデータセットの変更
+  // datasetsに各kindのデータを追加
+  const datasets = propsArray
+    .filter((activity) => activity.data.length === 12) // データが12個のものだけを残す
+    .map((activity) => ({
+      label: `${activity.kind} Contributions`,
+      backgroundColor: colors[activity.kind] || colors["other"], // kindによって色を決定
+      data: activity.data,
+    }));
+
+  // グラフデータ
   const chartData: ChartData<"bar"> = {
     labels: adjustedLabels,
-    datasets: [
-      {
-        label: `${kind} Contributions`, // kindをラベルに追加
-        backgroundColor: "rgb(255, 99, 132)", // 色を変更したい場合はここを編集
-        data: adjustedData, // データを使用
-      },
-    ],
+    datasets: datasets, // 複数のデータセットを設定
   };
 
   const chartOption = (data: ChartData<"bar">) => ({

@@ -10,14 +10,9 @@ import {
 } from "chart.js";
 import { getUuidFromCookie } from "@/actions/users";
 import RepositoryGraph from "./RepositoryGraph";
-import {
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Box,
-  Typography,
-} from "@mui/material";
+import { Box, Typography, IconButton } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 
 ChartJS.register(
   CategoryScale,
@@ -30,9 +25,9 @@ ChartJS.register(
 
 const RepositoryList = () => {
   const [repositories, setRepositories] = useState<Repository[]>([]);
-  const [expanded, setExpanded] = useState(false); // アコーディオンの開閉状態を管理
+  const [expanded, setExpanded] = useState(false); // 展開状態を管理
 
-  // 個人のリポジトリを上から十件取得
+  // リポジトリを取得
   useEffect(() => {
     const fetchRepositories = async () => {
       const uuid = await getUuidFromCookie();
@@ -52,92 +47,61 @@ const RepositoryList = () => {
     fetchRepositories();
   }, []);
 
-  const handleAccordionChange = () => {
-    setExpanded(!expanded); // アコーディオンの状態を切り替え
+  // 展開状態の切り替え
+  const handleToggle = () => {
+    setExpanded(!expanded);
   };
 
+  // 展開状態によって表示するリポジトリの数を変更
+  const repositoriesToShow = expanded ? repositories : repositories.slice(0, 3);
+
   return (
-    <>
-      <Accordion
-        expanded={expanded}
-        onChange={handleAccordionChange}
-        sx={{
-          marginLeft: 2, // 右にマージンを追加
-          transition: "height 0.3s ease", // スムーズな高さの変化
-          height: expanded ? "auto" : "800px", // 開く前の高さを指定
-          boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)", // ここでシャドウを追加
-          borderRadius: 2, // 角を少し丸める場合は追加
-          padding: 2, // パディングを追加
-        }}
-      >
-        <AccordionSummary
-          aria-controls="panel1-content"
-          id="panel1-header"
+    <Box
+      sx={{
+        marginLeft: 2,
+        transition: "height 0.3s ease",
+        height: "auto",
+        boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+        borderRadius: 2,
+        padding: 2,
+      }}
+    >
+      <Box marginX={4}>
+        <Typography variant="h5" marginY={4}>
+          レポジトリ一覧
+        </Typography>
+
+        {/* 展開状態に応じてリポジトリを表示 */}
+        {repositoriesToShow.map((repository, index) => (
+          <Box
+            key={index}
+            display={"flex"}
+            justifyContent={"center"}
+            sx={{
+              mb: 2,
+              height: "200px",
+              border: "1px solid #e5e7eb",
+              borderRadius: "20px",
+            }}
+          >
+            <RepositoryGraph repository={repository} />
+          </Box>
+        ))}
+
+        {/* リポジトリが3つ以上ある場合に展開ボタンを表示 */}
+        <IconButton
+          onClick={handleToggle}
           sx={{
-            flexDirection: "column",
-            alignItems: "center",
-            "& .MuiAccordionSummary-content": {
-              margin: 0,
-              flexDirection: "column",
-              width: "100%",
-            },
-            minHeight: "auto",
-            height: "auto",
+            display: "flex",
+            margin: "auto",
+            marginTop: 2,
+            visibility: repositories.length > 3 ? "visible" : "hidden", // アイコンの表示/非表示
           }}
         >
-          <Box marginX={4}>
-            <Typography variant="h5" marginY={4}>
-              レポジトリ一覧
-            </Typography>
-            {/* 先頭3つだけデフォルトで見せる */}
-            {repositories.length > 0 &&
-              repositories.slice(0, 3).map((repository, index) => (
-                <Box
-                  key={index}
-                  display={"flex"}
-                  justifyContent={"center"}
-                  sx={{
-                    mb: 2,
-                    height: "200px",
-                    border: "1px solid #e5e7eb",
-                    borderRadius: "20px",
-                  }}
-                >
-                  <RepositoryGraph repository={repository} />
-                </Box>
-              ))}
-          </Box>
-          {/* 矢印アイコンをコンテンツの下に配置し、回転させる */}
-          <ExpandMoreIcon
-            sx={{
-              mt: 2,
-              mx: "auto", // 中央寄せ
-              transform: expanded ? "rotate(180deg)" : "rotate(0deg)",
-              transition: "transform 0.3s ease",
-            }}
-          />
-        </AccordionSummary>
-        <AccordionDetails>
-          {/* 残りのレポジトリを表示 */}
-          {repositories.length > 3 &&
-            repositories.slice(3).map((repository, index) => (
-              <Box
-                key={index}
-                display={"flex"}
-                justifyContent={"center"}
-                sx={{
-                  mb: 2,
-                  height: "200px",
-                  border: "1px solid #ccc",
-                  borderRadius: "20px",
-                }}
-              >
-                <RepositoryGraph repository={repository} />
-              </Box>
-            ))}
-        </AccordionDetails>
-      </Accordion>
-    </>
+          {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+        </IconButton>
+      </Box>
+    </Box>
   );
 };
 

@@ -9,6 +9,8 @@ import {
 import ActivityLogGraph from "./ActivityLogGraph";
 import ActivityLog from "./ActivityLog";
 import { Box, Typography, Paper } from "@mui/material";
+import { getQiitaActivity } from "../../utils/getQiitaActivity";
+import { getGeekLinkActivity } from "../../utils/getGeekLinkActivity";
 
 interface ActivityProps {
   uuid: string;
@@ -20,24 +22,31 @@ const Activity: React.FC<ActivityProps> = ({ uuid }) => {
   const [monthlyContributionInfo, setMonthlyContributionInfo] = useState<any[]>(
     []
   );
+  const [yearlyQiitaPosts, setYearlyQiitaPosts] = useState<number[]>([]); // Qiitaの年間投稿数
+  const [monthlyQiitaActivity, setMonthlyQiitaActivity] = useState<any[]>([]); // Qiitaの月間の投稿情報
+  const [yearlyGeekLinkActivity, setYearlyGeekLinkActivity] = useState<
+    number[]
+  >([]); // GeekLinkの年間投稿数
+  const [monthlyGeekLinkActivity, setMonthlyGeekLinkActivity] = useState<any[]>(
+    []
+  ); // GeekLinkの月間の投稿情報
   const [loading, setLoading] = useState<boolean>(true); // ローディング状態の管理
 
   useEffect(() => {
     const fetchData = async () => {
       if (uuid) {
-        // 年間コントリビューションを取得
+        // GitHub年間コントリビューションを取得
         const yearlyData = await getYearlyContribution(uuid);
+        console.log("yearlyData", yearlyData);
         setYearlyContribution(yearlyData);
 
-        // 更新以来のコントリビューションを取得
+        // GitHub更新以来のコントリビューションを取得
         const contributionsSinceLastUpdate =
           await getContributionsSinceLastUpdate(uuid);
 
         if (Array.isArray(contributionsSinceLastUpdate)) {
-          // yearlyContributionを全て更新
           setYearlyContribution(contributionsSinceLastUpdate);
         } else {
-          console.log(contributionsSinceLastUpdate);
           setYearlyContribution((prev) => {
             const updatedData = [...prev]; // 前のデータをコピー
             updatedData[updatedData.length - 1] += contributionsSinceLastUpdate; // 最後の値に加算
@@ -45,24 +54,26 @@ const Activity: React.FC<ActivityProps> = ({ uuid }) => {
           });
         }
 
-        console.log(contributionsSinceLastUpdate);
-
-        // 月の詳細のコントリビューション情報を取得
+        // GitHubの月別コントリビューション詳細を取得
         const monthlyContributionInfo = await getMonthlyContributionInfo(uuid);
         setMonthlyContributionInfo(monthlyContributionInfo.logs);
 
-        // 更新以来のコントリビューション情報を取得
-        const contributionsInfoSinceLastUpdate =
-          await getContributionsInfoSinceLastUpdate(uuid);
+        // Qiitaの年間投稿数を取得
+        const qiitaActivity = await getQiitaActivity(uuid);
+        setYearlyQiitaPosts(qiitaActivity.monthlyPostCounts);
 
-        // contributionsInfoSinceLastUpdateが配列の場合にのみ連結
-        if (Array.isArray(contributionsInfoSinceLastUpdate)) {
-          setMonthlyContributionInfo((prev) => [
-            ...prev,
-            ...contributionsInfoSinceLastUpdate,
-          ]);
-        }
-        console.log(contributionsInfoSinceLastUpdate);
+        // Qiitaの月間の投稿情報を取得
+        const monthlyQiitaActivity = qiitaActivity.postDetails;
+        setMonthlyQiitaActivity(monthlyQiitaActivity);
+
+        // アプリ内の年間のデータを取得
+        const geekLinkActivity = await getGeekLinkActivity(uuid);
+        console.log("geekLinkActivity", geekLinkActivity);
+        setYearlyGeekLinkActivity(geekLinkActivity.monthlyActivityCounts);
+
+        // アプリ内の月間のデータを取得
+        const monthlyGeekLinkActivity = geekLinkActivity.activities;
+        setMonthlyGeekLinkActivity(monthlyGeekLinkActivity);
       }
       setLoading(false); // ローディング完了
     };
@@ -73,6 +84,37 @@ const Activity: React.FC<ActivityProps> = ({ uuid }) => {
   if (loading) {
     return <div>Loading...</div>; // ローディング中の表示
   }
+
+  const activityData = [
+    {
+      kind: "github",
+      data: monthlyContributionInfo,
+    },
+    {
+      kind: "qiita",
+      data: monthlyQiitaActivity,
+    },
+    {
+      kind: "geeklink",
+      data: monthlyGeekLinkActivity,
+    },
+  ];
+
+  // グラフ用データを作成
+  const graphData = [
+    {
+      kind: "github",
+      data: yearlyContribution,
+    },
+    {
+      kind: "qiita",
+      data: yearlyQiitaPosts,
+    },
+    {
+      kind: "geeklink",
+      data: yearlyGeekLinkActivity,
+    },
+  ];
 
   return (
     <Box mx={8}>
@@ -85,12 +127,12 @@ const Activity: React.FC<ActivityProps> = ({ uuid }) => {
 
         {/* 年間コントリビューションのグラフ */}
         <Box my={4} display={"flex"} justifyContent={"center"} px={12}>
-          <ActivityLogGraph kind="github" data={yearlyContribution} />
+          <ActivityLogGraph propsArray={graphData} />
         </Box>
 
         {/* 月間コントリビューションのログ */}
         <Box>
-          <ActivityLog kind="github" data={monthlyContributionInfo} />
+          <ActivityLog activities={activityData} />
         </Box>
       </Paper>
     </Box>
