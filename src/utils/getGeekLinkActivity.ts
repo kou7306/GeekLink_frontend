@@ -9,12 +9,12 @@ export const getGeekLinkActivity = async (
     const now = new Date().getTime(); // 現在の時刻を取得
 
     // キャッシュが存在し、有効期限内の場合はキャッシュからデータを取得
-    // const cachedData = localStorage.getItem(cacheKey);
-    // const cacheExpiration = localStorage.getItem(cacheExpirationKey);
+    const cachedData = localStorage.getItem(cacheKey);
+    const cacheExpiration = localStorage.getItem(cacheExpirationKey);
 
-    // if (cachedData && cacheExpiration && now < Number(cacheExpiration)) {
-    //   return JSON.parse(cachedData); // キャッシュが有効ならそれを返す
-    // }
+    if (cachedData && cacheExpiration && now < Number(cacheExpiration)) {
+      return JSON.parse(cachedData); // キャッシュが有効ならそれを返す
+    }
 
     const time = 365 * 24; // 1年間のアクティビティを取得
     const response = await fetch(
@@ -33,8 +33,6 @@ export const getGeekLinkActivity = async (
 
     const activities = await response.json();
 
-    console.log(activities);
-
     // 1ヶ月前以降のアクティビティのみをフィルタリング
     const oneMonthAgo = new Date();
     oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
@@ -52,15 +50,26 @@ export const getGeekLinkActivity = async (
       monthlyActivityCounts[monthIndex] += 1; // 該当月のカウントを増やす
     });
 
-    // データをキャッシュに保存
+    // 現在の月を取得
+    const currentMonth = new Date().getMonth(); // 現在の月（0-11）
+
+    // 結果を次の月から現在の月までの順番に並べ替え
+    const reorderedMonthlyActivityCounts = [
+      ...monthlyActivityCounts.slice(currentMonth + 1), // 次の月から12月まで
+      ...monthlyActivityCounts.slice(0, currentMonth + 1), // 1月から現在の月まで
+    ];
+
+    // 最終的な結果をキャッシュに保存
     localStorage.setItem(
       cacheKey,
-      JSON.stringify({ monthlyActivityCounts, activities: filteredActivities })
+      JSON.stringify({
+        monthlyActivityCounts: reorderedMonthlyActivityCounts,
+        activities: filteredActivities,
+      })
     );
-    localStorage.setItem(cacheExpirationKey, (now + cacheTime).toString());
 
     return {
-      monthlyActivityCounts,
+      monthlyActivityCounts: reorderedMonthlyActivityCounts,
       activities: filteredActivities,
     };
   } catch (error) {

@@ -47,26 +47,28 @@ const ActivityLogGraph: React.FC<{ propsArray: ActivityLogGraphProps[] }> = ({
     "12月",
   ];
 
-  // ラベルを現在の月が最後に来るように並べ替え
+  // ラベルとデータを今月を一番右に持ってくるように並び替え
   const adjustedLabels = [
-    ...monthLabels.slice(0, currentMonth), // 年始から現在の月の前まで
-    ...monthLabels.slice(currentMonth), // 現在の月から年末まで
+    ...monthLabels.slice(currentMonth + 1), // 今月の次の月から年末まで
+    ...monthLabels.slice(0, currentMonth + 1), // 年始から今月まで
   ];
 
   // 色の配列（kindごとに異なる色を指定）
-  const colors: { [key in ActivityLogGraphProps["kind"] | "other"]: string } = {
+  const colors: { [key in ActivityLogGraphProps["kind"]]: string } = {
     github: "rgb(255, 99, 132)",
     qiita: "rgb(54, 162, 235)",
     geeklink: "rgb(75, 192, 192)",
-    other: "rgb(201, 203, 207)",
   };
 
+  console.log(propsArray);
   // datasetsに各kindのデータを追加
-  const datasets = propsArray.map((activity) => ({
-    label: `${activity.kind} Contributions`,
-    backgroundColor: colors[activity.kind] || colors["other"], // kindによって色を決定
-    data: activity.data,
-  }));
+  const datasets = propsArray
+    .filter((activity) => activity.data.length === 12) // データが12個のものだけを残す
+    .map((activity) => ({
+      label: `${activity.kind} Contributions`,
+      backgroundColor: colors[activity.kind], // kindによって色を決定
+      data: activity.data,
+    }));
 
   // グラフデータ
   const chartData: ChartData<"bar"> = {

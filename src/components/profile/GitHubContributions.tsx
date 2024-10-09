@@ -24,12 +24,17 @@ const GitHubContributions = ({ isMe }: Props) => {
         }
       );
       const data = await response.json();
+      console.log(data);
       return data;
     },
   });
 
-  if (isPending) return <div>Loading...</div>;
-  if (isError) return <div>Error</div>;
+  if (isError) return <div>読み込めませんでした</div>;
+
+  // 配列かどうかを確認
+  if (!Array.isArray(data)) {
+    return <div>Error: The fetched data is not an array</div>;
+  }
 
   // 合計のコントリビューション数を計算
   const numberOfContributions = Array.isArray(data)
@@ -39,7 +44,7 @@ const GitHubContributions = ({ isMe }: Props) => {
   return (
     <Box display="flex" flexDirection="row" alignItems="center" mt={2}>
       <Typography marginRight={1}>Contribution数</Typography>
-      <Typography>{numberOfContributions}contributions</Typography>
+      <Typography>{numberOfContributions} contributions</Typography>
     </Box>
   );
 };
