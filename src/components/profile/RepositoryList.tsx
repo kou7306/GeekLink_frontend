@@ -53,7 +53,7 @@ const RepositoryList = () => {
 
   return (
     <>
-      <Accordion>
+      <Accordion sx={{ mt: 4 }}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1-content"

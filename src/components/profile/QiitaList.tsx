@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Card, CardContent, Typography } from "@mui/material";
 import React from "react";
 import QiitaItem from "./QiitaItem";
 import { useQuery } from "@tanstack/react-query";
@@ -31,10 +31,14 @@ const QiitaList = () => {
   if (isError)
     return (
       <>
-        <Typography variant="h5" marginY={4}>
-          Qiita
-        </Typography>
-        <div>データがありません</div>
+        <Card sx={{ marginY: 4, padding: 2 }}>
+          <CardContent>
+            <Typography variant="h5" component="div">
+              Qiita
+            </Typography>
+            <div>データがありません</div>
+          </CardContent>
+        </Card>
       </>
     );
 
