@@ -28,7 +28,15 @@ const QiitaList = () => {
 
   if (isPending) return <div>Loading...</div>;
 
-  if (isError) return <div>Error: {error.message}</div>;
+  if (isError)
+    return (
+      <>
+        <Typography variant="h5" marginY={4}>
+          Qiita
+        </Typography>
+        <div>データがありません</div>
+      </>
+    );
 
   return (
     <Box
