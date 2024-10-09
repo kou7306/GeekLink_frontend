@@ -43,26 +43,27 @@ const QiitaList = () => {
     );
 
   return (
-    <Box
+    <Card
       sx={{
         maxWidth: 400,
-        height: 700,
-        margin: "auto",
-        overflowY: "auto",
+        height: 770,
+        mt: 4,
+        mx: 1,
         display: "flex",
         flexDirection: "column",
       }}
     >
-      <Typography variant="h5" marginY={4}>
-        Qiita
-      </Typography>
-      <Box sx={{ flexGrow: 1, overflowY: "auto" }}>
-        {/* // スクロール可能な内部コンテナ */}
+      <CardContent>
+        <Typography variant="h5" gutterBottom>
+          Qiita
+        </Typography>
+      </CardContent>
+      <CardContent sx={{ flexGrow: 1, overflowY: "auto", padding: 2 }}>
         {data.postDetails.map((item: QiitaArticle, index: number) => (
           <QiitaItem item={item} key={index} />
         ))}
-      </Box>
-    </Box>
+      </CardContent>
+    </Card>
   );
 };
 
