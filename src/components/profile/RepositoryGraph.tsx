@@ -1,5 +1,5 @@
 import React from "react";
-import { Bar } from "react-chartjs-2";
+import { Chart } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   Tooltip,
@@ -106,10 +106,14 @@ const RepositoryGraph = ({ repository }: Props) => {
     },
   };
 
-  // プラグインを登録
-  ChartJS.register(commitCountPlugin);
-
-  return <Bar data={repositoryData} options={options} />;
+  return (
+    <Chart
+      type="bar"
+      data={repositoryData}
+      options={options}
+      plugins={[commitCountPlugin]}
+    />
+  );
 };
 
 export default RepositoryGraph;
