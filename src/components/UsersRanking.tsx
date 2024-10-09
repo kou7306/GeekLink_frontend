@@ -1,18 +1,18 @@
 import React, { Fragment } from "react";
 import UserRanking from "./UserRanking";
+import { User } from "../../types/ranking";
 
-const UsersRanking = () => {
-  const users = [
-    { id: 1, name: "ユーザー1" },
-    { id: 2, name: "ユーザー2" },
-    { id: 3, name: "ユーザー3" },
-  ];
+interface UsersRankingsProps {
+  data: User[];
+  type: string;
+}
 
+const UsersRanking: React.FC<UsersRankingsProps> = ({ data, type }) => {
   return (
     <div>
-      {users.map((user) => (
-        <Fragment key={user.id}>
-          <UserRanking user={user} />
+      {data.map((user) => (
+        <Fragment key={user.user_id}>
+          <UserRanking user={user} type={type} />
         </Fragment>
       ))}
     </div>

@@ -1,15 +1,27 @@
 import { getUuidFromCookie } from "@/actions/users";
 import { Box, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
+import { useParams } from "next/navigation";
 import React from "react";
 
-const GitHubContributions = () => {
-  const { isLoading, isError, data } = useQuery({
+type Props = {
+  isMe: boolean;
+};
+
+const GitHubContributions = ({ isMe }: Props) => {
+  //自分以外のマイページを見るときにパラメータのuuidを使う
+  const { uuid } = useParams();
+
+  const { isPending, isError, data } = useQuery({
     queryKey: ["githubContributions"],
     queryFn: async () => {
-      const uuid = await getUuidFromCookie();
+      let userUid = isMe ? (await getUuidFromCookie()) ?? uuid : uuid;
+
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/github/contributionList?uuid=${uuid}`
+        `${process.env.NEXT_PUBLIC_API_URL}/github/contributionList?uuid=${userUid}`,
+        {
+          next: { revalidate: 7200 }, // 2時間（7200秒）ごとに再検証
+        }
       );
       const data = await response.json();
       console.log(data);
@@ -17,8 +29,7 @@ const GitHubContributions = () => {
     },
   });
 
-  if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Error</div>;
+  if (isError) return <div>読み込めませんでした</div>;
 
   // 配列かどうかを確認
   if (!Array.isArray(data)) {
@@ -26,10 +37,9 @@ const GitHubContributions = () => {
   }
 
   // 合計のコントリビューション数を計算
-  const numberOfContributions = data.reduce(
-    (sum: number, contribution: number) => sum + contribution,
-    0
-  );
+  const numberOfContributions = Array.isArray(data)
+    ? data.reduce((sum: number, contribution: number) => sum + contribution, 0)
+    : 0;
 
   return (
     <Box display="flex" flexDirection="row" alignItems="center" mt={2}>

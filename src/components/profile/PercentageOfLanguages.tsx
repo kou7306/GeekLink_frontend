@@ -3,13 +3,21 @@ import { Box } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import LanguageGraph from "./LanguageGraph";
+import { useParams } from "next/navigation";
 
-const PercentageOfLanguages = () => {
+type Props = {
+  isMe: boolean;
+};
+
+const PercentageOfLanguages = ({ isMe }: Props) => {
+  //自分以外のマイページを見るときにパラメータのuuidを使う
+  const { uuid } = useParams();
+
   const { data, isLoading } = useQuery({
     queryKey: ["percentageOfLanguages"],
     queryFn: async () => {
-      const uuid = await getUuidFromCookie();
-      if (!uuid) {
+      let userUid = isMe ? (await getUuidFromCookie()) ?? uuid : uuid;
+      if (!userUid) {
         return [];
       }
       const response = await fetch(
@@ -19,7 +27,8 @@ const PercentageOfLanguages = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ uuid }),
+          body: JSON.stringify({ uuid: userUid }),
+          next: { revalidate: 86400 }, // 1日（86400秒）ごとに再検証
         }
       );
       const data = await response.json();

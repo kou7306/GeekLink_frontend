@@ -1,4 +1,4 @@
-import { Box, Typography, IconButton } from "@mui/material";
+import { Box, Typography, IconButton, Card, CardContent } from "@mui/material";
 import React, { useState } from "react";
 import QiitaItem from "./QiitaItem";
 import { useQuery } from "@tanstack/react-query";
@@ -44,7 +44,19 @@ const QiitaList: React.FC<QiitaListProps> = ({ uuid }) => {
 
   if (isLoading) return <div>Loading...</div>;
 
-  if (isError) return <div>Error: {error.message}</div>;
+  if (isError)
+    return (
+      <>
+        <Card sx={{ marginY: 4, padding: 2 }}>
+          <CardContent>
+            <Typography variant="h5" component="div">
+              Qiita
+            </Typography>
+            <div>データがありません</div>
+          </CardContent>
+        </Card>
+      </>
+    );
 
   // 記事が存在するかチェックし、sliceによるエラーを防ぐ
   const articlesToShow =

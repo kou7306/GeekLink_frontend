@@ -1,7 +1,8 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import React from "react";
-import UsersRanking from "../UsersRanking";
 import UsersRankings from "./UsersRankings";
+import { useQuery } from "@tanstack/react-query";
+import { RankingData } from "../../../types/ranking";
 
 type Props = {
   value: string;
@@ -15,6 +16,29 @@ interface TabPanelProps {
 }
 
 const RankingPanels = ({ value }: Props) => {
+  const { isPending, isError, error, data } = useQuery({
+    queryKey: ["ranking"],
+    queryFn: async () => {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/ranking/all`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch Ranking");
+      }
+      return response.json();
+    },
+  });
+
+  const dailyRanking: RankingData = data?.daily || { activity: [], contribution: [], star: [], qiita: [] };
+  const weeklyRanking: RankingData = data?.weekly || { activity: [], contribution: [], star: [], qiita: [] };
+  const monthlyRanking: RankingData = data?.monthly || { activity: [], contribution: [], star: [], qiita: [] };
+
   function TabPanel(props: TabPanelProps) {
     const { children, value, index, ...other } = props;
 
@@ -35,15 +59,15 @@ const RankingPanels = ({ value }: Props) => {
     <>
       {/* デイリー */}
       <TabPanel value={value} index="1">
-        <UsersRankings />
+        <UsersRankings data={dailyRanking} />
       </TabPanel>
       {/* 週間 */}
       <TabPanel value={value} index="2">
-        <UsersRankings />
+        <UsersRankings data={weeklyRanking} />
       </TabPanel>
       {/* 月間 */}
       <TabPanel value={value} index="3">
-        <UsersRankings />
+        <UsersRankings data={monthlyRanking} />
       </TabPanel>
     </>
   );

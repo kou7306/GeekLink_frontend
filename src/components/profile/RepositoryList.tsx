@@ -8,7 +8,6 @@ import {
   BarElement,
   Title,
 } from "chart.js";
-import { getUuidFromCookie } from "@/actions/users";
 import RepositoryGraph from "./RepositoryGraph";
 import { Box, Typography, IconButton } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";

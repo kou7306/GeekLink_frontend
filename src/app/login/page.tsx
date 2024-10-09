@@ -8,7 +8,7 @@ async function LoginPage() {
   const user = await getUser();
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col justify-center items-center">
+    <div className="min-h-screen bg-gray-100 flex flex-col justify-center items-center mt-[-80px]">
       <h2 className="text-2xl font-bold mb-4 text-gray-800">ログイン</h2>
       {user ? (
         <div className="space-y-4">

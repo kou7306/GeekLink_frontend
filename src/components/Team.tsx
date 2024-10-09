@@ -74,9 +74,10 @@ const Team = ({ item, key }: Props) => {
               gap: 1,
             }}
           >
-            {item.techs.map((tech) => (
+            {item.techs.slice(0, 3).map((tech) => (
               <Chip key={tech} label={tech} size="small" />
             ))}
+            {item.techs.length > 3 && "..."}
           </Box>
 
           <Typography
