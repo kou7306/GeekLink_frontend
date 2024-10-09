@@ -1,15 +1,28 @@
 import { getUuidFromCookie } from "@/actions/users";
 import { Box, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
+import { useParams } from "next/navigation";
 import React from "react";
 
-const GitHubContributions = () => {
+type Props = {
+  isMe: boolean;
+};
+
+const GitHubContributions = ({ isMe }: Props) => {
+  //自分以外のマイページを見るときにパラメータからuuidを取得
+  const { uuid } = useParams();
+
   const { isPending, isError, data } = useQuery({
     queryKey: ["githubContributions"],
     queryFn: async () => {
-      const uuid = await getUuidFromCookie();
+      if (isMe) {
+        const uuid = await getUuidFromCookie();
+      }
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/github/contributionList?uuid=${uuid}`
+        `${process.env.NEXT_PUBLIC_API_URL}/github/contributionList?uuid=${uuid}`,
+        {
+          next: { revalidate: 7200 }, // 2時間（7200秒）ごとに再検証
+        }
       );
       const data = await response.json();
       return data;
