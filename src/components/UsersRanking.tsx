@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import UserRanking from "./UserRanking";
-import { User } from "../../types/ranking";
+import { User } from "../types/ranking";
 
 interface UsersRankingsProps {
   data: User[];

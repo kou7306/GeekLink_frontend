@@ -14,7 +14,7 @@ import { useRouter } from "next/navigation";
 import { getUuidFromCookie } from "@/actions/users";
 import Loading from "../core/Loading";
 import UserCard from "./UserCard";
-import { Profile } from "../../../types/user";
+import { Profile } from "../../types/user";
 
 interface UsersResponse {
   samePlaceUsers: Profile[];

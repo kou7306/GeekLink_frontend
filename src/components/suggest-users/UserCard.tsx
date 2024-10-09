@@ -1,5 +1,5 @@
 import React from "react";
-import { Profile } from "../../../types/user";
+import { Profile } from "../../types/user";
 import Image from "next/image";
 import { Box, Typography, Button, Link } from "@mui/material";
 import { useRouter } from "next/navigation";

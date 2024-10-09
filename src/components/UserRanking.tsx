@@ -1,6 +1,6 @@
 import { Box, ListItemText, Link, ListItemButton } from "@mui/material";
 import React from "react";
-import { User } from "../../types/ranking";
+import { User } from "../types/ranking";
 import Image from "next/image";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 

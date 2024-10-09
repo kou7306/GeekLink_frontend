@@ -1,7 +1,7 @@
 import React from "react";
 import UsersRanking from "../UsersRanking";
 import { Box, Typography } from "@mui/material";
-import { RankingData } from "../../../types/ranking";
+import { RankingData } from "../../types/ranking";
 
 interface UsersRankingsProps {
   data: RankingData;
