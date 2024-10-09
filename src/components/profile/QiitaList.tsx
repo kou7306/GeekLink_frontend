@@ -1,26 +1,29 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Card, CardContent, Typography } from "@mui/material";
 import React from "react";
 import QiitaItem from "./QiitaItem";
 import { useQuery } from "@tanstack/react-query";
 import { getUuidFromCookie } from "@/actions/users";
 import { QiitaArticle } from "../../types/qiitaArticle";
+import { useParams } from "next/navigation";
 
-const QiitaList = () => {
+type Props = {
+  isMe: boolean;
+};
+
+const QiitaList: React.FC<Props> = ({ isMe }) => {
+  const { uuid } = useParams();
+
   const { isPending, isError, error, data } = useQuery({
     queryKey: ["qiita"],
     queryFn: async () => {
-      const uuid = await getUuidFromCookie();
+      let userUid = isMe ? (await getUuidFromCookie()) ?? uuid : uuid;
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/activity/qiita`,
+        `${process.env.NEXT_PUBLIC_API_URL}/activity/qiita?uuid=${userUid}&period=all`,
         {
-          method: "POST",
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            uuid: uuid,
-            period: "1yr",
-          }),
         }
       );
       if (!response.ok) {
@@ -32,29 +35,42 @@ const QiitaList = () => {
 
   if (isPending) return <div>Loading...</div>;
 
-  if (isError) return <div>Error: {error.message}</div>;
+  if (isError)
+    return (
+      <>
+        <Card sx={{ marginY: 4, padding: 2 }}>
+          <CardContent>
+            <Typography variant="h5" component="div">
+              Qiita
+            </Typography>
+            <div>データがありません</div>
+          </CardContent>
+        </Card>
+      </>
+    );
 
   return (
-    <Box
+    <Card
       sx={{
         maxWidth: 400,
-        height: 700,
-        margin: "auto",
-        overflowY: "auto",
+        height: 770,
+        mt: 4,
+        mx: 1,
         display: "flex",
         flexDirection: "column",
       }}
     >
-      <Typography variant="h5" marginY={4}>
-        Qiita
-      </Typography>
-      <Box sx={{ flexGrow: 1, overflowY: "auto" }}>
-        {/* // スクロール可能な内部コンテナ */}
+      <CardContent>
+        <Typography variant="h5" gutterBottom>
+          Qiita
+        </Typography>
+      </CardContent>
+      <CardContent sx={{ flexGrow: 1, overflowY: "auto", padding: 2 }}>
         {data.postDetails.map((item: QiitaArticle, index: number) => (
           <QiitaItem item={item} key={index} />
         ))}
-      </Box>
-    </Box>
+      </CardContent>
+    </Card>
   );
 };
 

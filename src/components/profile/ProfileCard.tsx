@@ -7,11 +7,18 @@ import { User } from "./options";
 import Image from "next/image";
 import { FaGithub, FaTwitter } from "react-icons/fa";
 import { postLikeID, deleteLikeID } from "@/utils/CreateLike";
-import { Box, dividerClasses, Grid } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import RepositoryList from "./RepositoryList";
 import QiitaList from "./QiitaList";
-import ActivityLog from "./ActivityLog";
+import Activity from "../activityLog/Activity";
 import WeeklyActivityLog from "./WeeklyActivityLog";
+import UserMainInformation from "./UserMainInformation";
+import SocialMediaIntegration from "./SocialMediaIntegration";
+import CommentComponent from "./CommentComponent";
+import QiitaNumberOfContributions from "./QiitaNumberOfContributions";
+import GitHubContributions from "./GitHubContributions";
+import PercentageOfLanguages from "./PercentageOfLanguages";
+import UserRank from "./UserRank";
 
 interface ProfileCardProps {
   user: User;
@@ -26,20 +33,33 @@ interface LikeCheckResponse {
 
 const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
   const [isLiked, setIsLiked] = useState<boolean>(false);
-  const params = useParams();
-  const uuid = params.uuid;
+  const [uuid, setUuid] = useState<string>();
+
+  // Get UUID from cookie on component mount
   useEffect(() => {
-    console.log("isliked = ", isLiked);
+    const getUuid = async () => {
+      const userId = await getUuidFromCookie();
+      if (userId) {
+        try {
+          setUuid(userId);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      }
+    };
+    getUuid();
+  }, []);
+
+  useEffect(() => {
+    console.log("isLiked =", isLiked);
   }, [isLiked]);
 
   useEffect(() => {
-    const myID = getUuidFromCookie();
-
-    if (uuid && myID) {
+    if (uuid) {
       axios
         .post(`${process.env.NEXT_PUBLIC_API_URL}/profile/like-status`, {
-          myID,
-          uuid,
+          myID: uuid,
+          uuid: user.user_id, // Assuming user.user_id is the target UUID
         })
         .then((response: { data: LikeCheckResponse }) => {
           setIsLiked(response.data.data);
@@ -47,15 +67,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
         .catch((error) => {
           console.error("Error fetching like status:", error);
         });
-    } else {
-      if (!myID) {
-        console.error("Current user ID is not found.");
-      }
-      if (!uuid) {
-        console.error("UUID is not found.");
-      }
     }
-  }, [uuid]);
+  }, [uuid, user.user_id]);
 
   return (
     <Box bgcolor="white">
@@ -125,15 +138,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
                 />
               </a>
             )}
+            {/* 連携 */}
+            {isMe ? <SocialMediaIntegration /> : null}
           </div>
-          {isMe && (
-            <button
-              onClick={onEdit}
-              className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
-            >
-              編集
-            </button>
-          )}
+          {user.message && <CommentComponent message={user.message} />}
           {!isMe && (
             <button
               className="bg-white rounded-full p-1"
@@ -158,94 +166,29 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
               </svg>
             </button>
           )}
+          {/* コントリビューション数 */}
+          <GitHubContributions isMe={isMe} />
+          {/* Qiitaの投稿記事数 */}
+          <QiitaNumberOfContributions isMe={isMe} />
+          {/* 使用言語の割合 */}
+          <PercentageOfLanguages isMe={isMe} />
+          {/* ユーザーランク */}
+          <UserRank />
         </div>
-        <div className="col-span-2 grid grid-cols-2 gap-6">
-          <div className="space-y-4">
-            <div className="p-4 bg-gray-100 rounded-lg shadow-sm">
-              <p className="text-gray-600">
-                <strong>職業:</strong> {user.occupation}
-              </p>
-              <p className="text-gray-600">
-                <strong>場所:</strong> {user.place}
-              </p>
-              <p className="text-gray-600">
-                <strong>性別:</strong> {user.sex}
-              </p>
-              <p className="text-gray-600">
-                <strong>年齢:</strong> {user.age}
-              </p>
-            </div>
-            <div className="space-y-4">
-              <div className="p-4 bg-gray-100 rounded-lg shadow-sm">
-                <h3 className="text-xl font-semibold">TOP3</h3>
-                <ul className="list-disc list-inside">
-                  {user.top_teches.map((tech, index) => (
-                    <li key={index} className="text-gray-700">
-                      {tech}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="p-4 bg-gray-100 rounded-lg shadow-sm">
-                <h3 className="text-xl font-semibold">技術スタック</h3>
-                <ul className="list-disc list-inside">
-                  {user.teches.map((tech, index) => (
-                    <li key={index} className="text-gray-700">
-                      {tech}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              {user.hobby && (
-                <div className="p-4 bg-gray-100 rounded-lg shadow-sm">
-                  <h3 className="text-xl font-semibold">趣味</h3>
-                  <p className="text-gray-700">{user.hobby}</p>
-                </div>
-              )}
-              {user.editor && (
-                <div className="p-4 bg-gray-100 rounded-lg shadow-sm">
-                  <h3 className="text-xl font-semibold">好きなエディター</h3>
-                  <p className="text-gray-700">{user.editor}</p>
-                </div>
-              )}
-              {user.qualification && (
-                <div className="p-4 bg-gray-100 rounded-lg shadow-sm">
-                  <h3 className="text-xl font-semibold">資格</h3>
-                  <ul className="list-disc list-inside">
-                    {user.qualification.map((qual, index) => (
-                      <li key={index} className="text-gray-700">
-                        {qual}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              {user.message && (
-                <div className="p-4 bg-gray-100 rounded-lg shadow-sm">
-                  <h3 className="text-xl font-semibold">一言</h3>
-                  <p className="text-gray-700">{user.message}</p>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
+        <UserMainInformation user={user} onEdit={onEdit} isMe={isMe} />
       </div>
       {/* グラフ */}
       <Grid container spacing={2} mt={2}>
         <Grid item xs={12} md={6} my={2}>
           {/* リポジトリ一覧 */}
-          <RepositoryList />
+          <RepositoryList isMe={isMe} />
         </Grid>
         <Grid item xs={12} md={6} my={2}>
-          {/* Qiita */}
-          <QiitaList />
+          {/* Qiita リスト */}
+          <QiitaList isMe={isMe} />
         </Grid>
         <Grid item xs={12} my={2}>
-          {/* アクティビティログ */}
-          <ActivityLog />
-        </Grid>
-        <Grid item xs={12} my={2}>
-          {/* 週間アクティビティログ */}
+          <Activity uuid={uuid || ""} />
           <WeeklyActivityLog />
         </Grid>
       </Grid>

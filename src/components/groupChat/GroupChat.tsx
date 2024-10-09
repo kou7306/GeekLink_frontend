@@ -134,7 +134,13 @@ const GroupChat = ({ params }: { params: any }) => {
             const member = members?.find((m) => m.user_id === message.sender_id);
             return (
               <div key={index} className={`my-2 ml-5 flex items-start`}>
-                <Link href={member?.user_id === uuid ? "/my-page" : `/other/${member?.user_id}`}>
+                <Link
+                  href={
+                    member?.user_id === uuid
+                      ? "/my-page"
+                      : `/my-page/${member?.user_id}`
+                  }
+                >
                   <Avatar
                     alt={member?.name || "Unknown"}
                     src={member?.image_url || "/img/default_icon.png"}
