@@ -3,7 +3,6 @@ export const getYearlyContribution = async (
   uuid: string
 ): Promise<number[]> => {
   try {
-    console.log(uuid);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     const cacheKey = `contribution-${uuid}`;
     const cacheExpirationKey = `contribution-expiration-${uuid}`;
@@ -34,7 +33,6 @@ export const getYearlyContribution = async (
     }
 
     const contributions: number[] = await response.json();
-    console.log("Yearcontributions", contributions);
 
     // データをキャッシュに保存し、有効期限を設定
     localStorage.setItem(cacheKey, JSON.stringify(contributions));

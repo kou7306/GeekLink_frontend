@@ -54,7 +54,7 @@ const Activity: React.FC<{ activities: ActivityProps[] }> = ({
             } else if (activity.kind === "geeklink") {
               return <GeekLinkActivityCard key={index} activity={activity} />;
             } else if (activity.kind === "qiita") {
-              return n;
+              return null;
             }
             return null;
           })}
