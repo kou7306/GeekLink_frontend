@@ -8,6 +8,7 @@ import {
 } from "../../utils/getGithubActivity";
 import ActivityLogGraph from "./ActivityLogGraph";
 import ActivityLog from "./ActivityLog";
+import { Box, Typography, Paper } from "@mui/material";
 import { getQiitaActivity } from "../../utils/getQiitaActivity";
 import { getGeekLinkActivity } from "../../utils/getGeekLinkActivity";
 
@@ -36,6 +37,7 @@ const Activity: React.FC<ActivityProps> = ({ uuid }) => {
       if (uuid) {
         // GitHub年間コントリビューションを取得
         const yearlyData = await getYearlyContribution(uuid);
+        console.log("yearlyData", yearlyData);
         setYearlyContribution(yearlyData);
 
         // GitHub更新以来のコントリビューションを取得
@@ -62,16 +64,16 @@ const Activity: React.FC<ActivityProps> = ({ uuid }) => {
 
         // Qiitaの月間の投稿情報を取得
         const monthlyQiitaActivity = qiitaActivity.postDetails;
+        setMonthlyQiitaActivity(monthlyQiitaActivity);
 
         // アプリ内の年間のデータを取得
         const geekLinkActivity = await getGeekLinkActivity(uuid);
+        console.log("geekLinkActivity", geekLinkActivity);
         setYearlyGeekLinkActivity(geekLinkActivity.monthlyActivityCounts);
 
         // アプリ内の月間のデータを取得
         const monthlyGeekLinkActivity = geekLinkActivity.activities;
         setMonthlyGeekLinkActivity(monthlyGeekLinkActivity);
-        console.log(monthlyGeekLinkActivity);
-        console.log(geekLinkActivity);
       }
       setLoading(false); // ローディング完了
     };
@@ -115,14 +117,25 @@ const Activity: React.FC<ActivityProps> = ({ uuid }) => {
   ];
 
   return (
-    <div>
-      <h2>年間コントリビューション数</h2>
-      {/* GitHubとQiitaの両方のデータをActivityLogGraphに渡す */}
-      <ActivityLogGraph propsArray={graphData} />
+    <Box mx={8}>
+      {/* 全体を1つのPaperで囲む */}
+      <Paper elevation={3} sx={{ p: 3 }}>
+        {/* 見出し */}
+        <Typography variant="h5" component="h1" gutterBottom margin={4}>
+          アクティビティー
+        </Typography>
 
-      <h2>GitHub月別コントリビューション詳細</h2>
-      <ActivityLog activities={activityData} />
-    </div>
+        {/* 年間コントリビューションのグラフ */}
+        <Box my={4} display={"flex"} justifyContent={"center"} px={24}>
+          <ActivityLogGraph propsArray={graphData} />
+        </Box>
+
+        {/* 月間コントリビューションのログ */}
+        <Box>
+          <ActivityLog activities={activityData} />
+        </Box>
+      </Paper>
+    </Box>
   );
 };
 

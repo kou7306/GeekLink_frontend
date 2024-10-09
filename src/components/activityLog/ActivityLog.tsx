@@ -1,41 +1,78 @@
-import React from "react";
+import React, { useState } from "react";
+import { Box, Typography, Divider, IconButton } from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { GitHubActivityCard } from "./ActivityGtihubCard";
+import { GeekLinkActivityCard } from "./ActivityGeekLinkCard";
 
 interface ActivityProps {
-  kind: string; // データの種類（例: 'github', 'qiita' など）
+  kind: string;
   data: any[];
 }
 
-// Activityコンポーネント
 const Activity: React.FC<{ activities: ActivityProps[] }> = ({
   activities,
 }) => {
-  // 全ての data をマージし、新着順でソート
+  const [showAll, setShowAll] = useState(false);
+  const initialDisplayCount = 3;
+
   const sortedActivities = activities
-    .flatMap((activity) => activity.data) // 各 `ActivityProps` の `data` を展開してマージ
+    .flatMap((activity) =>
+      activity.data.map((item) => ({ ...item, kind: activity.kind }))
+    )
     .sort((a, b) => {
-      // date または created_at に基づいてソート
-      const dateA = a.date
-        ? new Date(a.date).getTime()
-        : a.created_at
-        ? new Date(a.created_at).getTime()
-        : 0;
-      const dateB = b.date
-        ? new Date(b.date).getTime()
-        : b.created_at
-        ? new Date(b.created_at).getTime()
-        : 0;
-      return dateB - dateA; // 降順
+      const dateA = a.date ? new Date(a.date).getTime() : 0;
+      const dateB = b.date ? new Date(b.date).getTime() : 0;
+      return dateB - dateA;
     });
 
+  const groupedActivities = sortedActivities.reduce((acc, activity) => {
+    const date = new Date(
+      activity.date || activity.created_at || ""
+    ).toLocaleDateString();
+    if (!acc[date]) {
+      acc[date] = [];
+    }
+    acc[date].push(activity);
+    return acc;
+  }, {} as Record<string, any[]>);
+
+  const dates = Object.keys(groupedActivities);
+  const displayDates = showAll ? dates : dates.slice(0, initialDisplayCount);
+
   return (
-    <div>
-      {sortedActivities.map((activity, index) => (
-        <div key={`${activity.date || activity.created_at}-${index}`}>
-          <p>{activity.date || activity.created_at}</p>
-          <p>{activity.title}</p>
-        </div>
+    <Box>
+      {displayDates.map((date) => (
+        <Box key={date} mb={4}>
+          <Typography variant="h6" color="textSecondary" gutterBottom>
+            {date}
+          </Typography>
+          <Divider sx={{ mb: 2 }} />
+
+          {groupedActivities[date].map((activity: any, index: number) => {
+            if (activity.kind === "github") {
+              return <GitHubActivityCard key={index} activity={activity} />;
+            } else if (activity.kind === "geeklink") {
+              return <GeekLinkActivityCard key={index} activity={activity} />;
+            } else if (activity.kind === "qiita") {
+              return null;
+            }
+            return null;
+          })}
+        </Box>
       ))}
-    </div>
+
+      {!showAll && dates.length > initialDisplayCount && (
+        <Box display="flex" justifyContent="center" mt={2}>
+          <IconButton
+            onClick={() => setShowAll(true)}
+            aria-label="show more"
+            size="large"
+          >
+            <ExpandMoreIcon fontSize="large" />
+          </IconButton>
+        </Box>
+      )}
+    </Box>
   );
 };
 

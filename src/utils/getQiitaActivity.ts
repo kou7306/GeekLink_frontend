@@ -3,9 +3,12 @@ export const getQiitaActivity = async (
 ): Promise<{
   monthlyPostCounts: number[]; // 年間の月ごとの投稿数
   postDetails: {
-    title: string;
-    url: string;
-    date: string | number | Date;
+    title: any;
+    likes_count: any;
+    page_views_count: any;
+    tags: any[];
+    url: any;
+    date: Date;
   }[]; // 1ヶ月前からの投稿の詳細情報
 }> => {
   try {
@@ -48,20 +51,33 @@ export const getQiitaActivity = async (
     const posts = qiita_info.postDetails;
     // 月別の投稿数（年間）と詳細データ（1ヶ月前以降）を初期化
     const postDetails: {
-      title: string;
-      url: string;
-      date: string | number | Date;
+      title: any;
+      likes_count: any;
+      page_views_count: any;
+      tags: any[];
+      url: any;
+      date: Date;
     }[] = [];
 
     // 投稿データをループし、投稿月に応じてカウントを更新
     posts.forEach(
-      (post: { date: string | number | Date; title: string; url: string }) => {
+      (post: {
+        tags: any[];
+        likes_count: any;
+        page_views_count: any;
+        date: Date;
+        title: string;
+        url: string;
+      }) => {
         const postDate = new Date(post.date);
 
         // 1ヶ月前以降の投稿のみ詳細を追加
         if (postDate.getTime() >= cutoffDate) {
           postDetails.push({
             title: post.title,
+            likes_count: post.likes_count,
+            page_views_count: post.page_views_count,
+            tags: post.tags,
             url: post.url,
             date: post.date,
           });
