@@ -76,8 +76,8 @@ const UserRanking: React.FC<UserRankingsProps> = ({ user, type }) => {
             primary={user.name}
             primaryTypographyProps={{
               sx: {
-                fontWeight: 500,
-                fontSize: "large",
+                fontWeight: 600,
+                fontSize: "1.25rem",
                 color: "black",
               },
             }}
@@ -89,10 +89,10 @@ const UserRanking: React.FC<UserRankingsProps> = ({ user, type }) => {
               sx: {
                 fontWeight: 400,
                 fontSize: "large",
-                color: "black",
-                textAlign: "right",
+                color: "text.secondary",
+                textAlign: "left",
                 position: "absolute",
-                right: 5,
+                left: 320,
                 top: "50%",
                 transform: "translateY(-50%)",
               },
