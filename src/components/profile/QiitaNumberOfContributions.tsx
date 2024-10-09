@@ -19,7 +19,7 @@ const QiitaNumberOfContributions = () => {
   if (isPending) return <div>Loading...</div>;
   if (isError) return <div>Error</div>;
 
-  const countQiitaArticles = data.postDetails.length;
+  const countQiitaArticles = data?.postDetails?.length ?? 0;
 
   return (
     <>

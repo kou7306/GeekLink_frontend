@@ -20,10 +20,9 @@ const GitHubContributions = () => {
   if (isError) return <div>Error</div>;
 
   // 合計のコントリビューション数を計算
-  const numberOfContributions = data.reduce(
-    (sum: number, contribution: number) => sum + contribution,
-    0
-  );
+  const numberOfContributions = Array.isArray(data)
+    ? data.reduce((sum: number, contribution: number) => sum + contribution, 0)
+    : 0;
 
   return (
     <Box display="flex" flexDirection="row" alignItems="center" mt={2}>
