@@ -9,17 +9,16 @@ type Props = {
 };
 
 const GitHubContributions = ({ isMe }: Props) => {
-  //自分以外のマイページを見るときにパラメータからuuidを取得
+  //自分以外のマイページを見るときにパラメータのuuidを使う
   const { uuid } = useParams();
 
   const { isPending, isError, data } = useQuery({
     queryKey: ["githubContributions"],
     queryFn: async () => {
-      if (isMe) {
-        const uuid = await getUuidFromCookie();
-      }
+      let userUid = isMe ? (await getUuidFromCookie()) ?? uuid : uuid;
+
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/github/contributionList?uuid=${uuid}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/github/contributionList?uuid=${userUid}`,
         {
           next: { revalidate: 7200 }, // 2時間（7200秒）ごとに再検証
         }

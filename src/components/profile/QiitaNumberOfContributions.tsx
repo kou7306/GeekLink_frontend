@@ -1,15 +1,27 @@
 import { getUuidFromCookie } from "@/actions/users";
 import { Box, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
+import { useParams } from "next/navigation";
 import React from "react";
 
-const QiitaNumberOfContributions = () => {
+type Props = {
+  isMe: boolean;
+};
+
+const QiitaNumberOfContributions = ({ isMe }: Props) => {
+  //自分以外のマイページを見るときにパラメータからuuidを取得
+  const { uuid } = useParams();
+
   const { isPending, isError, data } = useQuery({
     queryKey: ["qiitaNumberOfContributions"],
     queryFn: async () => {
-      const uuid = await getUuidFromCookie();
+      let userUid = isMe ? (await getUuidFromCookie()) ?? uuid : uuid;
+
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/activity/qiita?uuid=${uuid}&period=all`
+        `${process.env.NEXT_PUBLIC_API_URL}/activity/qiita?uuid=${userUid}&period=all`,
+        {
+          next: { revalidate: 86400 }, // 1日（86400秒）ごとに再検証
+        }
       );
       const data = await response.json();
       return data;

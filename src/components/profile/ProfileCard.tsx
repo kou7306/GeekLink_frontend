@@ -169,9 +169,9 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
           {/* コントリビューション数 */}
           <GitHubContributions isMe={isMe} />
           {/* Qiitaの投稿記事数 */}
-          <QiitaNumberOfContributions />
+          <QiitaNumberOfContributions isMe={isMe} />
           {/* 使用言語の割合 */}
-          <PercentageOfLanguages />
+          <PercentageOfLanguages isMe={isMe} />
           {/* ユーザーランク */}
           <UserRank />
         </div>
