@@ -220,12 +220,7 @@ export default function Home() {
           <div>No users available</div>
         )}
       </div>
-      {lastDirection ? (
-        <h2 className="infoText">You swiped {lastDirection}</h2>
-      ) : (
-        <h2 className="infoText" />
-      )}
-      <div className="flex space-x-4 mt-4">
+      <Box display="flex" justifyContent="center" gap={2} mb={1}>
         <IconButton
           onClick={() => {
             swipe("left");
@@ -234,13 +229,6 @@ export default function Home() {
         >
           <ThumbDownAltIcon sx={{ fontSize: 40 }} />
         </IconButton>
-        {/* <button
-          className="transform transition-transform duration-200 active:scale-90"
-          onClick={goBack}
-          disabled={users.length === 0}
-        >
-          <UndoIcon />
-        </button> */}
         <IconButton
           onClick={() => {
             swipe("right");
@@ -249,13 +237,12 @@ export default function Home() {
         >
           <ThumbUpAltIcon sx={{ fontSize: 40 }} />
         </IconButton>
-      </div>
+      </Box>
       <div>
         <button
           className="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700 transition duration-200"
           onClick={async () => {
             console.log(swipedRightUserIds);
-            // window.location.href = '/';
             try {
               if (swipedRightUserIds.length > 0) {
                 const data = await postSwipedRightUserIds(swipedRightUserIds);
