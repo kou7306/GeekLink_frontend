@@ -1,6 +1,6 @@
 import { Box, Paper, Typography } from "@mui/material";
 import React from "react";
-import { QiitaArticle } from "../../../types/qiitaArticle";
+import { QiitaArticle } from "../../types/qiitaArticle";
 import { formatDate } from "@/utils/formatDate";
 import Link from "next/link";
 

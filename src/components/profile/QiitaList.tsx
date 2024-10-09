@@ -2,7 +2,7 @@ import { Box, Typography, IconButton, Card, CardContent } from "@mui/material";
 import React, { useState } from "react";
 import QiitaItem from "./QiitaItem";
 import { useQuery } from "@tanstack/react-query";
-import { QiitaArticle } from "../../../types/qiitaArticle";
+import { QiitaArticle } from "../../types/qiitaArticle";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 

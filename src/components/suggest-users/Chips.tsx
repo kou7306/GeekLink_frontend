@@ -1,6 +1,6 @@
 import { Box, Chip } from "@mui/material";
 import React from "react";
-import { Profile } from "../../../types/user";
+import { Profile } from "../../types/user";
 
 type Props = {
   user: Profile;

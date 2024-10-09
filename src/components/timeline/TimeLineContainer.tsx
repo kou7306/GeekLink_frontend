@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import TimeLinePost from "./TimeLinePost";
 import PostModal from "./PostModal";
-import { Post } from "../../../types/timeline";
+import { Post } from "../../types/timeline";
 import { getPosts, createPost } from "../../utils/actionPost";
 import { useInView } from "react-intersection-observer";
 import { getUuidFromCookie } from "@/actions/users";

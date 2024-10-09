@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import React from "react";
 import UsersRankings from "./UsersRankings";
 import { useQuery } from "@tanstack/react-query";
-import { RankingData } from "../../../types/ranking";
+import { RankingData } from "../../types/ranking";
 
 type Props = {
   value: string;

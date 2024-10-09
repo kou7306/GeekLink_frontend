@@ -4,7 +4,7 @@ import { getUuidFromCookie } from "@/actions/users";
 import { getMessageAndRoomData } from "@/utils/getMessageAndRoomData";
 import socketIOClient from "socket.io-client";
 import MessageComponent from "./MessageComponent";
-import { Message } from "../../../types/message";
+import { Message } from "../../types/message";
 import { Socket } from "socket.io-client";
 
 const Chat = ({ params }: { params: any }) => {
@@ -98,10 +98,7 @@ const Chat = ({ params }: { params: any }) => {
           placeholder="メッセージを入力"
           onChange={(e) => setSocketData(e.target.value)}
         />
-        <button
-          type="submit"
-          className="ml-2 pb-3 bg-accent text-white rounded-lg p-2"
-        >
+        <button type="submit" className="ml-2 pb-3 bg-accent text-white rounded-lg p-2">
           <MdSend className="h-5 w-5 ml-1 mt-1" />
         </button>
       </form>

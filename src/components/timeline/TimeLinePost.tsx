@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { ja } from "date-fns/locale";
-import { Post, Reaction } from "../../../types/timeline";
+import { Post, Reaction } from "../../types/timeline";
 import { sendReaction } from "../../utils/actionPost";
 
 interface TimeLinePostProps {

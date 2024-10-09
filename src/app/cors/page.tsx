@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { getUuidFromCookie } from "@/actions/users";
-import { SuggestUsersResponse } from "../../../types/user";
+import { SuggestUsersResponse } from "../../types/user";
 
 const Page = () => {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;

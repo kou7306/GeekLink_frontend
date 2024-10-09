@@ -2,31 +2,21 @@ import React from "react";
 import Recruitment from "./Recruitment";
 import { Box } from "@mui/material";
 import Link from "next/link";
+import { Event } from "@/types/event";
 
-const Recruitments = () => {
-  const data = [
-    {
-      title: "ハッカソン募集",
-      createdAt: "2024-02-01",
-      currentMember: 1,
-      maxMember: 3,
-      description: "チーム開発の募集です。",
-    },
-    {
-      title: "システム作りの仲間募集",
-      createdAt: "2024-02-01",
-      currentMember: 3,
-      maxMember: 4,
-      description: "システム作りの仲間を募集します。",
-    },
-  ];
+interface RecruitmentsProps {
+  events: Event[];
+}
+
+const Recruitments = ({events }: RecruitmentsProps) => {
+
   return (
     <>
       <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
-        {data.map((recruitment) => (
-          <Box key={recruitment.title} sx={{ flexBasis: "calc(50% - 1rem)" }}>
-            <Link href={"/team-recruitment/hoge"}>
-              <Recruitment recruitment={recruitment} />
+        {events.map((event) => (
+          <Box key={event.id} sx={{ flexBasis: "calc(50% - 1rem)" }}>
+            <Link href={`/team-recruitment/${event.id}`}>
+              <Recruitment event={event} />
             </Link>
           </Box>
         ))}
