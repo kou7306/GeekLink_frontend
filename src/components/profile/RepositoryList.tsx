@@ -18,6 +18,7 @@ import {
   Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { useParams } from "next/navigation";
 
 ChartJS.register(
   CategoryScale,
@@ -28,13 +29,19 @@ ChartJS.register(
   Legend
 );
 
-const RepositoryList = () => {
+type Props = {
+  isMe: boolean;
+};
+
+const RepositoryList: React.FC<Props> = ({ isMe }) => {
+  const { uuid } = useParams();
+
   const [repositories, setRepositories] = useState<Repository[]>([]);
 
   //個人のリポジトリを上から十件取得
   useEffect(() => {
     const fetchRepositories = async () => {
-      const uuid = await getUuidFromCookie();
+      let userUid = isMe ? (await getUuidFromCookie()) ?? uuid : uuid;
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/github/repo`,
         {
@@ -42,14 +49,14 @@ const RepositoryList = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ uuid }),
+          body: JSON.stringify({ uuid: userUid }),
         }
       );
       const data = await res.json();
       setRepositories(data);
     };
     fetchRepositories();
-  }, []);
+  }, [isMe, uuid]);
 
   return (
     <>

@@ -166,9 +166,13 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
               </svg>
             </button>
           )}
-          <GitHubContributions />
-          <QiitaNumberOfContributions />
-          <PercentageOfLanguages />
+          {/* コントリビューション数 */}
+          <GitHubContributions isMe={isMe} />
+          {/* Qiitaの投稿記事数 */}
+          <QiitaNumberOfContributions isMe={isMe} />
+          {/* 使用言語の割合 */}
+          <PercentageOfLanguages isMe={isMe} />
+          {/* ユーザーランク */}
           <UserRank />
         </div>
         <UserMainInformation user={user} onEdit={onEdit} isMe={isMe} />
@@ -177,11 +181,11 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
       <Grid container spacing={2} mt={2}>
         <Grid item xs={12} md={6} my={2}>
           {/* リポジトリ一覧 */}
-          <RepositoryList />
+          <RepositoryList isMe={isMe} />
         </Grid>
         <Grid item xs={12} md={6} my={2}>
           {/* Qiita リスト */}
-          <QiitaList />
+          <QiitaList isMe={isMe} />
         </Grid>
         <Grid item xs={12} my={2}>
           <Activity uuid={uuid || ""} />
