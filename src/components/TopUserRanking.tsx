@@ -1,4 +1,4 @@
-import { Box, ListItem, ListItemText, Link } from "@mui/material";
+import { Box, ListItemButton, ListItemText, Link } from "@mui/material";
 import React from "react";
 import Image from "next/image";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
@@ -33,10 +33,13 @@ const TopUserRanking = ({ user }: Props) => {
 
   return (
     <Link href={`/my-page/${user.user_id}`} underline="none">
-      <ListItem button>
+      <ListItemButton sx={{ 
+        paddingTop: 0.5,
+        paddingBottom: 0.5,
+      }}>
         <EmojiEventsIcon sx={{ color: rankColor, width: 45, height: 45 }} />
-        <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
-          <Image src={user.image} alt={user.name} width={60} height={60} />
+        <Box sx={{ display: "flex", alignItems: "center", ml: 1 }}>
+          <Image src={user.image} alt={user.name} width={55} height={55} />
           <Box
             sx={{
               display: "flex",
@@ -49,8 +52,8 @@ const TopUserRanking = ({ user }: Props) => {
               primary={user.name}
               primaryTypographyProps={{
                 sx: {
-                  fontWeight: 500,
-                  fontSize: "large",
+                  fontWeight: 600,
+                  fontSize: "1.25rem",
                   mr: 18,
                   color: "black",
                 },
@@ -59,12 +62,21 @@ const TopUserRanking = ({ user }: Props) => {
             <ListItemText
               primary={`${user.contribution_count} contributions`}
               primaryTypographyProps={{
-                sx: { fontWeight: 400, fontSize: "large", color: "black" },
+                sx: {
+                  fontWeight: 400,
+                  fontSize: "large",
+                  color: "text.secondary",
+                  textAlign: "left",
+                  position: "absolute",
+                  left: 320,
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                },
               }}
             />
           </Box>
         </Box>
-      </ListItem>
+      </ListItemButton>
     </Link>
   );
 };
