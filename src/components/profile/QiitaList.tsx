@@ -4,14 +4,21 @@ import QiitaItem from "./QiitaItem";
 import { useQuery } from "@tanstack/react-query";
 import { getUuidFromCookie } from "@/actions/users";
 import { QiitaArticle } from "../../../types/qiitaArticle";
+import { useParams } from "next/navigation";
 
-const QiitaList = () => {
+type Props = {
+  isMe: boolean;
+};
+
+const QiitaList: React.FC<Props> = ({ isMe }) => {
+  const { uuid } = useParams();
+
   const { isPending, isError, error, data } = useQuery({
     queryKey: ["qiita"],
     queryFn: async () => {
-      const uuid = await getUuidFromCookie();
+      let userUid = isMe ? (await getUuidFromCookie()) ?? uuid : uuid;
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/activity/qiita?uuid=${uuid}&period=all`,
+        `${process.env.NEXT_PUBLIC_API_URL}/activity/qiita?uuid=${userUid}&period=all`,
         {
           method: "GET",
           headers: {

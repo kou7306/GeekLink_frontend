@@ -181,11 +181,11 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
       <Grid container spacing={2} mt={2}>
         <Grid item xs={12} md={6} my={2}>
           {/* リポジトリ一覧 */}
-          <RepositoryList />
+          <RepositoryList isMe={isMe} />
         </Grid>
         <Grid item xs={12} md={6} my={2}>
           {/* Qiita リスト */}
-          <QiitaList />
+          <QiitaList isMe={isMe} />
         </Grid>
         <Grid item xs={12} my={2}>
           <Activity uuid={uuid || ""} />
