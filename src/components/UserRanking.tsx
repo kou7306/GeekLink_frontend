@@ -42,7 +42,7 @@ const UserRanking: React.FC<UserRankingsProps> = ({ user, type }) => {
       break;
     case "qiita":
       if ("score" in user) {
-        return `${user.score} Qiita posts`;
+        return `${user.score}'s Qiita posts`;
       }
     default:
       return '';
@@ -76,8 +76,8 @@ const UserRanking: React.FC<UserRankingsProps> = ({ user, type }) => {
             primary={user.name}
             primaryTypographyProps={{
               sx: {
-                fontWeight: 600,
-                fontSize: "1.25rem",
+                fontWeight: 500,
+                fontSize: "large",
                 color: "black",
               },
             }}
@@ -89,10 +89,10 @@ const UserRanking: React.FC<UserRankingsProps> = ({ user, type }) => {
               sx: {
                 fontWeight: 400,
                 fontSize: "large",
-                color: "text.secondary",
-                textAlign: "left",
+                color: "black",
+                textAlign: "right",
                 position: "absolute",
-                left: 320,
+                right: 5,
                 top: "50%",
                 transform: "translateY(-50%)",
               },
