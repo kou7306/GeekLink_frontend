@@ -8,7 +8,7 @@ import { getRandomUsers } from "../../utils/getRandomMatchUser";
 import { User } from "../../utils/getRandomMatchUser";
 import { postSwipedRightUserIds } from "../../utils/CreateLike";
 import Image from "next/image";
-import { Chip, IconButton } from "@mui/material";
+import { Box, Button, Chip, IconButton, Link, Typography } from "@mui/material";
 
 export default function Home() {
   const characters = [
@@ -124,8 +124,8 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen w-full bg-custom-gradient">
-      <h1 className="text-3xl font-bold pb-6">Random-match</h1>
+    <div className="flex flex-col justify-center items-center min-h-screen w-full ">
+      <h1 className="text-3xl pb-6">ランダムマッチ</h1>
       <div className="flex items-center justify-center w-[200vw] max-w-[260px] h-[300px]">
         {users.length > 0 ? (
           users.map((user, index) => (
@@ -136,84 +136,91 @@ export default function Home() {
               onSwipe={(dir) => swiped(dir, user.name)}
               onCardLeftScreen={() => outOfFrame(user.name)}
             >
-              <div className="flex flex-col items-center relative bg-white w-[520px] max-w-[600px] h-[300px] rounded-[20px] shadow-lg">
-                <div className="flex items-center pl-8 pr-4 mt-7 mb-7">
-                  {user.imageURL ? (
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "500px",
+                  maxWidth: "400px",
+                  border: "1px solid #e0e0e0",
+                  borderRadius: "12px",
+                  padding: "24px",
+                  boxShadow: "0 4px 8px rgba(0,0,0,0.15)",
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    width: "100%",
+                    marginBottom: "20px",
+                  }}
+                >
+                  <Box
+                    sx={{
+                      position: "relative",
+                      width: "100px",
+                      height: "100px",
+                      borderRadius: "50%",
+                      overflow: "hidden",
+                      marginBottom: "16px",
+                      marginLeft: "50px",
+                      marginTop: "20px",
+                    }}
+                  >
                     <Image
-                      src={user.imageURL}
-                      alt="Profile Icon"
-                      width={160}
-                      height={160}
-                      className="rounded-full w-[120px] h-[120px] object-cover mr-8"
+                      src={user.imageURL ?? "/user.svg"}
+                      layout="fill"
+                      objectFit="cover"
+                      alt={user.name}
                     />
-                  ) : (
-                    <Image
-                      src="/img/default_icon.png" // 代替画像のパスを設定してください
-                      alt="Profile Icon"
-                      width={160}
-                      height={160}
-                      className="rounded-full w-[120px] h-[120px] object-cover mr-8"
-                    />
-                  )}
-                  <p className="text-3xl font-bold mx-7">{user.name}</p>
-                </div>
-                <div className="flex flex-wrap px-5">
-                  <Chip
-                    label={`${user.age}歳`}
-                    color="success"
-                    sx={{
-                      mx: 0.5,
-                      my: 0.5,
-                    }}
-                  />
-                  <Chip
-                    label={user.sex}
-                    color="success"
-                    sx={{
-                      mx: 0.5,
-                      my: 0.5,
-                    }}
-                  />
-                  <Chip
-                    label={user.place}
-                    color="primary"
-                    sx={{
-                      mx: 0.5,
-                      my: 0.5,
-                    }}
-                  />
-                  <Chip
-                    label={user.occupation}
-                    color="info"
-                    sx={{ mx: 0.5, my: 0.5 }}
-                  />
-
-                  {user.top_teches &&
-                    user.top_teches.map((tech, index) => (
-                      <Chip
-                        key={index}
-                        label={tech}
-                        color="warning"
-                        sx={{
-                          mx: 0.5,
-                          my: 0.5,
-                        }}
-                      />
+                  </Box>
+                  <Box paddingLeft={4} sx={{ textAlign: "center" }}>
+                    <Typography variant="h4" component="h2">
+                      {user.name}
+                    </Typography>
+                    <Typography variant="h5" color="text.secondary">
+                      {user.occupation}
+                    </Typography>
+                  </Box>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    justifyContent: "center",
+                    gap: "12px",
+                    marginBottom: "24px",
+                  }}
+                >
+                  {Array.isArray(user.top_teches) &&
+                    (user.top_teches as string[]).map((tech) => (
+                      <Chip key={tech} label={tech} />
                     ))}
-                </div>
-              </div>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    width: "100%",
+                    justifyContent: "center",
+                    gap: "16px",
+                  }}
+                ></Box>
+              </Box>
             </TinderCard>
           ))
         ) : (
           <div>No users available</div>
         )}
       </div>
-      {lastDirection ? (
-        <h2 className="infoText">You swiped {lastDirection}</h2>
-      ) : (
-        <h2 className="infoText" />
-      )}
-      <div className="flex space-x-4 mt-4">
+      <Box display="flex" justifyContent="center" gap={2} mb={1}>
         <IconButton
           onClick={() => {
             swipe("left");
@@ -222,13 +229,6 @@ export default function Home() {
         >
           <ThumbDownAltIcon sx={{ fontSize: 40 }} />
         </IconButton>
-        {/* <button
-          className="transform transition-transform duration-200 active:scale-90"
-          onClick={goBack}
-          disabled={users.length === 0}
-        >
-          <UndoIcon />
-        </button> */}
         <IconButton
           onClick={() => {
             swipe("right");
@@ -237,13 +237,12 @@ export default function Home() {
         >
           <ThumbUpAltIcon sx={{ fontSize: 40 }} />
         </IconButton>
-      </div>
+      </Box>
       <div>
         <button
           className="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700 transition duration-200"
           onClick={async () => {
             console.log(swipedRightUserIds);
-            // window.location.href = '/';
             try {
               if (swipedRightUserIds.length > 0) {
                 const data = await postSwipedRightUserIds(swipedRightUserIds);
