@@ -1,4 +1,5 @@
 import { Box, Divider, ListItem, Typography, Chip } from "@mui/material";
+import Link from "next/link";
 import React from "react";
 
 type Team = {
@@ -26,73 +27,75 @@ const Team = ({ item, key }: Props) => {
 
   return (
     <React.Fragment key={key}>
-      <ListItem sx={{ py: 2, px: 0 }}>
-        <Box
-          sx={{
-            width: "100%",
-            height: 80,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "white",
-            borderRadius: "0.5rem",
-            padding: "1.5rem",
-            boxShadow: "0 4px 6px rgba(0.1, 0, 0, 0.1)",
-            position: "relative",
-          }}
-        >
-          <Typography
-            variant="h6"
-            component="h2"
-            sx={{
-              position: "absolute",
-              top: 8,
-              left: 16,
-            }}
-          >
-            {item.title}
-          </Typography>
-
-          <Typography
-            variant="h6"
-            component="h2"
-            sx={{
-              position: "absolute",
-              top: 8,
-              right: 16,
-            }}
-          >
-            {`${item.participant_ids.length}/${item.max_participants}人`}
-          </Typography>
-
+      <Link href={`/team-recruitment/${item.id}`}>
+        <ListItem sx={{ py: 2, px: 0 }}>
           <Box
             sx={{
-              position: "absolute",
-              bottom: 8,
-              left: 16,
+              width: "100%",
+              height: 80,
               display: "flex",
-              gap: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "white",
+              borderRadius: "0.5rem",
+              padding: "1.5rem",
+              boxShadow: "0 4px 6px rgba(0.1, 0, 0, 0.1)",
+              position: "relative",
             }}
           >
-            {item.techs.slice(0, 3).map((tech) => (
-              <Chip key={tech} label={tech} size="small" />
-            ))}
-            {item.techs.length > 3 && "..."}
-          </Box>
+            <Typography
+              variant="h6"
+              component="h2"
+              sx={{
+                position: "absolute",
+                top: 8,
+                left: 16,
+              }}
+            >
+              {item.title}
+            </Typography>
 
-          <Typography
-            variant="body2"
-            sx={{
-              position: "absolute",
-              bottom: 8,
-              right: 16,
-            }}
-          >
-            {`締切日: ${deadlinestring(item.deadline)}`}
-          </Typography>
-        </Box>
-      </ListItem>
+            <Typography
+              variant="h6"
+              component="h2"
+              sx={{
+                position: "absolute",
+                top: 8,
+                right: 16,
+              }}
+            >
+              {`${item.participant_ids.length}/${item.max_participants}人`}
+            </Typography>
+
+            <Box
+              sx={{
+                position: "absolute",
+                bottom: 8,
+                left: 16,
+                display: "flex",
+                gap: 1,
+              }}
+            >
+              {item.techs.slice(0, 3).map((tech) => (
+                <Chip key={tech} label={tech} size="small" />
+              ))}
+              {item.techs.length > 3 && "..."}
+            </Box>
+
+            <Typography
+              variant="body2"
+              sx={{
+                position: "absolute",
+                bottom: 8,
+                right: 16,
+              }}
+            >
+              {`締切日: ${deadlinestring(item.deadline)}`}
+            </Typography>
+          </Box>
+        </ListItem>
       {key < 2 && <Divider />}
+      </Link>
     </React.Fragment>
   );
 };
