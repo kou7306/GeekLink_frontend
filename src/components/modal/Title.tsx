@@ -5,8 +5,8 @@ const Title = () => {
   return (
     <Box
       sx={{
-        bgcolor: "#25276D",
-        color: "white",
+        bgcolor: "primary.main",
+        color: "background.default",
         padding: "16px",
         display: "flex",
         alignItems: "center",

@@ -75,7 +75,7 @@ const Page = () => {
                       gutterBottom
                       sx={{
                         fontWeight: "bold",
-                        color: "#333",
+                        color: "text.primary",
                         marginBottom: "15px",
                       }}
                     >
@@ -84,7 +84,7 @@ const Page = () => {
                     <Typography
                       variant="body2"
                       sx={{
-                        color: "#666",
+                        color: "text.primary",
                         marginBottom: "20px",
                         lineHeight: 1.6,
                       }}
@@ -103,7 +103,7 @@ const Page = () => {
                     <Typography
                       variant="body2"
                       sx={{
-                        color: "#888",
+                        color: "text.secondary",
                         fontWeight: "bold",
                       }}
                     >

@@ -13,7 +13,10 @@ const DesireOccupationSelect: React.FC<DesireOccupationSelectProps> = ({
 }) => {
   return (
     <div>
-      <label htmlFor="desire_occupation" className="block text-sm font-medium text-gray-700">
+      <label
+        htmlFor="desire_occupation"
+        className="block text-sm font-medium text-text"
+      >
         希望職種
       </label>
       <select

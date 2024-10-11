@@ -2,9 +2,8 @@ import React, { Fragment } from "react";
 import TopUserRanking from "./TopUserRanking";
 import { useQuery } from "@tanstack/react-query";
 
-
 const TopUsersRanking = () => {
-  const { isPending, isError, error, data } = useQuery({
+  const { isLoading, isError, error, data } = useQuery({
     queryKey: ["rank"],
     queryFn: async () => {
       const response = await fetch(
@@ -23,19 +22,24 @@ const TopUsersRanking = () => {
     },
   });
 
-  const users: any[] = data;
+  // Ensure `data` is an array, defaulting to an empty array if not
+  const users: any[] = Array.isArray(data) ? data : [];
 
-  if (isPending) return <div>Loading...</div>;
+  if (isLoading) return <div>Loading...</div>;
 
   if (isError) return <div>Error: {error.message}</div>;
 
   return (
     <div>
-      {users.map((user) => (
-        <Fragment key={user.id}>
-          <TopUserRanking user={user} />
-        </Fragment>
-      ))}
+      {users.length > 0 ? (
+        users.map((user) => (
+          <Fragment key={user.id}>
+            <TopUserRanking user={user} />
+          </Fragment>
+        ))
+      ) : (
+        <div>No users found.</div> // Display a message if no users
+      )}
     </div>
   );
 };

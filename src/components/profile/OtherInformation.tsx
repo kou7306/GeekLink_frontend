@@ -23,7 +23,8 @@ const OtherInformation = ({ user }: Props) => {
                 <Typography
                   key={index}
                   variant="body2"
-                  bgcolor="grey.100"
+                  bgcolor="background.default"
+                  color="text.primary"
                   px={1}
                   py={0.5}
                   borderRadius={1}

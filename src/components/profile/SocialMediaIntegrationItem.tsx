@@ -21,8 +21,8 @@ const SocialMediaIntegrationItem = ({ socialMedia }: Props) => {
       name: "Qiita",
       icon: <Image src="/qiita-icon.png" alt="Qiita" width={30} height={30} />,
     },
-    { name: "GitHub", icon: <FaGithub size={30} /> },
-    { name: "Twitter", icon: <FaTwitter size={30} /> },
+    { name: "GitHub", icon: <FaGithub size={30} color="white" /> },
+    { name: "Twitter", icon: <FaTwitter size={30} color="#1DA1F2" /> },
     {
       name: "AtCoder",
       icon: (
@@ -54,7 +54,7 @@ const SocialMediaIntegrationItem = ({ socialMedia }: Props) => {
           borderRadius: "8px",
           mb: 1,
           "&:hover": {
-            backgroundColor: "#f5f5f5",
+            backgroundColor: "info.main",
             cursor: "pointer",
           },
         }}

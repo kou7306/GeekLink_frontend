@@ -40,7 +40,15 @@ const SuggestUserList = () => {
             key={userData.user.user_id}
             href={`/my-page/${userData.user.user_id}`}
             underline="none"
-            sx={{ color: "black" }}
+            sx={{
+              color: "text.primary",
+              display: "block", // ブロック要素にすることで全体をクリック可能にする
+              padding: "8px", // パディングを追加（必要に応じて調整）
+              borderRadius: "4px", // 角を丸くする
+              "&:hover": {
+                backgroundColor: "background.default", // ホバー時の背景色
+              },
+            }}
           >
             <ListItem>
               <ListItemAvatar>
@@ -49,7 +57,10 @@ const SuggestUserList = () => {
                   alt={`${userData.user.name}'s icon`}
                 />
               </ListItemAvatar>
-              <ListItemText primary={userData.user.name} />
+              <ListItemText
+                primary={userData.user.name}
+                sx={{ color: "text.primary" }}
+              />
             </ListItem>
           </Link>
         ))}
