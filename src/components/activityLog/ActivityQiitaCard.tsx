@@ -12,6 +12,9 @@ export const QiitaActivityCard: React.FC<{ activity: any }> = ({
         sx={{
           border: "1px solid rgba(0, 0, 0, 0.12)",
           bgcolor: "background.default",
+          ":hover": {
+            bgcolor: "info.main",
+          },
         }}
       >
         <CardContent>

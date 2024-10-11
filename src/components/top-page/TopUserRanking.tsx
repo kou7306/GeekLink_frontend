@@ -56,7 +56,7 @@ const TopUserRanking = ({ user }: Props) => {
                 sx: {
                   fontWeight: 600,
                   fontSize: "1.25rem",
-                  color: "black",
+                  color: "text.primary",
                   mr: 3, // ユーザー名と貢献数の間のマージンを追加
                 },
               }}

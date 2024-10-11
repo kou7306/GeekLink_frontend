@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Card, CardContent, Typography, Paper, Link } from "@mui/material";
 import GitHubIcon from "@mui/icons-material/GitHub";
+import { bg } from "date-fns/locale";
 
 export const GitHubActivityCard: React.FC<{ activity: any }> = ({
   activity,
@@ -28,6 +29,9 @@ export const GitHubActivityCard: React.FC<{ activity: any }> = ({
         sx={{
           border: "1px solid rgba(0, 0, 0, 0.12)",
           bgcolor: "background.default",
+          ":hover": {
+            bgcolor: "info.main",
+          },
         }}
       >
         <Link

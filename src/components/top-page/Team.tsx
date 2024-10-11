@@ -44,7 +44,10 @@ const Team = ({ item, key }: Props) => {
               boxShadow: "0 4px 6px rgba(0.1, 0, 0, 0.1)",
               flexDirection: "column", // 縦に要素を並べる
               position: "relative",
-              ":hover": { backgroundColor: "info.main" },
+              ":hover": {
+                backgroundColor: "info.main",
+              },
+
             }}
           >
             <Box

@@ -1,29 +1,74 @@
-"use client";
 import React, { useState } from "react";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import { InputAdornment } from "@mui/material";
 
 interface PostModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (title: string, time: string, comment: string) => void;
+  onSubmit: (title: string, duration: string, comment: string) => void;
 }
+
+const DurationInput: React.FC<{
+  value: { hours: string; minutes: string };
+  onChange: (value: { hours: string; minutes: string }) => void;
+}> = ({ value, onChange }) => {
+  const handleChange =
+    (type: "hours" | "minutes") => (e: React.ChangeEvent<HTMLInputElement>) => {
+      let newValue = e.target.value;
+      if (newValue === "" || /^\d+$/.test(newValue)) {
+        const numValue = parseInt(newValue, 10);
+        if (type === "hours" || (type === "minutes" && numValue < 60)) {
+          onChange({ ...value, [type]: newValue });
+        }
+      }
+    };
+
+  return (
+    <Box sx={{ display: "flex", gap: 2 }}>
+      <TextField
+        value={value.hours}
+        onChange={handleChange("hours")}
+        InputProps={{
+          endAdornment: <InputAdornment position="end">時間</InputAdornment>,
+        }}
+        inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+      />
+      <TextField
+        value={value.minutes}
+        onChange={handleChange("minutes")}
+        InputProps={{
+          endAdornment: <InputAdornment position="end">分</InputAdornment>,
+        }}
+        inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+      />
+    </Box>
+  );
+};
 
 const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose, onSubmit }) => {
   const [title, setTitle] = useState("");
-  const [time, setTime] = useState("");
+  const [duration, setDuration] = useState({ hours: "", minutes: "" });
   const [comment, setComment] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (title.trim() && time.trim() && comment.trim()) {
-      onSubmit(title, time, comment);
+    if (
+      title.trim() &&
+      (duration.hours || duration.minutes) &&
+      comment.trim()
+    ) {
+      const durationString = `${duration.hours || "0"}時間${
+        duration.minutes || "0"
+      }分`;
+      onSubmit(title, durationString, comment);
       setTitle("");
-      setTime("");
+      setDuration({ hours: "", minutes: "" });
       setComment("");
+      onClose();
     }
   };
 
@@ -33,7 +78,7 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose, onSubmit }) => {
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: 600,
-    bgcolor: "background.paper",
+    bgcolor: "#1c1d24",
     boxShadow: 24,
     p: 4,
   };
@@ -58,14 +103,12 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose, onSubmit }) => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
-          <TextField
-            label="時間"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            value={time}
-            onChange={(e) => setTime(e.target.value)}
-          />
+          <Box sx={{ my: 2 }}>
+            <Typography variant="subtitle1" gutterBottom>
+              所要時間
+            </Typography>
+            <DurationInput value={duration} onChange={setDuration} />
+          </Box>
           <TextField
             label="コメント"
             variant="outlined"
@@ -76,7 +119,7 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose, onSubmit }) => {
             value={comment}
             onChange={(e) => setComment(e.target.value)}
           />
-          <div className="flex justify-end">
+          <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
             <Button
               onClick={onClose}
               color="primary"
@@ -89,11 +132,11 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose, onSubmit }) => {
               type="submit"
               color="primary"
               variant="contained"
-              sx={{ color: "#000000" }} // テキストを白に設定
+              sx={{ color: "#000000" }}
             >
               投稿
             </Button>
-          </div>
+          </Box>
         </form>
       </Box>
     </Modal>

@@ -88,7 +88,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
                 className="text-black"
                 aria-label="GitHub"
               >
-                <FaGithub size={30} />
+                <FaGithub size={30} color="white" />
               </a>
             )}
             {user.twitter && (
@@ -164,7 +164,11 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
                 if (isLiked) setHoverText("フォロー中");
               }}
             >
-              <span className={`text-sm font-semibold tracking-wider ${isLiked ? "" : "text-white"}`}>
+              <span
+                className={`text-sm font-semibold tracking-wider ${
+                  isLiked ? "" : "text-white"
+                }`}
+              >
                 {!isLiked ? "フォロー" : hoverText}
               </span>
             </button>
