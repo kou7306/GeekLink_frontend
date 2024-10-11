@@ -6,13 +6,16 @@ import React from "react";
 import { getMatchingUser } from "@/utils/getMatchingUser";
 import { User } from "@/utils/getMatchingUser";
 import { getUuidFromCookie } from "@/actions/users";
+import ComponentLoading from "../core/ComponentLoading";
 
 const UserList = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [uuid, setUuid] = useState<string>("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUsers = async () => {
+      setLoading(true);
       const users = await getMatchingUser();
       if (users.length > 0) {
         setUsers(users);
@@ -22,10 +25,13 @@ const UserList = () => {
       if (uuid) {
         setUuid(uuid);
       }
+      setLoading(false);
     };
 
     fetchUsers();
   }, []);
+
+  if (loading) return <ComponentLoading />;
 
   return (
     <aside className="fixed inset-y-20 pb-20 lg:pb-0 lg:px-8 lg:w-96 lg:block overflow-y-auto border-r border-border block w-full left-0">
