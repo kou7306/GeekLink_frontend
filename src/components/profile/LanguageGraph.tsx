@@ -61,10 +61,14 @@ const LanguageGraph: React.FC<Props> = ({ GitHubLanguages }) => {
         max: 100,
         ticks: {
           callback: (value) => `${value}%`,
+          color: "white", // X軸の目盛りの色を白に設定
         },
       },
       y: {
         stacked: true,
+        ticks: {
+          color: "white", // Y軸の目盛りの色を白に設定
+        },
       },
     },
     plugins: {
@@ -74,6 +78,7 @@ const LanguageGraph: React.FC<Props> = ({ GitHubLanguages }) => {
         labels: {
           boxWidth: 15,
           padding: 15,
+          color: "white", // 凡例のテキスト色を白に設定
         },
       },
       tooltip: {
@@ -81,6 +86,8 @@ const LanguageGraph: React.FC<Props> = ({ GitHubLanguages }) => {
           label: (context) =>
             `${context.dataset.label}: ${context.parsed.x.toFixed(1)}%`,
         },
+        titleColor: "white", // ツールチップのタイトル色を白に設定
+        bodyColor: "white", // ツールチップの本文色を白に設定
       },
     },
     responsive: true,

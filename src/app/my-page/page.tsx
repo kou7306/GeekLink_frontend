@@ -68,7 +68,7 @@ const MyPage: React.FC = () => {
   }
 
   return (
-    <div className="bg-white min-h-screen py-10">
+    <div className="bg-base min-h-screen py-10">
       {isEditing ? (
         <ProfileEditForm
           user={user}

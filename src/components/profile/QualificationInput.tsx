@@ -5,7 +5,9 @@ interface QualificationInputProps {
   onAddQualification: (qualification: string) => void;
 }
 
-const QualificationInput: React.FC<QualificationInputProps> = ({ onAddQualification }) => {
+const QualificationInput: React.FC<QualificationInputProps> = ({
+  onAddQualification,
+}) => {
   const [qualification, setQualification] = useState<string>("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,7 +23,10 @@ const QualificationInput: React.FC<QualificationInputProps> = ({ onAddQualificat
 
   return (
     <div>
-      <label htmlFor="qualification" className="block text-sm font-medium text-gray-700 rounded-md">
+      <label
+        htmlFor="qualification"
+        className="block text-sm font-medium text-text rounded-md"
+      >
         資格
       </label>
       <input
@@ -32,7 +37,11 @@ const QualificationInput: React.FC<QualificationInputProps> = ({ onAddQualificat
         onChange={handleChange}
         className="mt-1 px-2 block w-full border-b border-gray-300 focus:border-blue-500 focus:outline-none"
       />
-      <button type="button" onClick={handleAddClick} className="mt-2 bg-blue-500 text-white px-4 py-2 rounded-md">
+      <button
+        type="button"
+        onClick={handleAddClick}
+        className="mt-2 bg-blue-500 text-white px-4 py-2 rounded-md"
+      >
         追加
       </button>
     </div>

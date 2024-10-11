@@ -9,7 +9,10 @@ interface MessageInputProps {
 const MessageInput: React.FC<MessageInputProps> = ({ message, onChange }) => {
   return (
     <div>
-      <label htmlFor="message" className="block text-sm font-medium text-gray-700 rounded-md">
+      <label
+        htmlFor="message"
+        className="block text-sm font-medium text-text rounded-md"
+      >
         一言メッセージ
       </label>
       <input

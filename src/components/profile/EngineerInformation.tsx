@@ -23,7 +23,8 @@ const EngineerInformation = ({ user }: Props) => {
                 <Typography
                   key={index}
                   variant="body2"
-                  bgcolor="grey.100"
+                  bgcolor="background.default" // 背景色を background.default に変更
+                  color="text.primary" // 文字色を白に設定
                   px={1}
                   py={0.5}
                   borderRadius={1}

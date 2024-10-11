@@ -71,8 +71,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
   }, [uuid, user.user_id]);
 
   return (
-    <Box bgcolor="white">
-      <div className="max-w-7xl mx-auto p-6 bg-white rounded-lg shadow-lg grid grid-cols-2 gap-6">
+    <Box>
+      <div className="max-w-7xl mx-auto p-6 bg-sub_base rounded-lg shadow-lg grid grid-cols-2 gap-6">
         <div className="flex flex-col items-center">
           <Image
             className="w-64 h-64 object-cover rounded-full mb-4"
@@ -146,8 +146,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
             <button
               className={`rounded-full p-2 border-2 ${
                 isLiked
-                  ? "bg-white border-gray-600 hover:border-red-500 hover:text-red-500"
-                  : "bg-black text-white border-black"
+                  ? "bg-white text-black border-gray-600 hover:border-red-500 hover:text-red-500"
+                  : "bg-base text-white border-black"
               }`}
               onClick={() => {
                 if (!isLiked) {
@@ -165,7 +165,11 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
                 if (isLiked) setHoverText("フォロー中");
               }}
             >
-              <span className={`text-lg font-semibold ${isLiked ? "" : "text-white"}`}>
+              <span
+                className={`text-lg font-semibold ${
+                  isLiked ? "" : "text-white"
+                }`}
+              >
                 {!isLiked ? "フォロー" : hoverText}
               </span>
             </button>
@@ -178,7 +182,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
           {/* 使用言語の割合 */}
           <PercentageOfLanguages isMe={isMe} />
           {/* ユーザーランク */}
-          <UserRank isMe={isMe}/>
+          <UserRank isMe={isMe} />
         </div>
         <UserMainInformation user={user} onEdit={onEdit} isMe={isMe} />
       </div>

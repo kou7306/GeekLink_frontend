@@ -9,7 +9,10 @@ interface HobbyInputProps {
 const HobbyInput: React.FC<HobbyInputProps> = ({ hobby, onChange }) => {
   return (
     <div>
-      <label htmlFor="hobby" className="block text-sm font-medium text-gray-700 rounded-md">
+      <label
+        htmlFor="hobby"
+        className="block text-sm font-medium text-text rounded-md"
+      >
         趣味
       </label>
       <input

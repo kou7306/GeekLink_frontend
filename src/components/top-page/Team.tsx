@@ -79,7 +79,7 @@ const Team = ({ item, key }: Props) => {
                   size="small"
                   sx={{
                     backgroundColor: "primary.main",
-                    color: "white",
+                    color: "black",
                   }}
                 />
               ))}

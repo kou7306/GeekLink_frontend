@@ -18,6 +18,8 @@ const config: Config = {
         accent: "#ee223c", //メインとは反対の色
         text: "#ffffff", //テキスト
         sub_text: "#b5b5ba", //枠線
+        hover: "#35373D", //hover時の色
+        hover_blue: "#4171c4", //hover時の色
       },
     },
   },

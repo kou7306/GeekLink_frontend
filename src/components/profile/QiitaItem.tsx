@@ -1,4 +1,4 @@
-import { Box, Paper, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import React from "react";
 import { QiitaArticle } from "../../types/qiitaArticle";
 import { formatDate } from "@/utils/formatDate";
@@ -10,13 +10,20 @@ type Props = {
 
 const QiitaItem = ({ item }: Props) => {
   return (
-    <Link href={item.url} target="_blank" rel="noopener noreferrer">
+    <Link href={item.url} target="_blank" rel="noopener noreferrer" passHref>
       <Box
         height={"200px"}
-        border={"1px solid #e0e0e0"}
         borderRadius={"20px"}
         padding={2}
         marginBottom={2}
+        bgcolor="background.default" // カード背景色をテーマのデフォルト背景色に
+        sx={{
+          textDecoration: "none", // リンクの下線を除去
+          transition: "background-color 0.3s ease", // 背景色の変更を滑らかに
+          "&:hover": {
+            backgroundColor: "info.main", // ホバー時の背景色
+          },
+        }}
       >
         <Typography variant="body2" color="text.secondary" gutterBottom>
           {formatDate(item.date)} {/* 何月何日の形にフォーマット */}
@@ -28,7 +35,9 @@ const QiitaItem = ({ item }: Props) => {
           alignItems={"center"}
           marginBottom={1}
         >
-          <Typography variant="h6">{item.title}</Typography>
+          <Typography variant="h6" color="text.primary">
+            {item.title}
+          </Typography>
         </Box>
 
         <Box
@@ -40,7 +49,7 @@ const QiitaItem = ({ item }: Props) => {
           <Typography
             variant="body2"
             color="text.secondary"
-            style={{ marginRight: 16 }}
+            sx={{ marginRight: 2 }}
           >
             Likes: {item.likes_count} {/* いいね数 */}
           </Typography>
@@ -56,10 +65,10 @@ const QiitaItem = ({ item }: Props) => {
               <Typography
                 key={index}
                 variant="body2"
-                color="primary"
-                style={{
-                  marginRight: 4,
-                  backgroundColor: "#e3f2fd", // タグの背景色
+                sx={{
+                  marginRight: 1,
+                  backgroundColor: "primary.main", // タグの背景色をテーマのprimary色に設定
+                  color: "black", // 文字色を黒に設定
                   borderRadius: "12px",
                   padding: "2px 6px",
                 }}

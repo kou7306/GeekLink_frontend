@@ -47,7 +47,15 @@ const Chips = ({ user, chipOption }: Props) => {
       {Array.isArray(chipsData(chipOption) ?? []) &&
       (chipsData(chipOption) ?? []).length > 0 ? (
         (chipsData(chipOption) as string[]).map((tech) => (
-          <Chip key={tech} label={tech} size="small" />
+          <Chip
+            key={tech}
+            label={tech}
+            size="small"
+            sx={{
+              backgroundColor: "primary.main", // Chipの背景色をprimary.mainに設定
+              color: "black", // 文字色を白に設定
+            }}
+          />
         ))
       ) : (
         <Chip label="-" size="small" sx={{ visibility: "hidden" }} /> // チップがない場合は隠す

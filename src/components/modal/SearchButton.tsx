@@ -13,8 +13,8 @@ const SearchButton = (props: Props) => {
         onClick={onClick}
         variant="contained"
         sx={{
-          backgroundColor: "#25276D",
-          color: "white",
+          backgroundColor: "primary.main",
+          color: "background.default",
           borderRadius: "8px",
           padding: "8px 16px",
           "&:hover": {

@@ -259,15 +259,13 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
   };
 
   return (
-    <div className="min-h-screen my-4 bg-gray-50 flex flex-col items-center justify-center">
-      <h2 className="text-2xl font-bold mb-4 text-gray-800">
-        プロフィール設定
-      </h2>
+    <div className="min-h-screen my- flex flex-col items-center justify-center">
+      <h2 className="text-2xl font-bold mb-12 text-text">プロフィール設定</h2>
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-6xl p-6 bg-white shadow-lg rounded-lg grid grid-cols-1 md:grid-cols-3 gap-6"
+        className="w-full max-w-6xl p-16 bg-sub_base shadow-lg rounded-lg grid grid-cols-1 md:grid-cols-3 gap-6"
       >
-        <div className="flex flex-col items-center col-span-1">
+        <div className="flex flex-col items-center col-span-1 p-12">
           <label htmlFor="upload-button">
             <Image
               src={profile.image_url || "/img/default_icon.png"}
@@ -285,7 +283,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
           />
           <button
             onClick={handleUpload}
-            className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
+            className="mt-4 bg-secondary hover:bg-hover_blue text-white py-2 px-4 rounded"
           >
             Upload
           </button>
@@ -531,7 +529,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
               {top_teches.map((tech, index) => (
                 <span
                   key={index}
-                  className="bg-blue-300 text-white rounded-full px-4 py-1"
+                  className="bg-primary text-white rounded-full px-4 py-1"
                 >
                   {index + 1}位. {tech}
                 </span>
@@ -541,7 +539,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
               {selectedTech.map((tech, index) => (
                 <span
                   key={index}
-                  className="bg-blue-300 text-white rounded-full px-4 py-1"
+                  className="bg-primary text-white rounded-full px-4 py-1"
                 >
                   {tech}
                 </span>
@@ -558,7 +556,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
               {selectedExperiences.map((experience, index) => (
                 <span
                   key={index}
-                  className="bg-blue-300 text-white rounded-full px-4 py-1"
+                  className="bg-primary text-white rounded-full px-4 py-1"
                 >
                   {experience}
                 </span>
@@ -579,7 +577,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
               {qualifications.map((qualification, index) => (
                 <li
                   key={index}
-                  className="bg-blue-300 text-white rounded-full px-4 py-1"
+                  className="bg-primary text-white rounded-full px-4 py-1"
                 >
                   {qualification}
                   <button
@@ -596,7 +594,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
         <div className="col-span-3 flex justify-center mt-6 space-x-4">
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="bg-secondary hover:bg-hover_blue text-white font-bold py-2 px-4 rounded"
           >
             登録
           </button>

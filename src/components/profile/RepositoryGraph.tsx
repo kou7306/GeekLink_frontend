@@ -25,10 +25,10 @@ type Props = {
 };
 
 const RepositoryGraph = ({ repository }: Props) => {
-  //言語の色を決める関数
+  // 言語の色を決める関数
   const getLanguageColor = (languageName: string) => {
     const language = languages.find((lang) => lang.name === languageName);
-    return language ? language.color : "#808080"; //それ以外の色
+    return language ? language.color : "#808080"; // それ以外の色
   };
 
   const repositoryData = {
@@ -41,6 +41,7 @@ const RepositoryGraph = ({ repository }: Props) => {
       backgroundColor: getLanguageColor(value.name),
     })),
   };
+
   const options = {
     indexAxis: "y" as const,
     scales: {
@@ -51,6 +52,7 @@ const RepositoryGraph = ({ repository }: Props) => {
           callback: function (value: string | number) {
             return value + "%";
           },
+          color: "white", // X軸の目盛りの色を白に設定
         },
         grid: {
           display: false,
@@ -67,12 +69,18 @@ const RepositoryGraph = ({ repository }: Props) => {
     plugins: {
       legend: {
         position: "bottom" as const,
+        labels: {
+          color: "white", // 凡例のテキスト色を白に設定
+        },
       },
       title: {
         display: true,
         text: `${repository.name}`,
+        color: "white", // タイトルの色を白に設定
         font: {
           size: 16,
+          family: "Arial",
+          weight: "normal",
         },
         align: "start" as const,
       },
@@ -99,7 +107,7 @@ const RepositoryGraph = ({ repository }: Props) => {
 
       ctx.save();
       ctx.font = "14px Arial";
-      ctx.fillStyle = "black";
+      ctx.fillStyle = "white"; // コミットカウントのテキスト色を白に設定
       ctx.textAlign = "right";
       ctx.fillText(`${options.commits} commits`, right, top - 10);
       ctx.restore();
