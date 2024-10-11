@@ -12,11 +12,18 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import TopUsersRanking from "./TopUsersRanking";
 import Link from "next/link";
 
-
 const DailyRanking = () => {
   return (
     <>
-      <Box sx={{ bgcolor: "background.paper", p: 2, borderRadius: 1 }}>
+      <Box
+        sx={{
+          bgcolor: "background.paper",
+          p: 2,
+          borderRadius: 1,
+          my: 4,
+          mr: 2,
+        }}
+      >
         <Box
           sx={{
             display: "flex",
@@ -26,11 +33,15 @@ const DailyRanking = () => {
           }}
         >
           <Box>
-            <Typography variant="h5" component="h2" sx={{ fontWeight: "bold" }}>
+            <Typography variant="h6" component="h2" sx={{ fontWeight: "bold" }}>
               デイリーランキング
             </Typography>
-            <Typography variant="h6" component="span" sx={{ color: "text.secondary" }}>
-              GitHub Contributions
+            <Typography
+              variant="body1"
+              component="span"
+              sx={{ color: "text.secondary" }}
+            >
+              GitHub Contributions数
             </Typography>
           </Box>
 
@@ -47,7 +58,6 @@ const DailyRanking = () => {
         </Box>
         <TopUsersRanking />
       </Box>
-      <Box sx={{ my: 4 }} />
     </>
   );
 };

@@ -6,6 +6,8 @@ import { Post } from "../../types/timeline";
 import { getPosts, createPost } from "../../utils/actionPost";
 import { useInView } from "react-intersection-observer";
 import { getUuidFromCookie } from "@/actions/users";
+import IconButton from "@mui/material/IconButton";
+import EditIcon from "@mui/icons-material/Edit";
 
 const TimeLineContainer: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -93,7 +95,7 @@ const TimeLineContainer: React.FC = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-4 pb-24">
+    <div className="max-w-2xl p-4 pb-24 mx-24">
       <h1 className="text-2xl font-bold mb-4">タイムライン</h1>
       {isLoading && <div>Loading...</div>}
       {error && <div className="text-red-500 mb-4">{error}</div>}
@@ -109,12 +111,18 @@ const TimeLineContainer: React.FC = () => {
         {hasMore && <div ref={ref} />}
       </div>
 
-      <button
+      <IconButton
         onClick={() => setIsModalOpen(true)}
-        className="fixed bottom-20 right-4 bg-blue-500 text-white px-4 py-2 rounded-full shadow-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 z-10"
+        className="fixed z-10"
+        style={{
+          bottom: "5%", // 下から5%の位置に固定
+          right: "28%", // 右から5%の位置に固定
+          backgroundColor: "#1976d2", // MUIのテーマ色を参考に設定
+          color: "#ffffff", // アイコンの色
+        }}
       >
-        投稿する
-      </button>
+        <EditIcon />
+      </IconButton>
 
       <PostModal
         isOpen={isModalOpen}

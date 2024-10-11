@@ -1,5 +1,10 @@
 "use client";
 import React, { useState } from "react";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 
 interface PostModalProps {
   isOpen: boolean;
@@ -22,63 +27,71 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose, onSubmit }) => {
     }
   };
 
-  if (!isOpen) return null;
+  const style = {
+    position: "absolute" as "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 600,
+    bgcolor: "background.paper",
+    boxShadow: 24,
+    p: 4,
+  };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-      <div className="bg-white rounded-lg p-6 w-full max-w-md">
-        <h2 className="text-xl font-semibold mb-4">新しい投稿</h2>
+    <Modal
+      open={isOpen}
+      onClose={onClose}
+      aria-labelledby="modal-title"
+      aria-describedby="modal-description"
+    >
+      <Box sx={style}>
+        <Typography id="modal-title" variant="h6" component="h2">
+          新しい投稿
+        </Typography>
         <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-2">
-              今日やったこと
-            </label>
-            <input
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="今日やったこと..."
-              className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-2">時間</label>
-            <input
-              type="text"
-              value={time}
-              onChange={(e) => setTime(e.target.value)}
-              placeholder="時間..."
-              className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-2">コメント</label>
-            <textarea
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-              placeholder="コメント..."
-              className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
-              rows={4}
-            />
-          </div>
+          <TextField
+            label="今日やったこと"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <TextField
+            label="時間"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
+          />
+          <TextField
+            label="コメント"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            multiline
+            rows={4}
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+          />
           <div className="flex justify-end">
-            <button
-              type="button"
+            <Button
               onClick={onClose}
-              className="bg-gray-300 text-black px-4 py-2 rounded-lg mr-2 hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300"
+              color="primary"
+              variant="outlined"
+              sx={{ mr: 2 }}
             >
               キャンセル
-            </button>
-            <button
-              type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
-            >
+            </Button>
+            <Button type="submit" color="primary" variant="contained">
               投稿
-            </button>
+            </Button>
           </div>
         </form>
-      </div>
-    </div>
+      </Box>
+    </Modal>
   );
 };
 

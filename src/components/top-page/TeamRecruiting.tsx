@@ -32,7 +32,7 @@ const TeamRecruiting = () => {
       return response.json();
     },
   });
-  
+
   const events: any[] = data;
 
   if (isPending) return <div>Loading...</div>;
@@ -40,7 +40,9 @@ const TeamRecruiting = () => {
   if (isError) return <div>Error: {error.message}</div>;
 
   return (
-    <Box sx={{ bgcolor: "background.paper", p: 2, borderRadius: 1 }}>
+    <Box
+      sx={{ bgcolor: "background.paper", p: 2, borderRadius: 1, my: 4, mr: 2 }}
+    >
       <Box
         sx={{
           display: "flex",
@@ -49,7 +51,7 @@ const TeamRecruiting = () => {
           mb: 2,
         }}
       >
-        <Typography variant="h5" component="h2" sx={{ fontWeight: "bold" }}>
+        <Typography variant="h6" component="h2" sx={{ fontWeight: "bold" }}>
           新規チーム募集
         </Typography>
         <Link href="/team-recruitments">
