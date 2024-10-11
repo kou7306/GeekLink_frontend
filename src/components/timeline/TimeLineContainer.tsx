@@ -95,14 +95,13 @@ const TimeLineContainer: React.FC = () => {
   };
 
   return (
-    <div className="max-w-2xl p-4 pb-24 mx-24">
+    <div className=" p-4 pb-24 mx-48">
       <h1 className="text-2xl font-bold mb-4">タイムライン</h1>
       {isLoading && <div>Loading...</div>}
       {error && <div className="text-red-500 mb-4">{error}</div>}
-      <div className="space-y-4 mb-4">
+      <div className="space-y-4 mb-4 w-full mx-auto">
         {posts.map((post) => (
           <TimeLinePost
-            key={post.id}
             post={post}
             isOwnPost={post.userId === uuid}
             uuid={uuid}

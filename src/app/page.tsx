@@ -83,7 +83,7 @@ const Home = () => {
         <Box sx={{ display: "flex", height: "100vh" }}>
           <Box
             sx={{
-              width: "20%", // 左サイドの幅を25%に設定
+              width: "15%",
               position: "fixed",
               left: 0,
               overflowY: "auto", // スクロール可能にする
@@ -95,11 +95,16 @@ const Home = () => {
           </Box>
           <Box
             sx={{
-              width: "55%", // タイムラインの幅を40%に設定
-              marginLeft: "20%", // 左サイドの幅と同じ値を指定してスペースを開ける
+              width: "60%",
+              marginLeft: "15%", // 左サイドの幅と同じ値を指定してスペースを開ける
               padding: 2, // 必要に応じてパディングを追加
               overflowY: "auto", // タイムライン部分もスクロール可能にする
               height: "100vh",
+              "&::-webkit-scrollbar": {
+                display: "none",
+              },
+              "-ms-overflow-style": "none", // IEとEdge用
+              "scrollbar-width": "none", // Firefox用
             }}
           >
             <TimeLineContainer />

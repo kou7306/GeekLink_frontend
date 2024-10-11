@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { ja } from "date-fns/locale";
 import { Post } from "../../types/timeline";
 import { sendReaction } from "../../utils/actionPost";
+import { colors, Link } from "@mui/material";
 
 interface TimeLinePostProps {
   post: Post;
@@ -134,10 +135,18 @@ const TimeLinePost: React.FC<TimeLinePostProps> = ({ post, uuid }) => {
       <div className="flex items-start">
         <div>
           <div className="flex items-center">
-            <span className="font-semibold">User</span>
+            <Link
+              href={`/my-page/${post.userId}`}
+              underline="none"
+              sx={{ color: "black" }}
+            >
+              <span className="font-semibold">{post.user_name}</span>
+            </Link>
             <span className="text-gray-500 ml-2">·</span>
             <span className="text-gray-500 ml-2">
-              {format(new Date(post.timestamp), "M月d日 HH:mm", { locale: ja })}
+              {format(new Date(post.timestamp), "M月d日 HH:mm", {
+                locale: ja,
+              })}
             </span>
           </div>
           <h2 className="font-bold mt-2">{post.title}</h2>

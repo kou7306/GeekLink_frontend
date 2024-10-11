@@ -1,6 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { List, ListItem, ListItemAvatar, ListItemText } from "@mui/material";
+import {
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Link,
+} from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import { Profile } from "@/types/user";
 import { getSuggestUser } from "@/utils/getSuggestUser";
@@ -30,15 +36,22 @@ const SuggestUserList = () => {
       <h2>おすすめのユーザー</h2>
       <List>
         {suggestUsers.slice(0, 5).map((userData) => (
-          <ListItem key={userData.user.user_id}>
-            <ListItemAvatar>
-              <Avatar
-                src={userData.user.image_url || "/user.svg"}
-                alt={`${userData.user.name}'s icon`}
-              />
-            </ListItemAvatar>
-            <ListItemText primary={userData.user.name} />
-          </ListItem>
+          <Link
+            key={userData.user.user_id}
+            href={`/my-page/${userData.user.user_id}`}
+            underline="none"
+            sx={{ color: "black" }}
+          >
+            <ListItem>
+              <ListItemAvatar>
+                <Avatar
+                  src={userData.user.image_url || "/user.svg"}
+                  alt={`${userData.user.name}'s icon`}
+                />
+              </ListItemAvatar>
+              <ListItemText primary={userData.user.name} />
+            </ListItem>
+          </Link>
         ))}
       </List>
     </div>

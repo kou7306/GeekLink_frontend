@@ -1,6 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { List, ListItem, ListItemAvatar, ListItemText } from "@mui/material";
+import {
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Link,
+} from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import { getMatchingUser } from "../../utils/getMatchingUser";
 
@@ -34,15 +40,22 @@ const FollowerList = () => {
       <h2>相互フォローのユーザー</h2>
       <List>
         {matchingUsers.slice(0, 5).map((user) => (
-          <ListItem key={user.user_id}>
-            <ListItemAvatar>
-              <Avatar
-                src={user.img_url || "/user.svg"}
-                alt={`${user.name}'s icon`}
-              />
-            </ListItemAvatar>
-            <ListItemText primary={user.name} />
-          </ListItem>
+          <Link
+            key={user.user_id}
+            href={`/my-page/${user.user_id}`}
+            underline="none"
+            sx={{ color: "black" }}
+          >
+            <ListItem>
+              <ListItemAvatar>
+                <Avatar
+                  src={user.img_url || "/user.svg"}
+                  alt={`${user.name}'s icon`}
+                />
+              </ListItemAvatar>
+              <ListItemText primary={user.name} />
+            </ListItem>
+          </Link>
         ))}
       </List>
     </div>
