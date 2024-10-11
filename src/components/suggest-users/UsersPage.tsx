@@ -171,7 +171,7 @@ const UsersPage = ({ isUserIdExist = false }: Props) => {
       {isUserIdExist && users ? (
         <div className="ml-4">
           <p className="flex justify-start text-2xl font-bold text-center mt-8 ml-8">
-            総合的な一致度が高いお相手
+            総合的な一致度が高い相手
           </p>
           <div
             className={`flex ${
@@ -193,7 +193,7 @@ const UsersPage = ({ isUserIdExist = false }: Props) => {
             )}
           </div>
           <p className="flex justify-start text-2xl font-bold text-center mt-8 ml-8">
-            技術スタックが一致しているお相手
+            技術スタックが一致している相手
           </p>
           <div
             className={`flex ${
@@ -215,7 +215,7 @@ const UsersPage = ({ isUserIdExist = false }: Props) => {
             )}
           </div>
           <p className="flex justify-start text-2xl font-bold text-center mt-8 ml-8">
-            居住地が近いお相手
+            居住地が近い相手
           </p>
           <div
             className={`flex ${
@@ -237,7 +237,7 @@ const UsersPage = ({ isUserIdExist = false }: Props) => {
             )}
           </div>
           <p className="flex justify-start text-2xl font-bold text-center mt-8 ml-8">
-            年齢が同じお相手
+            年齢が同じ相手
           </p>
           <div
             className={`flex ${
@@ -255,7 +255,7 @@ const UsersPage = ({ isUserIdExist = false }: Props) => {
             )}
           </div>
           <p className="flex justify-start text-2xl font-bold text-center mt-8 ml-8">
-            卒業年度が同じお相手
+            卒業年度が同じ相手
           </p>
           <div
             className={`flex ${
@@ -277,7 +277,7 @@ const UsersPage = ({ isUserIdExist = false }: Props) => {
             )}
           </div>
           <p className="flex justify-start text-2xl font-bold text-center mt-8 ml-8">
-            希望職種が同じお相手
+            希望職種が同じ相手
           </p>
           <div
             className={`flex ${
