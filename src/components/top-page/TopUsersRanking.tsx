@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import ComponentLoading from "../core/ComponentLoading";
 
 const TopUsersRanking = () => {
-  const { isPending, isError, error, data } = useQuery({
+  const { isLoading, isError, error, data } = useQuery({
     queryKey: ["rank"],
     queryFn: async () => {
       const response = await fetch(
@@ -23,7 +23,8 @@ const TopUsersRanking = () => {
     },
   });
 
-  const users: any[] = data;
+  // Ensure `data` is an array, defaulting to an empty array if not
+  const users: any[] = Array.isArray(data) ? data : [];
 
   if (isPending) return <ComponentLoading />;
 
@@ -31,11 +32,15 @@ const TopUsersRanking = () => {
 
   return (
     <div>
-      {users.map((user) => (
-        <Fragment key={user.id}>
-          <TopUserRanking user={user} />
-        </Fragment>
-      ))}
+      {users.length > 0 ? (
+        users.map((user) => (
+          <Fragment key={user.id}>
+            <TopUserRanking user={user} />
+          </Fragment>
+        ))
+      ) : (
+        <div>No users found.</div> // Display a message if no users
+      )}
     </div>
   );
 };

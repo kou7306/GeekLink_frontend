@@ -80,9 +80,23 @@ const ActivityLogGraph: React.FC<{ propsArray: ActivityLogGraphProps[] }> = ({
     scales: {
       x: {
         stacked: true,
+        ticks: {
+          color: "white", // X軸の目盛りの色を指定
+        },
+        title: {
+          display: true,
+          color: "white", // X軸のタイトルの色を指定
+        },
       },
       y: {
         stacked: true,
+        ticks: {
+          color: "white", // Y軸の目盛りの色を指定
+        },
+        title: {
+          display: true,
+          color: "white", // Y軸のタイトルの色を指定
+        },
       },
     },
     plugins: {
@@ -95,6 +109,11 @@ const ActivityLogGraph: React.FC<{ propsArray: ActivityLogGraphProps[] }> = ({
               data.datasets[context.datasetIndex]?.data[valueIndex];
             return `${label}: ${originalValue}`;
           },
+        },
+      },
+      legend: {
+        labels: {
+          color: "white", // 凡例のテキスト色を指定
         },
       },
     },

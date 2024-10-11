@@ -85,7 +85,7 @@ const Chat = ({ params }: { params: any }) => {
   if (loading) return <ComponentLoading />;
 
   return (
-    <div className="bg-secondary px-4 py-10 sm:px-6 lg:px-8 h-full">
+    <div className="bg-base px-4 py-10 sm:px-6 lg:px-8 h-full">
       <ul className="h-[85vh] overflow-y-auto overflow-x-hidden">
         {messages.map((message) => (
           <MessageComponent key={message.id} message={message} uuid={uuid} />
@@ -94,7 +94,7 @@ const Chat = ({ params }: { params: any }) => {
       </ul>
       <form
         onSubmit={sendData}
-        className="fixed bottom-0 w-4/5 p-2 bg-secondary z-99 flex justify-center items-center"
+        className="fixed bottom-0 w-4/5 p-2 bg-base z-99 flex justify-center items-center"
       >
         <input
           className="w-3/5 bg-base-sub rounded-xl px-2 py-3 border-0 active:border-2 active:border-accent leading-tight"

@@ -34,7 +34,7 @@ const UserList = () => {
   if (loading) return <ComponentLoading />;
 
   return (
-    <aside className="fixed inset-y-20 pb-20 lg:pb-0 lg:px-8 lg:w-96 lg:block overflow-y-auto border-r border-border block w-full left-0">
+    <aside className="fixed inset-y-20 pb-20 lg:pb-0 lg:w-96 lg:block overflow-y-auto border-r bg-sub_base block w-full h-full left-0">
       <div className="px-5 flex-col text-center">
         <div className="font-bold py-4">トーク一覧</div>
         <div id="character-list">
@@ -47,13 +47,10 @@ const UserList = () => {
                 href={{
                   pathname: `${user.user_id}`,
                 }}
+                className="block hover:bg-hover transition-colors duration-300"
               >
                 <div className="flex items-center mb-4 cursor-pointer">
-                  {" "}
-                  {/* items-centerを追加 */}
                   <div className="flex-shrink-0">
-                    {" "}
-                    {/* 画像を縮小しないように */}
                     <div className="w-20 h-20 relative">
                       <Image
                         src={user.img_url || "/user.svg"}
@@ -63,7 +60,7 @@ const UserList = () => {
                         className="rounded-full"
                       />
                     </div>
-                    <div className="text-xs text-gray-500 text-center">
+                    <div className="text-xs text-sub_text text-center">
                       <div className="mt-1">{user.language}</div>
                       <div>
                         {user.age}歳 / {user.sex}

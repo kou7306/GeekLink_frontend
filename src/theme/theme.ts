@@ -5,11 +5,11 @@ const theme = createTheme({
   palette: {
     primary: {
       main: "#2ecee6", // メインカラー
-      contrastText: "#ffffff",
+      contrastText: "#2ecee6",
     },
     secondary: {
       main: "#2c64c5", // メインの補助カラー
-      contrastText: "#ffffff",
+      contrastText: "#2c64c5",
     },
     background: {
       default: "#2b2a36", // 背景
@@ -21,6 +21,9 @@ const theme = createTheme({
     },
     error: {
       main: "#ee223c", // メインとは反対の色
+    },
+    info: {
+      main: "#35373D", //hover時の色
     },
   },
 });

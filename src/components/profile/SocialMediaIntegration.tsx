@@ -32,17 +32,23 @@ const SocialMediaIntegration = () => {
         color="secondary"
         sx={{
           borderRadius: "50%",
-          minWidth: "35px",
-          width: "35px",
-          height: "35px",
+          minWidth: "30px",
+          width: "30px",
+          height: "30px",
           padding: 0,
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          color: "white", // アイコンの色を白に設定
+          "&:hover": {
+            backgroundColor: "secondary.main", // ホバー時の背景色を変更しない
+            color: "white", // ホバー時にアイコンの色を白に保持
+          },
         }}
       >
         <AddIcon />
       </Button>
+
       <Modal
         open={open}
         onClose={handleClose}
@@ -56,7 +62,7 @@ const SocialMediaIntegration = () => {
             component="h2"
             sx={{ mb: 2, textAlign: "center" }}
           >
-            情報ソースの追加
+            連携するSNSを選択
           </Typography>
           <List>
             {/* 各々の連携 */}

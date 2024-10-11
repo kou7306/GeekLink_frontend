@@ -47,9 +47,9 @@ const QiitaList: React.FC<QiitaListProps> = ({ uuid }) => {
   if (isError)
     return (
       <>
-        <Card sx={{ marginY: 4, padding: 2 }}>
+        <Card sx={{ marginY: 4, padding: 2, bgcolor: "background.paper" }}>
           <CardContent>
-            <Typography variant="h5" component="div">
+            <Typography variant="h5" component="div" color="text.primary">
               Qiita
             </Typography>
             <div>データがありません</div>
@@ -80,13 +80,13 @@ const QiitaList: React.FC<QiitaListProps> = ({ uuid }) => {
         overflowY: "auto",
         display: "flex",
         flexDirection: "column",
-        boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)", // 統一されたシャドウ
         borderRadius: 2,
         padding: 2,
+        bgcolor: "background.paper", // 背景色をテーマに基づいて設定
       }}
     >
       <Box marginX={4}>
-        <Typography variant="h5" marginY={4}>
+        <Typography variant="h5" marginY={4} color="text.primary">
           Qiita
         </Typography>
         {/* 記事がない場合でもスペースを確保 */}
@@ -95,7 +95,7 @@ const QiitaList: React.FC<QiitaListProps> = ({ uuid }) => {
             <QiitaItem item={item} key={index} />
           ))
         ) : (
-          <Typography variant="body2" color="textSecondary" align="center">
+          <Typography variant="body2" color="text.primary" align="center">
             No articles available.
           </Typography>
         )}
@@ -107,6 +107,7 @@ const QiitaList: React.FC<QiitaListProps> = ({ uuid }) => {
             margin: "auto",
             marginTop: 2,
             visibility: data?.postDetails?.length > 3 ? "visible" : "hidden", // アイコンの表示/非表示
+            color: "white", // アイコンボタンの色を白に設定
           }}
         >
           {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}

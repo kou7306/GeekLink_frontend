@@ -34,9 +34,11 @@ const AgeButton: React.FC<Props> = ({ handleAgeClick, selectedAges }) => {
             sx={{
               ...BoxStyle,
               backgroundColor: selectedAges.includes(ageNumber)
-                ? "#25276D"
-                : "white",
-              color: selectedAges.includes(ageNumber) ? "white" : "#25276D",
+                ? "primary.main"
+                : "background.default",
+              color: selectedAges.includes(ageNumber)
+                ? "background."
+                : "primary.main",
             }}
           >
             {ageGroup}
@@ -48,11 +50,11 @@ const AgeButton: React.FC<Props> = ({ handleAgeClick, selectedAges }) => {
 };
 
 const BoxStyle = {
-  border: "1px solid #25276D",
+  border: "1px solid primary.main",
   borderRadius: "8px",
   padding: "8px 16px",
   display: "inline-block",
-  color: "#25276D",
+  color: "primary.main",
   textAlign: "center",
   marginX: 1,
   marginBottom: 1,

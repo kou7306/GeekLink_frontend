@@ -85,7 +85,12 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose, onSubmit }) => {
             >
               キャンセル
             </Button>
-            <Button type="submit" color="primary" variant="contained">
+            <Button
+              type="submit"
+              color="primary"
+              variant="contained"
+              sx={{ color: "#000000" }} // テキストを白に設定
+            >
               投稿
             </Button>
           </div>

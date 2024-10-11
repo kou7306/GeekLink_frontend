@@ -7,13 +7,22 @@ interface PlaceSelectProps {
   places: string[];
 }
 
-const PlaceSelect: React.FC<PlaceSelectProps> = ({ place, onChange, places }) => {
+const PlaceSelect: React.FC<PlaceSelectProps> = ({
+  place,
+  onChange,
+  places,
+}) => {
   return (
     <div>
-      <label htmlFor="place" className="block text-sm font-medium text-gray-700">
+      <label htmlFor="place" className="block text-sm font-medium text-text">
         在住
       </label>
-      <select name="place" value={place} onChange={onChange} className="mt-1 block w-full">
+      <select
+        name="place"
+        value={place}
+        onChange={onChange}
+        className="mt-1 block w-full"
+      >
         <option value="">選択してください</option>
         {places.map((place) => (
           <option key={place} value={place}>
