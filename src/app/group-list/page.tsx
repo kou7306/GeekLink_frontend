@@ -38,9 +38,9 @@ const Page = () => {
   return (
     <div className="p-4">
       <CreateGroup />
-      <Grid container spacing={3} justifyContent="center">
+      <Grid container spacing={5} justifyContent="center" mr={3}>
         {groups?.map((group) => (
-          <Grid item xs={12} sm={6} md={4} key={group.id.toString()}>
+          <Grid item xs={12} sm={6} md={5} key={group.id.toString()}>
             <Link
               href={`/group/${group.id}`}
               style={{ textDecoration: "none" }}
