@@ -116,6 +116,7 @@ export default function Home() {
                   top: "50%",
                   left: "50%",
                   transform: "translate(-50%, -50%)",
+                  backgroundColor: "#ffffff",
                 }}
               >
                 <Box
@@ -166,7 +167,7 @@ export default function Home() {
                 >
                   {Array.isArray(user.top_teches) &&
                     (user.top_teches as string[]).map((tech) => (
-                      <Chip key={tech} label={tech} />
+                      <Chip key={tech} label={tech} color="secondary" />
                     ))}
                 </Box>
                 <Box
