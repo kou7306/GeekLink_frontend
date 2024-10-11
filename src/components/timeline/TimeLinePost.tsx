@@ -133,7 +133,7 @@ const TimeLinePost: React.FC<TimeLinePostProps> = ({ post, uuid }) => {
   }, [showEmojiPicker]);
 
   return (
-    <div key={post.id} className="border rounded-lg p-4 shadow bg-sub_base">
+    <div key={post.id} className="rounded-lg p-4 shadow bg-sub_base">
       <div className="flex items-start">
         <div>
           <div className="flex items-center">
