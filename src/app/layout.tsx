@@ -20,7 +20,7 @@ export default async function RootLayout({
   const user = await getUser();
   return (
     <html lang="ja">
-      <body className={`${inter.className} bg-base`}>
+      <body className={`${inter.className} bg-base text-text`}>
         {user != null && <Header />}
         <Providers>
           <main className="py-20">{children}</main>

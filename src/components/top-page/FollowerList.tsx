@@ -44,7 +44,7 @@ const FollowerList = () => {
             key={user.user_id}
             href={`/my-page/${user.user_id}`}
             underline="none"
-            sx={{ color: "black" }}
+            sx={{ color: "text.primary" }}
           >
             <ListItem>
               <ListItemAvatar>
@@ -53,7 +53,10 @@ const FollowerList = () => {
                   alt={`${user.name}'s icon`}
                 />
               </ListItemAvatar>
-              <ListItemText primary={user.name} />
+              <ListItemText
+                primary={user.name}
+                sx={{ color: "text.primary" }}
+              />
             </ListItem>
           </Link>
         ))}

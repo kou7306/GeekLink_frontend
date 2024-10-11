@@ -40,7 +40,11 @@ interface ProfileEditFormProps {
   onCancel: () => void;
 }
 
-const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ user, onSave, onCancel }) => {
+const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
+  user,
+  onSave,
+  onCancel,
+}) => {
   const [profile, setProfile] = useState<User>(user);
   const [selectedTech, setSelectedTech] = useState<string[]>(profile.teches);
   const [selectedExperiences, setSelectedExperiences] = useState<string[]>(
@@ -54,7 +58,8 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ user, onSave, onCance
   const [isExperienceModalOpen, setIsExperienceModalOpen] = useState(false);
   const [isTechModalOpen, setIsTechModalOpen] = useState(false);
   const [isTopTecnologyModalOpen, setIsTopTecnologyModalOpen] = useState(false);
-  const [showQualificationInput, setShowQualificationInput] = useState<boolean>(false);
+  const [showQualificationInput, setShowQualificationInput] =
+    useState<boolean>(false);
   const [showGithubInput, setShowGithubInput] = useState(false);
   const [showTwitterInput, setShowTwitterInput] = useState(false);
   const [showZennInput, setShowZennInput] = useState(false);
@@ -95,7 +100,10 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ user, onSave, onCance
     }
   };
 
-  const handleSnsIDChange = (e: React.ChangeEvent<HTMLInputElement>, platform: string) => {
+  const handleSnsIDChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    platform: string
+  ) => {
     const { value } = e.target;
     setProfile((prevProfile) => ({
       ...prevProfile,
@@ -103,7 +111,10 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ user, onSave, onCance
     }));
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>, platform: string) => {
+  const handleKeyPress = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    platform: string
+  ) => {
     if (e.key === "Enter") {
       handleIconClick(platform);
     }
@@ -114,7 +125,8 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ user, onSave, onCance
   };
 
   const toggleTechModal = () => setIsTechModalOpen(!isTechModalOpen);
-  const toggleExperienceModal = () => setIsExperienceModalOpen(!isExperienceModalOpen);
+  const toggleExperienceModal = () =>
+    setIsExperienceModalOpen(!isExperienceModalOpen);
 
   const openTopTechModal = () => {
     setIsTechModalOpen(false);
@@ -171,7 +183,9 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ user, onSave, onCance
     setQualifications((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>
+  ) => {
     e.preventDefault();
     const { name, value } = e.target;
     if (name === "tech") {
@@ -246,7 +260,9 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ user, onSave, onCance
 
   return (
     <div className="min-h-screen my-4 bg-gray-50 flex flex-col items-center justify-center">
-      <h2 className="text-2xl font-bold mb-4 text-gray-800">プロフィール設定</h2>
+      <h2 className="text-2xl font-bold mb-4 text-gray-800">
+        プロフィール設定
+      </h2>
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-6xl p-6 bg-white shadow-lg rounded-lg grid grid-cols-1 md:grid-cols-3 gap-6"
@@ -254,7 +270,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ user, onSave, onCance
         <div className="flex flex-col items-center col-span-1">
           <label htmlFor="upload-button">
             <Image
-              src={profile.image_url!}
+              src={profile.image_url || "/img/default_icon.png"}
               alt="Icon"
               width={128}
               height={128}
@@ -267,10 +283,13 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ user, onSave, onCance
             style={{ display: "none" }}
             onChange={handleFileChange}
           />
-          <button onClick={handleUpload} className="mt-4 bg-blue-500 text-white py-2 px-4 rounded">
+          <button
+            onClick={handleUpload}
+            className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
+          >
             Upload
           </button>
-          <div className="flex space-x-4 mt-4">
+          {/* <div className="flex space-x-4 mt-4">
             <div onClick={() => handleIconClick("github")}>
               <FaGithub size={30} />
             </div>
@@ -278,19 +297,36 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ user, onSave, onCance
               <FaTwitter size={30} />
             </div>
             <div onClick={() => handleIconClick("zenn")}>
-              <Image src="/zenn-icon.svg" alt="Zenn Icon" width={30} height={30} />
+              <Image
+                src="/zenn-icon.svg"
+                alt="Zenn Icon"
+                width={30}
+                height={30}
+              />
             </div>
             <div onClick={() => handleIconClick("qiita")}>
-              <Image src="/qiita-icon.png" alt="Qiita Icon" width={30} height={30} />
+              <Image
+                src="/qiita-icon.png"
+                alt="Qiita Icon"
+                width={30}
+                height={30}
+              />
             </div>
             <div onClick={() => handleIconClick("atcoder")}>
-              <Image src="/atcoder-icon.png" alt="AtCoder Icon" width={30} height={30} />
+              <Image
+                src="/atcoder-icon.png"
+                alt="AtCoder Icon"
+                width={30}
+                height={30}
+              />
             </div>
-          </div>
+          </div> */}
           {showGithubInput && (
             <div className="flex items-center mt-4">
               <div className="flex items-center border rounded-md">
-                <span className="bg-gray-200 px-4 py-2">https://github.com/</span>
+                <span className="bg-gray-200 px-4 py-2">
+                  https://github.com/
+                </span>
                 <input
                   type="text"
                   value={profile.github}
@@ -353,7 +389,9 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ user, onSave, onCance
           {showQiitaInput && (
             <div className="flex items-center mt-4">
               <div className="flex items-center border rounded-md">
-                <span className="bg-gray-200 px-4 py-2">https://qiita.com/</span>
+                <span className="bg-gray-200 px-4 py-2">
+                  https://qiita.com/
+                </span>
                 <input
                   type="text"
                   value={profile.qiita}
@@ -374,7 +412,9 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ user, onSave, onCance
           {showAtCoderInput && (
             <div className="flex items-center mt-4">
               <div className="flex items-center border rounded-md">
-                <span className="bg-gray-200 px-4 py-2">https://atcoder.jp/users/</span>
+                <span className="bg-gray-200 px-4 py-2">
+                  https://atcoder.jp/users/
+                </span>
                 <input
                   type="text"
                   value={profile.atcoder}
@@ -401,7 +441,11 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ user, onSave, onCance
             />
             <SexSelect sex={profile.sex} onChange={handleChange} />
             <AgeSelect age={profile.age} onChange={handleChange} ages={ages} />
-            <PlaceSelect place={profile.place} onChange={handleChange} places={places} />
+            <PlaceSelect
+              place={profile.place}
+              onChange={handleChange}
+              places={places}
+            />
             <OccupationSelect
               occupation={profile.occupation}
               onChange={handleChange}
@@ -414,11 +458,15 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ user, onSave, onCance
                 <>
                   <GraduateSelect
                     graduate={profile.graduate}
-                    onChange={(e) => setProfile({ ...profile, graduate: e.target.value })}
+                    onChange={(e) =>
+                      setProfile({ ...profile, graduate: e.target.value })
+                    }
                   />
                   <FacultySelect
                     faculty={profile.faculty}
-                    onChange={(e) => setProfile({ ...profile, faculty: e.target.value })}
+                    onChange={(e) =>
+                      setProfile({ ...profile, faculty: e.target.value })
+                    }
                   />
                   <DesireOccupationSelect
                     desire_occupation={profile.desired_occupation}
@@ -433,23 +481,33 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ user, onSave, onCance
               )}
             <HobbyInput
               hobby={profile.hobby}
-              onChange={(e) => setProfile({ ...profile, hobby: e.target.value })}
+              onChange={(e) =>
+                setProfile({ ...profile, hobby: e.target.value })
+              }
             />
             <AffiliationInput
               affiliation={profile.affiliation}
-              onChange={(e) => setProfile({ ...profile, affiliation: e.target.value })}
+              onChange={(e) =>
+                setProfile({ ...profile, affiliation: e.target.value })
+              }
             />
             <EditorSelect
               editor={profile.editor}
-              onChange={(e) => setProfile({ ...profile, editor: e.target.value })}
+              onChange={(e) =>
+                setProfile({ ...profile, editor: e.target.value })
+              }
             />
             <PortfolioInput
               portfolio={profile.portfolio}
-              onChange={(e) => setProfile({ ...profile, portfolio: e.target.value })}
+              onChange={(e) =>
+                setProfile({ ...profile, portfolio: e.target.value })
+              }
             />
             <MessageInput
               message={profile.message}
-              onChange={(e) => setProfile({ ...profile, message: e.target.value })}
+              onChange={(e) =>
+                setProfile({ ...profile, message: e.target.value })
+              }
             />
           </div>
           <div className="space-y-4">
@@ -471,14 +529,20 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ user, onSave, onCance
             </div>
             <div className="flex flex-wrap gap-2">
               {top_teches.map((tech, index) => (
-                <span key={index} className="bg-blue-300 text-white rounded-full px-4 py-1">
+                <span
+                  key={index}
+                  className="bg-blue-300 text-white rounded-full px-4 py-1"
+                >
                   {index + 1}位. {tech}
                 </span>
               ))}
             </div>
             <div className="flex flex-wrap gap-2">
               {selectedTech.map((tech, index) => (
-                <span key={index} className="bg-blue-300 text-white rounded-full px-4 py-1">
+                <span
+                  key={index}
+                  className="bg-blue-300 text-white rounded-full px-4 py-1"
+                >
                   {tech}
                 </span>
               ))}
@@ -492,7 +556,10 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ user, onSave, onCance
             </button>
             <div className="flex flex-wrap gap-2">
               {selectedExperiences.map((experience, index) => (
-                <span key={index} className="bg-blue-300 text-white rounded-full px-4 py-1">
+                <span
+                  key={index}
+                  className="bg-blue-300 text-white rounded-full px-4 py-1"
+                >
                   {experience}
                 </span>
               ))}
@@ -510,7 +577,10 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ user, onSave, onCance
             )}
             <ul className="flex gap-2 flex-wrap mb-4">
               {qualifications.map((qualification, index) => (
-                <li key={index} className="bg-blue-300 text-white rounded-full px-4 py-1">
+                <li
+                  key={index}
+                  className="bg-blue-300 text-white rounded-full px-4 py-1"
+                >
                   {qualification}
                   <button
                     onClick={() => handleRemoveQualification(index)}

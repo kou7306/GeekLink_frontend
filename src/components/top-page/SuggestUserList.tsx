@@ -40,7 +40,7 @@ const SuggestUserList = () => {
             key={userData.user.user_id}
             href={`/my-page/${userData.user.user_id}`}
             underline="none"
-            sx={{ color: "black" }}
+            sx={{ color: "text.primary" }}
           >
             <ListItem>
               <ListItemAvatar>
@@ -49,7 +49,10 @@ const SuggestUserList = () => {
                   alt={`${userData.user.name}'s icon`}
                 />
               </ListItemAvatar>
-              <ListItemText primary={userData.user.name} />
+              <ListItemText
+                primary={userData.user.name}
+                sx={{ color: "text.primary" }}
+              />
             </ListItem>
           </Link>
         ))}
