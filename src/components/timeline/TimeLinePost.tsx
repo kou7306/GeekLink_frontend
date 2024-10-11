@@ -1,9 +1,11 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { format } from "date-fns";
 import { ja } from "date-fns/locale";
-import { Post, Reaction } from "../../types/timeline";
+import { Post } from "../../types/timeline";
 import { sendReaction } from "../../utils/actionPost";
+import { colors, Link } from "@mui/material";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 interface TimeLinePostProps {
   post: Post;
@@ -11,19 +13,17 @@ interface TimeLinePostProps {
   uuid: string | null;
 }
 
-const emojis = ["👍", "❤️"]; // Example emojis
+const emojis = ["👍", "❤️", "🎉", "😢"]; // Example emojis
 
-const TimeLinePost: React.FC<TimeLinePostProps> = ({
-  post,
-  isOwnPost,
-  uuid,
-}) => {
+const TimeLinePost: React.FC<TimeLinePostProps> = ({ post, uuid }) => {
   const [selectedReactions, setSelectedReactions] = useState<Set<string>>(
     new Set<string>()
   );
   const [reactionCounts, setReactionCounts] = useState<{
     [emoji: string]: number;
   }>({});
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const emojiPickerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     // Initialize reaction counts and selected reactions
@@ -40,10 +40,6 @@ const TimeLinePost: React.FC<TimeLinePostProps> = ({
   }, [post.reactions]);
 
   const handleReaction = async (postId: string, emoji: string) => {
-    if (isOwnPost) {
-      console.log("自分の投稿にはリアクションできません");
-      return;
-    }
     if (uuid == undefined) {
       return;
     }
@@ -79,15 +75,80 @@ const TimeLinePost: React.FC<TimeLinePostProps> = ({
     }
   };
 
+  const handleAddNewReaction = async (postId: string, emoji: string) => {
+    // Function to handle adding a new reaction
+    if (uuid === null) return;
+
+    setSelectedReactions((prev) => new Set(prev).add(emoji));
+    setReactionCounts((prev) => ({
+      ...prev,
+      [emoji]: (prev[emoji] || 0) + 1,
+    }));
+
+    try {
+      await sendReaction(postId, uuid, emoji);
+    } catch (error) {
+      console.error("Failed to send new reaction", error);
+      // Revert optimistic update on error
+      setSelectedReactions((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(emoji);
+        return newSet;
+      });
+      setReactionCounts((prev) => ({
+        ...prev,
+        [emoji]: Math.max(0, (prev[emoji] || 0) - 1),
+      }));
+    }
+  };
+
+  const handleEmojiPickerToggle = () => {
+    setShowEmojiPicker((prev) => !prev);
+  };
+
+  const handleEmojiSelect = (emoji: string) => {
+    handleAddNewReaction(post.id, emoji);
+    setShowEmojiPicker(false);
+  };
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      emojiPickerRef.current &&
+      !emojiPickerRef.current.contains(event.target as Node)
+    ) {
+      setShowEmojiPicker(false);
+    }
+  };
+
+  useEffect(() => {
+    if (showEmojiPicker) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showEmojiPicker]);
+
   return (
-    <div key={post.id} className="border rounded-lg p-4 shadow">
+    <div key={post.id} className="border rounded-lg p-4 shadow bg-sub_base">
       <div className="flex items-start">
         <div>
           <div className="flex items-center">
-            <span className="font-semibold">User</span>
+            <Link
+              href={`/my-page/${post.userId}`}
+              underline="none"
+              sx={{ color: "black" }}
+            >
+              <span className="font-semibold">{post.user_name}</span>
+            </Link>
             <span className="text-gray-500 ml-2">·</span>
             <span className="text-gray-500 ml-2">
-              {format(new Date(post.timestamp), "M月d日 HH:mm", { locale: ja })}
+              {format(new Date(post.timestamp), "M月d日 HH:mm", {
+                locale: ja,
+              })}
             </span>
           </div>
           <h2 className="font-bold mt-2">{post.title}</h2>
@@ -95,23 +156,51 @@ const TimeLinePost: React.FC<TimeLinePostProps> = ({
           <p className="mt-1 text-gray-500 text-sm">やった時間: {post.time}</p>
         </div>
       </div>
-      <div className="mt-4 flex space-x-2">
-        {emojis.map((emoji) => (
-          <button
-            key={emoji}
-            onClick={() => handleReaction(post.id, emoji)}
-            disabled={isOwnPost}
-            className={`text-xl ${
-              isOwnPost
-                ? "text-gray-300 cursor-not-allowed"
-                : selectedReactions.has(emoji)
-                ? "text-blue-500"
-                : "text-gray-500 hover:text-blue-500"
-            }`}
+      <div className="mt-4 flex items-center space-x-2 relative">
+        <button
+          onClick={handleEmojiPickerToggle}
+          className="flex items-center justify-center"
+        >
+          <AddCircleIcon style={{ color: "blue", fontSize: 30 }} />
+        </button>
+
+        {/* Emoji Picker */}
+        {showEmojiPicker && (
+          <div
+            ref={emojiPickerRef}
+            className="absolute bg-white border rounded shadow-lg p-2 z-10"
           >
-            {emoji} {reactionCounts[emoji] || 0}
-          </button>
-        ))}
+            {emojis.map((emoji) => (
+              <button
+                key={emoji}
+                onClick={() => handleEmojiSelect(emoji)}
+                className="text-xl m-1"
+              >
+                {emoji}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Reaction Buttons (Hide if count is 0) */}
+        {emojis.map((emoji) => {
+          const hasReaction = reactionCounts[emoji] > 0;
+          return (
+            hasReaction && (
+              <button
+                key={emoji}
+                onClick={() => handleReaction(post.id, emoji)}
+                className={`text-xl ${
+                  hasReaction
+                    ? "text-blue-500"
+                    : "text-gray-500 hover:text-blue-500"
+                }`}
+              >
+                {emoji} {reactionCounts[emoji]}
+              </button>
+            )
+          );
+        })}
       </div>
     </div>
   );

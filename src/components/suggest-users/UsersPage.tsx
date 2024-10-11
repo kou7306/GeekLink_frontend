@@ -15,6 +15,7 @@ import { getUuidFromCookie } from "@/actions/users";
 import Loading from "../core/Loading";
 import UserCard from "./UserCard";
 import { Profile } from "../../types/user";
+import { getSuggestUser } from "@/utils/getSuggestUser";
 
 interface UsersResponse {
   samePlaceUsers: Profile[];
@@ -59,51 +60,9 @@ const UsersPage = ({ isUserIdExist = false }: Props) => {
 
   useEffect(() => {
     const fetchAndSetData = async () => {
-      const uuid = await getUuidFromCookie();
-      if (!uuid) return; // UUIDが存在しない場合は実行しない
+      const data = await getSuggestUser();
 
-      const CACHE_KEY = `suggestData_${uuid}`;
-      const CACHE_EXPIRY_KEY = `cacheExpiry_${uuid}`;
-      const CACHE_DURATION = 24 * 60 * 60 * 1000; // 有効期限を1日に設定
-
-      // キャッシュを確認
-      const cachedData: string | null = localStorage.getItem(CACHE_KEY);
-      const cacheExpiry: string | null = localStorage.getItem(CACHE_EXPIRY_KEY);
-
-      if (
-        cachedData &&
-        cacheExpiry &&
-        new Date().getTime() < parseInt(cacheExpiry)
-      ) {
-        setUsers(JSON.parse(cachedData));
-      } else {
-        // キャッシュが存在しないor有効期限が切れている場合はAPIを呼び出す
-        const response: Response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/suggest/all?uuid=${uuid}`,
-          {
-            method: "GET",
-            mode: "cors",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-
-        const data: UsersResponse = await response.json();
-
-        // データをキャッシュに保存し、有効期限を設定
-        localStorage.setItem(CACHE_KEY, JSON.stringify(data));
-        localStorage.setItem(
-          CACHE_EXPIRY_KEY,
-          (new Date().getTime() + CACHE_DURATION).toString()
-        );
-
-        setUsers(data);
-      }
+      setUsers(data);
     };
 
     fetchAndSetData();

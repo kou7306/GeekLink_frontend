@@ -33,19 +33,21 @@ const TopUserRanking = ({ user }: Props) => {
 
   return (
     <Link href={`/my-page/${user.user_id}`} underline="none">
-      <ListItemButton sx={{ 
-        paddingTop: 0.5,
-        paddingBottom: 0.5,
-      }}>
-        <EmojiEventsIcon sx={{ color: rankColor, width: 45, height: 45 }} />
+      <ListItemButton
+        sx={{
+          paddingTop: 0.5,
+          paddingBottom: 0.5,
+        }}
+      >
+        <EmojiEventsIcon sx={{ color: rankColor, width: 30, height: 30 }} />
         <Box sx={{ display: "flex", alignItems: "center", ml: 1 }}>
-          <Image src={user.image} alt={user.name} width={55} height={55} />
+          <Image src={user.image} alt={user.name} width={40} height={40} />
           <Box
             sx={{
               display: "flex",
               flexDirection: "row",
               alignItems: "center",
-              ml: 2,
+              ml: 1,
             }}
           >
             <ListItemText
@@ -54,8 +56,8 @@ const TopUserRanking = ({ user }: Props) => {
                 sx: {
                   fontWeight: 600,
                   fontSize: "1.25rem",
-                  mr: 18,
                   color: "black",
+                  mr: 3, // ユーザー名と貢献数の間のマージンを追加
                 },
               }}
             />
@@ -64,13 +66,8 @@ const TopUserRanking = ({ user }: Props) => {
               primaryTypographyProps={{
                 sx: {
                   fontWeight: 400,
-                  fontSize: "large",
+                  fontSize: "medium",
                   color: "text.secondary",
-                  textAlign: "left",
-                  position: "absolute",
-                  left: 300,
-                  top: "50%",
-                  transform: "translateY(-50%)",
                 },
               }}
             />
