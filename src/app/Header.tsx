@@ -35,6 +35,22 @@ const Header = () => {
             グループ
           </a>
           <a
+            href="/team-recruitments"
+            className={`text-black hover:text-primary ${
+              isActive("/team-recruitments") ? "text-primary" : ""
+            }`}
+          >
+            イベント
+          </a>
+          <a
+            href="/ranking"
+            className={`text-black hover:text-primary ${
+              isActive("/ranking") ? "text-primary" : ""
+            }`}
+          >
+            ランキング
+          </a>
+          <a
             href="/suggest-users"
             className={`text-black hover:text-primary ${
               isActive("/suggest-users") ? "text-primary" : ""
