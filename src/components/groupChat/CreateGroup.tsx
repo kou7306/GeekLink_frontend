@@ -82,7 +82,16 @@ const CreateGroup = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <div>
+      <Box
+        ml={8}
+        sx={{
+          position: "sticky",
+          top: 0,
+          zIndex: 1000,
+          backgroundColor: "white",
+          padding: "8px 0",
+        }}
+      >
         <Button
           onClick={handleOpen}
           variant="contained"
@@ -136,7 +145,7 @@ const CreateGroup = () => {
             </Box>
           </Box>
         </Modal>
-      </div>
+      </Box>
     </ThemeProvider>
   );
 };
