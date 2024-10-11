@@ -47,6 +47,7 @@ const Team = ({ item, key }: Props) => {
               ":hover": {
                 backgroundColor: "info.main",
               },
+
             }}
           >
             <Box
