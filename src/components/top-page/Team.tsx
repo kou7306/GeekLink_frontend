@@ -38,14 +38,13 @@ const Team = ({ item, key }: Props) => {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-              backgroundColor: "background.paper",
-              border: "1px solid", // 枠線を指定
-              borderColor: "text.secondary", // カスタムテーマの枠線色を指定
+              backgroundColor: "background.default",
               borderRadius: "0.5rem",
               padding: "1rem", // パディングを調整
               boxShadow: "0 4px 6px rgba(0.1, 0, 0, 0.1)",
               flexDirection: "column", // 縦に要素を並べる
               position: "relative",
+              ":hover": { backgroundColor: "info.main" },
             }}
           >
             <Box
