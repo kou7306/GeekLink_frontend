@@ -2,6 +2,8 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
+import SearchIcon from "@mui/icons-material/Search"; // 検索アイコン
+import ShuffleIcon from "@mui/icons-material/Shuffle"; // ランダムアイコン
 import Area from "./Area";
 import Age from "./Age";
 import Hobby from "./Hobby";
@@ -74,42 +76,59 @@ const FilterSearch: React.FC<Props> = ({
 
   return (
     <>
+      {/* 絞り込みボタン */}
       <Button
         onClick={handleOpen}
         variant="contained"
         sx={{
+          position: "fixed",
+          top: "10%",
+          right: "8%",
           color: "secondary.contrastText",
           backgroundColor: "secondary.main",
           borderRadius: "8px",
           padding: "8px 16px",
           fontWeight: "bold",
-          margin: "8px",
           "&:hover": {
             backgroundColor: "#1f235a",
           },
         }}
+        startIcon={<SearchIcon />} // 検索アイコンを追加
       >
-        絞り込み
+        検索
       </Button>
+
+      {/* ランダムマッチボタン */}
       <Button
         onClick={() => {
           router.push("/random-match");
         }}
         variant="contained"
         sx={{
+          position: "fixed",
+          bottom: "5%",
+          right: "8%",
+          width: "56px", // 幅を指定
+          height: "56px", // 高さを指定
+          borderRadius: "50%", // 丸いボタンにする
           backgroundColor: "secondary.main",
           color: "secondary.contrastText",
-          borderRadius: "8px",
-          padding: "8px 16px",
           fontWeight: "bold",
-          margin: "8px",
+          display: "flex",
+          flexDirection: "column", // 縦方向に配置
+          alignItems: "center", // 中央に配置
+          justifyContent: "center", // 中央に配置
+          padding: "8px", // パディングを調整
           "&:hover": {
             backgroundColor: "#1f235a",
           },
         }}
       >
-        ランダムマッチ
+        <ShuffleIcon /> {/* ランダムアイコンを追加 */}
+        {/* テキスト */}
       </Button>
+
+      {/* モーダル */}
       <Modal
         open={open}
         onClose={handleClose}
@@ -119,37 +138,29 @@ const FilterSearch: React.FC<Props> = ({
         <Box sx={style}>
           <Title />
           <Box mx={4} my={2}>
-            {/* 都道部県で探す */}
+            {/* 各フィルターコンポーネント */}
             <Area
               handlePlaceClick={handlePlaceClick}
               selectedPlaces={selectedPlaces}
             />
-            {/* 年齢層で探す */}
             <Age handleAgeClick={handleAgeClick} selectedAges={selectedAges} />
-            {/* 趣味で探す */}
             <Hobby onChangeHobby={onChangeHobby} enteredHobby={enteredHobby} />
-            {/* 得意言語一位で探す */}
-            {/* TODO:一位のもののデータを表示する */}
             <Tech
               handleFirstTechClick={handleFirstTechClick}
               selectedFirstTechs={selectedFirstTechs}
             />
-            {/* 職業で探す */}
             <Occupation
               handleOccupationClick={handleOccupationClick}
               selectedOccupations={selectedOccupations}
             />
-            {/* 卒業年度で探す */}
             <Graduate
               handleGraduateClick={handleGraduateClick}
               selectedGraduates={selectedGraduates}
             />
-            {/* 希望職種で探す */}
             <DesiredOccupation
               handleDesiredOccupationClick={handleDesiredOccupationClick}
               selectedDesiredOccupations={selectedDesiredOccupations}
             />
-            {/* 経験で探す */}
             <Experience
               handleExperienceClick={handleExperienceClick}
               selectedExperiences={selectedExperiences}

@@ -10,8 +10,7 @@ type Props = {
     | "samePlace"
     | "sameAge"
     | "sameGraduate"
-    | "sameDesiredOccupation"
-    | "sameTech";
+    | "sameDesiredOccupation";
 };
 
 const Chips = ({ user, chipOption }: Props) => {
@@ -41,20 +40,17 @@ const Chips = ({ user, chipOption }: Props) => {
         flexWrap: "wrap",
         gap: "4px",
         marginBottom: "12px",
+        minHeight: "40px", // 固定の最小高さを設定
+        alignItems: "center", // チップがない場合も中央に揃える
       }}
     >
-      {chipOption === "sameTech" &&
-        Array.isArray(chipsData(chipOption)) &&
+      {Array.isArray(chipsData(chipOption) ?? []) &&
+      (chipsData(chipOption) ?? []).length > 0 ? (
         (chipsData(chipOption) as string[]).map((tech) => (
           <Chip key={tech} label={tech} size="small" />
-        ))}
-      {chipOption === "overAll" &&
-        Array.isArray(chipsData(chipOption)) &&
-        (chipsData(chipOption) as string[]).map((tech) => (
-          <Chip key={tech} label={tech} size="small" />
-        ))}
-      {chipOption !== "sameTech" && chipOption !== "overAll" && (
-        <Chip label={chipsData(chipOption)} size="small" />
+        ))
+      ) : (
+        <Chip label="-" size="small" sx={{ visibility: "hidden" }} /> // チップがない場合は隠す
       )}
     </Box>
   );
