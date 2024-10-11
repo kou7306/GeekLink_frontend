@@ -8,58 +8,36 @@ import { getRandomUsers } from "../../utils/getRandomMatchUser";
 import { User } from "../../utils/getRandomMatchUser";
 import { postSwipedRightUserIds } from "../../utils/CreateLike";
 import Image from "next/image";
-import { Box, Button, Chip, IconButton, Link, Typography } from "@mui/material";
+import { Box, Chip, IconButton, Typography } from "@mui/material";
 
 export default function Home() {
-  const characters = [
-    {
-      name: "Asuka",
-      image: "/img/AsukaSouryu.jpg",
-      user_id: "1",
-      imageURL: "/img/AsukaSouryu.jpg",
-      age: 14,
-      sex: "female",
-      place: "東京都",
-      occupation: "学部3年生",
-      top_teches: ["Python", "JavaScript", "React"],
-    },
-    {
-      name: "Gendo Ikari",
-      image: "/img/GendoIkari.jpg",
-      user_id: "2",
-      imageURL: "/img/GendoIkari.jpg",
-      age: 48,
-      sex: "male",
-      place: "東京都",
-      occupation: "学生エンジニア",
-      top_teches: ["Java", "C++", "Python"],
-    },
-    // {
-    //   name: "Kaoru Nagisa",
-    //   imageURL: "/img/KaoruNagisa.jpg",
-    // },
-    // {
-    //   name: "Rei Ayanami",
-    //   imageURL: "/img/ReiAyanami.jpeg",
-    // },
-    // {
-    //   name: "Shinji Ikari",
-    //   imageURL: "/img/ShinjiIkari.jpg",
-    // },
-  ];
   type TinderCardInstance = {
     swipe: (dir?: string) => Promise<void>;
     restoreCard: () => Promise<void>;
   };
 
-  const [currentIndex, setCurrentIndex] = useState(characters.length - 1);
+  const [users, setUsers] = useState<User[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(users.length - 1);
   const [lastDirection, setLastDirection] = useState("");
   const currentIndexRef = useRef(currentIndex);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [swipedRightUserIds, setSwipedRightUserIds] = useState<string[]>([]);
 
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const users = await getRandomUsers();
+        setUsers(users);
+      } catch (error) {
+        console.error("Failed to fetch users:", error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
   const childRefs = useRef(
-    Array(characters.length)
+    Array(users.length)
       .fill(0)
       .map(() => React.createRef<TinderCardInstance>())
   ).current;
@@ -69,7 +47,7 @@ export default function Home() {
     currentIndexRef.current = val;
   };
 
-  const canGoBack = currentIndex < characters.length - 1;
+  const canGoBack = currentIndex < users.length - 1;
 
   const canSwipe = currentIndex >= 0;
 
@@ -108,20 +86,6 @@ export default function Home() {
       await childRefs[newIndex]?.current?.restoreCard();
     }
   };
-
-  const [users, setUsers] = useState<User[]>([]);
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const users = await getRandomUsers();
-        setUsers(users);
-      } catch (error) {
-        console.error("Failed to fetch users:", error);
-      }
-    };
-
-    fetchUsers();
-  }, []);
 
   return (
     <div className="flex flex-col justify-center items-center min-h-screen w-full ">
