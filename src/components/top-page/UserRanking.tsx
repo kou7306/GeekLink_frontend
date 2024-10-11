@@ -27,22 +27,22 @@ const UserRanking: React.FC<UserRankingsProps> = ({ user, type }) => {
     switch (type) {
       case "activity":
         if ("activity_score" in user) {
-          return `${user.activity_score} activity points`;
+          return `${user.activity_score} ポイント`;
         }
         break;
       case "contribution":
         if ("contribution_count" in user) {
-          return `${user.contribution_count} contributions`;
+          return `${user.contribution_count} コントリビューション`;
         }
         break;
       case "star":
         if ("total_stars" in user) {
-          return `${user.total_stars} stars`;
+          return `${user.total_stars} スター`;
         }
         break;
       case "qiita":
         if ("score" in user) {
-          return `${user.score}'s Qiita posts`;
+          return `${user.score} 投稿`;
         }
       default:
         return "";
@@ -53,57 +53,60 @@ const UserRanking: React.FC<UserRankingsProps> = ({ user, type }) => {
 
   return (
     <Link href={`/my-page/${user.user_id}`} underline="none">
-      <ListItemButton
-        sx={{
-          paddingTop: 0.5,
-          paddingBottom: 0.5,
+  <ListItemButton
+    sx={{
+      paddingTop: 0.5,
+      paddingBottom: 0.5,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+    }}
+  >
+    <Box sx={{ display: "flex", alignItems: "center" }}>
+      {user.rank <= 3 ? (
+        <EmojiEventsIcon sx={{ color: rankColor, width: 45, height: 45, ml: 14 }} />
+      ) : (
+        <ListItemText
+          primary={user.rank}
+          primaryTypographyProps={{
+            sx: {
+              fontSize: "1.5rem",
+              width: "30px",
+              textAlign: "center",
+              ml: 15,
+              mr: 1,
+            },
+          }}
+        />
+      )}
+      <Image src={user.image} alt={user.name} width={55} height={55} style={{ marginLeft: 10 }} />
+      <ListItemText
+        primary={user.name}
+        primaryTypographyProps={{
+          sx: {
+            fontWeight: 600,
+            fontSize: "1.25rem",
+            color: "black",
+            whiteSpace: "nowrap",
+            marginLeft: 4,
+          },
         }}
-      >
-        {user.rank >= 3 ? (
-          <ListItemText>{user.rank}</ListItemText>
-        ) : (
-          <EmojiEventsIcon sx={{ color: rankColor, width: 45, height: 45 }} />
-        )}
-        <Box sx={{ display: "flex", alignItems: "center", ml: 1 }}>
-          <Image src={user.image} alt={user.name} width={55} height={55} />
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              ml: 2,
-            }}
-          >
-            <ListItemText
-              primary={user.name}
-              primaryTypographyProps={{
-                sx: {
-                  fontWeight: 600,
-                  fontSize: "1.25rem",
-                  color: "black",
-                },
-              }}
-            />
-
-            <ListItemText
-              primary={getScore(user, type)}
-              primaryTypographyProps={{
-                sx: {
-                  fontWeight: 400,
-                  fontSize: "large",
-                  color: "text.secondary",
-                  textAlign: "left",
-                  position: "absolute",
-                  left: 320,
-                  top: "50%",
-                  transform: "translateY(-50%)",
-                },
-              }}
-            />
-          </Box>
-        </Box>
-      </ListItemButton>
-    </Link>
+      />
+    </Box>
+    <ListItemText
+      primary={getScore(user, type)}
+      primaryTypographyProps={{
+        sx: {
+          fontWeight: 400,
+          fontSize: "large",
+          color: "text.secondary",
+          textAlign: "right",
+          marginRight: 18
+        },
+      }}
+    />
+  </ListItemButton>
+</Link>
   );
 };
 
