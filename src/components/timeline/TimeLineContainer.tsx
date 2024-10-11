@@ -102,6 +102,7 @@ const TimeLineContainer: React.FC = () => {
       <div className="space-y-4 mb-4 w-full mx-auto">
         {posts.map((post) => (
           <TimeLinePost
+            key={post.id}
             post={post}
             isOwnPost={post.userId === uuid}
             uuid={uuid}
