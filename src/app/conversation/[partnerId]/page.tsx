@@ -1,6 +1,7 @@
 "use client";
 import Chat from "@/components/chat/Chat";
 import { useSearchParams } from "next/navigation";
+import UserList from "@/components/chat/UserList";
 
 const Page = ({ params }: { params: any }) => {
   const searchParams = useSearchParams();
@@ -9,9 +10,8 @@ const Page = ({ params }: { params: any }) => {
       {/* <div className="fixed top-18 bg-white p-4 shadow-md w-full z-99 text-2xl">
         {name}
       </div> */}
-      <div>
-        <Chat params={params} />
-      </div>
+      <UserList />
+      <Chat params={params} />
     </div>
   );
 };

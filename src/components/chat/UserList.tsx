@@ -10,6 +10,7 @@ import { getUuidFromCookie } from "@/actions/users";
 const UserList = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [uuid, setUuid] = useState<string>("");
+
   useEffect(() => {
     const fetchUsers = async () => {
       const users = await getMatchingUser();
@@ -38,14 +39,18 @@ const UserList = () => {
               <Link
                 key={user.user_id}
                 href={{
-                  pathname: `conversation/${user.user_id}`,
+                  pathname: `${user.user_id}`,
                 }}
               >
-                <div className="flex items-start mb-4 cursor-pointer">
-                  <div>
+                <div className="flex items-center mb-4 cursor-pointer">
+                  {" "}
+                  {/* items-centerを追加 */}
+                  <div className="flex-shrink-0">
+                    {" "}
+                    {/* 画像を縮小しないように */}
                     <div className="w-20 h-20 relative">
                       <Image
-                        src={user.img_url}
+                        src={user.img_url || "/user.svg"}
                         alt={user.name}
                         layout="fill"
                         objectFit="cover"
@@ -59,9 +64,10 @@ const UserList = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="flex flex-col justify-start mt-2 ml-5">
-                    <div className="font-semibold text-lg">{user.name}</div>
-                    <div className="text-gray-500 text-sm my-2">こんにちは</div>
+                  <div className="flex flex-col justify-center ml-10 mb-2">
+                    <div className="font-semibold text-lg text-center">
+                      {user.name}
+                    </div>
                   </div>
                 </div>
               </Link>
