@@ -135,10 +135,18 @@ const CreateGroup = () => {
                 rows={4}
               />
               <Button
+                variant="outlined"
+                color="primary"
+                onClick={handleClose}
+                sx={{ marginTop: "16px", marginRight: "8px" }}
+              >
+                キャンセル
+              </Button>
+              <Button
                 variant="contained"
                 color="primary"
                 onClick={handleSubmit}
-                sx={{ marginTop: "16px" }}
+                sx={{ marginTop: "16px", marginX: "8px" }}
               >
                 作成
               </Button>
