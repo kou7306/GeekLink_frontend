@@ -29,7 +29,7 @@ const Team = ({ item, key }: Props) => {
       <Link
         href={`/team-recruitment/${item.id}`}
         underline="none"
-        sx={{ color: "black" }}
+        sx={{ color: "text.primary" }}
       >
         <ListItem sx={{ py: 2, px: 0 }}>
           <Box
@@ -38,7 +38,9 @@ const Team = ({ item, key }: Props) => {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-              backgroundColor: "white",
+              backgroundColor: "background.paper",
+              border: "1px solid", // 枠線を指定
+              borderColor: "text.secondary", // カスタムテーマの枠線色を指定
               borderRadius: "0.5rem",
               padding: "1rem", // パディングを調整
               boxShadow: "0 4px 6px rgba(0.1, 0, 0, 0.1)",
@@ -76,7 +78,7 @@ const Team = ({ item, key }: Props) => {
                   label={tech}
                   size="small"
                   sx={{
-                    backgroundColor: "#2cb1c5",
+                    backgroundColor: "primary.main",
                     color: "white",
                   }}
                 />

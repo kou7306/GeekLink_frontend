@@ -57,10 +57,20 @@ const TeamRecruiting = () => {
         <Link href="/team-recruitments">
           <Typography
             variant="body2"
-            color="text.secondary"
-            sx={{ display: "flex", alignItems: "center" }}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              color: "primary.contrastText",
+            }}
           >
-            詳しく見る <ArrowForwardIosIcon fontSize="small" sx={{ ml: 0.5 }} />
+            詳しく見る
+            <ArrowForwardIosIcon
+              fontSize="small"
+              sx={{
+                ml: 0.5,
+                color: "primary.contrastText",
+              }}
+            />
           </Typography>
         </Link>
       </Box>

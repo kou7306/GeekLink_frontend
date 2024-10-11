@@ -17,6 +17,7 @@ const config: Config = {
         border: "#b5b5ba", //枠線
         accent: "#ee223c", //メインとは反対の色
         text: "#ffffff", //テキスト
+        sub_text: "#b5b5ba", //枠線
       },
     },
   },

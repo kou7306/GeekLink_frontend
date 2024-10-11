@@ -3,6 +3,7 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getUuidFromCookie } from "@/actions/users";
 import Image from 'next/image';
+import { useParams } from "next/navigation";
 
 const rankImages: { [key: string]: string } = {
   bronze: "/img/bronze.png",
@@ -13,11 +14,17 @@ const rankImages: { [key: string]: string } = {
   legend: "/img/legend.png",
 };
 
-const UserRank = () => {
+type Props = {
+  isMe: boolean;
+};
+
+const UserRank = ({ isMe }: Props) => {
+  const { uuid } = useParams();
+
   const { isPending, isError, error, data } = useQuery({
     queryKey: ["rank"],
     queryFn: async () => {
-      const uuid = await getUuidFromCookie();
+      const userUid = isMe ? (await getUuidFromCookie()) ?? uuid : uuid;
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/rank/user`,
         {
@@ -26,7 +33,7 @@ const UserRank = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            uuid: uuid,
+            uuid: userUid,
           }),
         }
       );

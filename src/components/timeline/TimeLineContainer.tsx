@@ -114,14 +114,15 @@ const TimeLineContainer: React.FC = () => {
       <IconButton
         onClick={() => setIsModalOpen(true)}
         className="fixed z-10"
-        style={{
+        sx={{
+          position: "fixed",
           bottom: "5%", // 下から5%の位置に固定
-          right: "28%", // 右から5%の位置に固定
-          backgroundColor: "#1976d2", // MUIのテーマ色を参考に設定
+          right: "30%", // 右から30%の位置に固定
           color: "#ffffff", // アイコンの色
+          backgroundColor: "secondary.main", // 背景色を追加
         }}
       >
-        <EditIcon />
+        <EditIcon fontSize="large" />
       </IconButton>
 
       <PostModal
