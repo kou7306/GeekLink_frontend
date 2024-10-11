@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import TopUserRanking from "./TopUserRanking";
 import { useQuery } from "@tanstack/react-query";
+import ComponentLoading from "../core/ComponentLoading";
 
 const TopUsersRanking = () => {
   const { isLoading, isError, error, data } = useQuery({
@@ -25,7 +26,7 @@ const TopUsersRanking = () => {
   // Ensure `data` is an array, defaulting to an empty array if not
   const users: any[] = Array.isArray(data) ? data : [];
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <ComponentLoading />;
 
   if (isError) return <div>Error: {error.message}</div>;
 

@@ -6,30 +6,41 @@ import {
   ListItemAvatar,
   ListItemText,
   Link,
+  CircularProgress,
+  Box,
 } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import { Profile } from "@/types/user";
 import { getSuggestUser } from "@/utils/getSuggestUser";
+import ComponentLoading from "../core/ComponentLoading";
 
 const SuggestUserList = () => {
   const [suggestUsers, setSuggestUsers] = useState<
     { user: Profile; score: number }[]
   >([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setIsLoading(true);
         const users = await getSuggestUser();
         if (users?.sortedUsers) {
           setSuggestUsers(users.sortedUsers);
         }
       } catch (error) {
         console.error("Error fetching users:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchData();
   }, []); // Fetch data only on component mount
+
+  if (isLoading) {
+    return <ComponentLoading />;
+  }
 
   return (
     <div>

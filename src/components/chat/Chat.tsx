@@ -6,10 +6,12 @@ import socketIOClient from "socket.io-client";
 import MessageComponent from "./MessageComponent";
 import { Message } from "../../types/message";
 import { Socket } from "socket.io-client";
+import ComponentLoading from "../core/ComponentLoading";
 
 const Chat = ({ params }: { params: any }) => {
   const [uuid, setUuid] = useState<string>("");
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchUsers = async () => {
       const uuid = await getUuidFromCookie();
@@ -29,9 +31,11 @@ const Chat = ({ params }: { params: any }) => {
 
   useEffect(() => {
     const fetchMessages = async () => {
+      setLoading(true);
       const { roomId, messages } = await getMessageAndRoomData(uuid, partnerId);
       setRoomId(roomId);
       setMessages(messages);
+      setLoading(false);
     };
 
     fetchMessages();
@@ -77,6 +81,8 @@ const Chat = ({ params }: { params: any }) => {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  if (loading) return <ComponentLoading />;
 
   return (
     <div className="bg-base px-4 py-10 sm:px-6 lg:px-8 h-full">

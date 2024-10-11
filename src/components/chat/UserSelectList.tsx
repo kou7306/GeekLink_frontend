@@ -7,6 +7,7 @@ import { User } from "@/utils/getMatchingUser";
 import { getUuidFromCookie } from "@/actions/users";
 import { getLatestMessage } from "@/utils/getLatestMessage";
 import { CardContent, Typography, CircularProgress } from "@mui/material";
+import ComponentLoading from "../core/ComponentLoading";
 
 const UserSelectList = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -61,10 +62,7 @@ const UserSelectList = () => {
         <div className="font-bold text-2xl m-4 ml-5">トーク一覧</div>
         <div id="character-list" className="overflow-y-auto h-full">
           {loading ? (
-            <div>
-              <CircularProgress />
-              <p>Loading users...</p>
-            </div>
+            <ComponentLoading />
           ) : error ? (
             <p className="text-red-500">{error}</p>
           ) : users.length === 0 ? (
