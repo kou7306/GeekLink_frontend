@@ -6,10 +6,16 @@ interface AffiliationInputProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const AffiliationInput: React.FC<AffiliationInputProps> = ({ affiliation, onChange }) => {
+const AffiliationInput: React.FC<AffiliationInputProps> = ({
+  affiliation,
+  onChange,
+}) => {
   return (
     <div>
-      <label htmlFor="affiliation" className="block text-sm font-medium text-gray-700 rounded-md">
+      <label
+        htmlFor="affiliation"
+        className="block text-sm font-medium text-text rounded-md"
+      >
         所属
       </label>
       <input

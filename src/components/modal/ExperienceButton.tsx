@@ -21,11 +21,11 @@ const ExperienceButton: React.FC<Props> = ({
             sx={{
               ...BoxStyle,
               backgroundColor: selectedExperiences.includes(experienceOption)
-                ? "#25276D"
-                : "white",
+                ? "primary.main"
+                : "background.default",
               color: selectedExperiences.includes(experienceOption)
-                ? "white"
-                : "#25276D",
+                ? "background.default"
+                : "primary.main",
             }}
           >
             {experienceOption}
@@ -37,11 +37,11 @@ const ExperienceButton: React.FC<Props> = ({
 };
 
 const BoxStyle = {
-  border: "1px solid #25276D",
+  border: "1px solid primary.main",
   borderRadius: "8px",
   padding: "8px 16px",
   display: "inline-block",
-  color: "#25276D",
+  color: "primary.main",
   textAlign: "center",
   marginX: 1,
   marginBottom: 1,

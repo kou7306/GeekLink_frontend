@@ -20,7 +20,10 @@ const SnsAccounts: React.FC<SnsAccountsProps> = ({
 }) => {
   return (
     <div>
-      <label htmlFor="github" className="block text-sm font-medium text-gray-700 rounded-md">
+      <label
+        htmlFor="github"
+        className="block text-sm font-medium text-text rounded-md"
+      >
         GitHub
       </label>
       <input
@@ -31,7 +34,10 @@ const SnsAccounts: React.FC<SnsAccountsProps> = ({
         onChange={onChange}
         className="mt-1 px-2 block w-full border-b border-gray-300 focus:border-blue-500 focus:outline-none"
       />
-      <label htmlFor="twitter" className="block text-sm font-medium text-gray-700 rounded-md">
+      <label
+        htmlFor="twitter"
+        className="block text-sm font-medium text-text rounded-md"
+      >
         X(Twitter)
       </label>
       <input
@@ -42,7 +48,10 @@ const SnsAccounts: React.FC<SnsAccountsProps> = ({
         onChange={onChange}
         className="mt-1 px-2 block w-full border-b border-gray-300 focus:border-blue-500 focus:outline-none"
       />
-      <label htmlFor="zenn" className="block text-sm font-medium text-gray-700 rounded-md">
+      <label
+        htmlFor="zenn"
+        className="block text-sm font-medium text-text rounded-md"
+      >
         Zenn
       </label>
       <input
@@ -53,7 +62,10 @@ const SnsAccounts: React.FC<SnsAccountsProps> = ({
         onChange={onChange}
         className="mt-1 px-2 block w-full border-b border-gray-300 focus:border-blue-500 focus:outline-none"
       />
-      <label htmlFor="qiita" className="block text-sm font-medium text-gray-700 rounded-md">
+      <label
+        htmlFor="qiita"
+        className="block text-sm font-medium text-text rounded-md"
+      >
         Qiita
       </label>
       <input
@@ -64,7 +76,10 @@ const SnsAccounts: React.FC<SnsAccountsProps> = ({
         onChange={onChange}
         className="mt-1 px-2 block w-full border-b border-gray-300 focus:border-blue-500 focus:outline-none"
       />
-      <label htmlFor="atcoder" className="block text-sm font-medium text-gray-700 rounded-md">
+      <label
+        htmlFor="atcoder"
+        className="block text-sm font-medium text-text rounded-md"
+      >
         AtCoder
       </label>
       <input

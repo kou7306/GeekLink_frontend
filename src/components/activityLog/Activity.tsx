@@ -126,7 +126,13 @@ const Activity: React.FC<ActivityProps> = ({ uuid }) => {
         </Typography>
 
         {/* 年間コントリビューションのグラフ */}
-        <Box my={4} display={"flex"} justifyContent={"center"} px={24}>
+        <Box
+          my={4}
+          display={"flex"}
+          justifyContent={"center"}
+          mx={24}
+          bgcolor={"#2b2a36"}
+        >
           <ActivityLogGraph propsArray={graphData} />
         </Box>
 

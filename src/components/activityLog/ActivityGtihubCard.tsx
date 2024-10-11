@@ -24,7 +24,12 @@ export const GitHubActivityCard: React.FC<{ activity: any }> = ({
 
   return (
     <Paper elevation={0} sx={{ mb: 2, ml: 4, boxShadow: "none" }}>
-      <Card sx={{ border: "1px solid rgba(0, 0, 0, 0.12)" }}>
+      <Card
+        sx={{
+          border: "1px solid rgba(0, 0, 0, 0.12)",
+          bgcolor: "background.default",
+        }}
+      >
         <Link
           href={activity.url}
           target="_blank"
@@ -34,15 +39,18 @@ export const GitHubActivityCard: React.FC<{ activity: any }> = ({
         >
           <CardContent>
             <Box display="flex" alignItems="center" mb={1}>
-              <GitHubIcon fontSize="small" sx={{ mr: 1 }} />
-              <Typography variant="caption" color="black">
+              <GitHubIcon
+                fontSize="small"
+                sx={{ mr: 1, color: "text.primary" }}
+              />
+              <Typography variant="caption" color="text.primary">
                 {activity.type}
               </Typography>
             </Box>
-            <Typography variant="subtitle1" color="black">
+            <Typography variant="subtitle1" color="text.primary">
               {displayText}
             </Typography>
-            <Typography variant="body2" color="textSecondary">
+            <Typography variant="body2" color="text.secondary">
               {new Date(activity.date).toLocaleTimeString()} -{" "}
               {activity.repository}
             </Typography>

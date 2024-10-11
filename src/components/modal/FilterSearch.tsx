@@ -84,13 +84,13 @@ const FilterSearch: React.FC<Props> = ({
           position: "fixed",
           top: "10%",
           right: "8%",
-          color: "secondary.contrastText",
+          color: "text.primary",
           backgroundColor: "secondary.main",
           borderRadius: "8px",
           padding: "8px 16px",
           fontWeight: "bold",
           "&:hover": {
-            backgroundColor: "#1f235a",
+            backgroundColor: "secondary.main",
           },
         }}
         startIcon={<SearchIcon />} // 検索アイコンを追加
@@ -112,20 +112,19 @@ const FilterSearch: React.FC<Props> = ({
           height: "56px", // 高さを指定
           borderRadius: "50%", // 丸いボタンにする
           backgroundColor: "secondary.main",
-          color: "secondary.contrastText",
+          color: "text.primary",
           fontWeight: "bold",
           display: "flex",
           flexDirection: "column", // 縦方向に配置
           alignItems: "center", // 中央に配置
           justifyContent: "center", // 中央に配置
-          padding: "8px", // パディングを調整
+          padding: "0", // パディングを0にしてアイコンが収まるようにする
           "&:hover": {
-            backgroundColor: "#1f235a",
+            backgroundColor: "secondary.main", // ホバー時の色を維持
           },
         }}
       >
-        <ShuffleIcon /> {/* ランダムアイコンを追加 */}
-        {/* テキスト */}
+        <ShuffleIcon fontSize="large" /> {/* ランダムアイコンを追加 */}
       </Button>
 
       {/* モーダル */}
