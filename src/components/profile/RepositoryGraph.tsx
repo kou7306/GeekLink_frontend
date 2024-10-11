@@ -80,7 +80,7 @@ const RepositoryGraph = ({ repository }: Props) => {
         font: {
           size: 16,
           family: "Arial",
-          weight: "normal",
+          weight: 400, // "normal" corresponds to 400 in numeric font weight
         },
         align: "start" as const,
       },
