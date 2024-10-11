@@ -102,6 +102,7 @@ const TimeLineContainer: React.FC = () => {
       <div className="space-y-4 mb-4 w-full mx-auto">
         {posts.map((post) => (
           <TimeLinePost
+            key={post.id}
             post={post}
             isOwnPost={post.userId === uuid}
             uuid={uuid}
@@ -115,12 +116,12 @@ const TimeLineContainer: React.FC = () => {
         className="fixed z-10"
         style={{
           bottom: "5%", // 下から5%の位置に固定
-          right: "28%", // 右から5%の位置に固定
+          right: "30%", // 右から5%の位置に固定
           backgroundColor: "#1976d2", // MUIのテーマ色を参考に設定
           color: "#ffffff", // アイコンの色
         }}
       >
-        <EditIcon />
+        <EditIcon fontSize="large" />
       </IconButton>
 
       <PostModal
