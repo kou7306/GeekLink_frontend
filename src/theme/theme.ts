@@ -13,7 +13,7 @@ const theme = createTheme({
     },
     background: {
       default: "#2b2a36", // 背景
-      paper: "#000000", // コンテンツの背景
+      paper: "#2f3132", // コンテンツの背景
     },
     text: {
       primary: "#ffffff", // テキスト

@@ -77,7 +77,7 @@ const RepositoryList: React.FC<RepositoryListProps> = ({ uuid }) => {
         boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
         borderRadius: 2,
         padding: 2,
-        bgcolor: "background.paper", // 背景色をテーマに基づいて設定
+        bgcolor: "background.paper",
       }}
     >
       <Box marginX={4}>
@@ -100,6 +100,9 @@ const RepositoryList: React.FC<RepositoryListProps> = ({ uuid }) => {
                 // 枠線を削除
                 borderRadius: "20px",
                 backgroundColor: (theme) => theme.palette.background.default, // 背景色を設定
+                ":hover": {
+                  bgcolor: "info.main",
+                },
               }}
             >
               <RepositoryGraph repository={repository} />
