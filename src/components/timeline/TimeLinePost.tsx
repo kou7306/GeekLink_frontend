@@ -4,7 +4,7 @@ import { format } from "date-fns";
 import { ja } from "date-fns/locale";
 import { Post } from "../../types/timeline";
 import { sendReaction } from "../../utils/actionPost";
-import { colors, Link } from "@mui/material";
+import { Link } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 interface TimeLinePostProps {
