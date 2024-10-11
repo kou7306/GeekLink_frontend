@@ -26,7 +26,7 @@ const TopUsersRanking = () => {
   // Ensure `data` is an array, defaulting to an empty array if not
   const users: any[] = Array.isArray(data) ? data : [];
 
-  if (isPending) return <ComponentLoading />;
+  if (isLoading) return <ComponentLoading />;
 
   if (isError) return <div>Error: {error.message}</div>;
 
