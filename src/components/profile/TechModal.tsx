@@ -24,16 +24,16 @@ export const TechModal: React.FC<ModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center mt-16">
       <div className="bg-white p-4 rounded-lg">
-        <h2 className="font-semibold text-xl mb-4">技術を選択</h2>
-        <div className="grid grid-cols-6 gap-4">
+        <h2 className="font-semibold text-xl mb-3">技術を選択</h2>
+        <div className="grid grid-cols-6 gap-3">
           {technologies.map((tech) => (
             <button
               key={tech}
               type="button"
               onClick={() => handleSelect(tech)}
-              className={`p-2 rounded-full ${
+              className={`p-1 rounded-full ${
                 selectedTech.includes(tech) ? "bg-blue-300 text-white" : "bg-gray-200"
               }`}
             >
