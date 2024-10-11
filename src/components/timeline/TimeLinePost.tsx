@@ -23,7 +23,6 @@ const TimeLinePost: React.FC<TimeLinePostProps> = ({ post, uuid }) => {
     [emoji: string]: number;
   }>({});
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  const emojiPickerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     // Initialize reaction counts and selected reactions
@@ -111,29 +110,8 @@ const TimeLinePost: React.FC<TimeLinePostProps> = ({ post, uuid }) => {
     setShowEmojiPicker(false);
   };
 
-  const handleClickOutside = (event: MouseEvent) => {
-    if (
-      emojiPickerRef.current &&
-      !emojiPickerRef.current.contains(event.target as Node)
-    ) {
-      setShowEmojiPicker(false);
-    }
-  };
-
-  useEffect(() => {
-    if (showEmojiPicker) {
-      document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [showEmojiPicker]);
-
   return (
-    <div key={post.id} className="border rounded-lg p-4 shadow bg-sub_base">
+    <div key={post.id} className="rounded-lg p-4 shadow bg-sub_base">
       <div className="flex items-start">
         <div>
           <div className="flex items-center">
@@ -156,7 +134,7 @@ const TimeLinePost: React.FC<TimeLinePostProps> = ({ post, uuid }) => {
           <p className="mt-1 text-sub_text text-sm">やった時間: {post.time}</p>
         </div>
       </div>
-      <div className="mt-4 flex items-center space-x-2 relative">
+      <div className="mt-4 flex items-center space-x-2">
         <button
           onClick={handleEmojiPickerToggle}
           className="flex items-center justify-center"
@@ -171,10 +149,7 @@ const TimeLinePost: React.FC<TimeLinePostProps> = ({ post, uuid }) => {
 
         {/* Emoji Picker */}
         {showEmojiPicker && (
-          <div
-            ref={emojiPickerRef}
-            className="absolute bg-white border rounded shadow-lg p-2 z-10"
-          >
+          <div className="bg-hover border rounded shadow-lg p-2">
             {emojis.map((emoji) => (
               <button
                 key={emoji}

@@ -24,13 +24,14 @@ const UserCard = ({ user, chipOption }: Props) => {
       underline="none"
       sx={{
         color: "black",
-        display: "block", // ブロック要素にすることでサイズを固定
+        display: "block",
         borderRadius: "8px",
-        width: "15%", // 固定の横幅を設定
-        transition: "background-color 0.3s, transform 0.3s", // ホバー時のアニメーションを追加
+        width: "100%", // widthを%で指定
+        maxWidth: "250px", // レスポンシブなサイズの上限
+        transition: "background-color 0.3s, transform 0.3s",
         backgroundColor: "background.paper",
         "&:hover": {
-          transform: "scale(1.05)", // ホバー時に少し拡大
+          transform: "scale(1.05)",
         },
       }}
     >
@@ -39,9 +40,10 @@ const UserCard = ({ user, chipOption }: Props) => {
           display: "flex",
           flexDirection: "column",
           alignItems: "flex-start",
-          padding: "16px",
+          padding: "1rem", // paddingをremに変更
           boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-          height: "200px", // 固定の高さを設定
+          height: "auto", // autoにして内容に応じて伸縮
+          minHeight: "10rem", // 必要であれば最低限の高さを指定
         }}
       >
         <Box
@@ -49,18 +51,17 @@ const UserCard = ({ user, chipOption }: Props) => {
             display: "flex",
             alignItems: "center",
             width: "100%",
-            marginBottom: "12px",
-            flexGrow: 1, // flexGrowを追加してサイズを揃える
+            flexGrow: 1,
           }}
         >
           <Box
             sx={{
               position: "relative",
-              width: "50px",
-              height: "50px",
+              width: "3rem", // 相対的な単位でサイズを指定
+              height: "3rem",
               borderRadius: "50%",
               overflow: "hidden",
-              marginRight: "12px",
+              marginRight: "0.75rem", // 相対的な単位でマージンを指定
             }}
           >
             <Image
