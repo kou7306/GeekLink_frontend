@@ -1,7 +1,7 @@
 import React from "react";
 import { Profile } from "../../types/user";
 import Image from "next/image";
-import { Box, Typography, Button, Link } from "@mui/material";
+import { Box, Typography, Link } from "@mui/material";
 import { useRouter } from "next/navigation";
 import Chips from "./Chips";
 
@@ -18,75 +18,72 @@ type Props = {
 
 const UserCard = ({ user, chipOption }: Props) => {
   const router = useRouter();
-  console.log(user);
   return (
-    <Box
+    <Link
+      href={`/my-page/${user.user_id}`}
+      underline="none"
       sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "flex-start",
-        width: "100%",
-        maxWidth: "300px",
-        border: "1px solid #e0e0e0",
+        color: "black",
+        display: "block", // ブロック要素にすることでサイズを固定
         borderRadius: "8px",
-        padding: "16px",
-        boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+        width: "15%", // 固定の横幅を設定
+        transition: "background-color 0.3s", // ホバー時のアニメーション
+        backgroundColor: "white",
+        "&:hover": {
+          backgroundColor: "#D3D3D3", // グレー (Light Gray)
+        },
       }}
     >
       <Box
         sx={{
           display: "flex",
-          alignItems: "center",
-          width: "100%",
-          marginBottom: "12px",
+          flexDirection: "column",
+          alignItems: "flex-start",
+          border: "1px solid #e0e0e0",
+          borderRadius: "8px",
+          padding: "16px",
+          boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+          height: "200px", // 固定の高さを設定
         }}
       >
         <Box
           sx={{
-            position: "relative",
-            width: "50px",
-            height: "50px",
-            borderRadius: "50%",
-            overflow: "hidden",
-            marginRight: "12px",
+            display: "flex",
+            alignItems: "center",
+            width: "100%",
+            marginBottom: "12px",
+            flexGrow: 1, // flexGrowを追加してサイズを揃える
           }}
         >
-          <Image
-            src={user.image_url ?? "/user.svg"}
-            layout="fill"
-            objectFit="cover"
-            alt={user.name}
-          />
-        </Box>
-        <Box sx={{ flexGrow: 1 }}>
-          <Typography variant="h6" component="h2">
-            {user.name}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {user.occupation}
-          </Typography>
-        </Box>
-      </Box>
-      <Chips user={user} chipOption={chipOption} />
-      <Box sx={{ display: "flex", width: "100%", gap: "8px" }}>
-        <Link href={`/my-page/${user.user_id}`}>
-          <Button
-            variant="contained"
+          <Box
             sx={{
-              width: "270px",
-              borderRadius: "100px",
-              backgroundColor: "secondary.main",
-              color: "white",
-              "&:hover": {
-                backgroundColor: "secondary.main",
-              },
+              position: "relative",
+              width: "50px",
+              height: "50px",
+              borderRadius: "50%",
+              overflow: "hidden",
+              marginRight: "12px",
             }}
           >
-            詳細へ
-          </Button>
-        </Link>
+            <Image
+              src={user.image_url || "/user.svg"}
+              layout="fill"
+              objectFit="cover"
+              alt={user.name}
+            />
+          </Box>
+          <Box sx={{ flexGrow: 1 }}>
+            <Typography variant="h6" component="h2">
+              {user.name}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {user.occupation}
+            </Typography>
+          </Box>
+        </Box>
+        <Chips user={user} chipOption={chipOption} />
       </Box>
-    </Box>
+    </Link>
   );
 };
 

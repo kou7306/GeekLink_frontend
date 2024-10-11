@@ -169,11 +169,17 @@ const UsersPage = ({ isUserIdExist = false }: Props) => {
         onSearch={handleSearch}
       />
       {isUserIdExist && users ? (
-        <div>
+        <div className="ml-4">
           <p className="flex justify-start text-2xl font-bold text-center mt-8 ml-8">
-            総合的な一致度が高いお相手
+            総合的な一致度が高い相手
           </p>
-          <div className="flex overflow-x-scroll space-x-4 p-4">
+          <div
+            className={`flex ${
+              users.sortedUsers.length > 6
+                ? "overflow-x-scroll"
+                : "overflow-x-hidden"
+            } space-x-4 p-4 ml-6`}
+          >
             {users.sortedUsers.length > 0 ? (
               users.sortedUsers.map((user) => (
                 <UserCard
@@ -187,9 +193,15 @@ const UsersPage = ({ isUserIdExist = false }: Props) => {
             )}
           </div>
           <p className="flex justify-start text-2xl font-bold text-center mt-8 ml-8">
-            技術スタックが一致しているお相手
+            技術スタックが一致している相手
           </p>
-          <div className="flex overflow-x-scroll space-x-4 p-4">
+          <div
+            className={`flex ${
+              users.sameTopTechUsers.length > 6
+                ? "overflow-x-scroll"
+                : "overflow-x-hidden"
+            } space-x-4 p-4 ml-6`}
+          >
             {users.sameTopTechUsers.length > 0 ? (
               users.sameTopTechUsers.map((user) => (
                 <UserCard
@@ -203,9 +215,15 @@ const UsersPage = ({ isUserIdExist = false }: Props) => {
             )}
           </div>
           <p className="flex justify-start text-2xl font-bold text-center mt-8 ml-8">
-            居住地が近いお相手
+            居住地が近い相手
           </p>
-          <div className="flex overflow-x-scroll space-x-4 p-4">
+          <div
+            className={`flex ${
+              users.samePlaceUsers.length > 6
+                ? "overflow-x-scroll"
+                : "overflow-x-hidden"
+            } space-x-4 p-4 ml-6`}
+          >
             {users.samePlaceUsers.length > 0 ? (
               users.samePlaceUsers.map((user) => (
                 <UserCard
@@ -219,9 +237,15 @@ const UsersPage = ({ isUserIdExist = false }: Props) => {
             )}
           </div>
           <p className="flex justify-start text-2xl font-bold text-center mt-8 ml-8">
-            年齢が同じお相手
+            年齢が同じ相手
           </p>
-          <div className="flex overflow-x-scroll space-x-4 p-4">
+          <div
+            className={`flex ${
+              users.sameAgeUsers.length > 6
+                ? "overflow-x-scroll"
+                : "overflow-x-hidden"
+            } space-x-4 p-4 ml-6`}
+          >
             {users.sameAgeUsers.length > 0 ? (
               users.sameAgeUsers.map((user) => (
                 <UserCard key={user.user_id} user={user} chipOption="sameAge" />
@@ -231,9 +255,15 @@ const UsersPage = ({ isUserIdExist = false }: Props) => {
             )}
           </div>
           <p className="flex justify-start text-2xl font-bold text-center mt-8 ml-8">
-            卒業年度が同じお相手
+            卒業年度が同じ相手
           </p>
-          <div className="flex overflow-x-scroll space-x-4 p-4">
+          <div
+            className={`flex ${
+              users.sameGraduateYearUsers.length > 6
+                ? "overflow-x-scroll"
+                : "overflow-x-hidden"
+            } space-x-4 p-4 ml-6`}
+          >
             {users.sameGraduateYearUsers.length > 0 ? (
               users.sameGraduateYearUsers.map((user) => (
                 <UserCard
@@ -247,9 +277,15 @@ const UsersPage = ({ isUserIdExist = false }: Props) => {
             )}
           </div>
           <p className="flex justify-start text-2xl font-bold text-center mt-8 ml-8">
-            希望職種が同じお相手
+            希望職種が同じ相手
           </p>
-          <div className="flex overflow-x-scroll space-x-4 p-4">
+          <div
+            className={`flex ${
+              users.sameJobTypeUsers.length > 6
+                ? "overflow-x-scroll"
+                : "overflow-x-hidden"
+            } space-x-4 p-4 ml-6`}
+          >
             {users.sameJobTypeUsers.length > 0 ? (
               users.sameJobTypeUsers.map((user) => (
                 <UserCard
