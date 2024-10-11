@@ -31,11 +31,11 @@ const GitHubContributions = ({ isMe }: Props) => {
 
   if (isPending) return <ComponentLoading />;
 
-  if (isError) return <div>読み込めませんでした</div>;
+  if (isError) return <Box mt={2}>読み込めませんでした</Box>;
 
   // 配列かどうかを確認
   if (!Array.isArray(data)) {
-    return <div>Error: The fetched data is not an array</div>;
+    return <Box mt={2}>読み込めませんでした</Box>;
   }
 
   // 合計のコントリビューション数を計算
