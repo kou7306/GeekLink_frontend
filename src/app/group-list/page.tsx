@@ -1,17 +1,19 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import CreateGroup from "@/components/groupChat/CreateGroup";
+import { Box } from "@mui/material";
+import Link from "next/link";
 
 interface Group {
-  id: String
-  owner_id: String
-  member_ids: String[]
-  name: String
-  description: String
+  id: String;
+  owner_id: String;
+  member_ids: String[];
+  name: String;
+  description: String;
 }
 
 const Page = () => {
@@ -20,12 +22,13 @@ const Page = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/group/group-list`);
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/group/group-list`
+        );
         const data = await response.json();
-        console.log(data.group);
         setGroups(data.group);
       } catch (error) {
-        console.error('Error fetching data', error);
+        console.error("Error fetching data", error);
       }
     };
 
@@ -35,29 +38,84 @@ const Page = () => {
   return (
     <div className="p-4">
       <CreateGroup />
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 justify-center">
+      <Grid container spacing={3} justifyContent="center">
         {groups?.map((group) => (
-          <div key={group.id.toString()} className="flex justify-center">
-            <a href={`/group/${group.id}`} className="block w-full max-w-xs">
-              <Card className="w-full h-72 flex flex-col justify-between bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 ease-in-out">
-                <CardContent className="flex flex-col justify-between h-full">
-                  <div>
-                    <Typography variant="h5" component="div" className="text-xl font-semibold mb-8">
+          <Grid item xs={12} sm={6} md={4} key={group.id.toString()}>
+            <Link
+              href={`/group/${group.id}`}
+              style={{ textDecoration: "none" }}
+            >
+              <Card
+                sx={{
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  transition: "0.3s",
+                  "&:hover": {
+                    transform: "translateY(-5px)",
+                    boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
+                  },
+                  borderRadius: "15px",
+                  overflow: "hidden",
+                }}
+              >
+                <CardContent
+                  sx={{
+                    flexGrow: 1,
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    padding: "20px",
+                  }}
+                >
+                  <Box>
+                    <Typography
+                      variant="h5"
+                      component="div"
+                      gutterBottom
+                      sx={{
+                        fontWeight: "bold",
+                        color: "#333",
+                        marginBottom: "15px",
+                      }}
+                    >
                       {group.name}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary" className="text-gray-600 mb-2">
-                      概要：{group.description}
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        color: "#666",
+                        marginBottom: "20px",
+                        lineHeight: 1.6,
+                      }}
+                    >
+                      {group.description}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary" className="text-gray-600">
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "center",
+                      marginTop: "10px",
+                    }}
+                  >
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        color: "#888",
+                        fontWeight: "bold",
+                      }}
+                    >
                       メンバー数：{group.member_ids.length}人
                     </Typography>
-                  </div>
+                  </Box>
                 </CardContent>
               </Card>
-            </a>
-          </div>
+            </Link>
+          </Grid>
         ))}
-      </div>
+      </Grid>
     </div>
   );
 };
