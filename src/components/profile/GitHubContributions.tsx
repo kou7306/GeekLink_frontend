@@ -3,6 +3,7 @@ import { Box, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import React from "react";
+import ComponentLoading from "../core/ComponentLoading";
 
 type Props = {
   isMe: boolean;
@@ -24,10 +25,11 @@ const GitHubContributions = ({ isMe }: Props) => {
         }
       );
       const data = await response.json();
-      console.log(data);
       return data;
     },
   });
+
+  if (isPending) return <ComponentLoading />;
 
   if (isError) return <div>読み込めませんでした</div>;
 

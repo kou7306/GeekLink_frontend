@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
 import { getUuidFromCookie } from "@/actions/users";
 import axios from "axios";
 import { User } from "./options";
@@ -165,7 +164,11 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
                 if (isLiked) setHoverText("フォロー中");
               }}
             >
-              <span className={`text-lg font-semibold ${isLiked ? "" : "text-white"}`}>
+              <span
+                className={`text-lg font-semibold ${
+                  isLiked ? "" : "text-white"
+                }`}
+              >
                 {!isLiked ? "フォロー" : hoverText}
               </span>
             </button>
@@ -178,7 +181,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
           {/* 使用言語の割合 */}
           <PercentageOfLanguages isMe={isMe} />
           {/* ユーザーランク */}
-          <UserRank isMe={isMe}/>
+          <UserRank isMe={isMe} />
         </div>
         <UserMainInformation user={user} onEdit={onEdit} isMe={isMe} />
       </div>

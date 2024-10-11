@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { QiitaArticle } from "../../types/qiitaArticle";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import ComponentLoading from "../core/ComponentLoading";
 
 interface QiitaListProps {
   uuid: string;
@@ -33,7 +34,6 @@ const QiitaList: React.FC<QiitaListProps> = ({ uuid }) => {
       }
 
       const jsonData = await response.json();
-      console.log(jsonData.postDetails);
 
       // データが存在しない場合のデフォルト値
       return {
@@ -42,7 +42,7 @@ const QiitaList: React.FC<QiitaListProps> = ({ uuid }) => {
     },
   });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <ComponentLoading />;
 
   if (isError)
     return (

@@ -4,13 +4,13 @@ import {
   getYearlyContribution,
   getContributionsSinceLastUpdate,
   getMonthlyContributionInfo,
-  getContributionsInfoSinceLastUpdate,
 } from "../../utils/getGithubActivity";
 import ActivityLogGraph from "./ActivityLogGraph";
 import ActivityLog from "./ActivityLog";
 import { Box, Typography, Paper } from "@mui/material";
 import { getQiitaActivity } from "../../utils/getQiitaActivity";
 import { getGeekLinkActivity } from "../../utils/getGeekLinkActivity";
+import ComponentLoading from "../core/ComponentLoading";
 
 interface ActivityProps {
   uuid: string;
@@ -82,7 +82,7 @@ const Activity: React.FC<ActivityProps> = ({ uuid }) => {
   }, [uuid]);
 
   if (loading) {
-    return <div>Loading...</div>; // ローディング中の表示
+    return <ComponentLoading />; // ローディング中の表示
   }
 
   const activityData = [

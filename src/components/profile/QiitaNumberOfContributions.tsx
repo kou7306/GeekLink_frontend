@@ -3,6 +3,7 @@ import { Box, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import React from "react";
+import ComponentLoading from "../core/ComponentLoading";
 
 type Props = {
   isMe: boolean;
@@ -28,7 +29,8 @@ const QiitaNumberOfContributions = ({ isMe }: Props) => {
     },
   });
 
-  if (isPending) return <div>Loading...</div>;
+  if (isPending) return <ComponentLoading />;
+
   if (isError) return <div>Error</div>;
 
   const countQiitaArticles = data?.postDetails?.length ?? 0;
