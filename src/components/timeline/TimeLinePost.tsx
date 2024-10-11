@@ -5,6 +5,7 @@ import { ja } from "date-fns/locale";
 import { Post } from "../../types/timeline";
 import { sendReaction } from "../../utils/actionPost";
 import { colors, Link } from "@mui/material";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 interface TimeLinePostProps {
   post: Post;
@@ -158,9 +159,9 @@ const TimeLinePost: React.FC<TimeLinePostProps> = ({ post, uuid }) => {
       <div className="mt-4 flex items-center space-x-2 relative">
         <button
           onClick={handleEmojiPickerToggle}
-          className="w-5 h-5 flex items-center justify-center bg-primary text-white rounded-full hover:bg-blue-600"
+          className="flex items-center justify-center"
         >
-          +
+          <AddCircleIcon style={{ color: "blue", fontSize: 30 }} />
         </button>
 
         {/* Emoji Picker */}

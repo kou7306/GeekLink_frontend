@@ -23,7 +23,7 @@ export default async function RootLayout({
       <body className={`${inter.className} bg-base`}>
         {user != null && <Header />}
         <Providers>
-          <main className="py-20">{children}</main>
+          <main className="py-20 text-font">{children}</main>
         </Providers>
         <Toaster />
       </body>
