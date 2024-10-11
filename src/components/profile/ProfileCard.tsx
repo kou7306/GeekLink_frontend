@@ -33,6 +33,7 @@ interface LikeCheckResponse {
 const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [uuid, setUuid] = useState<string>();
+  const [hoverText, setHoverText] = useState<string>("フォロー中");
 
   // Get UUID from cookie on component mount
   useEffect(() => {
@@ -141,6 +142,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
             {isMe ? <SocialMediaIntegration /> : null}
           </div>
           {user.message && <CommentComponent message={user.message} />}
+          {/* いいねボタン→フォローボタン */}
           {!isMe && (
             <button
               className="bg-white rounded-full p-1"
@@ -165,6 +167,31 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
               </svg>
             </button>
           )}
+          {!isMe && (
+  <button
+    className="bg-white rounded-full p-1"
+    onClick={() => {
+      if (!isLiked) {
+        postLikeID(user.user_id); // フォロー処理
+        setIsLiked(true);
+      } else {
+        deleteLikeID(user.user_id); // フォロー解除処理
+        setIsLiked(false);
+      }
+    }}
+    onMouseEnter={() => {
+      if (isLiked) setHoverText("フォロー解除");
+    }}
+    onMouseLeave={() => {
+      if (isLiked) setHoverText("フォロー中");
+    }}
+  >
+    <span className="text-lg font-semibold">
+      {!isLiked ? "フォロー" : hoverText}
+    </span>
+  </button>
+)}
+
           {/* コントリビューション数 */}
           <GitHubContributions isMe={isMe} />
           {/* Qiitaの投稿記事数 */}
@@ -172,7 +199,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
           {/* 使用言語の割合 */}
           <PercentageOfLanguages isMe={isMe} />
           {/* ユーザーランク */}
-          <UserRank />
+          <UserRank isMe={isMe}/>
         </div>
         <UserMainInformation user={user} onEdit={onEdit} isMe={isMe} />
       </div>
