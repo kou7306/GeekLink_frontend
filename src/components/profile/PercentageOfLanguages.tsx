@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import LanguageGraph from "./LanguageGraph";
 import { useParams } from "next/navigation";
+import ComponentLoading from "../core/ComponentLoading";
 
 type Props = {
   isMe: boolean;
@@ -37,7 +38,7 @@ const PercentageOfLanguages = ({ isMe }: Props) => {
   });
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <ComponentLoading />;
   }
 
   return (

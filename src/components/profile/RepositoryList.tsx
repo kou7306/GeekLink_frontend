@@ -12,6 +12,7 @@ import RepositoryGraph from "./RepositoryGraph";
 import { Box, Typography, IconButton } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import ComponentLoading from "../core/ComponentLoading";
 
 ChartJS.register(
   CategoryScale,
@@ -29,10 +30,12 @@ interface RepositoryListProps {
 const RepositoryList: React.FC<RepositoryListProps> = ({ uuid }) => {
   const [repositories, setRepositories] = useState<Repository[]>([]);
   const [expanded, setExpanded] = useState(false); // 展開状態を管理
+  const [loading, setLoading] = useState(true);
 
   // リポジトリを取得
   useEffect(() => {
     const fetchRepositories = async () => {
+      setLoading(true);
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/github/repo`,
         {
@@ -45,6 +48,7 @@ const RepositoryList: React.FC<RepositoryListProps> = ({ uuid }) => {
       );
       const data = await res.json();
       setRepositories(data);
+      setLoading(false);
     };
     fetchRepositories();
   }, [uuid]);
@@ -61,6 +65,8 @@ const RepositoryList: React.FC<RepositoryListProps> = ({ uuid }) => {
         ? repositories
         : repositories.slice(0, 3)
       : [];
+
+  if (loading) return <ComponentLoading />;
 
   return (
     <Box

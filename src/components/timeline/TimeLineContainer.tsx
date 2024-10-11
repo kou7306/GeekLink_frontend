@@ -8,6 +8,7 @@ import { useInView } from "react-intersection-observer";
 import { getUuidFromCookie } from "@/actions/users";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
+import ComponentLoading from "../core/ComponentLoading";
 
 const TimeLineContainer: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -96,7 +97,7 @@ const TimeLineContainer: React.FC = () => {
 
   return (
     <div className=" p-4 pb-24 mx-48">
-      {isLoading && <div>Loading...</div>}
+      {isLoading && <ComponentLoading />}
       {error && <div className="text-red-500 mb-4">{error}</div>}
       <div className="space-y-4 mb-4 w-full mx-auto">
         {posts.map((post) => (

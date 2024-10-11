@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
 import { getUuidFromCookie } from "@/actions/users";
 import axios from "axios";
 import { User } from "./options";
@@ -166,7 +165,6 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
               }}
             >
               <span className={`text-sm font-semibold tracking-wider ${isLiked ? "" : "text-white"}`}>
-
                 {!isLiked ? "フォロー" : hoverText}
               </span>
             </button>
