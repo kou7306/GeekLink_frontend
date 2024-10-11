@@ -144,7 +144,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
           {user.message && <CommentComponent message={user.message} />}
           {!isMe && (
             <button
-              className={`rounded-full p-2 border-2 ${
+              className={`rounded-full p-2 border-2 mt-2 my-4 w-32 ${
                 isLiked
                   ? "bg-white border-gray-600 hover:border-red-500 hover:text-red-500"
                   : "bg-black text-white border-black"
@@ -165,7 +165,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
                 if (isLiked) setHoverText("フォロー中");
               }}
             >
-              <span className={`text-lg font-semibold ${isLiked ? "" : "text-white"}`}>
+              <span className={`text-sm font-semibold tracking-wider ${isLiked ? "" : "text-white"}`}>
                 {!isLiked ? "フォロー" : hoverText}
               </span>
             </button>
