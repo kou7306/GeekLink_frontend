@@ -78,15 +78,6 @@ export default function Home() {
     }
   };
 
-  const goBack = async () => {
-    if (!canGoBack) return;
-    const newIndex = currentIndex + 1;
-    updateCurrentIndex(newIndex);
-    if (childRefs[newIndex]?.current) {
-      await childRefs[newIndex]?.current?.restoreCard();
-    }
-  };
-
   return (
     <div className="flex flex-col justify-center items-center min-h-screen w-full ">
       <h1 className="text-3xl pb-6">ランダムマッチ</h1>
