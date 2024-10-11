@@ -8,6 +8,7 @@ import { colors, Link } from "@mui/material";
 
 interface TimeLinePostProps {
   post: Post;
+  isOwnPost: boolean;
   uuid: string | null;
 }
 
