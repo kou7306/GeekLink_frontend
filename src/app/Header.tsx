@@ -42,14 +42,6 @@ const Header = () => {
           >
             おすすめユーザー
           </a>
-          <a
-            href="/like"
-            className={`text-black hover:text-primary ${
-              isActive("/like") ? "text-primary" : ""
-            }`}
-          >
-            いいね
-          </a>
         </nav>
         <div className="flex space-x-1 hover:text-primary">
           <a
@@ -61,9 +53,6 @@ const Header = () => {
             <FaUser className="mr-2 " />
             マイページ
           </a>
-          <div className="ml-8">
-            <SignOutButton />
-          </div>
         </div>
       </div>
     </header>
