@@ -22,6 +22,9 @@ const theme = createTheme({
     error: {
       main: "#ee223c", // メインとは反対の色
     },
+    info: {
+      main: "#35373D", //hover時の色
+    },
   },
 });
 
