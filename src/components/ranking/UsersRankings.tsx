@@ -19,9 +19,9 @@ const UsersRankings: React.FC<UsersRankingsProps> = ({ data }) => {
             <Typography
               variant="h6"
               component="span"
-              sx={{ color: "text.secondary", ml: 4 }}
+              sx={{ color: "text.secondary", marginLeft: 30 }}
             >
-              GeekLink Activities
+              GeekLinkアクティビティ数
             </Typography>
             {[{ data: activity, type: "activity" }].map((ranking, index) => (
               <Box key={index} p={2} borderRadius={1}>
@@ -38,9 +38,9 @@ const UsersRankings: React.FC<UsersRankingsProps> = ({ data }) => {
             <Typography
               variant="h6"
               component="span"
-              sx={{ color: "text.secondary", ml: 4 }}
+              sx={{ color: "text.secondary", marginLeft: 30 }}
             >
-              GitHub Contributions
+              GitHubコントリビューション数
             </Typography>
             {[{ data: contribution, type: "contribution" }].map(
               (ranking, index) => (
@@ -61,9 +61,9 @@ const UsersRankings: React.FC<UsersRankingsProps> = ({ data }) => {
             <Typography
               variant="h6"
               component="span"
-              sx={{ color: "text.secondary", ml: 4 }}
+              sx={{ color: "text.secondary", marginLeft: 37 }}
             >
-              GitHub Stars
+              GitHubスター数
             </Typography>
             {[{ data: star, type: "star" }].map((ranking, index) => (
               <Box key={index} p={2} borderRadius={1}>
@@ -80,9 +80,9 @@ const UsersRankings: React.FC<UsersRankingsProps> = ({ data }) => {
             <Typography
               variant="h6"
               component="span"
-              sx={{ color: "text.secondary", ml: 4 }}
+              sx={{ color: "text.secondary", marginLeft: 42 }}
             >
-              Qiita Posts
+              Qiita投稿数
             </Typography>
             {[{ data: qiita, type: "qiita" }].map((ranking, index) => (
               <Box key={index} p={2} borderRadius={1}>

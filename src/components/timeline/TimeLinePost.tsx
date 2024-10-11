@@ -4,7 +4,7 @@ import { format } from "date-fns";
 import { ja } from "date-fns/locale";
 import { Post } from "../../types/timeline";
 import { sendReaction } from "../../utils/actionPost";
-import { colors, Link } from "@mui/material";
+import { Link } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 interface TimeLinePostProps {
@@ -140,20 +140,20 @@ const TimeLinePost: React.FC<TimeLinePostProps> = ({ post, uuid }) => {
             <Link
               href={`/my-page/${post.userId}`}
               underline="none"
-              sx={{ color: "black" }}
+              sx={{ color: "text.secondary" }}
             >
               <span className="font-semibold">{post.user_name}</span>
             </Link>
-            <span className="text-gray-500 ml-2">·</span>
-            <span className="text-gray-500 ml-2">
+
+            <span className="text-sub_text ml-2">
               {format(new Date(post.timestamp), "M月d日 HH:mm", {
                 locale: ja,
               })}
             </span>
           </div>
           <h2 className="font-bold mt-2">{post.title}</h2>
-          <p className="mt-1 text-gray-700">{post.comment}</p>
-          <p className="mt-1 text-gray-500 text-sm">やった時間: {post.time}</p>
+          <p className="mt-1 text-text">{post.comment}</p>
+          <p className="mt-1 text-sub_text text-sm">やった時間: {post.time}</p>
         </div>
       </div>
       <div className="mt-4 flex items-center space-x-2 relative">
@@ -161,7 +161,12 @@ const TimeLinePost: React.FC<TimeLinePostProps> = ({ post, uuid }) => {
           onClick={handleEmojiPickerToggle}
           className="flex items-center justify-center"
         >
-          <AddCircleIcon style={{ color: "blue", fontSize: 30 }} />
+          <AddCircleIcon
+            sx={{
+              color: "secondary.main", // 色を青に設定
+              fontSize: 28, // フォントサイズを30に設定
+            }}
+          />
         </button>
 
         {/* Emoji Picker */}

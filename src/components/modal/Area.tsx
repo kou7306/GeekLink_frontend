@@ -14,8 +14,8 @@ const Area: React.FC<Props> = ({ handlePlaceClick, selectedPlaces }) => {
         <Box
           sx={{
             fontWeight: "bold",
-            color: "#25276D",
-            borderBottom: "1px solid #25276D",
+            color: "primary.main",
+            borderBottom: "1px solid primary.main",
             paddingBottom: "4px",
             marginBottom: "8px",
           }}

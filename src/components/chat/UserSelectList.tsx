@@ -7,6 +7,7 @@ import { User } from "@/utils/getMatchingUser";
 import { getUuidFromCookie } from "@/actions/users";
 import { getLatestMessage } from "@/utils/getLatestMessage";
 import { CardContent, Typography, CircularProgress } from "@mui/material";
+import ComponentLoading from "../core/ComponentLoading";
 
 const UserSelectList = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -56,15 +57,12 @@ const UserSelectList = () => {
   }, [uuid]);
 
   return (
-    <div className="bg-white shadow-lg rounded-lg p-5 my-10 mx-auto min-h-full max-w-7xl">
+    <div className="bg-sub_base shadow-lg rounded-lg p-5 my-10 mx-auto min-h-full max-w-7xl">
       <div className="flex-col h-full">
         <div className="font-bold text-2xl m-4 ml-5">トーク一覧</div>
         <div id="character-list" className="overflow-y-auto h-full">
           {loading ? (
-            <div>
-              <CircularProgress />
-              <p>Loading users...</p>
-            </div>
+            <ComponentLoading />
           ) : error ? (
             <p className="text-red-500">{error}</p>
           ) : users.length === 0 ? (
@@ -74,8 +72,9 @@ const UserSelectList = () => {
               <Link
                 key={user.user_id}
                 href={{ pathname: `conversation/${user.user_id}` }}
+                className="block hover:bg-hover transition-colors duration-300"
               >
-                <div className="mb-2 p-4 hover:bg-gray-200 transition-colors duration-200 cursor-pointer rounded-lg">
+                <div className="mb-2 p-4 transition-colors duration-200 cursor-pointer rounded-lg">
                   {" "}
                   {/* Cardを廃止し、余白を調整 */}
                   <CardContent className="flex items-center gap-48">

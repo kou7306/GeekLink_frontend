@@ -13,8 +13,8 @@ const Hobby: React.FC<Props> = ({ onChangeHobby, enteredHobby }) => {
         <Box
           sx={{
             fontWeight: "bold",
-            color: "#25276D",
-            borderBottom: "1px solid #25276D",
+            color: "primary.main",
+            borderBottom: "1px solid primary.main",
             paddingBottom: "4px",
             marginBottom: "8px",
           }}
@@ -30,20 +30,20 @@ const Hobby: React.FC<Props> = ({ onChangeHobby, enteredHobby }) => {
             sx={{
               "& .MuiOutlinedInput-root": {
                 "& fieldset": {
-                  borderColor: "#25276D",
+                  borderColor: "primary.main",
                 },
                 "&:hover fieldset": {
-                  borderColor: "#25276D",
+                  borderColor: "primary.main",
                 },
                 "&.Mui-focused fieldset": {
-                  borderColor: "#25276D",
+                  borderColor: "primary.main",
                 },
               },
               "& .MuiInputLabel-root": {
-                color: "#25276D",
+                color: "primary.main",
               },
               "& .MuiInputLabel-root.Mui-focused": {
-                color: "#25276D",
+                color: "primary.main",
               },
             }}
           />

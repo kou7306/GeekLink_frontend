@@ -4,13 +4,13 @@ import {
   getYearlyContribution,
   getContributionsSinceLastUpdate,
   getMonthlyContributionInfo,
-  getContributionsInfoSinceLastUpdate,
 } from "../../utils/getGithubActivity";
 import ActivityLogGraph from "./ActivityLogGraph";
 import ActivityLog from "./ActivityLog";
 import { Box, Typography, Paper } from "@mui/material";
 import { getQiitaActivity } from "../../utils/getQiitaActivity";
 import { getGeekLinkActivity } from "../../utils/getGeekLinkActivity";
+import ComponentLoading from "../core/ComponentLoading";
 
 interface ActivityProps {
   uuid: string;
@@ -82,7 +82,7 @@ const Activity: React.FC<ActivityProps> = ({ uuid }) => {
   }, [uuid]);
 
   if (loading) {
-    return <div>Loading...</div>; // ローディング中の表示
+    return <ComponentLoading />; // ローディング中の表示
   }
 
   const activityData = [
@@ -126,7 +126,13 @@ const Activity: React.FC<ActivityProps> = ({ uuid }) => {
         </Typography>
 
         {/* 年間コントリビューションのグラフ */}
-        <Box my={4} display={"flex"} justifyContent={"center"} px={24}>
+        <Box
+          my={4}
+          display={"flex"}
+          justifyContent={"center"}
+          mx={24}
+          bgcolor={"#2b2a36"}
+        >
           <ActivityLogGraph propsArray={graphData} />
         </Box>
 

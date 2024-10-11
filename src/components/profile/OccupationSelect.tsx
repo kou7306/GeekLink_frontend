@@ -7,13 +7,25 @@ interface OccupationSelectProps {
   occupations: string[];
 }
 
-const OccupationSelect: React.FC<OccupationSelectProps> = ({ occupation, onChange, occupations }) => {
+const OccupationSelect: React.FC<OccupationSelectProps> = ({
+  occupation,
+  onChange,
+  occupations,
+}) => {
   return (
     <div>
-      <label htmlFor="occupation" className="block text-sm font-medium text-gray-700">
+      <label
+        htmlFor="occupation"
+        className="block text-sm font-medium text-text"
+      >
         職種
       </label>
-      <select name="occupation" value={occupation} onChange={onChange} className="mt-1 block w-full">
+      <select
+        name="occupation"
+        value={occupation}
+        onChange={onChange}
+        className="mt-1 block w-full"
+      >
         <option value="">選択してください</option>
         {occupations.map((title) => (
           <option key={title} value={title}>

@@ -67,6 +67,9 @@ const Activity: React.FC<{ activities: ActivityProps[] }> = ({
             onClick={() => setShowAll(true)}
             aria-label="show more"
             size="large"
+            sx={{
+              color: "text.primary", // アイコンの色を白に
+            }}
           >
             <ExpandMoreIcon fontSize="large" />
           </IconButton>

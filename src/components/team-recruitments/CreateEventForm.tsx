@@ -84,7 +84,7 @@ const CreateEventForm: React.FC = () => {
         <div>
           <label
             htmlFor="title"
-            className="block text-sm font-medium text-gray-700"
+            className="block text-sm font-medium text-text"
           >
             タイトル
           </label>
@@ -102,7 +102,7 @@ const CreateEventForm: React.FC = () => {
         <div>
           <label
             htmlFor="event_type"
-            className="block text-sm font-medium text-gray-700"
+            className="block text-sm font-medium text-text"
           >
             イベントタイプ
           </label>
@@ -124,7 +124,7 @@ const CreateEventForm: React.FC = () => {
         <div>
           <label
             htmlFor="purpose"
-            className="block text-sm font-medium text-gray-700"
+            className="block text-sm font-medium text-text"
           >
             目的
           </label>
@@ -144,7 +144,7 @@ const CreateEventForm: React.FC = () => {
         <div>
           <label
             htmlFor="max_participants"
-            className="block text-sm font-medium text-gray-700"
+            className="block text-sm font-medium text-text"
           >
             最大参加者数
           </label>
@@ -164,7 +164,7 @@ const CreateEventForm: React.FC = () => {
         <div>
           <label
             htmlFor="requirements"
-            className="block text-sm font-medium text-gray-700"
+            className="block text-sm font-medium text-text"
           >
             要件
           </label>
@@ -184,7 +184,7 @@ const CreateEventForm: React.FC = () => {
         <div>
           <label
             htmlFor="deadline"
-            className="block text-sm font-medium text-gray-700"
+            className="block text-sm font-medium text-text"
           >
             締切日
           </label>
@@ -202,7 +202,7 @@ const CreateEventForm: React.FC = () => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-medium text-text">
             使用技術
           </label>
           <div className="mt-2 grid grid-cols-3 gap-3">
@@ -214,7 +214,7 @@ const CreateEventForm: React.FC = () => {
                   value={tech}
                   className="form-checkbox h-5 w-5 text-blue-600"
                 />
-                <span className="ml-2 text-gray-700">{tech}</span>
+                <span className="ml-2 text-text">{tech}</span>
               </label>
             ))}
           </div>

@@ -12,6 +12,7 @@ import RepositoryGraph from "./RepositoryGraph";
 import { Box, Typography, IconButton } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import ComponentLoading from "../core/ComponentLoading";
 
 ChartJS.register(
   CategoryScale,
@@ -29,10 +30,12 @@ interface RepositoryListProps {
 const RepositoryList: React.FC<RepositoryListProps> = ({ uuid }) => {
   const [repositories, setRepositories] = useState<Repository[]>([]);
   const [expanded, setExpanded] = useState(false); // 展開状態を管理
+  const [loading, setLoading] = useState(true);
 
   // リポジトリを取得
   useEffect(() => {
     const fetchRepositories = async () => {
+      setLoading(true);
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/github/repo`,
         {
@@ -45,6 +48,7 @@ const RepositoryList: React.FC<RepositoryListProps> = ({ uuid }) => {
       );
       const data = await res.json();
       setRepositories(data);
+      setLoading(false);
     };
     fetchRepositories();
   }, [uuid]);
@@ -62,6 +66,8 @@ const RepositoryList: React.FC<RepositoryListProps> = ({ uuid }) => {
         : repositories.slice(0, 3)
       : [];
 
+  if (loading) return <ComponentLoading />;
+
   return (
     <Box
       sx={{
@@ -71,10 +77,13 @@ const RepositoryList: React.FC<RepositoryListProps> = ({ uuid }) => {
         boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
         borderRadius: 2,
         padding: 2,
+        bgcolor: "background.paper", // 背景色をテーマに基づいて設定
       }}
     >
       <Box marginX={4}>
-        <Typography variant="h5" marginY={4}>
+        <Typography variant="h5" marginY={4} color="text.primary">
+          {" "}
+          {/* テキストの色をtext.primaryに設定 */}
           レポジトリ一覧
         </Typography>
 
@@ -88,15 +97,16 @@ const RepositoryList: React.FC<RepositoryListProps> = ({ uuid }) => {
               sx={{
                 mb: 2,
                 height: "200px",
-                border: "1px solid #e5e7eb",
+                // 枠線を削除
                 borderRadius: "20px",
+                backgroundColor: (theme) => theme.palette.background.default, // 背景色を設定
               }}
             >
               <RepositoryGraph repository={repository} />
             </Box>
           ))
         ) : (
-          <Typography variant="body2" color="textSecondary" align="center">
+          <Typography variant="body2" color="text.primary" align="center">
             No repositories available.
           </Typography>
         )}
@@ -109,6 +119,10 @@ const RepositoryList: React.FC<RepositoryListProps> = ({ uuid }) => {
             margin: "auto",
             marginTop: 2,
             visibility: repositories.length > 3 ? "visible" : "hidden", // アイコンの表示/非表示
+            color: "white", // アイコンの色を白に設定
+            "&:hover": {
+              color: "white", // ホバー時の色を白に設定
+            },
           }}
         >
           {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}

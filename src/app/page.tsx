@@ -87,8 +87,8 @@ const Home = () => {
               position: "fixed",
               left: 0,
               overflowY: "auto", // スクロール可能にする
-              backgroundColor: "#ffffff",
               height: "100vh",
+              backgroundColor: "background.paper",
             }}
           >
             <LeftSide />

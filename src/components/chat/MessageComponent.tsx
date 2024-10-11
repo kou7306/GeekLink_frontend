@@ -22,7 +22,7 @@ const MessageComponent: React.FC<MessageProps> = ({ message, uuid }) => {
           {message.content}
         </p>
       </div>
-      <p className="text-sm text-secondary">
+      <p className="text-sm text-sub_text mt-2">
         {new Date(message.created_at).toLocaleString()}
       </p>
     </div>

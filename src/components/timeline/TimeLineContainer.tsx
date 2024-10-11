@@ -8,6 +8,7 @@ import { useInView } from "react-intersection-observer";
 import { getUuidFromCookie } from "@/actions/users";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
+import ComponentLoading from "../core/ComponentLoading";
 
 const TimeLineContainer: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -96,8 +97,7 @@ const TimeLineContainer: React.FC = () => {
 
   return (
     <div className=" p-4 pb-24 mx-48">
-      <h1 className="text-2xl font-bold mb-4">タイムライン</h1>
-      {isLoading && <div>Loading...</div>}
+      {isLoading && <ComponentLoading />}
       {error && <div className="text-red-500 mb-4">{error}</div>}
       <div className="space-y-4 mb-4 w-full mx-auto">
         {posts.map((post) => (
@@ -114,11 +114,16 @@ const TimeLineContainer: React.FC = () => {
       <IconButton
         onClick={() => setIsModalOpen(true)}
         className="fixed z-10"
-        style={{
+        sx={{
+          position: "fixed",
           bottom: "5%", // 下から5%の位置に固定
-          right: "30%", // 右から5%の位置に固定
-          backgroundColor: "#1976d2", // MUIのテーマ色を参考に設定
+          right: "30%", // 右から30%の位置に固定
           color: "#ffffff", // アイコンの色
+          backgroundColor: "secondary.main", // 背景色を追加
+          "&:hover": {
+            backgroundColor: "secondary.main", // ホバー時も背景色を変更しない
+            color: "#ffffff", // ホバー時のアイコンの色を変更しない
+          },
         }}
       >
         <EditIcon fontSize="large" />

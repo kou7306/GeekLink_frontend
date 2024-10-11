@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography";
 import CreateGroup from "@/components/groupChat/CreateGroup";
 import { Box } from "@mui/material";
 import Link from "next/link";
+import Loading from "../loading";
 
 interface Group {
   id: String;
@@ -18,15 +19,18 @@ interface Group {
 
 const Page = () => {
   const [groups, setGroups] = useState<Group[] | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/group/group-list`
         );
         const data = await response.json();
         setGroups(data.group);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching data", error);
       }
@@ -34,6 +38,8 @@ const Page = () => {
 
     fetchData();
   }, []);
+
+  if (loading) return <Loading />;
 
   return (
     <div className="p-4">
@@ -75,7 +81,7 @@ const Page = () => {
                       gutterBottom
                       sx={{
                         fontWeight: "bold",
-                        color: "#333",
+                        color: "text.primary",
                         marginBottom: "15px",
                       }}
                     >
@@ -84,7 +90,7 @@ const Page = () => {
                     <Typography
                       variant="body2"
                       sx={{
-                        color: "#666",
+                        color: "text.primary",
                         marginBottom: "20px",
                         lineHeight: 1.6,
                       }}
@@ -103,7 +109,7 @@ const Page = () => {
                     <Typography
                       variant="body2"
                       sx={{
-                        color: "#888",
+                        color: "text.secondary",
                         fontWeight: "bold",
                       }}
                     >

@@ -2,10 +2,11 @@
 import React, { useState, useEffect } from "react";
 import { getUuidFromCookie } from "@/actions/users";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
+import Fab from "@mui/material/Fab"; // Floating Action Buttonをインポート
+import AddIcon from "@mui/icons-material/Add"; // プラスアイコンをインポート
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
-import { ThemeProvider, createTheme } from "@mui/material";
+import { Button, ThemeProvider, createTheme } from "@mui/material";
 
 const style = {
   position: "absolute" as "absolute",
@@ -25,6 +26,10 @@ const theme = createTheme({
   palette: {
     primary: {
       main: "#22d3ee",
+    },
+    secondary: {
+      main: "#2c64c5", // メインの補助カラーを追加
+      contrastText: "#ffffff", // アイコンなどのテキストの色を設定
     },
   },
 });
@@ -51,8 +56,8 @@ const CreateGroup = () => {
 
   const handleSubmit = async () => {
     const groupData = {
-      owner_id: uuid, // オーナーIDを適切に設定してください
-      member_ids: [uuid], // 必要に応じてメンバーIDを設定してください
+      owner_id: uuid,
+      member_ids: [uuid],
       name: groupName,
       description: groupDescription,
     };
@@ -74,7 +79,7 @@ const CreateGroup = () => {
       const data = await response.json();
       console.log("Group created: ", data);
 
-      handleClose(); // 成功時にモーダルを閉じる
+      handleClose();
     } catch (error) {
       console.error("Failed to create group:", error);
     }
@@ -82,33 +87,7 @@ const CreateGroup = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box
-        ml={8}
-        sx={{
-          position: "sticky",
-          top: 0,
-          zIndex: 1000,
-          backgroundColor: "white",
-          padding: "8px 0",
-        }}
-      >
-        <Button
-          onClick={handleOpen}
-          variant="contained"
-          sx={{
-            backgroundColor: "#25276D",
-            color: "white",
-            borderRadius: "8px",
-            padding: "8px 16px",
-            fontWeight: "bold",
-            margin: "8px",
-            "&:hover": {
-              backgroundColor: "#1f235a",
-            },
-          }}
-        >
-          グループ作成
-        </Button>
+      <Box>
         <Modal
           open={open}
           onClose={handleClose}
@@ -153,6 +132,24 @@ const CreateGroup = () => {
             </Box>
           </Box>
         </Modal>
+
+        <Fab
+          onClick={handleOpen}
+          sx={{
+            position: "fixed",
+            bottom: "10%",
+            right: "10%",
+            boxShadow: 3,
+            backgroundColor: "secondary.main", // 背景色をsecondaryのメインカラーに設定
+            color: "secondary.contrastText",
+            "&:hover": {
+              backgroundColor: "secondary.main", // ホバー時も背景色を変更しない
+              boxShadow: 3, // ホバー時の影をそのままにする
+            },
+          }}
+        >
+          <AddIcon />
+        </Fab>
       </Box>
     </ThemeProvider>
   );

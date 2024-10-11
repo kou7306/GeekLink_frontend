@@ -1,8 +1,9 @@
 import { Box } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import UsersRankings from "./UsersRankings";
 import { useQuery } from "@tanstack/react-query";
 import { RankingData } from "../../types/ranking";
+import ComponentLoading from "../core/ComponentLoading";
 
 type Props = {
   value: string;
@@ -16,6 +17,8 @@ interface TabPanelProps {
 }
 
 const RankingPanels = ({ value }: Props) => {
+  const [loading, setLoading] = useState(true);
+
   const { isPending, isError, error, data } = useQuery({
     queryKey: ["ranking"],
     queryFn: async () => {
@@ -35,9 +38,24 @@ const RankingPanels = ({ value }: Props) => {
     },
   });
 
-  const dailyRanking: RankingData = data?.daily || { activity: [], contribution: [], star: [], qiita: [] };
-  const weeklyRanking: RankingData = data?.weekly || { activity: [], contribution: [], star: [], qiita: [] };
-  const monthlyRanking: RankingData = data?.monthly || { activity: [], contribution: [], star: [], qiita: [] };
+  const dailyRanking: RankingData = data?.daily || {
+    activity: [],
+    contribution: [],
+    star: [],
+    qiita: [],
+  };
+  const weeklyRanking: RankingData = data?.weekly || {
+    activity: [],
+    contribution: [],
+    star: [],
+    qiita: [],
+  };
+  const monthlyRanking: RankingData = data?.monthly || {
+    activity: [],
+    contribution: [],
+    star: [],
+    qiita: [],
+  };
 
   function TabPanel(props: TabPanelProps) {
     const { children, value, index, ...other } = props;
@@ -54,6 +72,8 @@ const RankingPanels = ({ value }: Props) => {
       </Box>
     );
   }
+
+  if (isPending) return <ComponentLoading />;
 
   return (
     <>

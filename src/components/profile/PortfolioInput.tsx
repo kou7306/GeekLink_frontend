@@ -6,10 +6,16 @@ interface PortfolioInputProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const PortfolioInput: React.FC<PortfolioInputProps> = ({ portfolio, onChange }) => {
+const PortfolioInput: React.FC<PortfolioInputProps> = ({
+  portfolio,
+  onChange,
+}) => {
   return (
     <div>
-      <label htmlFor="portfolio" className="block text-sm font-medium text-gray-700 rounded-md">
+      <label
+        htmlFor="portfolio"
+        className="block text-sm font-medium text-text rounded-md"
+      >
         ポートフォリオ
       </label>
       <input

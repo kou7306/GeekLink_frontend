@@ -46,9 +46,9 @@ const AreaButton: React.FC<Props> = ({ handlePlaceClick, selectedPlaces }) => {
               onChange={() => handleAreaCheckboxClick(area, places)}
               sx={{
                 marginBottom: "3px",
-                color: "#25276D",
+                color: "primary.main",
                 "&.Mui-checked": {
-                  color: "#25276D",
+                  color: "primary.main",
                 },
               }}
             />
@@ -56,7 +56,7 @@ const AreaButton: React.FC<Props> = ({ handlePlaceClick, selectedPlaces }) => {
               sx={{
                 fontSize: "1rem",
                 fontWeight: "bold",
-                color: "#25276D",
+                color: "primary.main",
                 paddingBottom: "4px",
                 marginBottom: "8px",
               }}
@@ -71,9 +71,11 @@ const AreaButton: React.FC<Props> = ({ handlePlaceClick, selectedPlaces }) => {
               sx={{
                 ...BoxStyle,
                 backgroundColor: selectedPlaces.includes(place)
-                  ? "#25276D"
-                  : "white",
-                color: selectedPlaces.includes(place) ? "white" : "#25276D",
+                  ? "primary.main"
+                  : "background.default",
+                color: selectedPlaces.includes(place)
+                  ? "background.default"
+                  : "primary.main",
                 textTransform: "none",
               }}
             >
@@ -87,11 +89,11 @@ const AreaButton: React.FC<Props> = ({ handlePlaceClick, selectedPlaces }) => {
 };
 
 const BoxStyle = {
-  border: "1px solid #25276D",
+  border: "1px solid primary.main",
   borderRadius: "8px",
   padding: "8px 16px",
   display: "inline-block",
-  color: "#25276D",
+  color: "primary.main",
   textAlign: "center",
   marginX: 1,
   marginBottom: 1,

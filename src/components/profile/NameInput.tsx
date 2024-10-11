@@ -9,7 +9,10 @@ interface NameInputProps {
 const NameInput: React.FC<NameInputProps> = ({ name, onChange }) => {
   return (
     <div>
-      <label htmlFor="name" className="block text-sm font-medium text-gray-700 rounded-md">
+      <label
+        htmlFor="name"
+        className="block text-sm font-medium text-text rounded-md"
+      >
         名前
       </label>
       <input
@@ -18,7 +21,7 @@ const NameInput: React.FC<NameInputProps> = ({ name, onChange }) => {
         name="name"
         value={name}
         onChange={onChange}
-        className="mt-1 px-2 block w-full border-b border-gray-300 focus:border-blue-500 focus:outline-none"
+        className="mt-1 px-2 block w-full border-b border-gray-300 focus:border-primary focus:outline-none"
       />
     </div>
   );

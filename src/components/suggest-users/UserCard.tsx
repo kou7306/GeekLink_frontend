@@ -27,10 +27,10 @@ const UserCard = ({ user, chipOption }: Props) => {
         display: "block", // ブロック要素にすることでサイズを固定
         borderRadius: "8px",
         width: "15%", // 固定の横幅を設定
-        transition: "background-color 0.3s", // ホバー時のアニメーション
-        backgroundColor: "white",
+        transition: "background-color 0.3s, transform 0.3s", // ホバー時のアニメーションを追加
+        backgroundColor: "background.paper",
         "&:hover": {
-          backgroundColor: "#D3D3D3", // グレー (Light Gray)
+          transform: "scale(1.05)", // ホバー時に少し拡大
         },
       }}
     >
@@ -39,8 +39,6 @@ const UserCard = ({ user, chipOption }: Props) => {
           display: "flex",
           flexDirection: "column",
           alignItems: "flex-start",
-          border: "1px solid #e0e0e0",
-          borderRadius: "8px",
           padding: "16px",
           boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
           height: "200px", // 固定の高さを設定
@@ -73,7 +71,7 @@ const UserCard = ({ user, chipOption }: Props) => {
             />
           </Box>
           <Box sx={{ flexGrow: 1 }}>
-            <Typography variant="h6" component="h2">
+            <Typography variant="h6" component="h2" color="text.primary">
               {user.name}
             </Typography>
             <Typography variant="body2" color="text.secondary">

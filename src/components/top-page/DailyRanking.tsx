@@ -1,13 +1,5 @@
 import React from "react";
-import {
-  Box,
-  Typography,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemAvatar,
-  Avatar,
-} from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import TopUsersRanking from "./TopUsersRanking";
 import Link from "next/link";
@@ -48,11 +40,17 @@ const DailyRanking = () => {
           <Link href="/ranking">
             <Typography
               variant="body2"
-              color="text.secondary"
-              sx={{ display: "flex", alignItems: "center" }}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                color: "primary.contrastText",
+              }}
             >
               詳しく見る
-              <ArrowForwardIosIcon fontSize="small" sx={{ ml: 0.5 }} />
+              <ArrowForwardIosIcon
+                fontSize="small"
+                sx={{ ml: 0.5, color: "primary.contrastText" }}
+              />
             </Typography>
           </Link>
         </Box>

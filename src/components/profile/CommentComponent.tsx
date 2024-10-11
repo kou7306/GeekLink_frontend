@@ -9,7 +9,7 @@ const CommentComponent = ({ message }: Props) => {
   return (
     <Box
       sx={{
-        backgroundColor: "#f5f5f5",
+        backgroundColor: "background.default",
         borderRadius: "8px",
         padding: "16px",
         marginTop: "16px",

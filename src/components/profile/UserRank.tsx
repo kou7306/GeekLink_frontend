@@ -2,8 +2,9 @@ import { Box, Typography, LinearProgress } from "@mui/material";
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getUuidFromCookie } from "@/actions/users";
-import Image from 'next/image';
+import Image from "next/image";
 import { useParams } from "next/navigation";
+import ComponentLoading from "../core/ComponentLoading";
 
 const rankImages: { [key: string]: string } = {
   bronze: "/img/bronze.png",
@@ -44,7 +45,7 @@ const UserRank = ({ isMe }: Props) => {
     },
   });
 
-  if (isPending) return <div>Loading...</div>;
+  if (isPending) return <ComponentLoading />;
 
   if (isError) return <div>Error: {error.message}</div>;
 
@@ -117,7 +118,7 @@ const UserRank = ({ isMe }: Props) => {
             height: 10,
             borderRadius: 5,
             backgroundColor: "#e0e0e0",
-            '& .MuiLinearProgress-bar': {
+            "& .MuiLinearProgress-bar": {
               backgroundColor: "#3f51b5",
             },
           }}
