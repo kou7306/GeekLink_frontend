@@ -25,6 +25,9 @@ const theme = createTheme({
     info: {
       main: "#35373D", //hover時の色
     },
+    warning: {
+      main: "#1E1F22", // 黒の中のコンテンツ
+    },
   },
 });
 
