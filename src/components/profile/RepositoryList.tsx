@@ -99,7 +99,7 @@ const RepositoryList: React.FC<RepositoryListProps> = ({ uuid }) => {
                 height: "200px",
                 // 枠線を削除
                 borderRadius: "20px",
-                backgroundColor: (theme) => theme.palette.background.default, // 背景色を設定
+                backgroundColor: (theme) => theme.palette.warning.main, // 背景色を設定
                 ":hover": {
                   bgcolor: "info.main",
                 },

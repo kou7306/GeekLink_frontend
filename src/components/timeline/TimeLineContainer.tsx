@@ -96,7 +96,7 @@ const TimeLineContainer: React.FC = () => {
   };
 
   return (
-    <div className=" p-4 pb-24 mx-48">
+    <div className=" p-4 pb-24 mx-40">
       {isLoading && <ComponentLoading />}
       {error && <div className="text-red-500 mb-4">{error}</div>}
       <div className="space-y-4 mb-4 w-full mx-auto">

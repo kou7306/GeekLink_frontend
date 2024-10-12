@@ -28,7 +28,7 @@ export const GitHubActivityCard: React.FC<{ activity: any }> = ({
       <Card
         sx={{
           border: "1px solid rgba(0, 0, 0, 0.12)",
-          bgcolor: "background.default",
+          bgcolor: "warning.main",
           ":hover": {
             bgcolor: "info.main",
           },

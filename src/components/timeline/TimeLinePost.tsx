@@ -23,6 +23,7 @@ const TimeLinePost: React.FC<TimeLinePostProps> = ({ post, uuid }) => {
     [emoji: string]: number;
   }>({});
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const emojiPickerRef = useRef<HTMLDivElement>(null); // モーダルの参照を保持するためのuseRef
 
   useEffect(() => {
     // Initialize reaction counts and selected reactions
@@ -75,7 +76,6 @@ const TimeLinePost: React.FC<TimeLinePostProps> = ({ post, uuid }) => {
   };
 
   const handleAddNewReaction = async (postId: string, emoji: string) => {
-    // Function to handle adding a new reaction
     if (uuid === null) return;
 
     setSelectedReactions((prev) => new Set(prev).add(emoji));
@@ -110,6 +110,26 @@ const TimeLinePost: React.FC<TimeLinePostProps> = ({ post, uuid }) => {
     setShowEmojiPicker(false);
   };
 
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      emojiPickerRef.current &&
+      !emojiPickerRef.current.contains(event.target as Node)
+    ) {
+      setShowEmojiPicker(false);
+    }
+  };
+
+  useEffect(() => {
+    if (showEmojiPicker) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showEmojiPicker]);
+
   return (
     <div key={post.id} className="rounded-lg p-4 shadow bg-sub_base">
       <div className="flex items-start">
@@ -141,7 +161,7 @@ const TimeLinePost: React.FC<TimeLinePostProps> = ({ post, uuid }) => {
         >
           <AddCircleIcon
             sx={{
-              color: "secondary.main", // 色を青に設定
+              color: "primary.main", // 色を青に設定
               fontSize: 28, // フォントサイズを30に設定
             }}
           />
@@ -149,7 +169,10 @@ const TimeLinePost: React.FC<TimeLinePostProps> = ({ post, uuid }) => {
 
         {/* Emoji Picker */}
         {showEmojiPicker && (
-          <div className="bg-hover border rounded shadow-lg p-2">
+          <div
+            className="bg-hover border rounded shadow-lg p-2"
+            ref={emojiPickerRef} // モーダルにrefを割り当てる
+          >
             {emojis.map((emoji) => (
               <button
                 key={emoji}
@@ -172,8 +195,8 @@ const TimeLinePost: React.FC<TimeLinePostProps> = ({ post, uuid }) => {
                 onClick={() => handleReaction(post.id, emoji)}
                 className={`text-xl ${
                   hasReaction
-                    ? "text-blue-500"
-                    : "text-gray-500 hover:text-blue-500"
+                    ? "text-primary"
+                    : "text-gray-500 hover:text-primary"
                 }`}
               >
                 {emoji} {reactionCounts[emoji]}

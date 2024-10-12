@@ -50,7 +50,7 @@ const FollowerList = () => {
               padding: "8px", // パディングを追加（必要に応じて調整）
               borderRadius: "4px", // 角を丸くする
               "&:hover": {
-                backgroundColor: "background.default", // ホバー時の背景色
+                backgroundColor: "info.main", // ホバー時の背景色
               },
             }}
           >

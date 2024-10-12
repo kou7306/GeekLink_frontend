@@ -38,7 +38,7 @@ const Team = ({ item, key }: Props) => {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-              backgroundColor: "background.default",
+              backgroundColor: "warning.main",
               borderRadius: "0.5rem",
               padding: "1rem", // パディングを調整
               boxShadow: "0 4px 6px rgba(0.1, 0, 0, 0.1)",
