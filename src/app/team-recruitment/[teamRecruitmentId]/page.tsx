@@ -1,5 +1,6 @@
 "use client";
 import { getUuidFromCookie } from "@/actions/users";
+import Loading from "@/components/core/Loading";
 import TeamRecruitmentPage from "@/components/team-recruitment/TeamRecruitmentPage";
 import React, { useEffect, useState } from "react";
 
@@ -46,7 +47,7 @@ export default function Page({
     fetchData();
   }, [params.teamRecruitmentId]); // Dependency array to trigger when teamRecruitmentId changes
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <Loading />;
 
   return event ? (
     <TeamRecruitmentPage event={event} currentUserId={currentUserId} />
