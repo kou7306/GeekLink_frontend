@@ -156,22 +156,30 @@ const TeamRecruitmentPage = ({ event, currentUserId }: Props) => {
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <Typography
-              variant="subtitle1"
-              sx={{ fontSize: "1.1rem", fontWeight: "medium" }}
+            <Box
+              display="flex"
+              flexDirection="column"
+              justifyContent="center"
+              alignItems="flex-start"
+              height="100%"
             >
-              参加者数
-            </Typography>
-            <Box display="flex" alignItems="center">
               <Typography
-                variant="h6"
-                sx={{ fontWeight: "bold", color: "text.primary" }}
+                variant="subtitle1"
+                sx={{ fontSize: "1.1rem", fontWeight: "medium", mb: 1 }}
               >
-                {event.participant_ids.length}/{event.max_participants}
+                参加者数
               </Typography>
-              <Typography variant="body2" sx={{ ml: 1 }}>
-                人
-              </Typography>
+              <Box display="flex" alignItems="center">
+                <Typography
+                  variant="h6"
+                  sx={{ fontWeight: "bold", color: "text.primary" }}
+                >
+                  {event.participant_ids.length}/{event.max_participants}
+                </Typography>
+                <Typography variant="body2" sx={{ ml: 1 }}>
+                  人
+                </Typography>
+              </Box>
             </Box>
           </Grid>
           <Grid item xs={12} sm={6}>
