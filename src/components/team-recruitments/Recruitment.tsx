@@ -67,7 +67,7 @@ const Recruitment = ({ event }: RecruitmentProps) => {
       <Typography
         variant="body1"
         color="text.primary"
-        sx={{ fontWeight: "bold", mt: 1 }}
+        sx={{ fontWeight: "bold", my: 1 }}
       >
         {event.purpose}
       </Typography>
