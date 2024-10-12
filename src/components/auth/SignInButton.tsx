@@ -37,7 +37,7 @@ function SignInButton({
     <button
       onClick={() => handleSignIn()}
       disabled={isPending}
-      className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 ease-in-out"
+      className="px-4 py-2 bg-primary text-black rounded-lg shadow-md hover:bg-hover_blue transition-colors duration-200 ease-in-out"
     >
       {isGuest
         ? isPending
@@ -45,7 +45,7 @@ function SignInButton({
           : "ゲストログイン"
         : isPending
         ? "Signing in..."
-        : "Sign In"}
+        : "ログイン"}
     </button>
   );
 }

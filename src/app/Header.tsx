@@ -77,7 +77,7 @@ const Header = () => {
               <div className="flex flex-col items-center text-center">
                 <a
                   href="/my-page"
-                  className="block px-6 py-3 my-3 text-sm bg-primary text-black  rounded"
+                  className="block px-8 py-3 my-3 text-sm bg-primary text-black  rounded"
                 >
                   マイページ
                 </a>

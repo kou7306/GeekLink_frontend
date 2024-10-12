@@ -1,4 +1,3 @@
-// src/components/auth/SignOutButton.tsx
 "use client";
 
 import { signOutAction } from "../../actions/users";
@@ -39,6 +38,11 @@ function SignOutButton() {
       onClick={() => handleClickSignOutButton()}
       disabled={isPending}
       color="inherit" // 背景色を付けないように指定
+      sx={{
+        "&:hover": {
+          color: "primary.main", // アイコンのホバー時の色をプライマリーに変更
+        },
+      }}
     >
       <LogoutIcon />
       <Typography
@@ -46,6 +50,7 @@ function SignOutButton() {
         sx={{
           ml: 2, // マージンを追加
           transition: "color 0.3s", // スムーズなトランジション
+          color: isPending ? "primary.main" : "inherit", // サインアウト中はプライマリー
           "&:hover": {
             color: "primary.main", // ホバー時に文字の色をPrimaryに
           },
