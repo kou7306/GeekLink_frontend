@@ -67,22 +67,30 @@ const Recruitment = ({ event }: RecruitmentProps) => {
       <Typography
         variant="body1"
         color="text.primary"
-        sx={{ fontWeight: "bold", my: 1 }}
+        sx={{ fontWeight: "bold", mt: 1 }}
       >
         {event.purpose}
       </Typography>
-      {event.techs.length > 0 &&
-        event.techs.map((tech) => (
-          <Chip
-            key={tech}
-            label={tech}
-            size="small"
-            sx={{
-              backgroundColor: "primary.main",
-              color: "text.primary",
-            }}
-          />
-        ))}
+      <Box sx={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
+        {event.techs.length > 0 &&
+          event.techs.map((tech) => (
+            <Chip
+              key={tech}
+              label={tech}
+              size="small"
+              sx={{
+                backgroundColor: "primary.main",
+                color: "text.primary",
+                maxWidth: "100%",
+                height: "auto",
+                "& .MuiChip-label": {
+                  whiteSpace: "normal",
+                  wordBreak: "break-word",
+                },
+              }}
+            />
+          ))}
+      </Box>
       <Box
         sx={{
           display: "flex",
