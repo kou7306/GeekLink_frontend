@@ -147,6 +147,7 @@ const CreateEventForm: React.FC = () => {
             最大参加者数
           </label>
           <input
+            style={{ width: "2em" }}
             {...register("max_participants", { valueAsNumber: true })}
             type="number"
             id="max_participants"
