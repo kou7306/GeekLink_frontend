@@ -6,7 +6,8 @@ import TeamRecruitmentPanels from "./TeamRecruitmentsPanels";
 import Options from "./Options";
 import { Event } from "@/types/event";
 import Link from "next/link";
-import { FaPlus } from "react-icons/fa";
+import { Fab } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 
 interface TeamRecruitmentPageProps {
   hackathonEvents: Event[];
@@ -34,26 +35,22 @@ const TeamRecruitmentPage = ({
         currentUserEvents={currentUserEvents}
       />
       <Link href="/team-recruitments/create">
-        <button
-          style={{
+        <Fab
+          sx={{
             position: "fixed",
-            right: "20px",
-            bottom: "20px",
-            width: "60px",
-            height: "60px",
-            borderRadius: "50%",
-            backgroundColor: "#007bff",
-            color: "white",
-            border: "none",
-            fontSize: "24px",
-            cursor: "pointer",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
+            bottom: "10%",
+            right: "10%",
+            boxShadow: 3,
+            backgroundColor: "secondary.main", // 背景をsecondary.mainに設定
+            color: "text.primary", // アイコンの色をtext.primaryに設定
+            "&:hover": {
+              backgroundColor: "secondary.dark", // ホバー時の背景色をsecondary.darkに設定
+              boxShadow: 3,
+            },
           }}
         >
-          <FaPlus />
-        </button>
+          <AddIcon />
+        </Fab>
       </Link>
     </>
   );

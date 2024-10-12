@@ -127,7 +127,7 @@ const GroupChat = ({ params }: { params: any }) => {
         members={members}
         setMembers={setMembers}
       />
-      <div className="bg-secondary px-4 py-10 sm:px-6 lg:px-8 h-[100vh] overflow-y-auto overflow-x-hidden z-10">
+      <div className="bg-base px-4 py-10 sm:px-6 lg:px-8 h-[100vh] overflow-y-auto overflow-x-hidden z-10">
         <ul>
           {messages.map((message, index) => {
             // message.sender_idに対応するメンバーを見つける
@@ -156,7 +156,7 @@ const GroupChat = ({ params }: { params: any }) => {
                   <div>
                     <p>{message.content}</p>
                   </div>
-                  <p className="text-sm text-secondary">
+                  <p className="text-sm bg-base">
                     {new Date(message.created_at).toLocaleString()}
                   </p>
                 </li>
@@ -167,10 +167,10 @@ const GroupChat = ({ params }: { params: any }) => {
         </ul>
         <form
           onSubmit={sendData}
-          className="fixed bottom-0 w-full p-2 bg-secondary z-99 flex justify-center items-center"
+          className="fixed bottom-0 w-full p-2 bg-base z-99 flex justify-center items-center"
         >
           <input
-            className="w-3/5 bg-primary rounded-xl px-2 py-3 border-0 active:border-2 active:border-accent leading-tight"
+            className="w-3/5 bg-white rounded-xl px-2 py-3 border-0 active:border-2 active:border-accent leading-tight text-black"
             type="text"
             name="socketData"
             value={socketData}
@@ -181,7 +181,7 @@ const GroupChat = ({ params }: { params: any }) => {
           />
           <button
             type="submit"
-            className="ml-2 pb-3 bg-accent text-white rounded-lg p-2"
+            className="ml-2 pb-3 bg-primary text-white rounded-lg p-2"
             disabled={
               groupData &&
               !groupData.member_ids?.includes(uuid) &&

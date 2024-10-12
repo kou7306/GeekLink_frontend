@@ -99,7 +99,7 @@ const SubHeader: React.FC<Props> = ({
                 pr: 2,
                 fontSize: "1rem",
                 fontWeight: "bold",
-                color: "green",
+                color: "primary.main",
               }}
             >
               あなたはメンバーです
