@@ -11,15 +11,15 @@ const config: Config = {
       },
       colors: {
         primary: "#2ecee6", //メインカラー
-        secondary: "#2c64c5", //メインの補助カラー
-        base: "#2b2a36", //背景
+        secondary: "#432ee6", //メインの補助カラー
+        base: "#212121", //背景
         sub_base: "#2F3232", //コンテンツの背景
-        content_base: "#000000", //コンテンツの中のコンテンツの背景
+        content_base: "#3e4242", //コンテンツの中のコンテンツの背景
         border: "#b5b5ba", //枠線
         accent: "#ee223c", //メインとは反対の色
         text: "#ffffff", //テキスト
         sub_text: "#b5b5ba", //枠線
-        hover: "#35373D", //hover時の色
+        hover: "#4d5252", //hover時の色
         hover_blue: "#4171c4", //hover時の色
       },
     },

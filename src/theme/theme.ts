@@ -8,12 +8,12 @@ const theme = createTheme({
       contrastText: "#2ecee6",
     },
     secondary: {
-      main: "#2c64c5", // メインの補助カラー
+      main: "#432ee6", // メインの補助カラー
       contrastText: "#2c64c5",
     },
     background: {
-      default: "#2b2a36", // 背景
-      paper: "#2f3132", // コンテンツの背景
+      default: "#323232", // 背景
+      paper: "#2F3232", // コンテンツの背景
     },
     text: {
       primary: "#ffffff", // テキスト
@@ -23,10 +23,10 @@ const theme = createTheme({
       main: "#ee223c", // メインとは反対の色
     },
     info: {
-      main: "#35373D", //hover時の色
+      main: "#4d5252", //hover時の色
     },
     warning: {
-      main: "#1E1F22", // 黒の中のコンテンツ
+      main: "#3e4242", // 黒の中のコンテンツ
     },
   },
 });
