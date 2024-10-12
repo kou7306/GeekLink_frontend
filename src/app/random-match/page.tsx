@@ -89,9 +89,8 @@ export default function Home() {
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
-                width: "500px",
-                maxWidth: "400px",
-                border: "1px solid #e0e0e0",
+                width: "600px",
+                maxWidth: "600px",
                 borderRadius: "12px",
                 padding: "24px",
                 boxShadow: "0 4px 8px rgba(0,0,0,0.15)",
@@ -99,7 +98,7 @@ export default function Home() {
                 top: "50%",
                 left: "50%",
                 transform: "translate(-50%, -50%)",
-                backgroundColor: "#ffffff",
+                backgroundColor: "background.paper",
               }}
             >
               <Box
@@ -150,9 +149,18 @@ export default function Home() {
               >
                 {Array.isArray(user.top_teches) &&
                   (user.top_teches as string[]).map((tech) => (
-                    <Chip key={tech} label={tech} color="secondary" />
+                    <Chip
+                      key={tech}
+                      label={tech}
+                      color="primary"
+                      sx={{
+                        color: "black", // Sets text color to black
+                        fontSize: "16px", // Adjusts the text size slightly larger
+                      }}
+                    />
                   ))}
               </Box>
+
               <Box
                 sx={{
                   display: "flex",
@@ -165,25 +173,66 @@ export default function Home() {
           </TinderCard>
         ))}
       </div>
-      <Box display="flex" justifyContent="center" gap={2} mb={1}>
-        <IconButton
-          onClick={() => {
-            swipe("left");
+      <Box display="flex" justifyContent="center" gap={6} mb={1} mt={6}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
-          disabled={users.length === 0}
         >
-          <ThumbDownAltIcon sx={{ fontSize: 40 }} />
-        </IconButton>
-        <IconButton
-          onClick={() => swipe("right")}
-          disabled={users.length === 0}
+          <IconButton
+            onClick={() => swipe("left")}
+            disabled={users.length === 0}
+            sx={{
+              width: "200px",
+              height: "60px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              backgroundColor: "white", // White background for the down button
+              color: "black", // Black text
+              borderRadius: "8px", // Rounded corners
+              padding: "12px", // Add padding here
+              "&:hover": { backgroundColor: "#f0f0f0" }, // Light gray on hover
+            }}
+          >
+            <ThumbDownAltIcon sx={{ fontSize: 40 }} />
+            <Typography variant="body1">パス</Typography>
+          </IconButton>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
         >
-          <ThumbUpAltIcon sx={{ fontSize: 40 }} />
-        </IconButton>
+          <IconButton
+            onClick={() => swipe("right")}
+            disabled={users.length === 0}
+            sx={{
+              width: "200px",
+              height: "60px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              backgroundColor: "primary.main", // Primary background for the up button
+              color: "black", // Black text
+              borderRadius: "8px", // Rounded corners
+              padding: "12px", // Add padding here
+              "&:hover": { backgroundColor: "primary.dark" }, // Darker shade on hover
+            }}
+          >
+            <ThumbUpAltIcon sx={{ fontSize: 40 }} />
+            <Typography variant="body1">いいね</Typography>
+          </IconButton>
+        </Box>
       </Box>
+
       <div>
         <button
-          className="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700 transition duration-200"
+          className="bg-red-500 text-white font-bold py-2 px-4 w-36 rounded hover:bg-red-700 transition duration-200 mt-24"
           onClick={async () => {
             console.log(swipedRightUserIds);
             try {
