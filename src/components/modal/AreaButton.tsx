@@ -1,6 +1,7 @@
 import { Box, Button, Checkbox } from "@mui/material";
 import React, { useState } from "react";
 import { areaPlaces } from "../profile/options";
+import { lighten } from "@mui/system"; // MUIのlighten関数を使用
 
 type Props = {
   handlePlaceClick: (place: string) => void;
@@ -36,6 +37,7 @@ const AreaButton: React.FC<Props> = ({ handlePlaceClick, selectedPlaces }) => {
       });
     }
   };
+
   return (
     <>
       {Object.entries(areaPlaces).map(([area, places]) => (
@@ -46,9 +48,9 @@ const AreaButton: React.FC<Props> = ({ handlePlaceClick, selectedPlaces }) => {
               onChange={() => handleAreaCheckboxClick(area, places)}
               sx={{
                 marginBottom: "3px",
-                color: "primary.main",
+                color: "text.primary",
                 "&.Mui-checked": {
-                  color: "primary.main",
+                  color: "text.primary",
                 },
               }}
             />
@@ -56,7 +58,7 @@ const AreaButton: React.FC<Props> = ({ handlePlaceClick, selectedPlaces }) => {
               sx={{
                 fontSize: "1rem",
                 fontWeight: "bold",
-                color: "primary.main",
+                color: "text.primary",
                 paddingBottom: "4px",
                 marginBottom: "8px",
               }}
@@ -71,12 +73,17 @@ const AreaButton: React.FC<Props> = ({ handlePlaceClick, selectedPlaces }) => {
               sx={{
                 ...BoxStyle,
                 backgroundColor: selectedPlaces.includes(place)
-                  ? "primary.main"
-                  : "background.default",
+                  ? "primary.main" // 選択後の背景色
+                  : "warning.main", // 選択前の背景色
                 color: selectedPlaces.includes(place)
-                  ? "background.default"
-                  : "primary.main",
+                  ? "black" // 選択後のテキスト色
+                  : "text.primary", // 選択前のテキスト色
                 textTransform: "none",
+                "&:hover": {
+                  backgroundColor: selectedPlaces.includes(place)
+                    ? "#31def7"
+                    : "primary.main", // 選択前のホバー背景色をprimary.mainに
+                },
               }}
             >
               {place}
@@ -89,11 +96,9 @@ const AreaButton: React.FC<Props> = ({ handlePlaceClick, selectedPlaces }) => {
 };
 
 const BoxStyle = {
-  border: "1px solid primary.main",
   borderRadius: "8px",
   padding: "8px 16px",
   display: "inline-block",
-  color: "primary.main",
   textAlign: "center",
   marginX: 1,
   marginBottom: 1,

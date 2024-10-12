@@ -25,13 +25,21 @@ const DesiredOccupationButton: React.FC<Props> = ({
               backgroundColor: selectedDesiredOccupations.includes(
                 desiredOccupationOption
               )
-                ? "primary.main"
-                : "background.default",
+                ? "primary.main" // 選択後の背景色
+                : "warning.main", // 選択前の背景色
               color: selectedDesiredOccupations.includes(
                 desiredOccupationOption
               )
-                ? "background.default"
-                : "primary.main",
+                ? "black" // 選択後のテキスト色
+                : "text.primary", // 選択前のテキスト色
+              textTransform: "none",
+              "&:hover": {
+                backgroundColor: selectedDesiredOccupations.includes(
+                  desiredOccupationOption
+                )
+                  ? "#31def7"
+                  : "primary.main", // 選択前のホバー背景色をprimary.mainに
+              },
             }}
           >
             {desiredOccupationOption}
@@ -43,11 +51,11 @@ const DesiredOccupationButton: React.FC<Props> = ({
 };
 
 const BoxStyle = {
-  border: "1px solid primary.main",
+  border: "1px solid text.primary",
   borderRadius: "8px",
   padding: "8px 16px",
   display: "inline-block",
-  color: "primary.main",
+  color: "text.primary",
   textAlign: "center",
   marginX: 1,
   marginBottom: 1,

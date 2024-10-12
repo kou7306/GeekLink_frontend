@@ -17,8 +17,8 @@ const Experience: React.FC<Props> = ({
         <Box
           sx={{
             fontWeight: "bold",
-            color: "primary.main",
-            borderBottom: "1px solid primary.main",
+            color: "text.primary",
+            borderBottom: "1px solid text.primary",
             paddingBottom: "4px",
             marginBottom: "8px",
           }}

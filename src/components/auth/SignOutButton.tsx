@@ -6,10 +6,14 @@ import { useTransition } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { getUuidFromCookie } from "../../actions/users";
+import IconButton from "@mui/material/IconButton";
+import LogoutIcon from "@mui/icons-material/Logout"; // ログアウト用のアイコン
+import Typography from "@mui/material/Typography";
 
 function SignOutButton() {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+
   const handleClickSignOutButton = () => {
     startTransition(async () => {
       const uuid = await getUuidFromCookie();
@@ -31,13 +35,25 @@ function SignOutButton() {
   };
 
   return (
-    <button
+    <IconButton
       onClick={() => handleClickSignOutButton()}
       disabled={isPending}
-      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+      color="inherit" // 背景色を付けないように指定
     >
-      {isPending ? "Signing out..." : "Sign Out"}
-    </button>
+      <LogoutIcon />
+      <Typography
+        variant="body2"
+        sx={{
+          ml: 2, // マージンを追加
+          transition: "color 0.3s", // スムーズなトランジション
+          "&:hover": {
+            color: "primary.main", // ホバー時に文字の色をPrimaryに
+          },
+        }}
+      >
+        {isPending ? "サインアウト中..." : "サインアウト"}
+      </Typography>
+    </IconButton>
   );
 }
 
