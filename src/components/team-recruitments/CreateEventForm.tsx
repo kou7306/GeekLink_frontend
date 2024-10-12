@@ -75,10 +75,8 @@ const CreateEventForm: React.FC = () => {
 
   return (
     <div className="max-w-2xl mx-auto bg-sub_base shadow-md rounded-lg overflow-hidden">
-      <div className="px-6 py-4 bg-gray-100 border-b">
-        <h2 className="text-2xl font-bold text-gray-800">
-          新しいイベントを作成
-        </h2>
+      <div className="px-6 py-4 bg-sub_base">
+        <h2 className="text-2xl font-bold text-text">新しいイベントを作成</h2>
       </div>
       <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-6">
         <div>
@@ -166,7 +164,7 @@ const CreateEventForm: React.FC = () => {
             htmlFor="requirements"
             className="block text-sm font-medium text-text"
           >
-            要件
+            歓迎条件
           </label>
           <textarea
             {...register("requirements")}
