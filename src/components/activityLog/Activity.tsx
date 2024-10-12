@@ -131,7 +131,7 @@ const Activity: React.FC<ActivityProps> = ({ uuid }) => {
           display={"flex"}
           justifyContent={"center"}
           mx={24}
-          bgcolor={"#2b2a36"}
+          bgcolor={"warning.main"}
         >
           <ActivityLogGraph propsArray={graphData} />
         </Box>

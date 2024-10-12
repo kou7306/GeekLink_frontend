@@ -16,7 +16,7 @@ const QiitaItem = ({ item }: Props) => {
         borderRadius={"20px"}
         padding={2}
         marginBottom={2}
-        bgcolor="background.default" // カード背景色をテーマのデフォルト背景色に
+        bgcolor="warning.main" // カード背景色をテーマのデフォルト背景色に
         sx={{
           textDecoration: "none", // リンクの下線を除去
           transition: "background-color 0.3s ease", // 背景色の変更を滑らかに
