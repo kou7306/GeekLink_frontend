@@ -20,7 +20,7 @@ const config: Config = {
         text: "#ffffff", //テキスト
         sub_text: "#b5b5ba", //枠線
         hover: "#4d5252", //hover時の色
-        hover_blue: "#4171c4", //hover時の色
+        hover_blue: "#39dff7", //hover時の色
       },
     },
   },

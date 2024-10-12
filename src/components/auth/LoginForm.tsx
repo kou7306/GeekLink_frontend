@@ -1,4 +1,3 @@
-// src/components/auth/LoginForm.tsx
 "use client";
 
 import React, { useState } from "react";
@@ -15,45 +14,40 @@ function LoginForm({ scene }: LoginFormProps) {
   const [password, setPassword] = useState("");
 
   return (
-    <div className="bg-white p-6 max-w-md w-full space-y-4">
+    <div className="p-6 max-w-md w-full space-y-6">
       <input
         type="email"
         placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        className="input input-bordered w-full mb-4 p-2"
+        className="input input-bordered w-full mb-6 p-2 text-black placeholder-gray-400" // Added text-black and placeholder color
       />
       <input
         type="password"
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        className="input input-bordered w-full mb-4 p-2"
+        className="input input-bordered w-full mb-6 p-2 text-black placeholder-gray-400" // Added text-black and placeholder color
       />
       {scene === "sign-in" ? (
         <div className="flex flex-col items-center space-y-6">
           <SignInButton email={email} password={password} />
-          <Link
-            href="/sign-up"
-            className="link link-hover mb-3 hover:text-blue-500"
-          >
-            新規登録はこちら
+          <Link href="/sign-up">
+            <button className="btn btn-outline border-primary text-primary hover:bg-primary hover:text-white transition">
+              新規登録はこちら
+            </button>
           </Link>
         </div>
       ) : (
         <div className="flex flex-col items-center space-y-6">
           <SignUpButton email={email} password={password} />
-          <Link
-            href="/login"
-            className="link link-hover mb-3 hover:text-blue-500"
-          >
-            アカウントをお持ちの方はこちら
+          <Link href="/login">
+            <button className="btn btn-outline border-primary text-primary hover:bg-primary hover:text-white transition">
+              アカウントをお持ちの方はこちら
+            </button>
           </Link>
         </div>
       )}
-      <div className="flex justify-center">
-        <SignInButton isGuest />
-      </div>
     </div>
   );
 }
