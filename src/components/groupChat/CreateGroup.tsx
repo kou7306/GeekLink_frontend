@@ -22,18 +22,6 @@ const style = {
   padding: "16px",
 };
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#22d3ee",
-    },
-    secondary: {
-      main: "#2c64c5", // メインの補助カラーを追加
-      contrastText: "#ffffff", // アイコンなどのテキストの色を設定
-    },
-  },
-});
-
 const CreateGroup = () => {
   const [open, setOpen] = React.useState(false);
   const [groupName, setGroupName] = React.useState("");
@@ -86,72 +74,70 @@ const CreateGroup = () => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Box>
-        <Modal
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box sx={style}>
-            <h1>グループ作成</h1>
-            <Box mx={4} my={2}>
-              <TextField
-                fullWidth
-                label="グループ名"
-                value={groupName}
-                onChange={(e) => setGroupName(e.target.value)}
-                margin="normal"
-              />
-              <TextField
-                fullWidth
-                label="グループ説明"
-                value={groupDescription}
-                onChange={(e) => setGroupDescription(e.target.value)}
-                margin="normal"
-                multiline
-                rows={4}
-              />
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={handleClose}
-                sx={{ marginTop: "16px", marginRight: "8px" }}
-              >
-                キャンセル
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleSubmit}
-                sx={{ marginTop: "16px", marginX: "8px" }}
-              >
-                作成
-              </Button>
-            </Box>
+    <Box>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <h1>グループ作成</h1>
+          <Box mx={4} my={2}>
+            <TextField
+              fullWidth
+              label="グループ名"
+              value={groupName}
+              onChange={(e) => setGroupName(e.target.value)}
+              margin="normal"
+            />
+            <TextField
+              fullWidth
+              label="グループ説明"
+              value={groupDescription}
+              onChange={(e) => setGroupDescription(e.target.value)}
+              margin="normal"
+              multiline
+              rows={4}
+            />
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={handleClose}
+              sx={{ marginTop: "16px", marginRight: "8px" }}
+            >
+              キャンセル
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleSubmit}
+              sx={{ marginTop: "16px", marginX: "8px" }}
+            >
+              作成
+            </Button>
           </Box>
-        </Modal>
+        </Box>
+      </Modal>
 
-        <Fab
-          onClick={handleOpen}
-          sx={{
-            position: "fixed",
-            bottom: "10%",
-            right: "10%",
-            boxShadow: 3,
-            backgroundColor: "secondary.main", // 背景色をsecondaryのメインカラーに設定
-            color: "secondary.contrastText",
-            "&:hover": {
-              backgroundColor: "secondary.main", // ホバー時も背景色を変更しない
-              boxShadow: 3, // ホバー時の影をそのままにする
-            },
-          }}
-        >
-          <AddIcon />
-        </Fab>
-      </Box>
-    </ThemeProvider>
+      <Fab
+        onClick={handleOpen}
+        sx={{
+          position: "fixed",
+          bottom: "10%",
+          right: "10%",
+          boxShadow: 3,
+          backgroundColor: "secondary.main", // 背景色をsecondaryのメインカラーに設定
+          color: "text.primary",
+          "&:hover": {
+            backgroundColor: "secondary.main", // ホバー時も背景色を変更しない
+            boxShadow: 3, // ホバー時の影をそのままにする
+          },
+        }}
+      >
+        <AddIcon />
+      </Fab>
+    </Box>
   );
 };
 
