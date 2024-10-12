@@ -267,17 +267,22 @@ const TeamRecruitmentPage = ({ event, currentUserId }: Props) => {
             {isHost ? (
               <Box display="flex" gap={2}>
                 <Button
-                  variant="contained"
+                  variant="outlined"
                   fullWidth
                   color="secondary"
-                  sx={{ fontSize: "1.1rem", py: 1.5, color: "text.primary" }}
+                  sx={{
+                    fontSize: "1.1rem",
+                    py: 1.5,
+                    color: "black",
+                    backgroundColor: "white",
+                  }}
                 >
                   締め切る
                 </Button>
                 <Button
                   variant="contained"
                   fullWidth
-                  color="primary"
+                  color="secondary"
                   sx={{ fontSize: "1.1rem", py: 1.5, color: "text.primary" }}
                   onClick={() => setIsEditModalOpen(true)}
                 >
@@ -289,7 +294,12 @@ const TeamRecruitmentPage = ({ event, currentUserId }: Props) => {
                 variant="outlined"
                 fullWidth
                 color="secondary"
-                sx={{ fontSize: "1.1rem", py: 1.5, color: "text.primary" }}
+                sx={{
+                  fontSize: "1.1rem",
+                  py: 1.5,
+                  color: "black",
+                  backgroundColor: "white",
+                }}
                 onClick={handleLeaveEvent}
                 disabled={isLoading}
               >
@@ -299,7 +309,7 @@ const TeamRecruitmentPage = ({ event, currentUserId }: Props) => {
               <Button
                 variant="contained"
                 fullWidth
-                color="primary"
+                color="secondary"
                 sx={{ fontSize: "1.1rem", py: 1.5, color: "text.primary" }}
                 onClick={handleJoinEvent}
                 disabled={isLoading}
