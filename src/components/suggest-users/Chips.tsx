@@ -12,7 +12,6 @@ type Props = {
     | "sameGraduate"
     | "sameDesiredOccupation";
 };
-
 const Chips = ({ user, chipOption }: Props) => {
   const chipsData = (chipOption: string) => {
     switch (chipOption) {
@@ -44,22 +43,42 @@ const Chips = ({ user, chipOption }: Props) => {
         alignItems: "center", // チップがない場合も中央に揃える
       }}
     >
-      {Array.isArray(chipsData(chipOption) ?? []) &&
-      (chipsData(chipOption) ?? []).length > 0 ? (
+      {chipOption === "sameTech" &&
+        Array.isArray(chipsData(chipOption)) &&
         (chipsData(chipOption) as string[]).map((tech) => (
           <Chip
             key={tech}
             label={tech}
             size="small"
-            sx={{
-              backgroundColor: "primary.main", // Chipの背景色をprimary.mainに設定
-              color: "black", // 文字色を白に設定
-            }}
+            sx={{ backgroundColor: "primary.main" }}
           />
-        ))
-      ) : (
-        <Chip label="-" size="small" sx={{ visibility: "hidden" }} /> // チップがない場合は隠す
+        ))}
+      {chipOption === "overAll" &&
+        Array.isArray(chipsData(chipOption)) &&
+        (chipsData(chipOption) as string[]).map((tech) => (
+          <Chip
+            key={tech}
+            label={tech}
+            size="small"
+            sx={{ backgroundColor: "primary.main" }}
+          />
+        ))}
+      {chipOption === "sameAge" && (
+        <Chip
+          label={`${chipsData(chipOption)}歳`}
+          size="small"
+          sx={{ backgroundColor: "primary.main" }}
+        />
       )}
+      {chipOption !== "sameTech" &&
+        chipOption !== "overAll" &&
+        chipOption !== "sameAge" && (
+          <Chip
+            label={chipsData(chipOption)}
+            size="small"
+            sx={{ backgroundColor: "primary.main" }}
+          />
+        )}
     </Box>
   );
 };
