@@ -86,7 +86,7 @@ const UserRanking: React.FC<UserRankingsProps> = ({ user, type }) => {
           sx: {
             fontWeight: 600,
             fontSize: "1.25rem",
-            color: "black",
+            color: "text.primary",
             whiteSpace: "nowrap",
             marginLeft: 4,
           },
