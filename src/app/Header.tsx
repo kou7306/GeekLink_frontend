@@ -1,11 +1,48 @@
 "use client";
 import SignOutButton from "@/components/auth/SignOutButton";
 import { usePathname } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaUser } from "react-icons/fa";
+import { getUuidFromCookie } from "@/actions/users";
+import axios from "axios";
+import { Box, Menu, MenuItem, IconButton } from "@mui/material";
+import Image from "next/image";
+import Link from "next/link";
 
 const Header = () => {
   const pathname = usePathname();
+  const [image, setImage] = useState("/img/default_icon.png");
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  useEffect(() => {
+    const fetchImage = async () => {
+      const userId = await getUuidFromCookie();
+      if (userId) {
+        try {
+          const response = await axios.get(
+            `${process.env.NEXT_PUBLIC_API_URL}/profile/image/`
+          );
+          if (response.data && response.data !== "") {
+            setImage(response.data);
+          } else {
+            setImage("/img/default_icon.png");
+          }
+        } catch (error) {
+          console.error("Error fetching user image:", error);
+          setImage("/img/default_icon.png");
+        }
+      }
+    };
+    fetchImage();
+  }, []);
 
   const isActive = (path: string) => pathname === path;
 
@@ -59,17 +96,55 @@ const Header = () => {
             おすすめユーザー
           </a>
         </nav>
-        <div className="flex space-x-1 hover:text-primary">
-          <a
-            href="/my-page"
-            className={`text-text hover:text-primary flex items-center bg-secondary text-text py-2 px-4 rounded ${
-              isActive("/my-page") ? "text-primary" : ""
-            }`}
+        <div className="flex items-center space-x-2">
+          <IconButton 
+            onClick={handleClick} 
+            sx={{ padding: 0 }}  // 余計な余白を排除
           >
-            <FaUser className="mr-2 " />
-            マイページ
-          </a>
+            <Image
+              src={image}
+              alt="User Icon"
+              width={40}  // サイズ調整
+              height={40} // サイズ調整
+              style={{ cursor: 'pointer', borderRadius: '50%' }}  // アイコンを丸くする場合
+            />
+          </IconButton>
         </div>
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'center',
+          }}
+          sx={{
+            mt: 1,
+          }}
+        >
+          <MenuItem onClick={handleClose}>
+            <Link 
+              href="/my-page" 
+              style={{ display: 'flex', alignItems: 'center' }}
+            >
+              <FaUser 
+                className="mr-2" 
+                style={{ fontSize: '20px' }}
+              />
+              <span style={{ fontSize: '18px' }}>マイページ</span>
+            </Link>
+          </MenuItem>
+          <MenuItem 
+            onClick={handleClose} 
+            sx={{ justifyContent: 'center' }}
+          >
+            <SignOutButton />
+          </MenuItem>
+        </Menu>
       </div>
     </header>
   );
