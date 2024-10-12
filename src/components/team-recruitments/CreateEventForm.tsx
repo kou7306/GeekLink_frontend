@@ -74,7 +74,7 @@ const CreateEventForm: React.FC = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto bg-white shadow-md rounded-lg overflow-hidden">
+    <div className="max-w-2xl mx-auto bg-sub_base shadow-md rounded-lg overflow-hidden">
       <div className="px-6 py-4 bg-gray-100 border-b">
         <h2 className="text-2xl font-bold text-gray-800">
           新しいイベントを作成
@@ -92,7 +92,7 @@ const CreateEventForm: React.FC = () => {
             {...register("title")}
             type="text"
             id="title"
-            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 bg-content_base"
           />
           {errors.title && (
             <p className="mt-1 text-red-600 text-sm">{errors.title.message}</p>
@@ -109,7 +109,7 @@ const CreateEventForm: React.FC = () => {
           <select
             {...register("event_type")}
             id="event_type"
-            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 bg-content_base"
           >
             <option value="EVENT">イベント</option>
             <option value="HACKATHON">ハッカソン</option>
@@ -132,7 +132,7 @@ const CreateEventForm: React.FC = () => {
             {...register("purpose")}
             id="purpose"
             rows={3}
-            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 bg-content_base"
           ></textarea>
           {errors.purpose && (
             <p className="mt-1 text-red-600 text-sm">
@@ -152,7 +152,7 @@ const CreateEventForm: React.FC = () => {
             {...register("max_participants", { valueAsNumber: true })}
             type="number"
             id="max_participants"
-            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 bg-content_base"
           />
           {errors.max_participants && (
             <p className="mt-1 text-red-600 text-sm">
@@ -172,7 +172,7 @@ const CreateEventForm: React.FC = () => {
             {...register("requirements")}
             id="requirements"
             rows={3}
-            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 bg-content_base"
           ></textarea>
           {errors.requirements && (
             <p className="mt-1 text-red-600 text-sm">
@@ -191,7 +191,7 @@ const CreateEventForm: React.FC = () => {
           <DatePicker
             selected={watch("deadline") ? new Date(watch("deadline")) : null}
             onChange={(date) => setValue("deadline", date?.toISOString() ?? "")}
-            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 bg-content_base"
             dateFormat="yyyy/MM/dd"
           />
           {errors.deadline && (
@@ -212,7 +212,7 @@ const CreateEventForm: React.FC = () => {
                   {...register("techs")}
                   type="checkbox"
                   value={tech}
-                  className="form-checkbox h-5 w-5 text-blue-600"
+                  className="form-checkbox h-5 w-5 text-content_base bg-content_base"
                 />
                 <span className="ml-2 text-text">{tech}</span>
               </label>
@@ -227,13 +227,13 @@ const CreateEventForm: React.FC = () => {
           <button
             type="button"
             onClick={() => router.push("/team-recruitments")}
-            className="w-full flex justify-center py-2 px-4 border border-blue-600 rounded-md shadow-sm text-sm font-medium text-blue-600 bg-white hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mx-2"
+            className="w-full flex justify-center py-2 px-4 border border-indigo-600 rounded-md shadow-sm text-sm font-medium text-indigo-600 bg-white hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mx-2"
           >
             キャンセル
           </button>
           <button
             type="submit"
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mx-2"
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mx-2"
           >
             イベントを作成
           </button>
