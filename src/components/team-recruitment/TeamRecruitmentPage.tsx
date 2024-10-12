@@ -1,10 +1,12 @@
 "use client";
-import React, { useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { Box, Typography, Grid, Avatar, Button, Paper } from "@mui/material";
 import { Event } from "@/types/event";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import EditEventModal from "./EditEventModal";
+import axios from "axios";
+import { User } from "../profile/options";
 
 type Props = {
   event: Event;
@@ -17,6 +19,24 @@ const TeamRecruitmentPage = ({ event, currentUserId }: Props) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const isHost = currentUserId === event.owner_id;
   const isParticipant = event.participant_ids.includes(currentUserId || "");
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (event.owner_id) {
+        try {
+          const response = await axios.get(
+            `${process.env.NEXT_PUBLIC_API_URL}/profile/get-profile/${event.owner_id}`
+          );
+          setUser(response.data);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      }
+    };
+    fetchProfile();
+  }, [event.owner_id]);
+  console.log(user);
 
   const handleJoinEvent = async () => {
     if (!currentUserId) {
@@ -25,13 +45,16 @@ const TeamRecruitmentPage = ({ event, currentUserId }: Props) => {
     }
     setIsLoading(true);
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events/${event.id}/join`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId: currentUserId }),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/events/${event.id}/join`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId: currentUserId }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("イベントへの参加に失敗しました");
@@ -53,13 +76,16 @@ const TeamRecruitmentPage = ({ event, currentUserId }: Props) => {
     }
     setIsLoading(true);
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events/${event.id}/leave`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId: currentUserId }),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/events/${event.id}/leave`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId: currentUserId }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("イベントからの退出に失敗しました");
@@ -77,13 +103,16 @@ const TeamRecruitmentPage = ({ event, currentUserId }: Props) => {
   const handleEditEvent = async (updatedEvent: Partial<Event>) => {
     setIsLoading(true);
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events/${event.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedEvent),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/events/${event.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedEvent),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("イベントの更新に失敗しました");
@@ -97,6 +126,8 @@ const TeamRecruitmentPage = ({ event, currentUserId }: Props) => {
       setIsLoading(false);
     }
   };
+
+  console.log(event);
 
   return (
     <>
@@ -118,19 +149,31 @@ const TeamRecruitmentPage = ({ event, currentUserId }: Props) => {
               <Typography variant="body1" mr={1} sx={{ fontSize: "1.25rem" }}>
                 {event.participant_ids.length}/{event.max_participants}人
               </Typography>
-              {/* TODO: 参加者のアバターを表示 */}
-              <Avatar sx={{ width: 32, height: 32 }} />
-              <Avatar sx={{ width: 32, height: 32, marginLeft: -0.5 }} />
             </Box>
           </Grid>
           <Grid item xs={6}>
-            <Box display="flex" justifyContent="center" alignItems="center" height="100%">
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              height="100%"
+            >
               <Box textAlign="center">
                 <Typography variant="subtitle1" sx={{ fontSize: "1.25rem" }}>
                   主催者
                 </Typography>
                 {/* TODO: 主催者のアバターを表示 */}
-                <Avatar sx={{ width: 56, height: 56, margin: "auto" }} />
+                {user && user.image_url ? (
+                  <Avatar
+                    src={user.image_url}
+                    sx={{ width: 56, height: 56, margin: "auto" }}
+                  />
+                ) : (
+                  <Avatar
+                    src="/img/default_icon.png"
+                    sx={{ width: 56, height: 56, margin: "auto" }}
+                  />
+                )}
               </Box>
             </Box>
           </Grid>
@@ -155,7 +198,11 @@ const TeamRecruitmentPage = ({ event, currentUserId }: Props) => {
               使用技術
             </Typography>
             {event.techs.map((tech) => (
-              <Typography variant="body1" key={tech} sx={{ fontSize: "1.25rem" }}>
+              <Typography
+                variant="body1"
+                key={tech}
+                sx={{ fontSize: "1.25rem" }}
+              >
                 {tech}
               </Typography>
             ))}
@@ -164,13 +211,19 @@ const TeamRecruitmentPage = ({ event, currentUserId }: Props) => {
           <Grid item xs={12}>
             {isHost ? (
               <Box display="flex" gap={2}>
-                <Button variant="contained" fullWidth sx={{ fontSize: "1.25rem" }}>
+                <Button
+                  variant="contained"
+                  fullWidth
+                  color="secondary"
+                  sx={{ fontSize: "1.25rem", color: "text.primary" }}
+                >
                   締め切る
                 </Button>
                 <Button
                   variant="contained"
                   fullWidth
-                  sx={{ fontSize: "1.25rem" }}
+                  color="secondary"
+                  sx={{ fontSize: "1.25rem", color: "text.primary" }}
                   onClick={() => setIsEditModalOpen(true)}
                 >
                   編集
@@ -180,8 +233,8 @@ const TeamRecruitmentPage = ({ event, currentUserId }: Props) => {
               <Button
                 variant="contained"
                 fullWidth
-                sx={{ fontSize: "1.25rem" }}
-                color="primary"
+                color="secondary"
+                sx={{ fontSize: "1.25rem", color: "text.primary" }}
                 onClick={handleLeaveEvent}
                 disabled={isLoading}
               >
@@ -191,8 +244,8 @@ const TeamRecruitmentPage = ({ event, currentUserId }: Props) => {
               <Button
                 variant="contained"
                 fullWidth
-                sx={{ fontSize: "1.25rem" }}
-                color="primary"
+                sx={{ fontSize: "1.25rem", color: "text.primary" }}
+                color="secondary"
                 onClick={handleJoinEvent}
                 disabled={isLoading}
               >
