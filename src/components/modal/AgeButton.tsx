@@ -35,10 +35,16 @@ const AgeButton: React.FC<Props> = ({ handleAgeClick, selectedAges }) => {
               ...BoxStyle,
               backgroundColor: selectedAges.includes(ageNumber)
                 ? "primary.main"
-                : "background.default",
+                : "warning.main",
               color: selectedAges.includes(ageNumber)
-                ? "background."
-                : "primary.main",
+                ? "black"
+                : "text.primary",
+              textTransform: "none",
+              "&:hover": {
+                backgroundColor: selectedAges.includes(ageNumber)
+                  ? "#31def7"
+                  : "primary.main", // 選択前のホバー背景色をprimary.mainに
+              },
             }}
           >
             {ageGroup}
@@ -50,11 +56,11 @@ const AgeButton: React.FC<Props> = ({ handleAgeClick, selectedAges }) => {
 };
 
 const BoxStyle = {
-  border: "1px solid primary.main",
+  border: "1px solid text.primary",
   borderRadius: "8px",
   padding: "8px 16px",
   display: "inline-block",
-  color: "primary.main",
+  color: "text.primary",
   textAlign: "center",
   marginX: 1,
   marginBottom: 1,

@@ -23,11 +23,16 @@ const OccupationButton: React.FC<Props> = ({
             sx={{
               ...BoxStyle,
               backgroundColor: selectedOccupations.includes(occupation)
-                ? "primary.main"
-                : "background.default",
+                ? "primary.main" // 選択後の背景色
+                : "warning.main", // 選択前の背景色
               color: selectedOccupations.includes(occupation)
-                ? "background.default"
-                : "primary.main",
+                ? "black" // 選択後のテキスト色
+                : "text.primary", // 選択前のテキスト色
+              "&:hover": {
+                backgroundColor: selectedOccupations.includes(occupation)
+                  ? "#31def7"
+                  : "primary.main", // 選択前のホバー背景色をprimary.mainに
+              },
             }}
           >
             {occupation}
@@ -39,11 +44,11 @@ const OccupationButton: React.FC<Props> = ({
 };
 
 const BoxStyle = {
-  border: "1px solid primary.main",
+  border: "1px solid text.primary",
   borderRadius: "8px",
   padding: "8px 16px",
   display: "inline-block",
-  color: "primary.main",
+  color: "text.primary",
   textAlign: "center",
   marginX: 1,
   marginBottom: 1,

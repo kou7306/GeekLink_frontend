@@ -1,13 +1,18 @@
 "use client";
+import React, { useState } from "react";
 import SignOutButton from "@/components/auth/SignOutButton";
 import { usePathname } from "next/navigation";
-import React from "react";
 import { FaUser } from "react-icons/fa";
 
 const Header = () => {
   const pathname = usePathname();
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // ポップアップの状態を管理
 
   const isActive = (path: string) => pathname === path;
+
+  const handleMenuToggle = () => {
+    setIsMenuOpen((prev) => !prev); // メニューの表示/非表示をトグル
+  };
 
   return (
     <header className="bg-sub_base shadow-md fixed top-0 w-full z-50">
@@ -59,16 +64,27 @@ const Header = () => {
             おすすめユーザー
           </a>
         </nav>
-        <div className="flex space-x-1 hover:text-primary">
-          <a
-            href="/my-page"
-            className={`text-text hover:text-primary flex items-center bg-secondary text-text py-2 px-4 rounded ${
-              isActive("/my-page") ? "text-primary" : ""
-            }`}
+        <div className="relative">
+          <button
+            onClick={handleMenuToggle}
+            className="flex items-center justify-center bg-primary text-text p-2 rounded-full"
           >
-            <FaUser className="mr-2 " />
-            マイページ
-          </a>
+            <FaUser className="text-xl" />
+          </button>
+
+          {isMenuOpen && (
+            <div className="absolute right-0 mt-2 w-48 bg-sub_base shadow-lg rounded-lg py-4 z-50">
+              <div className="flex flex-col items-center text-center">
+                <a
+                  href="/my-page"
+                  className="block px-6 py-3 my-3 text-sm bg-primary text-black  rounded"
+                >
+                  マイページ
+                </a>
+                <SignOutButton />
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </header>

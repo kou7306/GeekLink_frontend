@@ -18,7 +18,7 @@ const SearchButton = (props: Props) => {
           borderRadius: "8px",
           padding: "8px 16px",
           "&:hover": {
-            backgroundColor: "#1f235a",
+            backgroundColor: "#31def7",
           },
         }}
       >

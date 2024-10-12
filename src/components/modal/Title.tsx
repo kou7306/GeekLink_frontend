@@ -6,7 +6,7 @@ const Title = () => {
     <Box
       sx={{
         bgcolor: "primary.main",
-        color: "background.default",
+        color: "text.primary",
         padding: "16px",
         display: "flex",
         alignItems: "center",

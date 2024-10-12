@@ -20,12 +20,17 @@ const AreaButton: React.FC<Props> = ({
           sx={{
             ...BoxStyle,
             backgroundColor: selectedFirstTechs.includes(technology)
-              ? "primary.main"
-              : "background.default",
+              ? "primary.main" // 選択後の背景色
+              : "warning.main", // 選択前の背景色
             color: selectedFirstTechs.includes(technology)
-              ? "background.default"
-              : "primary.main",
+              ? "black" // 選択後のテキスト色
+              : "text.primary", // 選択前のテキスト色
             textTransform: "none",
+            "&:hover": {
+              backgroundColor: selectedFirstTechs.includes(technology)
+                ? "#31def7"
+                : "primary.main", // 選択前のホバー背景色をprimary.mainに
+            },
           }}
         >
           {technology}
@@ -36,11 +41,11 @@ const AreaButton: React.FC<Props> = ({
 };
 
 const BoxStyle = {
-  border: "1px solid primary.main",
+  border: "1px solid text.primary",
   borderRadius: "8px",
   padding: "8px 16px",
   display: "inline-block",
-  color: "primary.main",
+  color: "text.primary",
   textAlign: "center",
   marginX: 1,
   marginBottom: 1,
