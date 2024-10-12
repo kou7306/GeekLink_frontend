@@ -187,7 +187,9 @@ const TeamRecruitmentPage = ({ event, currentUserId }: Props) => {
               display="flex"
               flexDirection="column"
               alignItems="center"
+              borderRadius={3}
               py={3}
+              sx={{ backgroundColor: "warning.main" }}
             >
               <Typography
                 variant="h6"
