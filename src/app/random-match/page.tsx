@@ -8,12 +8,15 @@ import { User } from "../../utils/getRandomMatchUser";
 import { postSwipedRightUserIds } from "../../utils/CreateLike";
 import Image from "next/image";
 import { Box, Chip, IconButton, Typography } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [users, setUsers] = useState<User[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [lastDirection, setLastDirection] = useState("");
   const [swipedRightUserIds, setSwipedRightUserIds] = useState<string[]>([]);
+
+  const router = useRouter();
 
   const currentIndexRef = useRef(currentIndex);
 
@@ -244,6 +247,8 @@ export default function Home() {
               }
             } catch (error) {
               console.error(error);
+            } finally {
+              router.push("/suggest-users");
             }
           }}
         >
