@@ -14,7 +14,11 @@ interface TeamRecruitmentPageProps {
   currentUserEvents: Event[];
 }
 
-const TeamRecruitmentPage = ({ hackathonEvents, eventEvents, currentUserEvents }: TeamRecruitmentPageProps) => {
+const TeamRecruitmentPage = ({
+  hackathonEvents,
+  eventEvents,
+  currentUserEvents,
+}: TeamRecruitmentPageProps) => {
   const [value, setValue] = useState("1");
   return (
     <>
@@ -23,7 +27,12 @@ const TeamRecruitmentPage = ({ hackathonEvents, eventEvents, currentUserEvents }
       {/* ソートと検索のアイコン */}
       <Options />
       {/* チーム募集 */}
-      <TeamRecruitmentPanels value={value} hackathonEvents={hackathonEvents} eventEvents={eventEvents} currentUserEvents={currentUserEvents} />
+      <TeamRecruitmentPanels
+        value={value}
+        hackathonEvents={hackathonEvents}
+        eventEvents={eventEvents}
+        currentUserEvents={currentUserEvents}
+      />
       <Link href="/team-recruitments/create">
         <button
           style={{

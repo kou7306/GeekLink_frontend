@@ -8,13 +8,21 @@ interface RecruitmentsProps {
   events: Event[];
 }
 
-const Recruitments = ({events }: RecruitmentsProps) => {
-
+const Recruitments = ({ events }: RecruitmentsProps) => {
   return (
     <>
       <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
         {events.map((event) => (
-          <Box key={event.id} sx={{ flexBasis: "calc(50% - 1rem)" }}>
+          <Box
+            key={event.id}
+            sx={{
+              flexBasis: {
+                xs: "100%",
+                sm: "calc(50% - 1rem)",
+                md: "calc(33.333% - 1rem)",
+              },
+            }}
+          >
             <Link href={`/team-recruitment/${event.id}`}>
               <Recruitment event={event} />
             </Link>
