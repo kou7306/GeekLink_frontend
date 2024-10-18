@@ -33,7 +33,7 @@ const DailyRanking = () => {
               component="span"
               sx={{ color: "text.secondary" }}
             >
-              GitHub Contributions数
+              GitHubコントリビューション数
             </Typography>
           </Box>
 
