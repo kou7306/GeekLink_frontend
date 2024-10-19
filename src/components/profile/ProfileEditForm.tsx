@@ -268,7 +268,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
         <div className="flex flex-col items-center col-span-1 p-12">
           <label htmlFor="upload-button">
             <Image
-              src={profile.image_url || "/img/default_icon.png"}
+              src={profile.image_url || "/user.svg"}
               alt="Icon"
               width={128}
               height={128}

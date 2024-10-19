@@ -22,8 +22,7 @@ const IconField: React.FC<Props> = ({
   topTech,
 }) => {
   // デフォルト画像のパスを指定
-  const defaultImage = "/img/default_icon.png"; // public フォルダに配置されたデフォルト画像
-
+  const defaultImage = "/user.svg";
   return (
     <Link href={`/my-page/${id}`}>
       <div className="flex flex-col items-center m-8 p-4 border rounded-lg shadow-lg w-64 transform transition-transform hover:scale-105 hover:shadow-2xl">
