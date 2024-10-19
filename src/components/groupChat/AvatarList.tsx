@@ -42,7 +42,7 @@ const AvatarList: React.FC<Props> = ({ groupData, members }) => {
           <Avatar
             key={member.user_id}
             alt={member.name}
-            src={member.image_url || "/img/default_icon.png"}
+            src={member.image_url || "/user.svg"}
           />
         ))}
       </AvatarGroup>
@@ -62,7 +62,7 @@ const AvatarList: React.FC<Props> = ({ groupData, members }) => {
                 <ListItemAvatar>
                   <Avatar
                     alt={member.name}
-                    src={member.image_url || "/img/default_icon.png"}
+                    src={member.image_url || "/user.svg"}
                   />
                 </ListItemAvatar>
                 <ListItemText primary={member.name} />

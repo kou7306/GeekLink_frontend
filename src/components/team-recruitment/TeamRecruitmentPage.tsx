@@ -209,7 +209,7 @@ const TeamRecruitmentPage = ({ event, currentUserId }: Props) => {
                 />
               ) : (
                 <Avatar
-                  src="/img/default_icon.png"
+                  src="/user.svg"
                   sx={{
                     width: 96,
                     height: 96,

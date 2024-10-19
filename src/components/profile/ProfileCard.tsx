@@ -75,7 +75,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
         <div className="flex flex-col items-center">
           <Image
             className="w-64 h-64 object-cover rounded-full mb-4"
-            src={user.image_url || "/img/default_icon.png"}
+            src={user.image_url || "/user.svg"}
             alt={user.name}
             width={256}
             height={256}

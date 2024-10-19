@@ -79,7 +79,7 @@ const UserRanking: React.FC<UserRankingsProps> = ({ user, type }) => {
           }}
         />
       )}
-      <Image src={user.image} alt={user.name} width={55} height={55} style={{ marginLeft: 10 }} />
+      <Image src={user.image || "/user.svg"} alt={user.name} width={55} height={55} style={{ marginLeft: 10 }} className="rounded-full" />
       <ListItemText
         primary={user.name}
         primaryTypographyProps={{

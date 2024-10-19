@@ -41,7 +41,7 @@ const TopUserRanking = ({ user }: Props) => {
       >
         <EmojiEventsIcon sx={{ color: rankColor, width: 30, height: 30 }} />
         <Box sx={{ display: "flex", alignItems: "center", ml: 1 }}>
-          <Image src={user.image} alt={user.name} width={40} height={40} />
+          <Image src={user.image || "/user.svg"} alt={user.name} width={40} height={40} className="rounded-full"/>
           <Box
             sx={{
               display: "flex",
