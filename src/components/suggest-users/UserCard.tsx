@@ -17,7 +17,6 @@ type Props = {
 };
 
 const UserCard = ({ user, chipOption }: Props) => {
-  const router = useRouter();
   return (
     <Link
       href={`/my-page/${user.user_id}`}
@@ -42,6 +41,7 @@ const UserCard = ({ user, chipOption }: Props) => {
           alignItems: "flex-start",
           padding: "1rem", // paddingをremに変更
           boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+          width: "250px",
           height: "auto", // autoにして内容に応じて伸縮
           minHeight: "10rem", // 必要であれば最低限の高さを指定
         }}
