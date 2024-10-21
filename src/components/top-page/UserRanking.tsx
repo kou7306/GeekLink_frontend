@@ -1,7 +1,6 @@
-import { Box, ListItemText, Link, ListItemButton } from "@mui/material";
+import { Box, ListItemText, Link, ListItemButton, Avatar } from "@mui/material";
 import React from "react";
 import { User } from "../../types/ranking";
-import Image from "next/image";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 
 interface UserRankingsProps {
@@ -53,60 +52,67 @@ const UserRanking: React.FC<UserRankingsProps> = ({ user, type }) => {
 
   return (
     <Link href={`/my-page/${user.user_id}`} underline="none">
-  <ListItemButton
-    sx={{
-      paddingTop: 0.5,
-      paddingBottom: 0.5,
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "space-between",
-    }}
-  >
-    <Box sx={{ display: "flex", alignItems: "center" }}>
-      {user.rank <= 3 ? (
-        <EmojiEventsIcon sx={{ color: rankColor, width: 45, height: 45, ml: 14 }} />
-      ) : (
+      <ListItemButton
+        sx={{
+          paddingTop: 0.5,
+          paddingBottom: 0.5,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          {user.rank <= 3 ? (
+            <EmojiEventsIcon
+              sx={{ color: rankColor, width: 45, height: 45, ml: 14 }}
+            />
+          ) : (
+            <ListItemText
+              primary={user.rank}
+              primaryTypographyProps={{
+                sx: {
+                  fontSize: "1.5rem",
+                  width: "30px",
+                  textAlign: "center",
+                  ml: 15,
+                  mr: 1,
+                },
+              }}
+            />
+          )}
+
+          <Avatar
+            src={user.image}
+            alt={user.name}
+            sx={{ width: 50, height: 50, ml: 4 }}
+          />
+          <ListItemText
+            primary={user.name}
+            primaryTypographyProps={{
+              sx: {
+                fontWeight: 600,
+                fontSize: "1.25rem",
+                color: "text.primary",
+                whiteSpace: "nowrap",
+                marginLeft: 4,
+              },
+            }}
+          />
+        </Box>
         <ListItemText
-          primary={user.rank}
+          primary={getScore(user, type)}
           primaryTypographyProps={{
             sx: {
-              fontSize: "1.5rem",
-              width: "30px",
-              textAlign: "center",
-              ml: 15,
-              mr: 1,
+              fontWeight: 400,
+              fontSize: "large",
+              color: "text.secondary",
+              textAlign: "right",
+              marginRight: 18,
             },
           }}
         />
-      )}
-      <Image src={user.image || "/user.svg"} alt={user.name} width={55} height={55} style={{ marginLeft: 10 }} className="rounded-full" />
-      <ListItemText
-        primary={user.name}
-        primaryTypographyProps={{
-          sx: {
-            fontWeight: 600,
-            fontSize: "1.25rem",
-            color: "text.primary",
-            whiteSpace: "nowrap",
-            marginLeft: 4,
-          },
-        }}
-      />
-    </Box>
-    <ListItemText
-      primary={getScore(user, type)}
-      primaryTypographyProps={{
-        sx: {
-          fontWeight: 400,
-          fontSize: "large",
-          color: "text.secondary",
-          textAlign: "right",
-          marginRight: 18
-        },
-      }}
-    />
-  </ListItemButton>
-</Link>
+      </ListItemButton>
+    </Link>
   );
 };
 
