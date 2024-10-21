@@ -145,7 +145,7 @@ const GroupChat = ({ params }: { params: any }) => {
                 >
                   <Avatar
                     alt={member?.name || "Unknown"}
-                    src={member?.image_url || "/img/default_icon.png"}
+                    src={member?.image_url || "/user.svg"}
                     className="mr-2"
                   />
                 </Link>

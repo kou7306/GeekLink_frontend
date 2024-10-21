@@ -56,12 +56,12 @@ const TopUserRanking = ({ user }: Props) => {
                   fontWeight: 600,
                   fontSize: "1.25rem",
                   color: "text.primary",
-                  mr: 3, // ユーザー名と貢献数の間のマージンを追加
+                  mr: 3,
                 },
               }}
             />
             <ListItemText
-              primary={`${user.contribution_count} contributions`}
+              primary={`${user.contribution_count} コントリビューション`}
               primaryTypographyProps={{
                 sx: {
                   fontWeight: 400,

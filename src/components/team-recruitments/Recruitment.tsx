@@ -49,7 +49,7 @@ const Recruitment = ({ event }: RecruitmentProps) => {
           <Avatar src={user.image_url} sx={{ width: 40, height: 40 }} />
         ) : (
           <Avatar
-            src="/img/default_icon.png"
+            src="/user.svg"
             sx={{ width: 40, height: 40 }}
           ></Avatar>
         )}
