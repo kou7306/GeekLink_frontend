@@ -1,5 +1,5 @@
 "use client";
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -15,6 +15,9 @@ import toast from "react-hot-toast";
 import EditEventModal from "./EditEventModal";
 import axios from "axios";
 import { User } from "../profile/options";
+import { getMultipleProfiles } from "@/utils/getMultipleProfiles";
+import Link from "next/link";
+import { getUuidFromCookie } from "@/actions/users";
 
 type Props = {
   event: Event;
@@ -27,7 +30,21 @@ const TeamRecruitmentPage = ({ event, currentUserId }: Props) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const isHost = currentUserId === event.owner_id;
   const isParticipant = event.participant_ids.includes(currentUserId || "");
+  const [uuid, setUuid] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
+  const [participantProfiles, setParticipantProfiles] = useState<User[]>([]);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const uuid = await getUuidFromCookie();
+      if (uuid) {
+        setUuid(uuid);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+  console.log(uuid);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -37,14 +54,15 @@ const TeamRecruitmentPage = ({ event, currentUserId }: Props) => {
             `${process.env.NEXT_PUBLIC_API_URL}/profile/get-profile/${event.owner_id}`
           );
           setUser(response.data);
+          const profiles = await getMultipleProfiles(event.participant_ids);
+          setParticipantProfiles(profiles);
         } catch (error) {
           console.error("Error fetching user data:", error);
         }
       }
     };
     fetchProfile();
-  }, [event.owner_id]);
-  console.log(user);
+  }, [event.owner_id, event.participant_ids]);
 
   const handleJoinEvent = async () => {
     if (!currentUserId) {
@@ -135,8 +153,6 @@ const TeamRecruitmentPage = ({ event, currentUserId }: Props) => {
     }
   };
 
-  console.log(event);
-
   return (
     <>
       <Paper
@@ -162,23 +178,68 @@ const TeamRecruitmentPage = ({ event, currentUserId }: Props) => {
               justifyContent="center"
               alignItems="flex-start"
               height="100%"
+              sx={{
+                backgroundColor: "background.paper",
+                p: 2,
+                borderRadius: 2,
+              }}
             >
               <Typography
-                variant="subtitle1"
-                sx={{ fontSize: "1.1rem", fontWeight: "medium", mb: 1 }}
+                variant="h6"
+                sx={{ fontSize: "1.3rem", fontWeight: "bold", mb: 2 }}
               >
                 参加者数
               </Typography>
-              <Box display="flex" alignItems="center">
-                <Typography
-                  variant="h6"
-                  sx={{ fontWeight: "bold", color: "text.primary" }}
+              <Box
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                width="100%"
+              >
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  mb={2}
                 >
-                  {event.participant_ids.length}/{event.max_participants}
-                </Typography>
-                <Typography variant="body2" sx={{ ml: 1 }}>
-                  人
-                </Typography>
+                  <Typography variant="h4" sx={{ fontWeight: "bold" }}>
+                    {event.participant_ids.length}/{event.max_participants}
+                  </Typography>
+                  <Typography
+                    variant="h6"
+                    sx={{ ml: 1, color: "text.secondary" }}
+                  >
+                    人
+                  </Typography>
+                </Box>
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  flexWrap="wrap"
+                  justifyContent="center"
+                >
+                  {participantProfiles.map((profile) => (
+                    <Link
+                      href={
+                        profile.user_id === uuid
+                          ? "/my-page"
+                          : `/my-page/${profile.user_id}`
+                      }
+                      key={profile.user_id}
+                    >
+                      <Avatar
+                        key={profile.user_id}
+                        src={profile.image_url}
+                        sx={{
+                          width: 60,
+                          height: 60,
+                          m: 1,
+                          border: "2px solid",
+                        }}
+                      />
+                    </Link>
+                  ))}
+                </Box>
               </Box>
             </Box>
           </Grid>
@@ -197,27 +258,35 @@ const TeamRecruitmentPage = ({ event, currentUserId }: Props) => {
               >
                 主催者
               </Typography>
-              {user && user.image_url ? (
-                <Avatar
-                  src={user.image_url}
-                  sx={{
-                    width: 96,
-                    height: 96,
-                    mb: 2,
-                    border: "3px solid #e0e0e0",
-                  }}
-                />
-              ) : (
-                <Avatar
-                  src="/img/default_icon.png"
-                  sx={{
-                    width: 96,
-                    height: 96,
-                    mb: 2,
-                    border: "3px solid #e0e0e0",
-                  }}
-                />
-              )}
+              <Link
+                href={
+                  user?.user_id === uuid
+                    ? "/my-page"
+                    : `/my-page/${user?.user_id}`
+                }
+              >
+                {user && user.image_url ? (
+                  <Avatar
+                    src={user.image_url}
+                    sx={{
+                      width: 96,
+                      height: 96,
+                      mb: 2,
+                      border: "3px solid #e0e0e0",
+                    }}
+                  />
+                ) : (
+                  <Avatar
+                    src="/img/default_icon.png"
+                    sx={{
+                      width: 96,
+                      height: 96,
+                      mb: 2,
+                      border: "3px solid #e0e0e0",
+                    }}
+                  />
+                )}
+              </Link>
               <Typography variant="h5" sx={{ fontWeight: "bold" }}>
                 {user ? user.name : ""}
               </Typography>
