@@ -234,27 +234,27 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
     onSave(updatedProfile);
   };
 
-  const [file, setFile] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
   const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
 
-  const handleFileChange = (e: any) => {
-    setFile(e.target.files[0]);
-    console.log(file);
-  };
-
-  const handleUpload = async () => {
-    console.log("Uploading image...");
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+    
+    const file = e.target.files[0];
+    setIsUploading(true);
+    
     try {
       const url = await UploadImage(file);
-      console.log("Uploaded image URL: ", url);
-      // setUploadedUrl(url);
+      
+      setUploadedUrl(url);
       setProfile((prevProfile) => ({
         ...prevProfile,
-        image_url: `https://vettovaznwdhefdeeglu.supabase.co/storage/v1/object/public/UserImage/${url}`,
+        image_url: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/UserImage/${url}`,
       }));
-      console.log("test test test");
     } catch (error) {
       console.error("Error uploading image: ", error);
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -266,27 +266,30 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
         className="w-full max-w-6xl p-16 bg-sub_base shadow-lg rounded-lg grid grid-cols-1 md:grid-cols-3 gap-6"
       >
         <div className="flex flex-col items-center col-span-1 p-12">
-          <label htmlFor="upload-button">
+        <label htmlFor="upload-button" className="relative cursor-pointer">
             <Image
               src={profile.image_url || "/user.svg"}
               alt="Icon"
               width={128}
               height={128}
-              className="rounded-full cursor-pointer"
+              className="rounded-full"
             />
+            {isUploading && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full">
+                <div className="text-white">アップロード中...</div>
+              </div>
+            )}
           </label>
           <input
             type="file"
             id="upload-button"
+            accept="image/*"
             style={{ display: "none" }}
             onChange={handleFileChange}
           />
-          <button
-            onClick={handleUpload}
-            className="mt-4 bg-secondary hover:bg-hover_blue text-white py-2 px-4 rounded"
-          >
-            Upload
-          </button>
+          <p className="mt-2 text-sm text-gray-600">
+            クリックして画像を選択
+          </p>
           {/* <div className="flex space-x-4 mt-4">
             <div onClick={() => handleIconClick("github")}>
               <FaGithub size={30} />
