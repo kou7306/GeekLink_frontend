@@ -1,6 +1,5 @@
-import { Box, ListItemButton, ListItemText, Link } from "@mui/material";
+import { Box, ListItemButton, ListItemText, Link, Avatar } from "@mui/material";
 import React from "react";
-import Image from "next/image";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 
 type User = {
@@ -41,7 +40,7 @@ const TopUserRanking = ({ user }: Props) => {
       >
         <EmojiEventsIcon sx={{ color: rankColor, width: 30, height: 30 }} />
         <Box sx={{ display: "flex", alignItems: "center", ml: 1 }}>
-          <Image src={user.image} alt={user.name} width={40} height={40} />
+          <Avatar src={user.image} alt={user.name} />
           <Box
             sx={{
               display: "flex",
