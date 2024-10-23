@@ -5,7 +5,7 @@ import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 import { getRandomUsers } from "../../utils/getRandomMatchUser";
 import { User } from "../../utils/getRandomMatchUser";
-import { postSwipedRightUserIds } from "../../utils/CreateLike";
+import { postSwipedRightUserIds } from "../../utils/addFollow";
 import Image from "next/image";
 import { Box, Chip, IconButton, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
