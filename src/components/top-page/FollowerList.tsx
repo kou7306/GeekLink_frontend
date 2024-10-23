@@ -13,7 +13,7 @@ import { getMatchingUser } from "../../utils/getMatchingUser";
 export interface User {
   user_id: string;
   name: string;
-  img_url: string;
+  image_url: string;
   language: string;
   age: number;
   sex: string;
@@ -57,7 +57,7 @@ const FollowerList = () => {
             <ListItem>
               <ListItemAvatar>
                 <Avatar
-                  src={user.img_url || "/user.svg"}
+                  src={user.image_url || "/user.svg"}
                   alt={`${user.name}'s icon`}
                 />
               </ListItemAvatar>

@@ -81,7 +81,7 @@ const UserSelectList = () => {
                     <div className="flex items-center">
                       <div className="relative w-16 h-16 mr-3">
                         <Image
-                          src={user.img_url || "/user.svg"}
+                          src={user.image_url || "/user.svg"}
                           alt={user.name}
                           layout="fill"
                           objectFit="cover"

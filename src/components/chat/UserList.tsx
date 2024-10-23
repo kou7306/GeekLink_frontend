@@ -53,7 +53,7 @@ const UserList = () => {
                   <div className="flex-shrink-0">
                     <div className="w-20 h-20 relative">
                       <Image
-                        src={user.img_url || "/user.svg"}
+                        src={user.image_url || "/user.svg"}
                         alt={user.name}
                         layout="fill"
                         objectFit="cover"

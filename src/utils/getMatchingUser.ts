@@ -3,20 +3,19 @@ import { getUuidFromCookie } from "@/actions/users";
 export interface User {
   user_id: string;
   name: string;
-  img_url: string;
+  image_url: string;
   language: string;
   age: number;
   sex: string;
 }
 
-// ログインしてるユーザーとマッチングしているユーザー一覧を取得する関数
+// ログインしてるユーザーと相互フォローしているユーザー一覧を取得する関数
 export const getMatchingUser = async (): Promise<User[]> => {
   try {
     const uuid = await getUuidFromCookie();
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    console.log(uuid);
     // APIからデータを取得
-    const response = await fetch(`${apiUrl}/user/get-matching-users`, {
+    const response = await fetch(`${apiUrl}/user/get-mutual-follow-users`, {
       method: "POST",
       mode: "cors",
       headers: {
