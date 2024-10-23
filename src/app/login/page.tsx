@@ -3,33 +3,65 @@ import LoginForm from "@/components/auth/LoginForm";
 import LoginButton from "@/components/auth/LoginButton";
 import { getUser } from "@/lib/auth";
 import SignInButton from "@/components/auth/SignInButton";
+import { Box, Typography, Paper, Stack, Chip } from "@mui/material";
 
 async function LoginPage() {
   const user = await getUser();
 
   return (
-    <div className="min-h-screen bg-base flex flex-col justify-center items-center mt-[-80px]">
-      <h2 className="text-2xl font-bold mb-12 text-text">ログイン</h2>
+    <Box
+      sx={{
+        minHeight: "100vh",
+        bgcolor: "background.default",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        py: 8,
+      }}
+    >
+      <Typography variant="h4" fontWeight="bold" mb={4} color="text.primary">
+        ログイン
+      </Typography>
       {user ? (
-        <div className="space-y-4">
+        <Stack spacing={3} alignItems="center">
           <SignOutButton />
-        </div>
+        </Stack>
       ) : (
-        <div className="space-y-4 bg-content_base p-8 rounded-lg shadow-md max-w-md w-full">
-          <LoginForm scene="sign-in" />
-          <div className="relative">
-            <span className="absolute -top-8 left-0 bg-primary text-white rounded px-2 py-1 text-sm font-semibold">
-              おすすめ
-            </span>
-            <LoginButton provider="github" />
-          </div>
-          <LoginButton provider="google" />
-          <div className="pt-12 flex justify-end">
-            <SignInButton isGuest />
-          </div>
-        </div>
+        <Paper
+          elevation={6}
+          sx={{
+            p: 6,
+            maxWidth: "sm",
+            width: "100%",
+            bgcolor: "background.paper",
+            borderRadius: 2,
+          }}
+        >
+          <Stack spacing={4}>
+            <LoginForm scene="sign-in" />
+            <Box position="relative" mt={2}>
+              <Chip
+                label="おすすめ"
+                color="secondary"
+                size="small"
+                sx={{
+                  position: "absolute",
+                  top: -10,
+                  left: -10,
+                  fontWeight: "bold",
+                }}
+              />
+              <LoginButton provider="github" />
+            </Box>
+            <LoginButton provider="google" />
+            <Box pt={4} display="flex" justifyContent="flex-end">
+              <SignInButton isGuest />
+            </Box>
+          </Stack>
+        </Paper>
       )}
-    </div>
+    </Box>
   );
 }
 

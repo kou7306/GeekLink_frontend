@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import SignInButton from "@/components/auth/SignInButton";
 import SignUpButton from "@/components/auth/SignUpButton";
 import Link from "next/link";
+import { Box, TextField, Button, Stack } from "@mui/material";
 
 interface LoginFormProps {
   scene: string;
@@ -14,41 +15,83 @@ function LoginForm({ scene }: LoginFormProps) {
   const [password, setPassword] = useState("");
 
   return (
-    <div className="p-6 max-w-md w-full space-y-6">
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        className="input input-bordered w-full mb-6 p-2 text-black placeholder-gray-400" // Added text-black and placeholder color
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        className="input input-bordered w-full mb-6 p-2 text-black placeholder-gray-400" // Added text-black and placeholder color
-      />
-      {scene === "sign-in" ? (
-        <div className="flex flex-col items-center space-y-6">
-          <SignInButton email={email} password={password} />
-          <Link href="/sign-up">
-            <button className="btn btn-outline border-primary text-primary hover:bg-primary hover:text-white transition">
-              新規登録はこちら
-            </button>
-          </Link>
-        </div>
-      ) : (
-        <div className="flex flex-col items-center space-y-6">
-          <SignUpButton email={email} password={password} />
-          <Link href="/login">
-            <button className="btn btn-outline border-primary text-primary hover:bg-primary hover:text-white transition">
-              アカウントをお持ちの方はこちら
-            </button>
-          </Link>
-        </div>
-      )}
-    </div>
+    <Box sx={{ maxWidth: "md", width: "100%" }}>
+      <Stack spacing={3}>
+        <TextField
+          type="email"
+          label="Email"
+          variant="outlined"
+          fullWidth
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          InputProps={{
+            sx: {
+              color: "text.primary",
+              backgroundColor: "warning.main",
+              borderRadius: 8,
+            },
+          }}
+        />
+        <TextField
+          type="password"
+          label="Password"
+          variant="outlined"
+          fullWidth
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          InputProps={{
+            sx: {
+              color: "text.primary",
+              backgroundColor: "warning.main",
+              borderRadius: 8,
+            },
+          }}
+        />
+        {scene === "sign-in" ? (
+          <Stack spacing={2} alignItems="center">
+            <SignInButton email={email} password={password} />
+            <Link href="/sign-up" passHref>
+              <Button
+                variant="outlined"
+                color="primary"
+                fullWidth
+                sx={{
+                  backgroundColor: "background.default",
+                  borderRadius: 8,
+                  "&:hover": {
+                    backgroundColor: "primary.main",
+                    color: "primary.contrastText",
+                  },
+                }}
+              >
+                新規登録はこちら
+              </Button>
+            </Link>
+          </Stack>
+        ) : (
+          <Stack spacing={2} alignItems="center">
+            <SignUpButton email={email} password={password} />
+            <Link href="/login" passHref>
+              <Button
+                variant="outlined"
+                color="primary"
+                fullWidth
+                sx={{
+                  backgroundColor: "background.default",
+                  borderRadius: 2,
+                  "&:hover": {
+                    backgroundColor: "primary.main",
+                    color: "primary.contrastText",
+                  },
+                }}
+              >
+                アカウントをお持ちの方はこちら
+              </Button>
+            </Link>
+          </Stack>
+        )}
+      </Stack>
+    </Box>
   );
 }
 
