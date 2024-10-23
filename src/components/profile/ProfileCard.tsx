@@ -5,7 +5,7 @@ import axios from "axios";
 import { User } from "./options";
 import Image from "next/image";
 import { FaGithub, FaTwitter } from "react-icons/fa";
-import { postLikeID, deleteLikeID } from "@/utils/CreateLike";
+import { addFollowID, deleteFollowID } from "@/utils/addFollow";
 import { Box, Grid } from "@mui/material";
 import RepositoryList from "./RepositoryList";
 import QiitaList from "./QiitaList";
@@ -17,6 +17,7 @@ import QiitaNumberOfContributions from "./QiitaNumberOfContributions";
 import GitHubContributions from "./GitHubContributions";
 import PercentageOfLanguages from "./PercentageOfLanguages";
 import UserRank from "./UserRank";
+import FollowNum from "./FollowNum";
 
 interface ProfileCardProps {
   user: User;
@@ -24,13 +25,13 @@ interface ProfileCardProps {
   onEdit?: () => void;
 }
 
-interface LikeCheckResponse {
+interface followCheckResponse {
   message: string;
   data: boolean;
 }
 
 const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
-  const [isLiked, setIsLiked] = useState<boolean>(false);
+  const [isFollowd, setIsFollowed] = useState<boolean>(false);
   const [uuid, setUuid] = useState<string>();
   const [hoverText, setHoverText] = useState<string>("フォロー中");
 
@@ -50,21 +51,21 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
   }, []);
 
   useEffect(() => {
-    console.log("isLiked =", isLiked);
-  }, [isLiked]);
+    console.log("isFollowd =", isFollowd);
+  }, [isFollowd]);
 
   useEffect(() => {
     if (uuid && !isMe) {
       axios
-        .post(`${process.env.NEXT_PUBLIC_API_URL}/profile/like-status`, {
+        .post(`${process.env.NEXT_PUBLIC_API_URL}/profile/follow-status`, {
           myID: uuid,
           uuid: user.user_id, // Assuming user.user_id is the target UUID
         })
-        .then((response: { data: LikeCheckResponse }) => {
-          setIsLiked(response.data.data);
+        .then((response: { data: followCheckResponse }) => {
+          setIsFollowed(response.data.data);
         })
         .catch((error) => {
-          console.error("Error fetching like status:", error);
+          console.error("Error fetching follow status:", error);
         });
     }
   }, [uuid, user.user_id]);
@@ -144,36 +145,38 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
           {!isMe && (
             <button
               className={`rounded-full p-1.5 border-2 mt-2 my-4 w-32 ${
-                isLiked
+                isFollowd
                   ? "bg-white text-black border-gray-600 hover:border-red-500 hover:text-red-500"
                   : "bg-base text-white border-black"
               }`}
               onClick={() => {
-                if (!isLiked) {
-                  postLikeID(user.user_id);
-                  setIsLiked(true);
+                if (!isFollowd) {
+                  addFollowID(user.user_id);
+                  setIsFollowed(true);
                 } else {
-                  deleteLikeID(user.user_id);
-                  setIsLiked(false);
+                  deleteFollowID(user.user_id);
+                  setIsFollowed(false);
                 }
               }}
               onMouseEnter={() => {
-                if (isLiked) setHoverText("フォロー解除");
+                if (isFollowd) setHoverText("フォロー解除");
               }}
               onMouseLeave={() => {
-                if (isLiked) setHoverText("フォロー中");
+                if (isFollowd) setHoverText("フォロー中");
               }}
             >
               <span
                 className={`text-sm font-semibold tracking-wider ${
-                  isLiked ? "" : "text-white"
+                  isFollowd ? "" : "text-white"
                 }`}
               >
-                {!isLiked ? "フォロー" : hoverText}
+                {!isFollowd ? "フォロー" : hoverText}
               </span>
             </button>
           )}
 
+          {/* フォロー・フォロワー数 */}
+          <FollowNum isMe={isMe} />
           {/* コントリビューション数 */}
           <GitHubContributions isMe={isMe} />
           {/* Qiitaの投稿記事数 */}
