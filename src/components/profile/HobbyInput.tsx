@@ -21,7 +21,7 @@ const HobbyInput: React.FC<HobbyInputProps> = ({ hobby, onChange }) => {
         name="hobby"
         value={hobby}
         onChange={onChange}
-        className="mt-1 px-2 block w-full border-b border-gray-300 focus:border-blue-500 focus:outline-none"
+        className="mt-1 px-2 block w-full border-b border-gray-300 focus:border-blue-500 focus:outline-none bg-content_base"
       />
     </div>
   );

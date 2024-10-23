@@ -17,7 +17,7 @@ const EditorSelect: React.FC<EditorSelectProps> = ({ editor, onChange }) => {
         name="editor"
         value={editor}
         onChange={onChange}
-        className="mt-1 block w-full"
+        className="mt-1 block w-full bg-content_base"
       >
         <option value="">選択してください</option>
         {editors.map((editor) => (

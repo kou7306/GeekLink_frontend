@@ -20,7 +20,7 @@ const GraduateSelect: React.FC<GraduateSelectProps> = ({
         name="graduate"
         value={graduate}
         onChange={onChange}
-        className="mt-1 block w-full"
+        className="mt-1 block w-full bg-content_base"
       >
         <option value="">選択してください</option>
         {graduateOptions.map((graduate) => (

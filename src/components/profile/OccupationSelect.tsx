@@ -24,7 +24,7 @@ const OccupationSelect: React.FC<OccupationSelectProps> = ({
         name="occupation"
         value={occupation}
         onChange={onChange}
-        className="mt-1 block w-full"
+        className="mt-1 block w-full bg-content_base"
       >
         <option value="">選択してください</option>
         {occupations.map((title) => (

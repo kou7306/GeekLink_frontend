@@ -23,7 +23,7 @@ const DesireOccupationSelect: React.FC<DesireOccupationSelectProps> = ({
         name="desire_occupation"
         value={desire_occupation}
         onChange={onChange}
-        className="mt-1 block w-full"
+        className="mt-1 block w-full bg-content_base"
       >
         <option value="">選択してください</option>
         {desiredOccupationOptions.map((desire_occupation) => (

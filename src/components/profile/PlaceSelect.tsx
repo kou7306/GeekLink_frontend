@@ -21,7 +21,7 @@ const PlaceSelect: React.FC<PlaceSelectProps> = ({
         name="place"
         value={place}
         onChange={onChange}
-        className="mt-1 block w-full"
+        className="mt-1 block w-full bg-content_base"
       >
         <option value="">選択してください</option>
         {places.map((place) => (
