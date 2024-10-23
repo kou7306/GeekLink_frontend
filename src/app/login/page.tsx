@@ -17,7 +17,7 @@ async function LoginPage() {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        py: 8,
+        mt: -10,
       }}
     >
       <Typography variant="h4" fontWeight="bold" mb={4} color="text.primary">
