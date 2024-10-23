@@ -25,7 +25,7 @@ interface ProfileCardProps {
   onEdit?: () => void;
 }
 
-interface followCheckResponse {
+interface FollowCheckResponse {
   message: string;
   data: boolean;
 }
@@ -61,7 +61,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
           myID: uuid,
           uuid: user.user_id, // Assuming user.user_id is the target UUID
         })
-        .then((response: { data: followCheckResponse }) => {
+        .then((response: { data: FollowCheckResponse }) => {
           setIsFollowed(response.data.data);
         })
         .catch((error) => {
