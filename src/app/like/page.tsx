@@ -56,7 +56,9 @@ const Page = () => {
           `${process.env.NEXT_PUBLIC_API_URL}/likes/get-users-who-liked-me`,
           {
             uuid,
-            matchingUserIds: matchingUsersResponse.data.map((user: User) => user.user_id),
+            matchingUserIds: matchingUsersResponse.data.map(
+              (user: User) => user.user_id
+            ),
           }
         );
         setLikedByUsers(likedByUsersResponse.data);
@@ -75,10 +77,15 @@ const Page = () => {
   return (
     <ThemeProvider theme={theme}>
       <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
-        <Tabs value={value} onChange={handleChange} centered sx={{ color: "#22d3ee" }}>
-          <Tab label="いいね" />
-          <Tab label="マッチング中" />
-          <Tab label="いいねされた" />
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          centered
+          sx={{ color: "#22d3ee" }}
+        >
+          <Tab label="フォロー中" />
+          <Tab label="相互フォロー" />
+          <Tab label="フォロワー" />
         </Tabs>
       </Box>
       {value === 0 && <LikedUsers users={likedUsers} />}
