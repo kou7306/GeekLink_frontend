@@ -2,17 +2,40 @@
 
 import LoginButton from "@/components/auth/LoginButton";
 import LoginForm from "@/components/auth/LoginForm";
+import { Box, Typography, Paper, Stack } from "@mui/material";
 
 const SignUpPage = () => {
   return (
-    <div className="min-h-screen bg-base flex flex-col justify-center items-center mt-[-80px]">
-      <h2 className="text-2xl font-bold mb-4 text-text">新規登録</h2>
-      <div className="space-y-4 bg-content_base p-8 rounded-lg shadow-md max-w-md w-full">
-        <LoginForm scene="sign-up" />
-        <LoginButton provider="github" />
-        <LoginButton provider="google" />
-      </div>
-    </div>
+    <Box
+      sx={{
+        minHeight: "100vh",
+        bgcolor: "background.default",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        mt: -10,
+      }}
+    >
+      <Typography variant="h4" fontWeight="bold" mb={4} color="text.primary">
+        新規登録
+      </Typography>
+      <Paper
+        elevation={3}
+        sx={{
+          p: 4,
+          maxWidth: "sm",
+          width: "100%",
+          bgcolor: "background.paper",
+        }}
+      >
+        <Stack spacing={4}>
+          <LoginForm scene="sign-up" />
+          <LoginButton provider="github" />
+          <LoginButton provider="google" />
+        </Stack>
+      </Paper>
+    </Box>
   );
 };
 

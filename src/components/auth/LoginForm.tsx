@@ -78,7 +78,7 @@ function LoginForm({ scene }: LoginFormProps) {
                 fullWidth
                 sx={{
                   backgroundColor: "background.default",
-                  borderRadius: 2,
+                  borderRadius: 8,
                   "&:hover": {
                     backgroundColor: "primary.main",
                     color: "primary.contrastText",
