@@ -50,6 +50,7 @@ async function LoginPage() {
                   top: -10,
                   left: -10,
                   fontWeight: "bold",
+                  color: "text.primary",
                 }}
               />
               <LoginButton provider="github" />
