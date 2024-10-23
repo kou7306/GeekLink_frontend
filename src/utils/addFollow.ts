@@ -1,11 +1,11 @@
 import { getUuidFromCookie } from "@/actions/users";
 
-// ランダムマッチからいいねを送る場合
+// ランダムマッチからフォローする場合
 export async function postSwipedRightUserIds(IDs: string[]): Promise<any> {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const uuid = await getUuidFromCookie();
 
-  const response = await fetch(`${apiUrl}/likes/create-like`, {
+  const response = await fetch(`${apiUrl}/follow/add-follow`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -24,12 +24,12 @@ export async function postSwipedRightUserIds(IDs: string[]): Promise<any> {
   return await response.json();
 }
 
-// ユーザーページからいいねを送る場合
-export async function postLikeID(ID: string): Promise<any> {
+// ユーザーページからフォローする場合
+export async function addFollowID(ID: string): Promise<any> {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const uuid = await getUuidFromCookie();
 
-  const response = await fetch(`${apiUrl}/likes/create-like-one`, {
+  const response = await fetch(`${apiUrl}/follow/add-follow-one`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -48,12 +48,12 @@ export async function postLikeID(ID: string): Promise<any> {
   return await response.json();
 }
 
-// いいねを取り消す場合
-export async function deleteLikeID(ID: string): Promise<any> {
+// フォローを取り消す場合
+export async function deleteFollowID(ID: string): Promise<any> {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const uuid = await getUuidFromCookie();
 
-  const response = await fetch(`${apiUrl}/likes/delete-like`, {
+  const response = await fetch(`${apiUrl}/follow/delete-follow`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
