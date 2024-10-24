@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Grid, Pagination, Box } from "@mui/material";
-import IconField from "@/components/follow/IconField";
 import { FollowUser } from "@/components/profile/options";
+import UserBox from "./UserBox";
 
 type MutualUsersProps = {
   follows: FollowUser[];
@@ -34,7 +34,7 @@ const MutualUsers: React.FC<MutualUsersProps> = ({ follows, followers }) => {
       <Grid container spacing={4}>
         {displayedUsers.map((user) => (
           <Grid item xs={12} sm={6} md={4} xl={3} key={user.user_id}>
-            <IconField user={user} />
+            <UserBox user={user} />
           </Grid>
         ))}
       </Grid>

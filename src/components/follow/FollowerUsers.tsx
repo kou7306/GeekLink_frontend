@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import IconField from "@/components/follow/IconField";
 import { Pagination } from "@mui/material";
 import { FollowUser } from "@/components/profile/options"; // ユーザータイプの定義をインポート
+import UserBox from "./UserBox";
 
 type FollowerUsersProps = {
   followers: FollowUser[];
@@ -27,7 +28,7 @@ const FollowerUsers: React.FC<FollowerUsersProps> = ({ followers }) => {
     <>
       <div className="grid grid-cols-5 gap-4 p-4">
         {displayedUsers.map((user, index) => (
-          <IconField key={index} user={user} />
+          <UserBox key={index} user={user} />
         ))}
       </div>
       <div className="flex justify-center mt-4">
