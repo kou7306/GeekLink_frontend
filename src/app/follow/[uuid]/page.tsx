@@ -23,6 +23,9 @@ const Page = () => {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/follow/get-follows`,
           {
+            next: {
+              revalidate: 600, // 10分
+            },
             method: "POST",
             headers: {
               "Content-Type": "application/json",
