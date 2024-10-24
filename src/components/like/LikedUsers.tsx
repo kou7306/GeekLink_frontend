@@ -4,10 +4,10 @@ import { Pagination } from "@mui/material";
 import { FollowUser } from "@/components/profile/options";
 
 type LikedUsersProps = {
-  users: FollowUser[];
+  follows: FollowUser[];
 };
 
-const LikedUsers: React.FC<LikedUsersProps> = ({ users }) => {
+const LikedUsers: React.FC<LikedUsersProps> = ({ follows }) => {
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
 
@@ -18,7 +18,7 @@ const LikedUsers: React.FC<LikedUsersProps> = ({ users }) => {
     setPage(value);
   };
 
-  const displayedUsers = users.slice(
+  const displayedUsers = follows.slice(
     (page - 1) * itemsPerPage,
     page * itemsPerPage
   );
@@ -32,7 +32,7 @@ const LikedUsers: React.FC<LikedUsersProps> = ({ users }) => {
       </div>
       <div className="flex justify-center mt-4">
         <Pagination
-          count={Math.ceil(users.length / itemsPerPage)}
+          count={Math.ceil(follows.length / itemsPerPage)}
           page={page}
           onChange={handlePageChange}
           color="primary"
