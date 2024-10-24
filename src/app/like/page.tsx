@@ -6,6 +6,7 @@ import MatchingUsers from "@/components/like/MatchingUsers";
 import LikedByUsers from "@/components/like/LikedByUsers";
 import { getUuidFromCookie } from "@/actions/users";
 import { useQuery } from "@tanstack/react-query";
+import { useSearchParams } from "next/navigation";
 
 const theme = createTheme({
   palette: {
@@ -26,7 +27,7 @@ const theme = createTheme({
 });
 
 const Page = () => {
-  const [value, setValue] = useState(0);
+  const value = useSearchParams().get("tab") || "follows";
 
   //ログイン中のユーザーのフォロー、フォロワー情報を取得
   const { isPending, isError, error, data } = useQuery({
@@ -52,10 +53,11 @@ const Page = () => {
     },
   });
 
-  console.log(data);
-
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
+  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    const searchParams = new URLSearchParams(window.location.search);
+    searchParams.set("tab", newValue);
+    const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
+    window.history.pushState(null, "", newUrl);
   };
 
   return (
@@ -67,16 +69,18 @@ const Page = () => {
           centered
           sx={{ color: "#22d3ee" }}
         >
-          <Tab label="フォロー中" />
-          <Tab label="相互フォロー" />
-          <Tab label="フォロワー" />
+          <Tab label="フォロー中" value="follows" />
+          <Tab label="相互フォロー" value="mutual" />
+          <Tab label="フォロワー" value="followers" />
         </Tabs>
       </Box>
-      {data && value === 0 && <LikedUsers follows={data.follows} />}
-      {data && value === 1 && (
+      {data && value === "follows" && <LikedUsers follows={data.follows} />}
+      {data && value === "mutual" && (
         <MatchingUsers follows={data.follows} followers={data.followers} />
       )}
-      {data && value === 2 && <LikedByUsers followers={data.followers} />}
+      {data && value === "followers" && (
+        <LikedByUsers followers={data.followers} />
+      )}
     </ThemeProvider>
   );
 };
