@@ -1,5 +1,4 @@
 "use client";
-import React, { useState } from "react";
 import { Box, Tabs, Tab, createTheme, ThemeProvider } from "@mui/material";
 import LikedUsers from "@/components/like/LikedUsers";
 import MatchingUsers from "@/components/like/MatchingUsers";
