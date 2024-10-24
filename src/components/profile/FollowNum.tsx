@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getUuidFromCookie } from "@/actions/users";
 import { useParams } from "next/navigation";
 import ComponentLoading from "../core/ComponentLoading";
+import Link from "next/link";
 
 type Props = {
   isMe: boolean;
@@ -43,7 +44,17 @@ const FollowNum = ({ isMe }: Props) => {
 
   return (
     <Box>
-      フォロー数： {followsNum}　フォロワー数： {followersNum}
+      <Link
+        href={isMe ? "/follow?tab=follows" : `/follow/${uuid}?tab=follows`}
+        className="mr-4"
+      >
+        {followsNum}フォロー
+      </Link>
+      <Link
+        href={isMe ? "/follow?tab=followers" : `/follow/${uuid}?tab=followers`}
+      >
+        {followersNum}フォロワー
+      </Link>
     </Box>
   );
 };

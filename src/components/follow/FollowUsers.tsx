@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import IconField from "@/components/follow/IconField";
 import { Pagination } from "@mui/material";
-import { User } from "@/components/profile/options";
+import { FollowUser } from "@/components/profile/options";
+import UserBox from "./UserBox";
 
-type FilteredUsersProps = {
-  users: User[];
+type FollowUsersProps = {
+  follows: FollowUser[];
 };
 
-const FilteredUsers: React.FC<FilteredUsersProps> = ({ users }) => {
+const FollowUsers: React.FC<FollowUsersProps> = ({ follows }) => {
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
 
@@ -18,7 +18,7 @@ const FilteredUsers: React.FC<FilteredUsersProps> = ({ users }) => {
     setPage(value);
   };
 
-  const displayedUsers = users.slice(
+  const displayedUsers = follows.slice(
     (page - 1) * itemsPerPage,
     page * itemsPerPage
   );
@@ -27,20 +27,12 @@ const FilteredUsers: React.FC<FilteredUsersProps> = ({ users }) => {
     <>
       <div className="grid grid-cols-5 gap-4 p-4">
         {displayedUsers.map((user, index) => (
-          <IconField
-            key={index}
-            id={user.user_id}
-            name={user.name}
-            image={user.image_url}
-            sex={user.sex}
-            place={user.place}
-            topTech={user.top_tech}
-          />
+          <UserBox key={index} user={user} />
         ))}
       </div>
       <div className="flex justify-center mt-4">
         <Pagination
-          count={Math.ceil(users.length / itemsPerPage)}
+          count={Math.ceil(follows.length / itemsPerPage)}
           page={page}
           onChange={handlePageChange}
           color="primary"
@@ -50,4 +42,4 @@ const FilteredUsers: React.FC<FilteredUsersProps> = ({ users }) => {
   );
 };
 
-export default FilteredUsers;
+export default FollowUsers;

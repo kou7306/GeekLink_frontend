@@ -27,8 +27,24 @@ export interface User {
   qiita?: string;
   atcoder?: string;
 }
+export type FollowUser = Pick<User, "user_id" | "name" | "image_url">;
 
-export const ages = ["15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28"]
+export const ages = [
+  "15",
+  "16",
+  "17",
+  "18",
+  "19",
+  "20",
+  "21",
+  "22",
+  "23",
+  "24",
+  "25",
+  "26",
+  "27",
+  "28",
+];
 
 export const places = [
   "北海道",
