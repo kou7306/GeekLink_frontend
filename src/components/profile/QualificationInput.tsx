@@ -35,7 +35,7 @@ const QualificationInput: React.FC<QualificationInputProps> = ({
         name="qualification"
         value={qualification}
         onChange={handleChange}
-        className="mt-1 px-2 block w-full border-b border-gray-300 focus:border-blue-500 focus:outline-none"
+        className="mt-1 px-2 block w-full border-b border-gray-300 focus:border-blue-500 focus:outline-none bg-content_base"
       />
       <button
         type="button"

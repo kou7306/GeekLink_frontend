@@ -138,9 +138,9 @@ export default function Profile() {
   };
 
   return (
-    <div className="min-h-screen my-4 bg-gray-50 flex flex-col items-center justify-center">
-      <h2 className="text-2xl font-bold mb-4 text-gray-800">プロフィール初期設定</h2>
-      <form onSubmit={handleSubmit} className="w-full max-w-lg p-8 bg-white shadow-xl rounded-lg">
+    <div className="min-h-screen my-4 bg-base flex flex-col items-center justify-center">
+      <h2 className="text-2xl font-bold mb-4 text-text">プロフィール初期設定</h2>
+      <form onSubmit={handleSubmit} className="w-full max-w-lg p-8 bg-sub_base shadow-xl rounded-lg">
         <div className="space-y-6">
           <NameInput
             name={profile.name}
@@ -179,7 +179,7 @@ export default function Profile() {
           />
           <button
             type="submit"
-            className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="w-full bg-secondary hover:bg-primary text-white font-bold py-2 px-4 rounded"
           >
             登録
           </button>

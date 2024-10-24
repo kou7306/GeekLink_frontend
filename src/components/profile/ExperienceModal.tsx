@@ -22,8 +22,8 @@ const ExperienceModal: React.FC<ExperienceModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white mx-4 p-4 rounded-lg">
+    <div className="fixed inset-0 bg-sub_base bg-opacity-50 flex justify-center items-center">
+      <div className="bg-content_base mx-4 p-4 rounded-lg">
         <h2 className="font-semibold text-xl mb-4">経験を複数選択</h2>
         <div className="grid grid-cols-3 gap-4">
           {experiences.map((experience) => (
@@ -32,7 +32,7 @@ const ExperienceModal: React.FC<ExperienceModalProps> = ({
               type="button"
               onClick={() => handleSelect(experience)}
               className={`p-2 rounded-full ${
-                selectedExperiences.includes(experience) ? "bg-blue-300 text-white" : "bg-gray-200"
+                selectedExperiences.includes(experience) ? "bg-primary text-text" : "bg-sub_base"
               }`}
             >
               {experience}

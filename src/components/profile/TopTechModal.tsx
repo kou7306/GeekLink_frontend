@@ -23,8 +23,8 @@ export const TopTechModal: React.FC<TopTechModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white p-4 rounded-lg">
+    <div className="fixed inset-0 bg-sub_base bg-opacity-50 flex justify-center items-center">
+      <div className="bg-content_base p-4 rounded-lg">
         <h2 className="font-semibold text-xl mb-4">Top 3 技術を選択</h2>
         <div className="grid grid-cols-3 gap-4">
           {selectedTech.map((tech) => (
@@ -33,7 +33,7 @@ export const TopTechModal: React.FC<TopTechModalProps> = ({
               type="button"
               onClick={() => onTopSelect(tech)}
               className={`p-2 rounded-full ${
-                top_teches.includes(tech) ? "bg-green-500 text-white" : "bg-gray-200"
+                top_teches.includes(tech) ? "bg-primary text-white" : "bg-sub_base"
               }`}
             >
               {tech}
@@ -49,7 +49,7 @@ export const TopTechModal: React.FC<TopTechModalProps> = ({
         </button>
       </div>
       {top_teches.length > 0 && (
-        <div className="absolute bottom-4 left-4 bg-white p-4 rounded-lg">
+        <div className="absolute bottom-4 left-4 bg-sub_base p-4 rounded-lg">
           <h3 className="text-lg font-semibold">選択された Top 3</h3>
           <ul>
             {getTechWithRank().map((tech) => (

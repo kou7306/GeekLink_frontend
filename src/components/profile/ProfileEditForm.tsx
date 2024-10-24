@@ -276,7 +276,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
             />
             {isUploading && (
               <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full">
-                <div className="text-white">アップロード中...</div>
+                <div className="text-text">アップロード中...</div>
               </div>
             )}
           </label>
@@ -339,7 +339,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
               <button
                 type="button"
                 onClick={() => handleConfirm("github")}
-                className="ml-2 px-4 py-2 bg-gray-600 hover:bg-gray-800 text-white rounded-md"
+                className="ml-2 px-4 py-2 bg-gray-600 hover:bg-gray-800 text-text rounded-md"
               >
                 ◎
               </button>
@@ -360,7 +360,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
               <button
                 type="button"
                 onClick={() => handleConfirm("twitter")}
-                className="ml-2 px-4 py-2 bg-gray-600 hover:bg-gray-800 text-white rounded-md"
+                className="ml-2 px-4 py-2 bg-gray-600 hover:bg-gray-800 text-text rounded-md"
               >
                 ◎
               </button>
@@ -381,7 +381,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
               <button
                 type="button"
                 onClick={() => handleConfirm("zenn")}
-                className="ml-2 px-4 py-2 bg-gray-600 hover:bg-gray-800 text-white rounded-md"
+                className="ml-2 px-4 py-2 bg-gray-600 hover:bg-gray-800 text-text rounded-md"
               >
                 ◎
               </button>
@@ -404,7 +404,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
               <button
                 type="button"
                 onClick={() => handleConfirm("qiita")}
-                className="ml-2 px-4 py-2 bg-gray-600 hover:bg-gray-800 text-white rounded-md"
+                className="ml-2 px-4 py-2 bg-gray-600 hover:bg-gray-800 text-text rounded-md"
               >
                 ◎
               </button>
@@ -427,7 +427,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
               <button
                 type="button"
                 onClick={() => handleConfirm("atcoder")}
-                className="ml-2 px-4 py-2 bg-gray-600 hover:bg-gray-800 text-white rounded-md"
+                className="ml-2 px-4 py-2 bg-gray-600 hover:bg-gray-800 text-text rounded-md"
               >
                 ◎
               </button>
@@ -516,14 +516,14 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
               <button
                 type="button"
                 onClick={toggleTechModal}
-                className="bg-gray-600 hover:bg-gray-800 text-white py-2 px-4 rounded-md"
+                className="bg-gray-600 hover:bg-gray-800 text-text py-2 px-4 rounded-md"
               >
                 技術を選択
               </button>
               <button
                 type="button"
                 onClick={openTopTechModal}
-                className="bg-gray-600 hover:bg-gray-800 text-white py-2 px-4 rounded-md"
+                className="bg-gray-600 hover:bg-gray-800 text-text py-2 px-4 rounded-md"
               >
                 Top 3を選択
               </button>
@@ -532,7 +532,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
               {top_teches.map((tech, index) => (
                 <span
                   key={index}
-                  className="bg-primary text-white rounded-full px-4 py-1"
+                  className="bg-secondary text-text rounded-full px-4 py-1"
                 >
                   {index + 1}位. {tech}
                 </span>
@@ -542,7 +542,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
               {selectedTech.map((tech, index) => (
                 <span
                   key={index}
-                  className="bg-primary text-white rounded-full px-4 py-1"
+                  className="bg-primary text-text rounded-full px-4 py-1"
                 >
                   {tech}
                 </span>
@@ -551,7 +551,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
             <button
               type="button"
               onClick={toggleExperienceModal}
-              className="bg-gray-600 hover:bg-gray-800 text-white py-2 px-4 rounded-md"
+              className="bg-gray-600 hover:bg-gray-800 text-text py-2 px-4 rounded-md"
             >
               経験を複数選択
             </button>
@@ -559,7 +559,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
               {selectedExperiences.map((experience, index) => (
                 <span
                   key={index}
-                  className="bg-primary text-white rounded-full px-4 py-1"
+                  className="bg-primary text-text rounded-full px-4 py-1"
                 >
                   {experience}
                 </span>
@@ -571,7 +571,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
               <button
                 type="button"
                 onClick={handleShowQualificationInput}
-                className="bg-gray-600 hover:bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-gray-800"
+                className="bg-gray-600 hover:bg-gray-800 text-text px-4 py-2 rounded-md hover:bg-gray-800"
               >
                 資格を追加
               </button>
@@ -580,7 +580,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
               {qualifications.map((qualification, index) => (
                 <li
                   key={index}
-                  className="bg-primary text-white rounded-full px-4 py-1"
+                  className="bg-primary text-text rounded-full px-4 py-1"
                 >
                   {qualification}
                   <button
@@ -597,14 +597,14 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
         <div className="col-span-3 flex justify-center mt-6 space-x-4">
           <button
             type="submit"
-            className="bg-secondary hover:bg-hover_blue text-white font-bold py-2 px-4 rounded"
+            className="bg-secondary hover:bg-hover_blue text-text font-bold py-2 px-4 rounded"
           >
             登録
           </button>
           <button
             type="button"
             onClick={onCancel}
-            className="bg-gray-500 hover:bg-gray-600 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded"
+            className="bg-gray-500 hover:bg-gray-600 hover:bg-gray-800 text-text font-bold py-2 px-4 rounded"
           >
             キャンセル
           </button>

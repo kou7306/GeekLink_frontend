@@ -17,7 +17,7 @@ const FacultySelect: React.FC<FacultySelectProps> = ({ faculty, onChange }) => {
         name="faculty"
         value={faculty}
         onChange={onChange}
-        className="mt-1 block w-full"
+        className="mt-1 block w-full bg-content_base"
       >
         <option value="">選択してください</option>
         {facultyOptions.map((faculty) => (
