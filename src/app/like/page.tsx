@@ -1,11 +1,9 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Box, Tabs, Tab, createTheme, ThemeProvider } from "@mui/material";
 import LikedUsers from "@/components/like/LikedUsers";
 import MatchingUsers from "@/components/like/MatchingUsers";
 import LikedByUsers from "@/components/like/LikedByUsers";
-import axios from "axios";
-import { User } from "@/components/profile/options"; // ユーザータイプの定義をインポート
 import { getUuidFromCookie } from "@/actions/users";
 import { useQuery } from "@tanstack/react-query";
 
@@ -29,47 +27,6 @@ const theme = createTheme({
 
 const Page = () => {
   const [value, setValue] = useState(0);
-  const [likedUsers, setLikedUsers] = useState<User[]>([]);
-  const [matchingUsers, setMatchingUsers] = useState<User[]>([]);
-  const [likedByUsers, setLikedByUsers] = useState<User[]>([]);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const uuid = getUuidFromCookie();
-
-  //       // マッチングユーザーの取得
-  //       const matchingUsersResponse = await axios.post(
-  //         `${process.env.NEXT_PUBLIC_API_URL}/user/get-matching-users`,
-  //         { uuid }
-  //       );
-  //       setMatchingUsers(matchingUsersResponse.data);
-
-  //       // 自分がLikeしたユーザーの取得
-  //       const likedUsersResponse = await axios.post(
-  //         `${process.env.NEXT_PUBLIC_API_URL}/likes/get-liked-users`,
-  //         { uuid }
-  //       );
-  //       setLikedUsers(likedUsersResponse.data);
-
-  //       // 自分をLikeしたが、マッチしていないユーザーの取得
-  //       const likedByUsersResponse = await axios.post(
-  //         `${process.env.NEXT_PUBLIC_API_URL}/likes/get-users-who-liked-me`,
-  //         {
-  //           uuid,
-  //           matchingUserIds: matchingUsersResponse.data.map(
-  //             (user: User) => user.user_id
-  //           ),
-  //         }
-  //       );
-  //       setLikedByUsers(likedByUsersResponse.data);
-  //     } catch (error) {
-  //       console.error("Error fetching users:", error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
 
   //ログイン中のユーザーのフォロー、フォロワー情報を取得
   const { isPending, isError, error, data } = useQuery({
