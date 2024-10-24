@@ -11,8 +11,6 @@ const LikedByUsers: React.FC<FollowersProps> = ({ users }) => {
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
 
-  console.log(users);
-
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
     value: number

@@ -116,7 +116,9 @@ const Page = () => {
         </Tabs>
       </Box>
       {/* {data && value === 0 && <LikedUsers users={data} />} */}
-      {data && value === 1 && <MatchingUsers users={data} />}
+      {data && value === 1 && (
+        <MatchingUsers follows={data.follows} followers={data.followers} />
+      )}
       {data && value === 2 && <LikedByUsers users={data.followers} />}
     </ThemeProvider>
   );
