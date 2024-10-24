@@ -1,13 +1,10 @@
 "use client";
-import { createTheme } from "@mui/material";
 import { getUuidFromCookie } from "@/actions/users";
 import { useQuery } from "@tanstack/react-query";
-import { useSearchParams } from "next/navigation";
 import FollowPage from "@/components/follow/FollowPage";
+import Loading from "../loading";
 
 const Page = () => {
-  const value = useSearchParams().get("tab") || "follows";
-
   //ログイン中のユーザーのフォロー、フォロワー情報を取得
   const { isPending, isError, error, data } = useQuery({
     queryKey: ["user"],
@@ -31,6 +28,10 @@ const Page = () => {
       return response.json();
     },
   });
+
+  if (isPending) {
+    return <Loading />;
+  }
 
   return <FollowPage data={data} isMe={true} />;
 };

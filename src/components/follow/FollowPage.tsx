@@ -15,24 +15,6 @@ type FollowPageProps = {
   isMe: boolean;
 };
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#22d3ee",
-    },
-  },
-  components: {
-    MuiTab: {
-      styleOverrides: {
-        root: {
-          fontSize: "1.2rem", // タブの文字サイズを大きくする
-          padding: "1rem", // タブのパディングを増やす
-        },
-      },
-    },
-  },
-});
-
 const FollowPage = ({ data, isMe }: FollowPageProps) => {
   const value = useSearchParams().get("tab") || "follows";
 
