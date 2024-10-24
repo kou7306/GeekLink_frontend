@@ -44,7 +44,7 @@ const FollowPage = ({ data, isMe }: FollowPageProps) => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
         <Tabs
           value={value}
@@ -64,7 +64,7 @@ const FollowPage = ({ data, isMe }: FollowPageProps) => {
       {data && value === "followers" && (
         <FollowerUsers followers={data.followers} />
       )}
-    </ThemeProvider>
+    </>
   );
 };
 

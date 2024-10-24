@@ -1,6 +1,6 @@
-import Image from "next/image";
-import Link from "next/link";
 import React from "react";
+import { Avatar, Box, Typography, Card, CardActionArea } from "@mui/material";
+import Link from "next/link";
 import { FollowUser } from "../profile/options";
 
 type Props = {
@@ -8,25 +8,43 @@ type Props = {
 };
 
 const IconField: React.FC<Props> = ({ user }) => {
-  // デフォルト画像のパスを指定
   const defaultImage = "/user.svg";
+
   return (
     <Link href={`/my-page/${user.user_id}`}>
-      <div className="flex flex-col items-center m-8 p-4 border rounded-lg shadow-lg w-64 transform transition-transform hover:scale-105 hover:shadow-2xl">
-        <div className="relative">
-          {/* image が null の場合にデフォルト画像を使用 */}
-          <Image
-            src={user.image_url || defaultImage}
-            alt={user.name}
-            width={96}
-            height={96}
-            className="w-24 h-24 rounded-full"
-          />
-        </div>
-        <div className="text-center mt-2 text-lg font-semibold">
-          {user.name}
-        </div>
-      </div>
+      <Card
+        sx={{
+          width: 256,
+          m: 2,
+          transition: "transform 0.3s, box-shadow 0.3s",
+          "&:hover": {
+            transform: "scale(1.05)",
+            boxShadow: 6,
+          },
+          bgcolor: "warning.main",
+          borderRadius: 4,
+        }}
+      >
+        <CardActionArea>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              p: 2,
+            }}
+          >
+            <Avatar
+              src={user.image_url || defaultImage}
+              alt={user.name}
+              sx={{ width: 96, height: 96, mb: 2 }}
+            />
+            <Typography variant="h6" component="div">
+              {user.name}
+            </Typography>
+          </Box>
+        </CardActionArea>
+      </Card>
     </Link>
   );
 };

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
+import { Grid, Pagination, Box } from "@mui/material";
 import IconField from "@/components/follow/IconField";
-import { Pagination } from "@mui/material";
-import { FollowUser } from "@/components/profile/options"; // ユーザータイプの定義をインポート
+import { FollowUser } from "@/components/profile/options";
 
 type MutualUsersProps = {
   follows: FollowUser[];
@@ -30,21 +30,22 @@ const MutualUsers: React.FC<MutualUsersProps> = ({ follows, followers }) => {
   );
 
   return (
-    <>
-      <div className="grid grid-cols-5 gap-4 p-4">
-        {displayedUsers.map((user, index) => (
-          <IconField key={index} user={user} />
+    <Box sx={{ p: 4 }}>
+      <Grid container spacing={4}>
+        {displayedUsers.map((user) => (
+          <Grid item xs={12} sm={6} md={4} xl={3} key={user.user_id}>
+            <IconField user={user} />
+          </Grid>
         ))}
-      </div>
-      <div className="flex justify-center mt-4">
+      </Grid>
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
         <Pagination
           count={Math.ceil(mutualUsers.length / itemsPerPage)}
           page={page}
           onChange={handlePageChange}
-          color="primary"
         />
-      </div>
-    </>
+      </Box>
+    </Box>
   );
 };
 
