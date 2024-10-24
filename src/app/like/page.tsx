@@ -7,6 +7,7 @@ import LikedByUsers from "@/components/like/LikedByUsers";
 import axios from "axios";
 import { User } from "@/components/profile/options"; // ユーザータイプの定義をインポート
 import { getUuidFromCookie } from "@/actions/users";
+import { useQuery } from "@tanstack/react-query";
 
 const theme = createTheme({
   palette: {
@@ -32,43 +33,69 @@ const Page = () => {
   const [matchingUsers, setMatchingUsers] = useState<User[]>([]);
   const [likedByUsers, setLikedByUsers] = useState<User[]>([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const uuid = getUuidFromCookie();
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const uuid = getUuidFromCookie();
 
-        // マッチングユーザーの取得
-        const matchingUsersResponse = await axios.post(
-          `${process.env.NEXT_PUBLIC_API_URL}/user/get-matching-users`,
-          { uuid }
-        );
-        setMatchingUsers(matchingUsersResponse.data);
+  //       // マッチングユーザーの取得
+  //       const matchingUsersResponse = await axios.post(
+  //         `${process.env.NEXT_PUBLIC_API_URL}/user/get-matching-users`,
+  //         { uuid }
+  //       );
+  //       setMatchingUsers(matchingUsersResponse.data);
 
-        // 自分がLikeしたユーザーの取得
-        const likedUsersResponse = await axios.post(
-          `${process.env.NEXT_PUBLIC_API_URL}/likes/get-liked-users`,
-          { uuid }
-        );
-        setLikedUsers(likedUsersResponse.data);
+  //       // 自分がLikeしたユーザーの取得
+  //       const likedUsersResponse = await axios.post(
+  //         `${process.env.NEXT_PUBLIC_API_URL}/likes/get-liked-users`,
+  //         { uuid }
+  //       );
+  //       setLikedUsers(likedUsersResponse.data);
 
-        // 自分をLikeしたが、マッチしていないユーザーの取得
-        const likedByUsersResponse = await axios.post(
-          `${process.env.NEXT_PUBLIC_API_URL}/likes/get-users-who-liked-me`,
-          {
+  //       // 自分をLikeしたが、マッチしていないユーザーの取得
+  //       const likedByUsersResponse = await axios.post(
+  //         `${process.env.NEXT_PUBLIC_API_URL}/likes/get-users-who-liked-me`,
+  //         {
+  //           uuid,
+  //           matchingUserIds: matchingUsersResponse.data.map(
+  //             (user: User) => user.user_id
+  //           ),
+  //         }
+  //       );
+  //       setLikedByUsers(likedByUsersResponse.data);
+  //     } catch (error) {
+  //       console.error("Error fetching users:", error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
+
+  //ログイン中のユーザーのフォロー、フォロワー情報を取得
+  const { isPending, isError, error, data } = useQuery({
+    queryKey: ["user"],
+    queryFn: async () => {
+      const uuid = await getUuidFromCookie();
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/follow/get-follows`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
             uuid,
-            matchingUserIds: matchingUsersResponse.data.map(
-              (user: User) => user.user_id
-            ),
-          }
-        );
-        setLikedByUsers(likedByUsersResponse.data);
-      } catch (error) {
-        console.error("Error fetching users:", error);
+          }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch user info");
       }
-    };
+      return response.json();
+    },
+  });
 
-    fetchData();
-  }, []);
+  console.log(data);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -88,9 +115,9 @@ const Page = () => {
           <Tab label="フォロワー" />
         </Tabs>
       </Box>
-      {value === 0 && <LikedUsers users={likedUsers} />}
-      {value === 1 && <MatchingUsers users={matchingUsers} />}
-      {value === 2 && <LikedByUsers users={likedByUsers} />}
+      {/* {data && value === 0 && <LikedUsers users={data} />} */}
+      {data && value === 1 && <MatchingUsers users={data} />}
+      {data && value === 2 && <LikedByUsers users={data.followers} />}
     </ThemeProvider>
   );
 };
