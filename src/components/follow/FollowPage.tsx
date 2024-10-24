@@ -53,12 +53,12 @@ const FollowPage = ({ data, isMe }: FollowPageProps) => {
           sx={{ color: "#22d3ee" }}
         >
           <Tab label="フォロー中" value="follows" />
-          <Tab label="相互フォロー" value="mutual" />
+          {isMe && <Tab label="相互フォロー" value="mutual" />}
           <Tab label="フォロワー" value="followers" />
         </Tabs>
       </Box>
       {data && value === "follows" && <FollowUsers follows={data.follows} />}
-      {data && value === "mutual" && (
+      {data && value === "mutual" && isMe && (
         <MutualUsers follows={data.follows} followers={data.followers} />
       )}
       {data && value === "followers" && (
