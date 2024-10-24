@@ -1,17 +1,13 @@
 import React, { useState } from "react";
 import IconField from "@/components/like/IconField";
 import { Pagination } from "@mui/material";
-import { FollowUser, User } from "@/components/profile/options"; // ユーザータイプの定義をインポート
+import { FollowUser } from "@/components/profile/options"; // ユーザータイプの定義をインポート
 
-type MatchingUsersProps = {
-  follows: FollowUser[];
+type FollowerUsersProps = {
   followers: FollowUser[];
 };
 
-const MatchingUsers: React.FC<MatchingUsersProps> = ({
-  follows,
-  followers,
-}) => {
+const FollowerUsers: React.FC<FollowerUsersProps> = ({ followers }) => {
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
 
@@ -22,12 +18,7 @@ const MatchingUsers: React.FC<MatchingUsersProps> = ({
     setPage(value);
   };
 
-  // 相互フォローのユーザーを取得
-  const mutualUsers = follows.filter((follow) =>
-    followers.some((follower) => follower.user_id === follow.user_id)
-  );
-
-  const displayedUsers = mutualUsers.slice(
+  const displayedUsers = followers.slice(
     (page - 1) * itemsPerPage,
     page * itemsPerPage
   );
@@ -41,7 +32,7 @@ const MatchingUsers: React.FC<MatchingUsersProps> = ({
       </div>
       <div className="flex justify-center mt-4">
         <Pagination
-          count={Math.ceil(mutualUsers.length / itemsPerPage)}
+          count={Math.ceil(followers.length / itemsPerPage)}
           page={page}
           onChange={handlePageChange}
           color="primary"
@@ -51,4 +42,4 @@ const MatchingUsers: React.FC<MatchingUsersProps> = ({
   );
 };
 
-export default MatchingUsers;
+export default FollowerUsers;

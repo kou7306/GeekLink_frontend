@@ -3,11 +3,11 @@ import IconField from "@/components/like/IconField";
 import { Pagination } from "@mui/material";
 import { FollowUser } from "@/components/profile/options";
 
-type LikedUsersProps = {
+type FollowUsersProps = {
   follows: FollowUser[];
 };
 
-const LikedUsers: React.FC<LikedUsersProps> = ({ follows }) => {
+const FollowUsers: React.FC<FollowUsersProps> = ({ follows }) => {
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
 
@@ -42,4 +42,4 @@ const LikedUsers: React.FC<LikedUsersProps> = ({ follows }) => {
   );
 };
 
-export default LikedUsers;
+export default FollowUsers;

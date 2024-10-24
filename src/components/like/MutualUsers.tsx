@@ -3,11 +3,12 @@ import IconField from "@/components/like/IconField";
 import { Pagination } from "@mui/material";
 import { FollowUser } from "@/components/profile/options"; // ユーザータイプの定義をインポート
 
-type FollowersProps = {
+type MutualUsersProps = {
+  follows: FollowUser[];
   followers: FollowUser[];
 };
 
-const LikedByUsers: React.FC<FollowersProps> = ({ followers }) => {
+const MutualUsers: React.FC<MutualUsersProps> = ({ follows, followers }) => {
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
 
@@ -18,7 +19,12 @@ const LikedByUsers: React.FC<FollowersProps> = ({ followers }) => {
     setPage(value);
   };
 
-  const displayedUsers = followers.slice(
+  // 相互フォローのユーザーを取得
+  const mutualUsers = follows.filter((follow) =>
+    followers.some((follower) => follower.user_id === follow.user_id)
+  );
+
+  const displayedUsers = mutualUsers.slice(
     (page - 1) * itemsPerPage,
     page * itemsPerPage
   );
@@ -32,7 +38,7 @@ const LikedByUsers: React.FC<FollowersProps> = ({ followers }) => {
       </div>
       <div className="flex justify-center mt-4">
         <Pagination
-          count={Math.ceil(followers.length / itemsPerPage)}
+          count={Math.ceil(mutualUsers.length / itemsPerPage)}
           page={page}
           onChange={handlePageChange}
           color="primary"
@@ -42,4 +48,4 @@ const LikedByUsers: React.FC<FollowersProps> = ({ followers }) => {
   );
 };
 
-export default LikedByUsers;
+export default MutualUsers;

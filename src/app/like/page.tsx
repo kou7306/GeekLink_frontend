@@ -1,11 +1,11 @@
 "use client";
 import { Box, Tabs, Tab, createTheme, ThemeProvider } from "@mui/material";
-import LikedUsers from "@/components/like/LikedUsers";
-import MatchingUsers from "@/components/like/MatchingUsers";
-import LikedByUsers from "@/components/like/LikedByUsers";
 import { getUuidFromCookie } from "@/actions/users";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
+import FollowUsers from "@/components/like/FollowUsers";
+import FollowerUsers from "@/components/like/FollowerUsers";
+import MutualUsers from "@/components/like/MutualUsers";
 
 const theme = createTheme({
   palette: {
@@ -73,12 +73,12 @@ const Page = () => {
           <Tab label="フォロワー" value="followers" />
         </Tabs>
       </Box>
-      {data && value === "follows" && <LikedUsers follows={data.follows} />}
+      {data && value === "follows" && <FollowUsers follows={data.follows} />}
       {data && value === "mutual" && (
-        <MatchingUsers follows={data.follows} followers={data.followers} />
+        <MutualUsers follows={data.follows} followers={data.followers} />
       )}
       {data && value === "followers" && (
-        <LikedByUsers followers={data.followers} />
+        <FollowerUsers followers={data.followers} />
       )}
     </ThemeProvider>
   );
