@@ -115,7 +115,7 @@ const Page = () => {
           <Tab label="フォロワー" />
         </Tabs>
       </Box>
-      {/* {data && value === 0 && <LikedUsers users={data} />} */}
+      {data && value === 0 && <LikedUsers users={data.follows} />}
       {data && value === 1 && (
         <MatchingUsers follows={data.follows} followers={data.followers} />
       )}

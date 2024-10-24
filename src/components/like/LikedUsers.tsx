@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import IconField from "@/components/like/IconField";
 import { Pagination } from "@mui/material";
-import { User } from "@/components/profile/options";
+import { FollowUser } from "@/components/profile/options";
 
 type LikedUsersProps = {
-  users: User[];
+  users: FollowUser[];
 };
 
 const LikedUsers: React.FC<LikedUsersProps> = ({ users }) => {
