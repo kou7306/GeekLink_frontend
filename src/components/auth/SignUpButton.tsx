@@ -32,7 +32,7 @@ function SignUpButton({ email, password }: SignUpButtonProps) {
     <button
       onClick={() => handleSignUp()}
       disabled={isPending}
-      className="px-4 py-2 bg-primary text-black rounded-lg shadow-md hover:bg-hover_blue transition-colors duration-200 ease-in-out"
+      className="px-4 py-2 bg-primary text-text rounded-lg shadow-md hover:bg-hover_blue transition-colors duration-200 ease-in-out"
     >
       {isPending ? "Signing up..." : "Sign Up"}
     </button>
