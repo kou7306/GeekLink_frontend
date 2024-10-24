@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import IconField from "@/components/like/IconField";
+import IconField from "@/components/follow/IconField";
 import { Pagination } from "@mui/material";
-import { FollowUser } from "@/components/profile/options";
+import { FollowUser } from "@/components/profile/options"; // ユーザータイプの定義をインポート
 
-type FollowUsersProps = {
-  follows: FollowUser[];
+type FollowerUsersProps = {
+  followers: FollowUser[];
 };
 
-const FollowUsers: React.FC<FollowUsersProps> = ({ follows }) => {
+const FollowerUsers: React.FC<FollowerUsersProps> = ({ followers }) => {
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
 
@@ -18,7 +18,7 @@ const FollowUsers: React.FC<FollowUsersProps> = ({ follows }) => {
     setPage(value);
   };
 
-  const displayedUsers = follows.slice(
+  const displayedUsers = followers.slice(
     (page - 1) * itemsPerPage,
     page * itemsPerPage
   );
@@ -32,7 +32,7 @@ const FollowUsers: React.FC<FollowUsersProps> = ({ follows }) => {
       </div>
       <div className="flex justify-center mt-4">
         <Pagination
-          count={Math.ceil(follows.length / itemsPerPage)}
+          count={Math.ceil(followers.length / itemsPerPage)}
           page={page}
           onChange={handlePageChange}
           color="primary"
@@ -42,4 +42,4 @@ const FollowUsers: React.FC<FollowUsersProps> = ({ follows }) => {
   );
 };
 
-export default FollowUsers;
+export default FollowerUsers;

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import IconField from "@/components/like/IconField";
+import IconField from "@/components/follow/IconField";
 import { Pagination } from "@mui/material";
 import { User } from "@/components/profile/options";
 
@@ -11,11 +11,17 @@ const FilteredUsers: React.FC<FilteredUsersProps> = ({ users }) => {
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
 
-  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
     setPage(value);
   };
 
-  const displayedUsers = users.slice((page - 1) * itemsPerPage, page * itemsPerPage);
+  const displayedUsers = users.slice(
+    (page - 1) * itemsPerPage,
+    page * itemsPerPage
+  );
 
   return (
     <>

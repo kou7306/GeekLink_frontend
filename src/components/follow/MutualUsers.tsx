@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import IconField from "@/components/like/IconField";
+import IconField from "@/components/follow/IconField";
 import { Pagination } from "@mui/material";
 import { FollowUser } from "@/components/profile/options"; // ユーザータイプの定義をインポート
 
