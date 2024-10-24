@@ -2,7 +2,7 @@
 import { getUuidFromCookie } from "@/actions/users";
 import { useQuery } from "@tanstack/react-query";
 import FollowPage from "@/components/follow/FollowPage";
-import Loading from "../loading";
+import ComponentLoading from "@/components/core/ComponentLoading";
 
 const Page = () => {
   //ログイン中のユーザーのフォロー、フォロワー情報を取得
@@ -33,7 +33,7 @@ const Page = () => {
   });
 
   if (isPending) {
-    return <Loading />;
+    return <ComponentLoading />;
   }
 
   return <FollowPage data={data} isMe={true} />;

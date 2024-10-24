@@ -1,7 +1,7 @@
 "use client";
 
 import { getUuidFromCookie } from "@/actions/users";
-import Loading from "@/app/loading";
+import ComponentLoading from "@/components/core/ComponentLoading";
 import FollowPage from "@/components/follow/FollowPage";
 import { useQuery } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
@@ -44,7 +44,7 @@ const Page = () => {
   });
 
   if (isPending) {
-    return <Loading />;
+    return <ComponentLoading />;
   }
 
   return <FollowPage data={data} isMe={false} />;
