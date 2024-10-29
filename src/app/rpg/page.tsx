@@ -30,32 +30,70 @@ const Page = () => {
     // const cube = new THREE.Mesh(geometry, material);
     // scene.add(cube);
 
-    //planegeometryの作成
-    const planeGeometry = new THREE.PlaneGeometry(0.15, 2); //縦と横の幅を指定
-    const planeMaterial = new THREE.MeshBasicMaterial({
-      color: 0x0000ff,
-      side: THREE.DoubleSide, //両面を描画する
-      transparent: true, //透明にする
-      opacity: 0.7,
-    });
-    const plane = new THREE.Mesh(planeGeometry, planeMaterial);
-    plane.position.set(0, 1, 0); //x,y,zの位置を指定
-    scene.add(plane);
-
-    // 円柱の作成
-    const cylinderGeometry = new THREE.CylinderGeometry(0.2, 0.2, 0.1, 32); // 半径0.2、高さ1、分割数32の円柱
-    const cylinderMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
-    const cylinder = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
-    cylinder.rotation.x = Math.PI / 2; // 円柱を横に寝かせる
-    scene.add(cylinder);
-
     const group = new THREE.Group();
-    group.add(plane);
-    group.add(cylinder);
 
-    scene.add(group);
+    //最初のますと道を作成する関数
+    function createRoadAndSquare() {
+      // 円柱の作成
+      const cylinderGeometry = new THREE.CylinderGeometry(0.2, 0.2, 0.1, 32); // 半径0.2、高さ1、分割数32の円柱
+      const cylinderMaterial = new THREE.MeshBasicMaterial({
+        color: 0xffff00,
+      });
+      const cylinder = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
+      cylinder.rotation.x = Math.PI / 2; // 円柱を横に寝かせる
+      cylinder.position.set(0, -0.5, 0); // 中心のマス
 
-    camera.position.z = 2; //値を小さくすると拡大する
+      //道の作成
+      const planeGeometry = new THREE.PlaneGeometry(0.15, 2); //縦と横の幅を指定
+      const planeMaterial = new THREE.MeshBasicMaterial({
+        color: 0x0000ff,
+        side: THREE.DoubleSide, //両面を描画する
+        transparent: true, //透明にする
+        opacity: 0.7,
+      });
+      const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+      plane.position.set(0, 0.5, 0); // 道の位置を中心に
+
+      // グループ化して一括管理
+      group.add(cylinder);
+
+      group.add(plane);
+
+      scene.add(group);
+    }
+
+    //まっすぐの道を作る関数
+    function createNextRoadAndSquare(x: number, y: number) {
+      // 円柱の作成
+      const cylinderGeometry = new THREE.CylinderGeometry(0.2, 0.2, 0.1, 32); // 半径0.2、高さ1、分割数32の円柱
+      const cylinderMaterial = new THREE.MeshBasicMaterial({
+        color: 0xffff00,
+      });
+      const cylinder = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
+      cylinder.rotation.x = Math.PI / 2; // 円柱を横に寝かせる
+      cylinder.position.set(x, y - 0.5, 0); // 中心のマス
+
+      //道の作成
+      const planeGeometry = new THREE.PlaneGeometry(0.15, 2); //縦と横の幅を指定
+      const planeMaterial = new THREE.MeshBasicMaterial({
+        color: 0x0000ff,
+        side: THREE.DoubleSide, //両面を描画する
+        transparent: true, //透明にする
+        opacity: 0.7,
+      });
+      const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+      plane.position.set(x, y + 0.5, 0); // 道の位置を中心に
+
+      group.add(cylinder);
+      group.add(plane);
+    }
+
+    createRoadAndSquare();
+
+    createNextRoadAndSquare(0, 2);
+    createNextRoadAndSquare(0, 4);
+
+    camera.position.z = 3; //値を小さくすると拡大する
 
     // アニメーション関数
     const animate = () => {
