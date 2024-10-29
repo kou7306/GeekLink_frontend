@@ -5,7 +5,6 @@ import * as THREE from "three";
 
 const Page = () => {
   const mountRef = useRef<HTMLDivElement>(null);
-  const [nextRoad, setNextRoad] = useState<string>("");
 
   useEffect(() => {
     if (!mountRef.current) return;
@@ -192,118 +191,121 @@ const Page = () => {
       });
     }
 
-    //右に曲がるか左に曲がるか選択する画面を作る
-    function createSelectRoad() {
-      // モーダルを作成
-      const modal = document.createElement("div");
-      modal.style.position = "fixed";
-      modal.style.top = "50%";
-      modal.style.left = "50%";
-      modal.style.transform = "translate(-50%, -50%)";
-      modal.style.backgroundColor = "rgba(0, 0, 255, 0.5)"; // 背景色を青色にして半透明にする
-      modal.style.padding = "20px";
-      modal.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.5)";
-      modal.style.zIndex = "1000";
+    //選択画面を作成し、選択結果を返す
+    function createSelectRoad(): Promise<string> {
+      return new Promise((resolve) => {
+        const modal = document.createElement("div");
+        modal.style.position = "fixed";
+        modal.style.top = "50%";
+        modal.style.left = "50%";
+        modal.style.transform = "translate(-50%, -50%)";
+        modal.style.backgroundColor = "rgba(0, 0, 255, 0.5)"; // 背景色を青色にして半透明にする
+        modal.style.padding = "20px";
+        modal.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.5)";
+        modal.style.zIndex = "1000";
 
-      // メッセージを作成
-      const message = document.createElement("p");
-      message.textContent = "どちらに進みますか？";
-      modal.appendChild(message);
+        // メッセージを作成
+        const message = document.createElement("p");
+        message.textContent = "どちらに進みますか？";
+        modal.appendChild(message);
 
-      //右と左のボタンを作成
+        //右と左のボタンを作成
 
-      const leftButton = document.createElement("button");
-      leftButton.textContent = "左";
-      leftButton.style.margin = "10px";
-      leftButton.style.padding = "10px 20px";
-      leftButton.style.backgroundColor = "#4CAF50";
-      leftButton.style.color = "white";
-      leftButton.style.border = "none";
-      leftButton.style.borderRadius = "5px";
-      leftButton.style.cursor = "pointer";
-      leftButton.onmouseover = () => {
-        leftButton.style.backgroundColor = "#45a049";
-      };
-      leftButton.onmouseout = () => {
+        const leftButton = document.createElement("button");
+        leftButton.textContent = "左";
+        leftButton.style.margin = "10px";
+        leftButton.style.padding = "10px 20px";
         leftButton.style.backgroundColor = "#4CAF50";
-      };
-      leftButton.onclick = () => {
-        setNextRoad("left");
-        document.body.removeChild(modal);
-      };
+        leftButton.style.color = "white";
+        leftButton.style.border = "none";
+        leftButton.style.borderRadius = "5px";
+        leftButton.style.cursor = "pointer";
+        leftButton.onmouseover = () => {
+          leftButton.style.backgroundColor = "#45a049";
+        };
+        leftButton.onmouseout = () => {
+          leftButton.style.backgroundColor = "#4CAF50";
+        };
+        leftButton.onclick = () => {
+          document.body.removeChild(modal);
+          resolve("left");
+        };
 
-      modal.appendChild(leftButton);
+        modal.appendChild(leftButton);
 
-      //まっすぐ進むボタンを作成
-      const straightButton = document.createElement("button");
-      straightButton.textContent = "まっすぐ進む";
-      straightButton.style.margin = "10px";
-      straightButton.style.padding = "10px 20px";
-      straightButton.style.backgroundColor = "#4CAF50";
-      straightButton.style.color = "white";
-      straightButton.style.border = "none";
-      straightButton.style.borderRadius = "5px";
-      straightButton.style.cursor = "pointer";
-      straightButton.onmouseover = () => {
-        straightButton.style.backgroundColor = "#45a049";
-      };
-      straightButton.onmouseout = () => {
+        //まっすぐ進むボタンを作成
+        const straightButton = document.createElement("button");
+        straightButton.textContent = "まっすぐ進む";
+        straightButton.style.margin = "10px";
+        straightButton.style.padding = "10px 20px";
         straightButton.style.backgroundColor = "#4CAF50";
-      };
-      straightButton.onclick = () => {
-        setNextRoad("straight");
-        document.body.removeChild(modal);
-      };
+        straightButton.style.color = "white";
+        straightButton.style.border = "none";
+        straightButton.style.borderRadius = "5px";
+        straightButton.style.cursor = "pointer";
+        straightButton.onmouseover = () => {
+          straightButton.style.backgroundColor = "#45a049";
+        };
+        straightButton.onmouseout = () => {
+          straightButton.style.backgroundColor = "#4CAF50";
+        };
+        straightButton.onclick = () => {
+          document.body.removeChild(modal);
+          resolve("straight");
+        };
 
-      modal.appendChild(straightButton);
+        modal.appendChild(straightButton);
 
-      const rightButton = document.createElement("button");
-      rightButton.textContent = "右";
-      rightButton.style.margin = "10px";
-      rightButton.style.padding = "10px 20px";
-      rightButton.style.backgroundColor = "#4CAF50";
-      rightButton.style.color = "white";
-      rightButton.style.border = "none";
-      rightButton.style.borderRadius = "5px";
-      rightButton.style.cursor = "pointer";
-      rightButton.onmouseover = () => {
-        rightButton.style.backgroundColor = "#45a049";
-      };
-      rightButton.onmouseout = () => {
+        const rightButton = document.createElement("button");
+        rightButton.textContent = "右";
+        rightButton.style.margin = "10px";
+        rightButton.style.padding = "10px 20px";
         rightButton.style.backgroundColor = "#4CAF50";
-      };
-      rightButton.onclick = () => {
-        setNextRoad("right");
-        document.body.removeChild(modal);
-      };
+        rightButton.style.color = "white";
+        rightButton.style.border = "none";
+        rightButton.style.borderRadius = "5px";
+        rightButton.style.cursor = "pointer";
+        rightButton.onmouseover = () => {
+          rightButton.style.backgroundColor = "#45a049";
+        };
+        rightButton.onmouseout = () => {
+          rightButton.style.backgroundColor = "#4CAF50";
+        };
+        rightButton.onclick = () => {
+          document.body.removeChild(modal);
+          resolve("right");
+        };
 
-      modal.appendChild(rightButton);
+        modal.appendChild(rightButton);
 
-      // モーダルを表示
-      document.body.appendChild(modal);
+        // モーダルを表示
+        document.body.appendChild(modal);
+      });
     }
 
     async function createScene() {
       createRoadAndSquare();
+      await createLeftBesideRoadAndSquare(0, 2);
+      await createRightBesideRoadAndSquare(0, 2);
       await run();
 
-      await createRightBesideRoadAndSquare(0, 2);
-      await createLeftBesideRoadAndSquare(0, 2);
-      createSelectRoad();
+      // モーダルで選択を待つ
+      const direction = await createSelectRoad();
 
-      // await runRight();
-      // // await run();
-      // // await runRight();
-
-      // await run();
-
-      await createNextRoadAndSquare(2, 5);
-      await createRightBesideRoadAndSquare(2, 5);
-
-      await createNextRoadAndSquare(0, 2);
-      await createNextRoadAndSquare(0, 5);
-      await createNextRoadAndSquare(0, 8);
-      // await runRight();
+      // 選択結果に応じて処理を分岐
+      if (direction === "left") {
+        await runLeft();
+        await createNextRoadAndSquare(0, 5);
+        await createNextRoadAndSquare(-2, 5);
+        await createRightBesideRoadAndSquare(-2, 5);
+      } else if (direction === "right") {
+        await runRight();
+        await createNextRoadAndSquare(2, 5);
+      } else {
+        await createNextRoadAndSquare(0, 2);
+        await run();
+        await createNextRoadAndSquare(0, 5);
+      }
     }
 
     createScene();
