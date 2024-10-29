@@ -138,42 +138,86 @@ const Page = () => {
       createNextRoadAndSquare(x - 2, y);
     }
 
-    createRoadAndSquare();
-
-    createRightBesideRoadAndSquare(0, 2);
-    createLeftBesideRoadAndSquare(0, 2);
-    createNextRoadAndSquare(2, 5);
-    createRightBesideRoadAndSquare(2, 5);
-
-    createNextRoadAndSquare(0, 2);
-    createNextRoadAndSquare(0, 5);
-    createNextRoadAndSquare(0, 8);
-
     camera.position.z = 3; //値を小さくすると拡大する
 
     //一マス分歩く
     function run() {
-      if (camera.position.y < 0.01) {
-        camera.position.y += 0.02;
-        requestAnimationFrame(run);
-      }
-      renderer.render(scene, camera);
+      return new Promise<void>((resolve) => {
+        const targetPositionY = camera.position.y + 3; // 1マス進む
+        function step() {
+          if (camera.position.y < targetPositionY) {
+            camera.position.y += 0.02;
+            requestAnimationFrame(step);
+          } else {
+            resolve();
+          }
+          renderer.render(scene, camera);
+        }
+        step();
+      });
     }
 
-    run();
+    //右に一マス歩く
+    function runRight() {
+      return new Promise<void>((resolve) => {
+        const targetPositionX = camera.position.x + 2; // 1マス進む
+        function step() {
+          if (camera.position.x < targetPositionX) {
+            camera.position.x += 0.02;
+            requestAnimationFrame(step);
+          } else {
+            resolve();
+          }
+          renderer.render(scene, camera);
+        }
+        step();
+      });
+    }
+
+    //左に一マス歩く
+    function runLeft() {
+      return new Promise<void>((resolve) => {
+        const targetPositionX = camera.position.x - 2; // 1マス進む
+        function step() {
+          if (camera.position.x > targetPositionX) {
+            camera.position.x -= 0.02;
+            requestAnimationFrame(step);
+          } else {
+            resolve();
+          }
+          renderer.render(scene, camera);
+        }
+        step();
+      });
+    }
+
+    async function createScene() {
+      createRoadAndSquare();
+      await run();
+      await run();
+      await runRight();
+      // // await run();
+      // // await runRight();
+
+      // await run();
+
+      await createRightBesideRoadAndSquare(0, 2);
+      await createLeftBesideRoadAndSquare(0, 2);
+
+      await createNextRoadAndSquare(2, 5);
+      await createRightBesideRoadAndSquare(2, 5);
+
+      await createNextRoadAndSquare(0, 2);
+      await createNextRoadAndSquare(0, 5);
+      await createNextRoadAndSquare(0, 8);
+      await runRight();
+    }
+
+    createScene();
 
     // アニメーション関数
     const animate = () => {
       requestAnimationFrame(animate);
-
-      // cube.rotation.x += 0.01;
-      // cube.rotation.y += 0.01;
-      // plane.rotation.x += 0.01;
-      // plane.rotation.y += 0.01;
-      // capsule.rotation.x += 0.01;
-      // capsule.rotation.y += 0.01;
-      // circle.rotation.y += 0.01;
-      // circle.rotation.x += 0.01;
 
       renderer.render(scene, camera);
     };
