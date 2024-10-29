@@ -207,7 +207,7 @@ const Page = () => {
 
       // メッセージを作成
       const message = document.createElement("p");
-      message.textContent = "右に曲がりますか？左に曲がりますか？";
+      message.textContent = "どちらに進みますか？";
       modal.appendChild(message);
 
       //右と左のボタンを作成
