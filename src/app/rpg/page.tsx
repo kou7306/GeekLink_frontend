@@ -17,7 +17,7 @@ const Page = () => {
       0.1,
       1000
     );
-    camera.position.set(0, -3, 2); // カメラの位置を上方に移動し、右方向に2単位移動
+    camera.position.set(0, -3, 2); // カメラの位置
     camera.lookAt(0, 0, 0); // カメラの注視点をシーンの中心に設定
     const renderer = new THREE.WebGLRenderer({ antialias: true }); // アンチエイリアスを有効にして、より滑らかな描画を行う
 
@@ -41,10 +41,10 @@ const Page = () => {
       });
       const cylinder = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
       cylinder.rotation.x = Math.PI / 2; // 円柱を横に寝かせる
-      cylinder.position.set(0, -0.5, 0); // 中心のマス
+      cylinder.position.set(0, -1, 0); // 中心のマス
 
       //道の作成
-      const planeGeometry = new THREE.PlaneGeometry(0.15, 2); //縦と横の幅を指定
+      const planeGeometry = new THREE.PlaneGeometry(0.15, 3); //縦と横の幅を指定
       const planeMaterial = new THREE.MeshBasicMaterial({
         color: 0x0000ff,
         side: THREE.DoubleSide, //両面を描画する
@@ -71,10 +71,10 @@ const Page = () => {
       });
       const cylinder = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
       cylinder.rotation.x = Math.PI / 2; // 円柱を横に寝かせる
-      cylinder.position.set(x, y - 0.5, 0); // 中心のマス
+      cylinder.position.set(x, y, 0); // 中心のマス
 
       //道の作成
-      const planeGeometry = new THREE.PlaneGeometry(0.15, 2); //縦と横の幅を指定
+      const planeGeometry = new THREE.PlaneGeometry(0.15, 3); //縦と横の幅を指定
       const planeMaterial = new THREE.MeshBasicMaterial({
         color: 0x0000ff,
         side: THREE.DoubleSide, //両面を描画する
@@ -82,7 +82,7 @@ const Page = () => {
         opacity: 0.7,
       });
       const plane = new THREE.Mesh(planeGeometry, planeMaterial);
-      plane.position.set(x, y + 0.5, 0); // 道の位置を中心に
+      plane.position.set(x, y + 1.5, 0); // 道の位置を中心に
 
       group.add(cylinder);
       group.add(plane);
@@ -91,9 +91,21 @@ const Page = () => {
     createRoadAndSquare();
 
     createNextRoadAndSquare(0, 2);
-    createNextRoadAndSquare(0, 4);
+    createNextRoadAndSquare(0, 5);
+    createNextRoadAndSquare(0, 8);
 
     camera.position.z = 3; //値を小さくすると拡大する
+
+    //一マス分歩く
+    function run() {
+      if (camera.position.y < 0.01) {
+        camera.position.y += 0.01;
+        requestAnimationFrame(run);
+      }
+      renderer.render(scene, camera);
+    }
+
+    run();
 
     // アニメーション関数
     const animate = () => {
