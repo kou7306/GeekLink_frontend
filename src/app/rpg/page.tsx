@@ -6,6 +6,9 @@ import * as THREE from "three";
 const Page = () => {
   const mountRef = useRef<HTMLDivElement>(null);
 
+  let roadX = 0;
+  let roadY = 0;
+
   useEffect(() => {
     if (!mountRef.current) return;
 
@@ -144,11 +147,17 @@ const Page = () => {
     function run() {
       return new Promise<void>((resolve) => {
         const targetPositionY = camera.position.y + 3; // 1マス進む
+        let hasUpdatedRoadY = false; // フラグを追加
         function step() {
           if (camera.position.y < targetPositionY) {
             camera.position.y += 0.02;
             requestAnimationFrame(step);
           } else {
+            if (!hasUpdatedRoadY) {
+              // まだ更新していない場合のみ実行
+              roadY += 3;
+              hasUpdatedRoadY = true;
+            }
             resolve();
           }
           renderer.render(scene, camera);
@@ -161,11 +170,17 @@ const Page = () => {
     function runRight() {
       return new Promise<void>((resolve) => {
         const targetPositionX = camera.position.x + 2; // 1マス進む
+        let hasUpdatedRoadX = false; // フラグを追加
         function step() {
           if (camera.position.x < targetPositionX) {
             camera.position.x += 0.02;
             requestAnimationFrame(step);
           } else {
+            if (!hasUpdatedRoadX) {
+              // まだ更新していない場合のみ実行
+              roadX += 2;
+              hasUpdatedRoadX = true;
+            }
             resolve();
           }
           renderer.render(scene, camera);
@@ -178,11 +193,17 @@ const Page = () => {
     function runLeft() {
       return new Promise<void>((resolve) => {
         const targetPositionX = camera.position.x - 2; // 1マス進む
+        let hasUpdatedRoadX = false; // フラグを追加
         function step() {
           if (camera.position.x > targetPositionX) {
             camera.position.x -= 0.02;
             requestAnimationFrame(step);
           } else {
+            if (!hasUpdatedRoadX) {
+              // まだ更新していない場合のみ実行
+              roadX -= 2;
+              hasUpdatedRoadX = true;
+            }
             resolve();
           }
           renderer.render(scene, camera);
@@ -284,10 +305,12 @@ const Page = () => {
     }
 
     async function createScene() {
+      console.log(roadX, roadY);
       createRoadAndSquare();
       await createLeftBesideRoadAndSquare(0, 2);
       await createRightBesideRoadAndSquare(0, 2);
       await run();
+      console.log(roadX, roadY);
 
       // モーダルで選択を待つ
       const direction = await createSelectRoad();
@@ -295,6 +318,7 @@ const Page = () => {
       // 選択結果に応じて処理を分岐
       if (direction === "left") {
         await runLeft();
+        console.log(roadX, roadY);
         await createNextRoadAndSquare(0, 5);
         await createNextRoadAndSquare(-2, 5);
         await createRightBesideRoadAndSquare(-2, 5);
@@ -310,14 +334,14 @@ const Page = () => {
 
     createScene();
 
-    // アニメーション関数
-    const animate = () => {
-      requestAnimationFrame(animate);
+    // // アニメーション関数
+    // const animate = () => {
+    //   requestAnimationFrame(animate);
 
-      renderer.render(scene, camera);
-    };
+    //   renderer.render(scene, camera);
+    // };
 
-    animate();
+    // animate();
 
     // クリーンアップ関数
     return () => {
