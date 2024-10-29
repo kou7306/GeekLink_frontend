@@ -24,6 +24,7 @@ const Page = () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
     mountRef.current.appendChild(renderer.domElement);
 
+    //星を作成する関数
     function createStarField() {
       const starGeo = new THREE.BufferGeometry();
       const positions = new Float32Array(50000 * 3);
