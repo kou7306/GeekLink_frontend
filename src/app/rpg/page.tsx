@@ -24,11 +24,26 @@ const Page = () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
     mountRef.current.appendChild(renderer.domElement);
 
-    // // キューブの作成
-    // const geometry = new THREE.BoxGeometry(1, 1, 1);
-    // const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-    // const cube = new THREE.Mesh(geometry, material);
-    // scene.add(cube);
+    function createStarField() {
+      const starGeo = new THREE.BufferGeometry();
+      const positions = new Float32Array(50000 * 3);
+
+      for (let i = 0; i < 50000; i++) {
+        positions[i * 3] = 3000 * (Math.random() - 0.5); // x
+        positions[i * 3 + 1] = 3000 * (Math.random() - 0.5); // y
+        positions[i * 3 + 2] = 3000 * (Math.random() - 0.5); // z
+      }
+
+      starGeo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+      const starMate = new THREE.PointsMaterial({
+        size: 2,
+        color: 0xddddbb,
+      });
+      const starMesh = new THREE.Points(starGeo, starMate);
+      scene.add(starMesh);
+    }
+
+    createStarField();
 
     const group = new THREE.Group();
 
