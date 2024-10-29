@@ -68,7 +68,7 @@ const Page = () => {
         color: 0x0000ff,
         side: THREE.DoubleSide, //両面を描画する
         transparent: true, //透明にする
-        opacity: 0.7,
+        opacity: 0.3,
       });
       const plane = new THREE.Mesh(planeGeometry, planeMaterial);
       plane.position.set(0, 0.5, 0); // 道の位置を中心に
@@ -98,7 +98,7 @@ const Page = () => {
         color: 0x0000ff,
         side: THREE.DoubleSide, //両面を描画する
         transparent: true, //透明にする
-        opacity: 0.7,
+        opacity: 0.3,
       });
       const plane = new THREE.Mesh(planeGeometry, planeMaterial);
       plane.position.set(x, y + 1.5, 0); // 道の位置を中心に
@@ -115,7 +115,7 @@ const Page = () => {
         color: 0x0000ff,
         side: THREE.DoubleSide, //両面を描画する
         transparent: true, //透明にする
-        opacity: 0.7,
+        opacity: 0.3,
       });
       const plane = new THREE.Mesh(planeGeometry, planeMaterial);
       plane.rotation.z = Math.PI / 2; // 90度回転
@@ -132,7 +132,7 @@ const Page = () => {
         color: 0x0000ff,
         side: THREE.DoubleSide, //両面を描画する
         transparent: true, //透明にする
-        opacity: 0.7,
+        opacity: 0.3,
       });
       const plane = new THREE.Mesh(planeGeometry, planeMaterial);
       plane.rotation.z = Math.PI / 2; // 90度回転
@@ -305,12 +305,17 @@ const Page = () => {
     }
 
     async function createScene() {
-      console.log(roadX, roadY);
       createRoadAndSquare();
       await createLeftBesideRoadAndSquare(0, 2);
       await createRightBesideRoadAndSquare(0, 2);
+      await createNextRoadAndSquare(0, 2);
+      await createNextRoadAndSquare(0, 5);
+      await createRightBesideRoadAndSquare(2, 5);
+      await createNextRoadAndSquare(2, 5);
+      await createLeftBesideRoadAndSquare(-2, 5);
+      await createNextRoadAndSquare(0, 8);
+      await createLeftBesideRoadAndSquare(0, 8);
       await run();
-      console.log(roadX, roadY);
 
       // モーダルで選択を待つ
       const direction = await createSelectRoad();
@@ -318,17 +323,10 @@ const Page = () => {
       // 選択結果に応じて処理を分岐
       if (direction === "left") {
         await runLeft();
-        console.log(roadX, roadY);
-        await createNextRoadAndSquare(0, 5);
-        await createNextRoadAndSquare(-2, 5);
-        await createRightBesideRoadAndSquare(-2, 5);
       } else if (direction === "right") {
         await runRight();
-        await createNextRoadAndSquare(2, 5);
       } else {
-        await createNextRoadAndSquare(0, 2);
         await run();
-        await createNextRoadAndSquare(0, 5);
       }
     }
 
