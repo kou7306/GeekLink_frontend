@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 
 const Page = () => {
   const mountRef = useRef<HTMLDivElement>(null);
+  const [nextRoad, setNextRoad] = useState<string>("");
 
   useEffect(() => {
     if (!mountRef.current) return;
@@ -191,18 +192,110 @@ const Page = () => {
       });
     }
 
+    //右に曲がるか左に曲がるか選択する画面を作る
+    function createSelectRoad() {
+      // モーダルを作成
+      const modal = document.createElement("div");
+      modal.style.position = "fixed";
+      modal.style.top = "50%";
+      modal.style.left = "50%";
+      modal.style.transform = "translate(-50%, -50%)";
+      modal.style.backgroundColor = "rgba(0, 0, 255, 0.5)"; // 背景色を青色にして半透明にする
+      modal.style.padding = "20px";
+      modal.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.5)";
+      modal.style.zIndex = "1000";
+
+      // メッセージを作成
+      const message = document.createElement("p");
+      message.textContent = "右に曲がりますか？左に曲がりますか？";
+      modal.appendChild(message);
+
+      //右と左のボタンを作成
+
+      const leftButton = document.createElement("button");
+      leftButton.textContent = "左";
+      leftButton.style.margin = "10px";
+      leftButton.style.padding = "10px 20px";
+      leftButton.style.backgroundColor = "#4CAF50";
+      leftButton.style.color = "white";
+      leftButton.style.border = "none";
+      leftButton.style.borderRadius = "5px";
+      leftButton.style.cursor = "pointer";
+      leftButton.onmouseover = () => {
+        leftButton.style.backgroundColor = "#45a049";
+      };
+      leftButton.onmouseout = () => {
+        leftButton.style.backgroundColor = "#4CAF50";
+      };
+      leftButton.onclick = () => {
+        setNextRoad("left");
+        document.body.removeChild(modal);
+      };
+
+      modal.appendChild(leftButton);
+
+      //まっすぐ進むボタンを作成
+      const straightButton = document.createElement("button");
+      straightButton.textContent = "まっすぐ進む";
+      straightButton.style.margin = "10px";
+      straightButton.style.padding = "10px 20px";
+      straightButton.style.backgroundColor = "#4CAF50";
+      straightButton.style.color = "white";
+      straightButton.style.border = "none";
+      straightButton.style.borderRadius = "5px";
+      straightButton.style.cursor = "pointer";
+      straightButton.onmouseover = () => {
+        straightButton.style.backgroundColor = "#45a049";
+      };
+      straightButton.onmouseout = () => {
+        straightButton.style.backgroundColor = "#4CAF50";
+      };
+      straightButton.onclick = () => {
+        setNextRoad("straight");
+        document.body.removeChild(modal);
+      };
+
+      modal.appendChild(straightButton);
+
+      const rightButton = document.createElement("button");
+      rightButton.textContent = "右";
+      rightButton.style.margin = "10px";
+      rightButton.style.padding = "10px 20px";
+      rightButton.style.backgroundColor = "#4CAF50";
+      rightButton.style.color = "white";
+      rightButton.style.border = "none";
+      rightButton.style.borderRadius = "5px";
+      rightButton.style.cursor = "pointer";
+      rightButton.onmouseover = () => {
+        rightButton.style.backgroundColor = "#45a049";
+      };
+      rightButton.onmouseout = () => {
+        rightButton.style.backgroundColor = "#4CAF50";
+      };
+      rightButton.onclick = () => {
+        setNextRoad("right");
+        document.body.removeChild(modal);
+      };
+
+      modal.appendChild(rightButton);
+
+      // モーダルを表示
+      document.body.appendChild(modal);
+    }
+
     async function createScene() {
       createRoadAndSquare();
       await run();
-      await run();
-      await runRight();
+
+      await createRightBesideRoadAndSquare(0, 2);
+      await createLeftBesideRoadAndSquare(0, 2);
+      createSelectRoad();
+
+      // await runRight();
       // // await run();
       // // await runRight();
 
       // await run();
-
-      await createRightBesideRoadAndSquare(0, 2);
-      await createLeftBesideRoadAndSquare(0, 2);
 
       await createNextRoadAndSquare(2, 5);
       await createRightBesideRoadAndSquare(2, 5);
@@ -210,7 +303,7 @@ const Page = () => {
       await createNextRoadAndSquare(0, 2);
       await createNextRoadAndSquare(0, 5);
       await createNextRoadAndSquare(0, 8);
-      await runRight();
+      // await runRight();
     }
 
     createScene();
