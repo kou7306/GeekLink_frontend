@@ -104,7 +104,46 @@ const Page = () => {
       group.add(plane);
     }
 
+    //右に曲がってますと道を作る
+    function createRightBesideRoadAndSquare(x: number, y: number) {
+      //道の作成
+      const planeGeometry = new THREE.PlaneGeometry(0.15, 2); //縦と横の幅を指定
+      const planeMaterial = new THREE.MeshBasicMaterial({
+        color: 0x0000ff,
+        side: THREE.DoubleSide, //両面を描画する
+        transparent: true, //透明にする
+        opacity: 0.7,
+      });
+      const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+      plane.rotation.z = Math.PI / 2; // 90度回転
+      plane.position.set(x + 1, y, 0);
+      group.add(plane);
+      createNextRoadAndSquare(x + 2, y);
+    }
+
+    //左に曲がってますと道を作る
+    function createLeftBesideRoadAndSquare(x: number, y: number) {
+      //道の作成
+      const planeGeometry = new THREE.PlaneGeometry(0.15, 2); //縦と横の幅を指定
+      const planeMaterial = new THREE.MeshBasicMaterial({
+        color: 0x0000ff,
+        side: THREE.DoubleSide, //両面を描画する
+        transparent: true, //透明にする
+        opacity: 0.7,
+      });
+      const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+      plane.rotation.z = Math.PI / 2; // 90度回転
+      plane.position.set(x - 1, y, 0);
+      group.add(plane);
+      createNextRoadAndSquare(x - 2, y);
+    }
+
     createRoadAndSquare();
+
+    createRightBesideRoadAndSquare(0, 2);
+    createLeftBesideRoadAndSquare(0, 2);
+    createNextRoadAndSquare(2, 5);
+    createRightBesideRoadAndSquare(2, 5);
 
     createNextRoadAndSquare(0, 2);
     createNextRoadAndSquare(0, 5);
@@ -115,7 +154,7 @@ const Page = () => {
     //一マス分歩く
     function run() {
       if (camera.position.y < 0.01) {
-        camera.position.y += 0.01;
+        camera.position.y += 0.02;
         requestAnimationFrame(run);
       }
       renderer.render(scene, camera);
