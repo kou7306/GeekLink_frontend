@@ -215,7 +215,14 @@ const Page = () => {
     //選択画面を作成し、選択結果を返す
     function createSelectRoad(): Promise<string> {
       return new Promise((resolve) => {
+        // 既存のモーダルがあれば削除
+        const existingModal = document.querySelector(".modal");
+        if (existingModal) {
+          document.body.removeChild(existingModal);
+        }
+
         const modal = document.createElement("div");
+        modal.classList.add("modal");
         modal.style.position = "fixed";
         modal.style.top = "50%";
         modal.style.left = "50%";
@@ -224,6 +231,8 @@ const Page = () => {
         modal.style.padding = "20px";
         modal.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.5)";
         modal.style.zIndex = "1000";
+
+        let isModalClosed = false; // フラグを追加
 
         // メッセージを作成
         const message = document.createElement("p");
@@ -248,6 +257,9 @@ const Page = () => {
           leftButton.style.backgroundColor = "#4CAF50";
         };
         leftButton.onclick = () => {
+          if (isModalClosed) return; // 既に閉じている場合は何もしない
+          isModalClosed = true;
+
           document.body.removeChild(modal);
           resolve("left");
         };
@@ -271,6 +283,9 @@ const Page = () => {
           straightButton.style.backgroundColor = "#4CAF50";
         };
         straightButton.onclick = () => {
+          if (isModalClosed) return; // 既に閉じている場合は何もしない
+          isModalClosed = true;
+
           document.body.removeChild(modal);
           resolve("straight");
         };
@@ -293,6 +308,9 @@ const Page = () => {
           rightButton.style.backgroundColor = "#4CAF50";
         };
         rightButton.onclick = () => {
+          if (isModalClosed) return; // 既に閉じている場合は何もしない
+          isModalClosed = true;
+
           document.body.removeChild(modal);
           resolve("right");
         };
