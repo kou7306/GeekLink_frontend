@@ -3,6 +3,28 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 
+enum Direction {
+  LEFT = "left",
+  STRAIGHT = "straight",
+  RIGHT = "right",
+}
+
+type Coordinate = {
+  x: number;
+  y: number;
+  availableDirections: Direction[];
+};
+
+const selectCoordinates: Coordinate[] = [
+  {
+    x: 0,
+    y: 3,
+    availableDirections: [Direction.LEFT, Direction.STRAIGHT, Direction.RIGHT],
+  },
+  { x: 0, y: 8, availableDirections: [] },
+  { x: 2, y: 5, availableDirections: [Direction.RIGHT] },
+];
+
 const Page = () => {
   const mountRef = useRef<HTMLDivElement>(null);
 
@@ -213,7 +235,9 @@ const Page = () => {
     }
 
     //選択画面を作成し、選択結果を返す
-    function createSelectRoad(): Promise<string> {
+    function createSelectRoad(
+      availableDirections: Direction[]
+    ): Promise<string> {
       return new Promise((resolve) => {
         // 既存のモーダルがあれば削除
         const existingModal = document.querySelector(".modal");
@@ -264,7 +288,10 @@ const Page = () => {
           resolve("left");
         };
 
-        modal.appendChild(leftButton);
+        // 利用可能な方向のボタンのみを表示
+        if (availableDirections.includes(Direction.LEFT)) {
+          modal.appendChild(leftButton);
+        }
 
         //まっすぐ進むボタンを作成
         const straightButton = document.createElement("button");
@@ -290,7 +317,9 @@ const Page = () => {
           resolve("straight");
         };
 
-        modal.appendChild(straightButton);
+        if (availableDirections.includes(Direction.STRAIGHT)) {
+          modal.appendChild(straightButton);
+        }
 
         const rightButton = document.createElement("button");
         rightButton.textContent = "右";
@@ -315,7 +344,9 @@ const Page = () => {
           resolve("right");
         };
 
-        modal.appendChild(rightButton);
+        if (availableDirections.includes(Direction.RIGHT)) {
+          modal.appendChild(rightButton);
+        }
 
         // モーダルを表示
         document.body.appendChild(modal);
@@ -323,6 +354,7 @@ const Page = () => {
     }
 
     async function createScene() {
+      let exit = false;
       createRoadAndSquare();
       await createLeftBesideRoadAndSquare(0, 2);
       await createRightBesideRoadAndSquare(0, 2);
@@ -335,16 +367,35 @@ const Page = () => {
       await createLeftBesideRoadAndSquare(0, 8);
       await run();
 
-      // モーダルで選択を待つ
-      const direction = await createSelectRoad();
+      while (!exit) {
+        console.log(roadX, roadY);
+        // 現在の座標に対応するCoordinateを取得
+        const currentCoordinate = selectCoordinates.find(
+          (coord) => coord.x === roadX && coord.y === roadY
+        );
 
-      // 選択結果に応じて処理を分岐
-      if (direction === "left") {
-        await runLeft();
-      } else if (direction === "right") {
-        await runRight();
-      } else {
-        await run();
+        // モーダルで選択を待つ（利用可能な方向のみ表示）
+        const direction = await createSelectRoad(
+          currentCoordinate?.availableDirections || []
+        );
+
+        // 選択結果に応じて処理を分岐
+        if (
+          direction === "left" &&
+          currentCoordinate?.availableDirections.includes(Direction.LEFT)
+        ) {
+          await runLeft();
+        } else if (
+          direction === "right" &&
+          currentCoordinate?.availableDirections.includes(Direction.RIGHT)
+        ) {
+          await runRight();
+        } else if (
+          direction === "straight" &&
+          currentCoordinate?.availableDirections.includes(Direction.STRAIGHT)
+        ) {
+          await run();
+        }
       }
     }
 
