@@ -71,7 +71,7 @@ const Page = () => {
 
     createStarField();
 
-    //角柱を作る関数
+    //モックのアバターを作る関数
     function createMockAvatar() {
       const boxGeometry = new THREE.BoxGeometry(0.5, 0.7, 0.1);
       const materials = [
