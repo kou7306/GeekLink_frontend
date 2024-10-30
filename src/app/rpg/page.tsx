@@ -31,6 +31,9 @@ const Page = () => {
   let roadX = 0;
   let roadY = 0;
 
+  // グローバルな参照を作成
+  let mockAvatar: THREE.Mesh | null = null;
+
   useEffect(() => {
     if (!mountRef.current) return;
 
@@ -83,12 +86,10 @@ const Page = () => {
         new THREE.MeshBasicMaterial({ color: 0x00ffff }),
       ];
 
-      const cylinder = new THREE.Mesh(boxGeometry, materials);
-
-      // カメラの子要素として追加することで、カメラに追従させる
-      cylinder.position.set(0, -0.75, -2); // カメラからの相対位置
-      camera.add(cylinder);
-      scene.add(camera); // カメラもシーンに追加する必要がある
+      mockAvatar = new THREE.Mesh(boxGeometry, materials);
+      mockAvatar.position.set(0, -0.75, -2);
+      camera.add(mockAvatar);
+      scene.add(camera);
     }
 
     const group = new THREE.Group();
@@ -234,15 +235,24 @@ const Page = () => {
     //左に一マス歩く
     function runLeft() {
       return new Promise<void>((resolve) => {
-        const targetPositionX = camera.position.x - 2; // 1マス進む
-        let hasUpdatedRoadX = false; // フラグを追加
+        const targetPositionX = camera.position.x - 2;
+        let hasUpdatedRoadX = false;
+        let rotationProgress = 0;
+        const targetRotation = Math.PI / 2; // 90度
+
         function step() {
           if (camera.position.x > targetPositionX) {
             camera.position.x -= 0.02;
+
+            // アバターの回転を徐々に適用
+            if (mockAvatar && rotationProgress < targetRotation) {
+              rotationProgress += 0.1; // 0.02から0.1に変更してスピードアップ
+              mockAvatar.rotation.y = rotationProgress;
+            }
+
             requestAnimationFrame(step);
           } else {
             if (!hasUpdatedRoadX) {
-              // まだ更新していない場合のみ実行
               roadX -= 2;
               hasUpdatedRoadX = true;
             }
