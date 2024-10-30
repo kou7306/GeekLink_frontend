@@ -71,6 +71,26 @@ const Page = () => {
 
     createStarField();
 
+    //角柱を作る関数
+    function createMockAvatar() {
+      const boxGeometry = new THREE.BoxGeometry(0.5, 0.7, 0.1);
+      const materials = [
+        new THREE.MeshBasicMaterial({ color: 0xff0000 }),
+        new THREE.MeshBasicMaterial({ color: 0x00ff00 }),
+        new THREE.MeshBasicMaterial({ color: 0x0000ff }),
+        new THREE.MeshBasicMaterial({ color: 0xffff00 }),
+        new THREE.MeshBasicMaterial({ color: 0xff00ff }),
+        new THREE.MeshBasicMaterial({ color: 0x00ffff }),
+      ];
+
+      const cylinder = new THREE.Mesh(boxGeometry, materials);
+
+      // カメラの子要素として追加することで、カメラに追従させる
+      cylinder.position.set(0, -0.75, -2); // カメラからの相対位置
+      camera.add(cylinder);
+      scene.add(camera); // カメラもシーンに追加する必要がある
+    }
+
     const group = new THREE.Group();
 
     //最初のますと道を作成する関数
@@ -355,6 +375,7 @@ const Page = () => {
 
     async function createScene() {
       let exit = false;
+      createMockAvatar();
       createRoadAndSquare();
       await createLeftBesideRoadAndSquare(0, 2);
       await createRightBesideRoadAndSquare(0, 2);
