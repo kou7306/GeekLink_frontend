@@ -22,8 +22,15 @@ const selectCoordinates: Coordinate[] = [
     y: 3,
     availableDirections: [Direction.LEFT, Direction.STRAIGHT, Direction.RIGHT],
   },
-  { x: 0, y: 8, availableDirections: [] },
-  { x: 2, y: 5, availableDirections: [Direction.RIGHT] },
+  { x: -2, y: 3, availableDirections: [Direction.STRAIGHT] },
+  { x: -2, y: 6, availableDirections: [Direction.LEFT] },
+  { x: -4, y: 6, availableDirections: [Direction.STRAIGHT] },
+  { x: 0, y: 6, availableDirections: [Direction.STRAIGHT] },
+  { x: 0, y: 9, availableDirections: [Direction.LEFT, Direction.STRAIGHT] },
+  { x: -2, y: 9, availableDirections: [Direction.STRAIGHT] },
+  { x: 2, y: 3, availableDirections: [Direction.STRAIGHT] },
+  { x: 2, y: 6, availableDirections: [Direction.STRAIGHT, Direction.RIGHT] },
+  { x: 4, y: 6, availableDirections: [Direction.STRAIGHT] },
 ];
 
 const Page = () => {
