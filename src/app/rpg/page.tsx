@@ -3,11 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
 
-enum Direction {
-  LEFT = "left",
-  STRAIGHT = "straight",
-  RIGHT = "right",
-}
+type Direction = "left" | "straight" | "right";
 
 type Coordinate = {
   x: number;
@@ -16,26 +12,26 @@ type Coordinate = {
 };
 
 const selectCoordinates: Coordinate[] = [
-  { x: 0, y: 0, availableDirections: [Direction.STRAIGHT] },
+  { x: 0, y: 0, availableDirections: ["straight"] },
   {
     x: 0,
     y: 3,
-    availableDirections: [Direction.LEFT, Direction.STRAIGHT, Direction.RIGHT],
+    availableDirections: ["left", "straight", "right"],
   },
-  { x: -2, y: 3, availableDirections: [Direction.STRAIGHT] },
-  { x: -2, y: 6, availableDirections: [Direction.LEFT] },
-  { x: -4, y: 6, availableDirections: [Direction.STRAIGHT] },
-  { x: 0, y: 6, availableDirections: [Direction.STRAIGHT] },
-  { x: 0, y: 9, availableDirections: [Direction.LEFT, Direction.STRAIGHT] },
-  { x: -2, y: 9, availableDirections: [Direction.STRAIGHT] },
-  { x: 2, y: 3, availableDirections: [Direction.STRAIGHT] },
-  { x: 2, y: 6, availableDirections: [Direction.STRAIGHT, Direction.RIGHT] },
-  { x: 4, y: 6, availableDirections: [Direction.STRAIGHT] },
+  { x: -2, y: 3, availableDirections: ["straight"] },
+  { x: -2, y: 6, availableDirections: ["left"] },
+  { x: -4, y: 6, availableDirections: ["straight"] },
+  { x: 0, y: 6, availableDirections: ["straight"] },
+  { x: 0, y: 9, availableDirections: ["left", "straight"] },
+  { x: -2, y: 9, availableDirections: ["straight"] },
+  { x: 2, y: 3, availableDirections: ["straight"] },
+  { x: 2, y: 6, availableDirections: ["straight", "right"] },
+  { x: 4, y: 6, availableDirections: ["straight"] },
 ];
 
 const Page = () => {
   const mountRef = useRef<HTMLDivElement>(null);
-
+  //この値をデータベースで保管して、再度アクセスした時に前回の位置から再開できるようにする
   let roadX = 0;
   let roadY = 0;
 
@@ -364,7 +360,7 @@ const Page = () => {
         };
 
         // 利用可能な方向のボタンのみを表示
-        if (availableDirections.includes(Direction.LEFT)) {
+        if (availableDirections.includes("left")) {
           modal.appendChild(leftButton);
         }
 
@@ -392,7 +388,7 @@ const Page = () => {
           resolve("straight");
         };
 
-        if (availableDirections.includes(Direction.STRAIGHT)) {
+        if (availableDirections.includes("straight")) {
           modal.appendChild(straightButton);
         }
 
@@ -419,7 +415,7 @@ const Page = () => {
           resolve("right");
         };
 
-        if (availableDirections.includes(Direction.RIGHT)) {
+        if (availableDirections.includes("right")) {
           modal.appendChild(rightButton);
         }
 
@@ -460,17 +456,17 @@ const Page = () => {
         // 選択結果に応じて処理を分岐
         if (
           direction === "left" &&
-          currentCoordinate?.availableDirections.includes(Direction.LEFT)
+          currentCoordinate?.availableDirections.includes("left")
         ) {
           await runLeft();
         } else if (
           direction === "right" &&
-          currentCoordinate?.availableDirections.includes(Direction.RIGHT)
+          currentCoordinate?.availableDirections.includes("right")
         ) {
           await runRight();
         } else if (
           direction === "straight" &&
-          currentCoordinate?.availableDirections.includes(Direction.STRAIGHT)
+          currentCoordinate?.availableDirections.includes("straight")
         ) {
           await run();
         }
