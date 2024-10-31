@@ -128,6 +128,18 @@ const Page = () => {
       scene.add(group);
     }
 
+    //座標からマスを作る関数
+    function createSquare(x: number, y: number) {
+      const cylinderGeometry = new THREE.CylinderGeometry(0.2, 0.2, 0.1, 32); // 半径0.2、高さ1、分割数32の円柱
+      const cylinderMaterial = new THREE.MeshBasicMaterial({
+        color: 0xffff00,
+      });
+      const cylinder = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
+      cylinder.rotation.x = Math.PI / 2; // 円柱を横に寝かせる
+      cylinder.position.set(x, y, 0); // 中心のマス
+      group.add(cylinder);
+    }
+
     //まっすぐの道を作る関数
     function createNextRoadAndSquare(x: number, y: number) {
       // 円柱の作成
