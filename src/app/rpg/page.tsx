@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
 
 enum Direction {
@@ -221,27 +221,42 @@ const Page = () => {
     function runRight() {
       return new Promise<void>((resolve) => {
         const targetPositionX = camera.position.x + 2;
-        let hasUpdatedRoadX = false;
+        let hasUpdatedRoadX = false; //一回だけ実行するためのフラグ
         let rotationProgress = 0;
-        const targetRotation = -Math.PI / 2; // -90度
+        const targetRotation = -Math.PI / 2; //-90度
+        let isMoving = true; //動いているかどうかのフラグ
 
         function step() {
-          if (camera.position.x < targetPositionX) {
-            camera.position.x += 0.02;
+          if (isMoving) {
+            if (camera.position.x < targetPositionX) {
+              camera.position.x += 0.02; //1マス進む
 
-            // アバターの回転を徐々に適用
-            if (mockAvatar && rotationProgress > targetRotation) {
-              rotationProgress -= 0.1; // マイナス方向に回転
-              mockAvatar.rotation.y = rotationProgress;
+              if (mockAvatar && rotationProgress > targetRotation) {
+                rotationProgress -= 0.1; //-90度になるまで回転
+                mockAvatar.rotation.y = rotationProgress;
+              }
+              requestAnimationFrame(step);
+            } else {
+              if (!hasUpdatedRoadX) {
+                roadX += 2; //1マス右に
+                hasUpdatedRoadX = true;
+              }
+              isMoving = false;
+              // 回転を元に戻す処理を開始
+              rotationProgress = targetRotation;
+              step();
             }
-
-            requestAnimationFrame(step);
           } else {
-            if (!hasUpdatedRoadX) {
-              roadX += 2;
-              hasUpdatedRoadX = true;
+            // 回転を元に戻す
+            if (mockAvatar && rotationProgress < 0) {
+              rotationProgress += 0.1;
+              mockAvatar.rotation.y = rotationProgress;
+              requestAnimationFrame(step);
+            } else {
+              // 完全に元に戻ったら終了
+              if (mockAvatar) mockAvatar.rotation.y = 0;
+              resolve();
             }
-            resolve();
           }
           renderer.render(scene, camera);
         }
@@ -255,25 +270,38 @@ const Page = () => {
         const targetPositionX = camera.position.x - 2;
         let hasUpdatedRoadX = false;
         let rotationProgress = 0;
-        const targetRotation = Math.PI / 2; // 90度
+        const targetRotation = Math.PI / 2;
+        let isMoving = true;
 
         function step() {
-          if (camera.position.x > targetPositionX) {
-            camera.position.x -= 0.02;
+          if (isMoving) {
+            if (camera.position.x > targetPositionX) {
+              camera.position.x -= 0.02;
 
-            // アバターの回転を徐々に適用
-            if (mockAvatar && rotationProgress < targetRotation) {
-              rotationProgress += 0.1; //スピード
-              mockAvatar.rotation.y = rotationProgress;
+              if (mockAvatar && rotationProgress < targetRotation) {
+                rotationProgress += 0.1;
+                mockAvatar.rotation.y = rotationProgress;
+              }
+              requestAnimationFrame(step);
+            } else {
+              if (!hasUpdatedRoadX) {
+                roadX -= 2;
+                hasUpdatedRoadX = true;
+              }
+              isMoving = false;
+              rotationProgress = targetRotation;
+              step();
             }
-
-            requestAnimationFrame(step);
           } else {
-            if (!hasUpdatedRoadX) {
-              roadX -= 2;
-              hasUpdatedRoadX = true;
+            // 回転を元に戻す
+            if (mockAvatar && rotationProgress > 0) {
+              rotationProgress -= 0.1;
+              mockAvatar.rotation.y = rotationProgress;
+              requestAnimationFrame(step);
+            } else {
+              if (mockAvatar) mockAvatar.rotation.y = 0;
+              resolve();
             }
-            resolve();
           }
           renderer.render(scene, camera);
         }
