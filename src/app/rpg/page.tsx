@@ -16,6 +16,7 @@ type Coordinate = {
 };
 
 const selectCoordinates: Coordinate[] = [
+  { x: 0, y: 0, availableDirections: [Direction.STRAIGHT] },
   {
     x: 0,
     y: 3,
@@ -212,15 +213,24 @@ const Page = () => {
     //右に一マス歩く
     function runRight() {
       return new Promise<void>((resolve) => {
-        const targetPositionX = camera.position.x + 2; // 1マス進む
-        let hasUpdatedRoadX = false; // フラグを追加
+        const targetPositionX = camera.position.x + 2;
+        let hasUpdatedRoadX = false;
+        let rotationProgress = 0;
+        const targetRotation = -Math.PI / 2; // -90度
+
         function step() {
           if (camera.position.x < targetPositionX) {
             camera.position.x += 0.02;
+
+            // アバターの回転を徐々に適用
+            if (mockAvatar && rotationProgress > targetRotation) {
+              rotationProgress -= 0.1; // マイナス方向に回転
+              mockAvatar.rotation.y = rotationProgress;
+            }
+
             requestAnimationFrame(step);
           } else {
             if (!hasUpdatedRoadX) {
-              // まだ更新していない場合のみ実行
               roadX += 2;
               hasUpdatedRoadX = true;
             }
@@ -246,7 +256,7 @@ const Page = () => {
 
             // アバターの回転を徐々に適用
             if (mockAvatar && rotationProgress < targetRotation) {
-              rotationProgress += 0.1; // 0.02から0.1に変更してスピードアップ
+              rotationProgress += 0.1; //スピード
               mockAvatar.rotation.y = rotationProgress;
             }
 
@@ -385,6 +395,8 @@ const Page = () => {
 
     async function createScene() {
       let exit = false;
+
+      console.log(roadX, roadY);
       createMockAvatar();
       createRoadAndSquare();
       await createLeftBesideRoadAndSquare(0, 2);
@@ -396,7 +408,7 @@ const Page = () => {
       await createLeftBesideRoadAndSquare(-2, 5);
       await createNextRoadAndSquare(0, 8);
       await createLeftBesideRoadAndSquare(0, 8);
-      await run();
+      // await run();
 
       while (!exit) {
         console.log(roadX, roadY);
