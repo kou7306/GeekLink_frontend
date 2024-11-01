@@ -49,8 +49,8 @@ const Page = () => {
       0.1,
       1000
     );
-    camera.position.set(0, -3, 2); // カメラの位置
-    camera.lookAt(0, 0, 0); // カメラの注視点をシーンの中心に設定
+    camera.position.set(0, -2, 2); // カメラの位置
+    camera.lookAt(0, 0, -0.35); // カメラの注視点をシーンの中心に設定
     const renderer = new THREE.WebGLRenderer({ antialias: true }); // アンチエイリアスを有効にして、より滑らかな描画を行う
 
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -227,8 +227,6 @@ const Page = () => {
       group.add(plane);
       createNextRoadAndSquare(x - 2, y);
     }
-
-    camera.position.z = 3; //値を小さくすると拡大する
 
     //一マス分歩く
     function run() {
@@ -468,7 +466,7 @@ const Page = () => {
       let exit = false;
 
       console.log(roadX, roadY);
-      createMockAvatar();
+      await createMockAvatar();
       createRoadAndSquare();
       await createLeftBesideRoadAndSquare(0, 2);
       await createRightBesideRoadAndSquare(0, 2);
@@ -479,7 +477,7 @@ const Page = () => {
       await createLeftBesideRoadAndSquare(-2, 5);
       await createNextRoadAndSquare(0, 8);
       await createLeftBesideRoadAndSquare(0, 8);
-      // await run();
+      await run();
 
       while (!exit) {
         console.log(roadX, roadY);
