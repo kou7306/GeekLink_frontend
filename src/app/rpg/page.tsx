@@ -168,32 +168,6 @@ const Page = () => {
       }
     }
 
-    //まっすぐの道を作る関数
-    function createNextRoadAndSquare(x: number, y: number) {
-      // 円柱の作成
-      const cylinderGeometry = new THREE.CylinderGeometry(0.2, 0.2, 0.1, 32); // 半径0.2、高さ1、分割数32の円柱
-      const cylinderMaterial = new THREE.MeshBasicMaterial({
-        color: 0xffff00,
-      });
-      const cylinder = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
-      cylinder.rotation.x = Math.PI / 2; // 円柱を横に寝かせる
-      cylinder.position.set(x, y, 0); // 中心のマス
-
-      //道の作成
-      const planeGeometry = new THREE.PlaneGeometry(0.15, 3); //縦と横の幅を指定
-      const planeMaterial = new THREE.MeshBasicMaterial({
-        color: 0x0000ff,
-        side: THREE.DoubleSide, //両面を描画する
-        transparent: true, //透明にする
-        opacity: 0.3,
-      });
-      const plane = new THREE.Mesh(planeGeometry, planeMaterial);
-      plane.position.set(x, y + 1.5, 0); // 道の位置を中心に
-
-      group.add(cylinder);
-      group.add(plane);
-    }
-
     //最初の移動をしてカメラの位置を合わせる
     function firstRun() {
       return new Promise<void>((resolve) => {
