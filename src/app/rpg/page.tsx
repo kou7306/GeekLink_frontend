@@ -136,7 +136,7 @@ const Page = () => {
       });
       const cylinder = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
       cylinder.rotation.x = Math.PI / 2; // 円柱を横に寝かせる
-      cylinder.position.set(x, y, 0); // 中心のマス
+      cylinder.position.set(x, y - 1, 0); // 中心のマス
       group.add(cylinder);
     }
 
@@ -151,7 +151,7 @@ const Page = () => {
           opacity: 0.3,
         });
         const plane = new THREE.Mesh(planeGeometry, planeMaterial);
-        plane.position.set(x1, y1 + 1.5, 0); // 道の位置を中心に
+        plane.position.set(x1, y1 + 0.5, 0); // 道の位置を中心に
         group.add(plane);
       } else {
         const planeGeometry = new THREE.PlaneGeometry(0.15, 2); //縦と横の幅を指定
@@ -163,7 +163,7 @@ const Page = () => {
         });
         const plane = new THREE.Mesh(planeGeometry, planeMaterial);
         plane.rotation.z = Math.PI / 2; // 90度回転
-        plane.position.set((x2 + x1) / 2, y1, 0); // 道の位置を中心に
+        plane.position.set((x2 + x1) / 2, y1 - 1, 0); // 道の位置を中心に
         group.add(plane);
       }
     }
@@ -194,38 +194,38 @@ const Page = () => {
       group.add(plane);
     }
 
-    //右に曲がってますと道を作る
-    function createRightBesideRoadAndSquare(x: number, y: number) {
-      //道の作成
-      const planeGeometry = new THREE.PlaneGeometry(0.15, 2); //縦と横の幅を指定
-      const planeMaterial = new THREE.MeshBasicMaterial({
-        color: 0x0000ff,
-        side: THREE.DoubleSide, //両面を描画する
-        transparent: true, //透明にする
-        opacity: 0.3,
+    //最初の移動をしてカメラの位置を合わせる
+    function firstRun() {
+      return new Promise<void>((resolve) => {
+        const targetPositionX = roadX;
+        const targetPositionY = roadY - 2.0;
+        let hasUpdatedRoadY = false; // フラグを追加
+        function step() {
+          if (targetPositionX >= 0) {
+            if (camera.position.x < targetPositionX) {
+              camera.position.x += 2;
+              requestAnimationFrame(step);
+            }
+          } else {
+            if (camera.position.x > targetPositionX) {
+              camera.position.x -= 2;
+              requestAnimationFrame(step);
+            }
+          }
+          if (camera.position.y < targetPositionY) {
+            camera.position.y += 2;
+            requestAnimationFrame(step);
+          } else {
+            if (!hasUpdatedRoadY) {
+              // まだ更新していない場合のみ実行
+              hasUpdatedRoadY = true;
+            }
+            resolve();
+          }
+          renderer.render(scene, camera);
+        }
+        step();
       });
-      const plane = new THREE.Mesh(planeGeometry, planeMaterial);
-      plane.rotation.z = Math.PI / 2; // 90度回転
-      plane.position.set(x + 1, y, 0);
-      group.add(plane);
-      createNextRoadAndSquare(x + 2, y);
-    }
-
-    //左に曲がってますと道を作る
-    function createLeftBesideRoadAndSquare(x: number, y: number) {
-      //道の作成
-      const planeGeometry = new THREE.PlaneGeometry(0.15, 2); //縦と横の幅を指定
-      const planeMaterial = new THREE.MeshBasicMaterial({
-        color: 0x0000ff,
-        side: THREE.DoubleSide, //両面を描画する
-        transparent: true, //透明にする
-        opacity: 0.3,
-      });
-      const plane = new THREE.Mesh(planeGeometry, planeMaterial);
-      plane.rotation.z = Math.PI / 2; // 90度回転
-      plane.position.set(x - 1, y, 0);
-      group.add(plane);
-      createNextRoadAndSquare(x - 2, y);
     }
 
     //一マス分歩く
@@ -468,17 +468,33 @@ const Page = () => {
       console.log(roadX, roadY);
       await createMockAvatar();
       createRoadAndSquare();
-      await createLeftBesideRoadAndSquare(0, 2);
-      await createRightBesideRoadAndSquare(0, 2);
-      await createNextRoadAndSquare(0, 2);
-      await createNextRoadAndSquare(0, 5);
-      await createRightBesideRoadAndSquare(2, 5);
-      await createNextRoadAndSquare(2, 5);
-      await createLeftBesideRoadAndSquare(-2, 5);
-      await createNextRoadAndSquare(0, 8);
-      await createLeftBesideRoadAndSquare(0, 8);
-      await run();
-
+      //マスの作成
+      await createSquare(0, 3);
+      await createSquare(-2, 3);
+      await createSquare(-2, 6);
+      await createSquare(-4, 6);
+      await createSquare(0, 6);
+      await createSquare(0, 9);
+      await createSquare(-2, 9);
+      await createSquare(2, 3);
+      await createSquare(2, 6);
+      await createSquare(4, 6);
+      await createRoad(0, 3, 2, 3);
+      await createRoad(0, 3, 0, 6);
+      await createRoad(0, 6, 0, 9);
+      await createRoad(0, 9, 0, 12);
+      await createRoad(0, 9, -2, 9);
+      await createRoad(2, 3, 2, 6);
+      await createRoad(2, 6, 4, 6);
+      await createRoad(2, 6, 2, 9);
+      await createRoad(4, 6, 4, 9);
+      await createRoad(0, 3, -2, 3);
+      await createRoad(-2, 3, -2, 6);
+      await createRoad(-2, 6, -4, 6);
+      await createRoad(-4, 6, -4, 9);
+      await createRoad(-2, 9, -2, 12);
+      // await run();
+      await firstRun();
       while (!exit) {
         console.log(roadX, roadY);
         // 現在の座標に対応するCoordinateを取得
