@@ -29,6 +29,33 @@ const selectCoordinates: Coordinate[] = [
   { x: 4, y: 6, availableDirections: ["straight"] },
 ];
 
+const items = [
+  {
+    x: -2,
+    y: 3,
+    name: "コイン",
+    type: "coin",
+    image: "coin.png",
+    isCollected: false,
+  },
+  {
+    x: 0,
+    y: 6,
+    name: "王冠",
+    type: "costume",
+    image: "crown.png",
+    isCollected: true,
+  },
+  {
+    x: 0,
+    y: 9,
+    name: "ライフ",
+    type: "life",
+    image: "life.png",
+    isCollected: false,
+  },
+];
+
 const Page = () => {
   const mountRef = useRef<HTMLDivElement>(null);
   //この値をデータベースで保管して、再度アクセスした時に前回の位置から再開できるようにする
@@ -166,6 +193,15 @@ const Page = () => {
         plane.position.set((x2 + x1) / 2, y1 - 1, 0); // 道の位置を中心に
         group.add(plane);
       }
+    }
+
+    //モックのアイテムを作る関数
+    function createItem(x: number, y: number) {
+      const boxGeometry = new THREE.BoxGeometry(0.2, 0.2, 0.2); //縦、横、高さ
+      const boxMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+      const box = new THREE.Mesh(boxGeometry, boxMaterial);
+      box.position.set(x, y - 1, 0.2);
+      group.add(box);
     }
 
     //最初の移動をしてカメラの位置を合わせる
@@ -467,6 +503,12 @@ const Page = () => {
       await createRoad(-2, 6, -4, 6);
       await createRoad(-4, 6, -4, 9);
       await createRoad(-2, 9, -2, 12);
+      items.forEach((item) => {
+        //アイテムがまだ取得されていない場合はアイテムを作成
+        if (!item.isCollected) {
+          createItem(item.x, item.y);
+        }
+      });
       // await run();
       await firstRun();
       while (!exit) {
