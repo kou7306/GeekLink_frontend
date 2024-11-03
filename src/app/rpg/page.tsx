@@ -195,13 +195,36 @@ const Page = () => {
       }
     }
 
+    // アイテムのメッシュを追跡するためのマップを追加
+    const itemMeshes = new Map<string, THREE.Mesh>();
+
     //モックのアイテムを作る関数
     function createItem(x: number, y: number) {
-      const boxGeometry = new THREE.BoxGeometry(0.2, 0.2, 0.2); //縦、横、高さ
+      const boxGeometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
       const boxMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
       const box = new THREE.Mesh(boxGeometry, boxMaterial);
       box.position.set(x, y - 1, 0.2);
       group.add(box);
+
+      // メッシュをマップに保存
+      itemMeshes.set(`${x},${y}`, box);
+    }
+
+    //アイテムが取得された時に呼び出される関数
+    function collectItem(x: number, y: number) {
+      const item = items.find((item) => item.x === x && item.y === y);
+      if (item) {
+        item.isCollected = true;
+
+        // シーンからアイテムを削除
+        const mesh = itemMeshes.get(`${x},${y}`);
+        if (mesh) {
+          group.remove(mesh);
+          mesh.geometry.dispose();
+          mesh.material instanceof THREE.Material && mesh.material.dispose();
+          itemMeshes.delete(`${x},${y}`);
+        }
+      }
     }
 
     //最初の移動をしてカメラの位置を合わせる
@@ -253,6 +276,7 @@ const Page = () => {
               roadY += 3;
               hasUpdatedRoadY = true;
             }
+            collectItem(roadX, roadY);
             resolve();
           }
           renderer.render(scene, camera);
@@ -299,6 +323,7 @@ const Page = () => {
             } else {
               // 完全に元に戻ったら終了
               if (mockAvatar) mockAvatar.rotation.y = 0;
+              collectItem(roadX, roadY);
               resolve();
             }
           }
@@ -344,6 +369,7 @@ const Page = () => {
               requestAnimationFrame(step);
             } else {
               if (mockAvatar) mockAvatar.rotation.y = 0;
+              collectItem(roadX, roadY);
               resolve();
             }
           }
@@ -529,6 +555,8 @@ const Page = () => {
           currentCoordinate?.availableDirections.includes("left")
         ) {
           await runLeft();
+          console.log(roadX, roadY);
+          await collectItem(roadX, roadY);
         } else if (
           direction === "right" &&
           currentCoordinate?.availableDirections.includes("right")
