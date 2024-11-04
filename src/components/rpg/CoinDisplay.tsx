@@ -1,6 +1,10 @@
 import React from "react";
 
-const CoinDisplay = ({ coins }) => {
+interface CoinDisplayProps {
+  coins: number;
+}
+
+const CoinDisplay: React.FC<CoinDisplayProps> = ({ coins }) => {
   console.log("Coins in CoinDisplay:", coins); // デバッグ: coinsの値をログに出力
 
   return (

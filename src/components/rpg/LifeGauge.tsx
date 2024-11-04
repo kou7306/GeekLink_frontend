@@ -1,6 +1,10 @@
 import React from "react";
 
-const LifeGauge = ({ lives }) => {
+interface LifeGaugeProps {
+  lives: number;
+}
+
+const LifeGauge: React.FC<LifeGaugeProps> = ({ lives }) => {
   const segments = Array.from({ length: 5 }); // 5つのセグメントを作成
 
   // ライフが6以上のときのゲージの色

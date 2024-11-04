@@ -12,9 +12,7 @@ import {
 } from "@mui/material";
 import { buyItem } from "@/utils/buyItem";
 
-// Example utility function to fetch shop items
 const getShopItems = async () => {
-  // This should be replaced with your API call
   return [
     { id: 1, name: "Item 1", image: "/img/sword.png", price: 100 },
     { id: 2, name: "Item 2", image: "/img/sword.png", price: 200 },
@@ -26,10 +24,12 @@ const getShopItems = async () => {
 };
 
 const ShopPage = () => {
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(false); // Track loading state for purchases
-  const [purchaseMessage, setPurchaseMessage] = useState(""); // Track success/error messages
-  const [soldOutItems, setSoldOutItems] = useState([]); // Track sold out items
+  const [items, setItems] = useState<
+    { id: number; name: string; image: string; price: number }[]
+  >([]);
+  const [loading, setLoading] = useState(false);
+  const [purchaseMessage, setPurchaseMessage] = useState("");
+  const [soldOutItems, setSoldOutItems] = useState<number[]>([]);
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -44,17 +44,17 @@ const ShopPage = () => {
     fetchItems();
   }, []);
 
-  const handlePurchase = async (itemId, itemPrice) => {
+  const handlePurchase = async (itemId: number, itemPrice: number) => {
     setLoading(true);
     setPurchaseMessage("");
 
     try {
-      await buyItem(itemId.toString(), itemPrice.toString()); // Call the API
-      setPurchaseMessage("購入が完了しました！"); // Success message
-      setSoldOutItems((prev) => [...prev, itemId]); // Mark item as sold out
+      await buyItem(itemId.toString(), itemPrice.toString());
+      setPurchaseMessage("購入が完了しました！");
+      setSoldOutItems((prev) => [...prev, itemId]);
     } catch (error) {
       console.error("Failed to purchase item:", error);
-      setPurchaseMessage("購入に失敗しました。再試行してください。"); // Error message
+      setPurchaseMessage("購入に失敗しました。再試行してください。");
     } finally {
       setLoading(false);
     }
@@ -77,12 +77,12 @@ const ShopPage = () => {
       <Box sx={{ marginBottom: 4 }}>
         <Grid container spacing={8}>
           {items.map((item) => {
-            const isSoldOut = soldOutItems.includes(item.id); // Check if item is sold out
+            const isSoldOut = soldOutItems.includes(item.id);
             return (
               <Grid item xs={12} sm={6} md={4} key={item.id}>
                 <Card
                   sx={{
-                    opacity: isSoldOut ? 0.5 : 1, // Dim card if sold out
+                    opacity: isSoldOut ? 0.5 : 1,
                     position: "relative",
                   }}
                 >
@@ -118,9 +118,9 @@ const ShopPage = () => {
                           left: "50%",
                           transform: "translate(-50%, -50%)",
                           fontWeight: "bold",
-                          fontSize: "1.5rem", // Customize font size for additional emphasis
-                          padding: "8px 16px", // Add padding to the text
-                          borderRadius: "4px", // Optional: add rounded corners
+                          fontSize: "1.5rem",
+                          padding: "8px 16px",
+                          borderRadius: "4px",
                         }}
                       >
                         Sold Out
@@ -136,8 +136,8 @@ const ShopPage = () => {
                           },
                           marginTop: 1,
                         }}
-                        onClick={() => handlePurchase(item.id, item.price)} // Call handlePurchase on click
-                        disabled={loading || isSoldOut} // Disable button if loading or sold out
+                        onClick={() => handlePurchase(item.id, item.price)}
+                        disabled={loading || isSoldOut}
                       >
                         {loading ? "購入中..." : "購入"}
                       </Button>

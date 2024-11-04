@@ -8,7 +8,6 @@ import { getUserData } from "@/utils/getUserData";
 import { useRouter } from "next/navigation";
 import { updateLife } from "@/utils/updateLife";
 import { Link } from "@mui/material";
-import AvatarViewer from "@/components/rpg/AvatarViewer"; // Import AvatarViewer
 
 const items = [
   {
@@ -59,8 +58,8 @@ const Page = () => {
     fetchData();
   }, []);
 
-  const handleLifeUpdate = async (change) => {
-    const newLife = parseInt(lives) + change;
+  const handleLifeUpdate = async (change: number) => {
+    const newLife = lives + change;
     if (newLife < 0) return;
 
     setLives(newLife);
@@ -72,10 +71,6 @@ const Page = () => {
       setError("Failed to update life.");
       setLives(lives); // Revert UI if API call fails
     }
-  };
-
-  const handleChangeAvatar = () => {
-    router.push("/change-avatar");
   };
 
   return (
