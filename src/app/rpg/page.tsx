@@ -548,8 +548,6 @@ const Page = () => {
           currentCoordinate?.availableDirections.includes("left")
         ) {
           await runLeft();
-          console.log(roadX, roadY);
-          await collectItem(roadX, roadY);
         } else if (
           direction === "right" &&
           currentCoordinate?.availableDirections.includes("right")
