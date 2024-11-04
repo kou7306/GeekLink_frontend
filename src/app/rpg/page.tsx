@@ -505,16 +505,9 @@ const Page = () => {
       await createMockAvatar();
       createRoadAndSquare();
       //マスの作成
-      await createSquare(0, 3);
-      await createSquare(-2, 3);
-      await createSquare(-2, 6);
-      await createSquare(-4, 6);
-      await createSquare(0, 6);
-      await createSquare(0, 9);
-      await createSquare(-2, 9);
-      await createSquare(2, 3);
-      await createSquare(2, 6);
-      await createSquare(4, 6);
+      selectCoordinates.forEach((coordinate) => {
+        createSquare(coordinate.x, coordinate.y);
+      });
       await createRoad(0, 3, 2, 3);
       await createRoad(0, 3, 0, 6);
       await createRoad(0, 6, 0, 9);
