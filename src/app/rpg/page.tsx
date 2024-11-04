@@ -1,17 +1,20 @@
 "use client";
 import RpgScreen from "@/components/rpg/RpgScreen";
 import React, { useEffect, useState } from "react";
-import Button from "@mui/material/Button";
+import { Box, Typography, LinearProgress, Button } from "@mui/material";
 import LifeGauge from "@/components/rpg/LifeGauge";
 import CoinDisplay from "@/components/rpg/CoinDisplay";
 import { getUserData } from "@/utils/getUserData";
+import { useRouter } from "next/navigation";
 import { updateLife } from "@/utils/updateLife";
 import { Link } from "@mui/material";
+import AvatarViewer from "@/components/rpg/AvatarViewer"; // Import AvatarViewer
 
 const Page = () => {
   const [lives, setLives] = useState(0);
   const [coins, setCoins] = useState(0);
   const [error, setError] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,6 +47,10 @@ const Page = () => {
     }
   };
 
+  const handleChangeAvatar = () => {
+    router.push("/change-avatar");
+  };
+
   return (
     <div className="relative flex flex-col items-center justify-center h-full p-6 overflow-hidden">
       <div className="absolute top-4 left-4">
@@ -72,7 +79,7 @@ const Page = () => {
         </Button>
       </div>
 
-      <Link href="/shop" passHref>
+      <Link href="/shop">
         <Button
           variant="contained"
           color="primary"
@@ -87,6 +94,24 @@ const Page = () => {
       </Link>
 
       {error && <p className="text-red-500 mt-4">{error}</p>}
+
+      {/* Add Avatar in the bottom-left corner */}
+      <div className="absolute bottom-4 left-4">
+        <AvatarViewer
+          modelPath="/models/human.glb"
+          size={{ width: 300, height: 500 }}
+        />
+        <Box sx={{ marginY: 8, textAlign: "center" }}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleChangeAvatar}
+            sx={{ color: "white" }}
+          >
+            着替える
+          </Button>
+        </Box>
+      </div>
     </div>
   );
 };

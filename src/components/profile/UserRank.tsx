@@ -1,10 +1,12 @@
-import { Box, Typography, LinearProgress } from "@mui/material";
+"use client";
+import { Box, Typography, LinearProgress, Button } from "@mui/material";
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getUuidFromCookie } from "@/actions/users";
 import Image from "next/image";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import ComponentLoading from "../core/ComponentLoading";
+import AvatarViewer from "../rpg/AvatarViewer";
 
 const rankImages: { [key: string]: string } = {
   bronze: "/img/bronze.png",
@@ -21,6 +23,7 @@ type Props = {
 
 const UserRank = ({ isMe }: Props) => {
   const { uuid } = useParams();
+  const router = useRouter();
 
   const { isPending, isError, error, data } = useQuery({
     queryKey: ["rank"],
@@ -54,75 +57,97 @@ const UserRank = ({ isMe }: Props) => {
   const image = (() => {
     switch (rank) {
       case "BronzeI":
-        return rankImages.bronze;
       case "BronzeⅡ":
-        return rankImages.bronze;
       case "BronzeⅢ":
         return rankImages.bronze;
       case "SilverI":
-        return rankImages.silver;
       case "SilverⅡ":
-        return rankImages.silver;
       case "SilverⅢ":
         return rankImages.silver;
       case "GoldI":
-        return rankImages.gold;
       case "GoldⅡ":
-        return rankImages.gold;
       case "GoldⅢ":
         return rankImages.gold;
       case "DiamondI":
-        return rankImages.diamond;
       case "DiamondⅡ":
-        return rankImages.diamond;
       case "DiamondⅢ":
         return rankImages.diamond;
       case "MasterI":
-        return rankImages.master;
       case "MasterⅡ":
-        return rankImages.master;
       case "MasterⅢ":
         return rankImages.master;
       case "Legend":
         return rankImages.legend;
+      default:
+        return null;
     }
   })();
 
-  // 進捗バーの割合を計算
+  // Calculate progress percentage for the progress bar
   const maxPoints = 100;
   const progress = ((maxPoints - nextLevelPoints) / maxPoints) * 100;
+
+  const handleChangeAvatar = () => {
+    router.push("/change-avatar");
+  };
 
   return (
     <Box
       sx={{
-        maxWidth: 300,
+        maxWidth: 400,
         textAlign: "center",
       }}
     >
-      <Box sx={{ display: "flex", justifyContent: "center" }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginBottom: 1,
+        }}
+      >
         {image && <Image src={image} alt={rank} width={135} height={135} />}
+        <Box sx={{ textAlign: "left", flexGrow: 1, marginLeft: 1 }}>
+          <Typography variant="h5">{rank}</Typography>
+          <Typography variant="h6">Level {level}</Typography>
+          <Box sx={{ marginTop: 1, width: "100%" }}>
+            <Typography variant="body1" gutterBottom>
+              次のレベルまで: {nextLevelPoints}ポイント
+            </Typography>
+            <LinearProgress
+              variant="determinate"
+              value={progress < 0 ? 0 : progress}
+              sx={{
+                height: 10,
+                borderRadius: 5,
+                backgroundColor: "#e0e0e0",
+                "& .MuiLinearProgress-bar": {
+                  backgroundColor: "#3f51b5",
+                },
+              }}
+            />
+          </Box>
+        </Box>
       </Box>
 
-      <Typography variant="h5" marginTop={1}>
-        {rank} - Level {level}
-      </Typography>
-
-      <Box sx={{ marginTop: 1, width: "100%" }}>
-        <Typography variant="body1" gutterBottom>
-          次のレベルまで: {nextLevelPoints}ポイント
-        </Typography>
-        <LinearProgress
-          variant="determinate"
-          value={progress < 0 ? 0 : progress}
-          sx={{
-            height: 10,
-            borderRadius: 5,
-            backgroundColor: "#e0e0e0",
-            "& .MuiLinearProgress-bar": {
-              backgroundColor: "#3f51b5",
-            },
-          }}
+      {/* Avatar display */}
+      <Box sx={{ marginTop: 2 }}>
+        <AvatarViewer
+          modelPath="/models/human.glb"
+          size={{ width: 400, height: 200 }}
         />
+      </Box>
+
+      {/* Change Avatar button */}
+      <Box sx={{ marginTop: 2 }}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleChangeAvatar}
+          sx={{ color: "white" }}
+        >
+          着替える
+        </Button>
       </Box>
     </Box>
   );
