@@ -223,6 +223,26 @@ const Page = () => {
           mesh.geometry.dispose();
           mesh.material instanceof THREE.Material && mesh.material.dispose();
           itemMeshes.delete(`${x},${y}`);
+
+          // スナックバーを作成
+          const snackbar = document.createElement("div");
+          snackbar.style.position = "fixed";
+          snackbar.style.bottom = "20px";
+          snackbar.style.left = "50%";
+          snackbar.style.transform = "translateX(-50%)";
+          snackbar.style.backgroundColor = "#333";
+          snackbar.style.color = "white";
+          snackbar.style.padding = "16px";
+          snackbar.style.borderRadius = "4px";
+          snackbar.style.zIndex = "1000";
+          snackbar.textContent = `${item?.name}を獲得しました！`;
+
+          document.body.appendChild(snackbar);
+
+          // 3秒後にスナックバーを削除
+          setTimeout(() => {
+            document.body.removeChild(snackbar);
+          }, 3000);
         }
       }
     }
