@@ -10,6 +10,7 @@ import {
   Container,
   Box,
 } from "@mui/material";
+import { buyItem } from "@/utils/buyItem";
 
 // Example utility function to fetch shop items
 const getShopItems = async () => {
@@ -26,6 +27,9 @@ const getShopItems = async () => {
 
 const ShopPage = () => {
   const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(false); // Track loading state for purchases
+  const [purchaseMessage, setPurchaseMessage] = useState(""); // Track success/error messages
+  const [soldOutItems, setSoldOutItems] = useState([]); // Track sold out items
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -40,55 +44,109 @@ const ShopPage = () => {
     fetchItems();
   }, []);
 
+  const handlePurchase = async (itemId, itemPrice) => {
+    setLoading(true);
+    setPurchaseMessage("");
+
+    try {
+      await buyItem(itemId.toString(), itemPrice.toString()); // Call the API
+      setPurchaseMessage("購入が完了しました！"); // Success message
+      setSoldOutItems((prev) => [...prev, itemId]); // Mark item as sold out
+    } catch (error) {
+      console.error("Failed to purchase item:", error);
+      setPurchaseMessage("購入に失敗しました。再試行してください。"); // Error message
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Container>
       <Typography variant="h4" gutterBottom sx={{ marginY: 4 }}>
         ショップ
       </Typography>
+      {purchaseMessage && (
+        <Typography
+          variant="body2"
+          color={purchaseMessage.includes("失敗") ? "error" : "success"}
+          sx={{ marginBottom: 2 }}
+        >
+          {purchaseMessage}
+        </Typography>
+      )}
       <Box sx={{ marginBottom: 4 }}>
         <Grid container spacing={8}>
-          {items.map((item) => (
-            <Grid item xs={12} sm={6} md={4} key={item.id}>
-              <Card>
-                <CardMedia
-                  component="img"
-                  alt={item.name}
-                  height="70"
-                  image={item.image}
-                />
-                <CardContent
+          {items.map((item) => {
+            const isSoldOut = soldOutItems.includes(item.id); // Check if item is sold out
+            return (
+              <Grid item xs={12} sm={6} md={4} key={item.id}>
+                <Card
                   sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center", // Center items horizontally
-                    textAlign: "center", // Center text within the content
+                    opacity: isSoldOut ? 0.5 : 1, // Dim card if sold out
+                    position: "relative",
                   }}
                 >
-                  <Typography variant="h6">{item.name}</Typography>
-                  <Typography
-                    variant="body2"
-                    color="yellow"
-                    sx={{ marginBottom: 1 }}
-                  >
-                    {item.price} コイン {/* Display the price with currency */}
-                  </Typography>
-                  <Button
-                    size="small"
+                  <CardMedia
+                    component="img"
+                    alt={item.name}
+                    height="70"
+                    image={item.image}
+                  />
+                  <CardContent
                     sx={{
-                      backgroundColor: "primary.main", // Light blue background
-                      color: "white", // White text
-                      "&:hover": {
-                        backgroundColor: "#64b5f6", // Slightly darker on hover
-                      },
-                      marginTop: 1, // Add space between text and button
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      textAlign: "center",
                     }}
                   >
-                    購入
-                  </Button>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
+                    <Typography variant="h6">{item.name}</Typography>
+                    <Typography
+                      variant="body2"
+                      color="yellow"
+                      sx={{ marginBottom: 1 }}
+                    >
+                      {item.price} コイン
+                    </Typography>
+                    {isSoldOut ? (
+                      <Typography
+                        variant="h5" // Increase the font size
+                        color="error"
+                        sx={{
+                          position: "absolute",
+                          top: "50%",
+                          left: "50%",
+                          transform: "translate(-50%, -50%)",
+                          fontWeight: "bold",
+                          fontSize: "1.5rem", // Customize font size for additional emphasis
+                          padding: "8px 16px", // Add padding to the text
+                          borderRadius: "4px", // Optional: add rounded corners
+                        }}
+                      >
+                        Sold Out
+                      </Typography>
+                    ) : (
+                      <Button
+                        size="small"
+                        sx={{
+                          backgroundColor: "primary.main",
+                          color: "white",
+                          "&:hover": {
+                            backgroundColor: "#64b5f6",
+                          },
+                          marginTop: 1,
+                        }}
+                        onClick={() => handlePurchase(item.id, item.price)} // Call handlePurchase on click
+                        disabled={loading || isSoldOut} // Disable button if loading or sold out
+                      >
+                        {loading ? "購入中..." : "購入"}
+                      </Button>
+                    )}
+                  </CardContent>
+                </Card>
+              </Grid>
+            );
+          })}
         </Grid>
       </Box>
     </Container>

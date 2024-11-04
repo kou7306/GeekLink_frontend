@@ -10,6 +10,33 @@ import { updateLife } from "@/utils/updateLife";
 import { Link } from "@mui/material";
 import AvatarViewer from "@/components/rpg/AvatarViewer"; // Import AvatarViewer
 
+const items = [
+  {
+    x: -2,
+    y: 3,
+    name: "コイン",
+    type: "coin",
+    image: "coin.png",
+    isCollected: false,
+  },
+  {
+    x: 0,
+    y: 6,
+    name: "王冠",
+    type: "costume",
+    image: "crown.png",
+    isCollected: true,
+  },
+  {
+    x: 0,
+    y: 9,
+    name: "ライフ",
+    type: "life",
+    image: "life.png",
+    isCollected: false,
+  },
+];
+
 const Page = () => {
   const [lives, setLives] = useState(0);
   const [coins, setCoins] = useState(0);
@@ -96,7 +123,7 @@ const Page = () => {
       {error && <p className="text-red-500 mt-4">{error}</p>}
 
       {/* Add Avatar in the bottom-left corner */}
-      <div className="absolute bottom-4 left-4">
+      {/* <div className="absolute bottom-4 left-4">
         <AvatarViewer
           modelPath="/models/human.glb"
           size={{ width: 300, height: 500 }}
@@ -111,7 +138,7 @@ const Page = () => {
             着替える
           </Button>
         </Box>
-      </div>
+      </div> */}
     </div>
   );
 };
