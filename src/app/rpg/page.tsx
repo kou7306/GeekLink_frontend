@@ -37,7 +37,7 @@ const items = [
 ];
 
 const Page = () => {
-  const [lives, setLives] = useState(0);
+  const [lives, setLives] = useState<number>(0);
   const [coins, setCoins] = useState(0);
   const [error, setError] = useState("");
   const router = useRouter();
@@ -47,7 +47,7 @@ const Page = () => {
       try {
         const data = await getUserData();
         console.log("Fetched user data:", data);
-        setLives(data.life);
+        setLives(Number(data.life));
         setCoins(data.coin);
       } catch (error) {
         console.error("Failed to fetch user data:", error);
@@ -82,9 +82,7 @@ const Page = () => {
         <CoinDisplay coins={coins} />
       </div>
 
-      <RpgScreen />
-
-      <div className="flex gap-4 mt-6">
+      <div className="absolute bottom-4 left-4">
         <Button
           variant="outlined"
           color="primary"
@@ -100,6 +98,8 @@ const Page = () => {
           Decrease Life
         </Button>
       </div>
+
+      <RpgScreen />
 
       <Link href="/shop">
         <Button
