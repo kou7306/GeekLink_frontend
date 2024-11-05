@@ -570,6 +570,7 @@ const RpgScreen = ({
     async function createScene() {
       await createMockAvatar();
       await createRoadAndSquare();
+      console.log(positionX, positionY);
       //マスの作成
       selectCoordinates.forEach(async (coordinate) => {
         await createSquare(coordinate.x, coordinate.y);
