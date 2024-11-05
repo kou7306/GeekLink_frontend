@@ -568,9 +568,6 @@ const RpgScreen = ({
     }
 
     async function createScene() {
-      let exit = false;
-
-      console.log(positionX, positionY);
       await createMockAvatar();
       await createRoadAndSquare();
       //マスの作成
@@ -594,35 +591,33 @@ const RpgScreen = ({
       });
       // await run();
       await firstRun();
-      while (!exit) {
-        console.log(positionX, positionY);
-        // 現在の座標に対応するCoordinateを取得
-        const currentCoordinate = selectCoordinates.find(
-          (coord) => coord.x === positionX && coord.y === positionY
-        );
 
-        // モーダルで選択待つ（利用可能な方向のみ表示）
-        const direction = await createSelectRoad(
-          currentCoordinate?.availableDirections || []
-        );
+      // 現在の座標に対応するCoordinateを取得
+      const currentCoordinate = selectCoordinates.find(
+        (coord) => coord.x === positionX && coord.y === positionY
+      );
 
-        // 選択結果に応じて処理を分岐
-        if (
-          direction === "left" &&
-          currentCoordinate?.availableDirections.includes("left")
-        ) {
-          await runLeft();
-        } else if (
-          direction === "right" &&
-          currentCoordinate?.availableDirections.includes("right")
-        ) {
-          await runRight();
-        } else if (
-          direction === "straight" &&
-          currentCoordinate?.availableDirections.includes("straight")
-        ) {
-          await run();
-        }
+      // モーダルで選択待つ（利用可能な方向のみ表示）
+      const direction = await createSelectRoad(
+        currentCoordinate?.availableDirections || []
+      );
+
+      // 選択結果に応じて処理を分岐
+      if (
+        direction === "left" &&
+        currentCoordinate?.availableDirections.includes("left")
+      ) {
+        await runLeft();
+      } else if (
+        direction === "right" &&
+        currentCoordinate?.availableDirections.includes("right")
+      ) {
+        await runRight();
+      } else if (
+        direction === "straight" &&
+        currentCoordinate?.availableDirections.includes("straight")
+      ) {
+        await run();
       }
     }
 
