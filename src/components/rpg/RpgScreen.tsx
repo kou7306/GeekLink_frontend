@@ -442,6 +442,8 @@ const RpgScreen = ({
         // メッセージを作成
         const message = document.createElement("p");
         message.textContent = "どちらに進みますか？";
+        message.style.textAlign = "center";
+        message.style.marginBottom = "20px";
         modal.appendChild(message);
 
         //右と左のボタンを作成
@@ -528,6 +530,11 @@ const RpgScreen = ({
         if (availableDirections.includes("right")) {
           modal.appendChild(rightButton);
         }
+        const lifeMessage = document.createElement("p");
+        lifeMessage.textContent = "ライフを1消費して進む";
+        lifeMessage.style.textAlign = "center";
+        lifeMessage.style.marginTop = "20px";
+        modal.appendChild(lifeMessage);
 
         // モーダルを表示
         document.body.appendChild(modal);
