@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@mui/material";
 import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
 
@@ -56,11 +57,15 @@ const items = [
   },
 ];
 
-const Page = () => {
+type RpgScreenProps = {
+  handleLifeUpdate: (change: number) => void;
+};
+
+const RpgScreen = ({ handleLifeUpdate }: RpgScreenProps) => {
   const mountRef = useRef<HTMLDivElement>(null);
   //この値をデータベースで保管して、再度アクセスした時に前回の位置から再開できるようにする
   let roadX = 0;
-  let roadY = 0;
+  let roadY = 3;
 
   // グローバルな参照を作成
   let mockAvatar: THREE.Mesh | null = null;
@@ -266,7 +271,7 @@ const Page = () => {
             }
           }
           if (camera.position.y < targetPositionY) {
-            camera.position.y += 2;
+            camera.position.y += 3;
             requestAnimationFrame(step);
           } else {
             if (!hasUpdatedRoadY) {
@@ -296,6 +301,7 @@ const Page = () => {
               roadY += 3;
               hasUpdatedRoadY = true;
             }
+            handleLifeUpdate(-1);
             collectItem(roadX, roadY);
             resolve();
           }
@@ -343,6 +349,7 @@ const Page = () => {
             } else {
               // 完全に元に戻ったら終了
               if (mockAvatar) mockAvatar.rotation.y = 0;
+              handleLifeUpdate(-1);
               collectItem(roadX, roadY);
               resolve();
             }
@@ -389,6 +396,7 @@ const Page = () => {
               requestAnimationFrame(step);
             } else {
               if (mockAvatar) mockAvatar.rotation.y = 0;
+              handleLifeUpdate(-1);
               collectItem(roadX, roadY);
               resolve();
             }
@@ -598,9 +606,29 @@ const Page = () => {
       mountRef.current?.removeChild(renderer.domElement);
       renderer.dispose();
     };
-  }, []);
+  }, [handleLifeUpdate]);
 
-  return <div ref={mountRef} style={{ width: "100%", height: "100vh" }} />;
+  return (
+    <>
+      <div ref={mountRef} style={{ width: "100%", height: "100vh" }} />
+      <div className="absolute bottom-4 left-4">
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={() => handleLifeUpdate(1)}
+        >
+          Increase Life
+        </Button>
+        <Button
+          variant="outlined"
+          color="secondary"
+          onClick={() => handleLifeUpdate(-1)}
+        >
+          Decrease Life
+        </Button>
+      </div>
+    </>
+  );
 };
 
-export default Page;
+export default RpgScreen;

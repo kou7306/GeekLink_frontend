@@ -64,6 +64,7 @@ const Page = () => {
 
     setLives(newLife);
     setError("");
+    console.log("更新");
     try {
       await updateLife(newLife.toString());
     } catch (error) {
@@ -82,7 +83,7 @@ const Page = () => {
         <CoinDisplay coins={coins} />
       </div>
 
-      <div className="absolute bottom-4 left-4">
+      {/* <div className="absolute bottom-4 left-4">
         <Button
           variant="outlined"
           color="primary"
@@ -97,9 +98,9 @@ const Page = () => {
         >
           Decrease Life
         </Button>
-      </div>
+      </div> */}
 
-      <RpgScreen />
+      <RpgScreen handleLifeUpdate={handleLifeUpdate} />
 
       <Link href="/shop">
         <Button
