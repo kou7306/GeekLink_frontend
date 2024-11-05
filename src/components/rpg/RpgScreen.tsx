@@ -601,7 +601,7 @@ const RpgScreen = ({
           (coord) => coord.x === positionX && coord.y === positionY
         );
 
-        // モーダルで選択���待つ（利用可能な方向のみ表示）
+        // モーダルで選択待つ（利用可能な方向のみ表示）
         const direction = await createSelectRoad(
           currentCoordinate?.availableDirections || []
         );
@@ -628,16 +628,7 @@ const RpgScreen = ({
 
     createScene();
 
-    // // アニメーション関数
-    // const animate = () => {
-    //   requestAnimationFrame(animate);
-
-    //   renderer.render(scene, camera);
-    // };
-
-    // animate();
-
-    // クリーンアップ関数
+    // クリーンアップ関数の強化
     return () => {
       // すべてのジオメトリとマテリアルを適切に破棄
       scene.traverse((object) => {
