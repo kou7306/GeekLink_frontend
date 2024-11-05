@@ -8,6 +8,7 @@ import { getUserData } from "@/utils/getUserData";
 import { useRouter } from "next/navigation";
 import { updateLife } from "@/utils/updateLife";
 import { Link } from "@mui/material";
+import { updatePosition } from "@/utils/updatePosition";
 
 const items = [
   {
@@ -40,6 +41,8 @@ const Page = () => {
   const [lives, setLives] = useState<number>(0);
   const [coins, setCoins] = useState(0);
   const [error, setError] = useState("");
+  const [positionX, setPositionX] = useState<number>(0);
+  const [positionY, setPositionY] = useState<number>(0);
   const router = useRouter();
 
   useEffect(() => {
@@ -49,6 +52,8 @@ const Page = () => {
         console.log("Fetched user data:", data);
         setLives(Number(data.life));
         setCoins(data.coin);
+        setPositionX(Number(data.position_x));
+        setPositionY(Number(data.position_y));
       } catch (error) {
         console.error("Failed to fetch user data:", error);
         setError("Failed to fetch user data.");
@@ -72,6 +77,12 @@ const Page = () => {
       setError("Failed to update life.");
       setLives(lives); // Revert UI if API call fails
     }
+  };
+
+  const handlePositionUpdate = async (x: number, y: number) => {
+    const res = await updatePosition(x.toString(), y.toString());
+    setPositionX(Number(res.positionX));
+    setPositionY(Number(res.positionY));
   };
 
   return (
@@ -100,7 +111,12 @@ const Page = () => {
         </Button>
       </div> */}
 
-      <RpgScreen handleLifeUpdate={handleLifeUpdate} />
+      <RpgScreen
+        handleLifeUpdate={handleLifeUpdate}
+        handlePositionUpdate={handlePositionUpdate}
+        positionX={positionX}
+        positionY={positionY}
+      />
 
       <Link href="/shop">
         <Button

@@ -59,13 +59,18 @@ const items = [
 
 type RpgScreenProps = {
   handleLifeUpdate: (change: number) => void;
+  handlePositionUpdate: (x: number, y: number) => void;
+  positionX: number;
+  positionY: number;
 };
 
-const RpgScreen = ({ handleLifeUpdate }: RpgScreenProps) => {
+const RpgScreen = ({
+  handleLifeUpdate,
+  handlePositionUpdate,
+  positionX,
+  positionY,
+}: RpgScreenProps) => {
   const mountRef = useRef<HTMLDivElement>(null);
-  //この値をデータベースで保管して、再度アクセスした時に前回の位置から再開できるようにする
-  let roadX = 0;
-  let roadY = 3;
 
   // グローバルな参照を作成
   let mockAvatar: THREE.Mesh | null = null;
@@ -255,8 +260,8 @@ const RpgScreen = ({ handleLifeUpdate }: RpgScreenProps) => {
     //最初の移動をしてカメラの位置を合わせる
     function firstRun() {
       return new Promise<void>((resolve) => {
-        const targetPositionX = roadX;
-        const targetPositionY = roadY - 2.0;
+        const targetPositionX = positionX;
+        const targetPositionY = positionY - 2.0;
         let hasUpdatedRoadY = false; // フラグを追加
         function step() {
           if (targetPositionX >= 0) {
@@ -298,11 +303,12 @@ const RpgScreen = ({ handleLifeUpdate }: RpgScreenProps) => {
           } else {
             if (!hasUpdatedRoadY) {
               // まだ更新していない場合のみ実行
-              roadY += 3;
+              //1マス進む
+              handlePositionUpdate(0, 3);
               hasUpdatedRoadY = true;
             }
             handleLifeUpdate(-1);
-            collectItem(roadX, roadY);
+            collectItem(positionX, positionY);
             resolve();
           }
           renderer.render(scene, camera);
@@ -332,7 +338,8 @@ const RpgScreen = ({ handleLifeUpdate }: RpgScreenProps) => {
               requestAnimationFrame(step);
             } else {
               if (!hasUpdatedRoadX) {
-                roadX += 2; //1マス右に
+                //1マス右に
+                handlePositionUpdate(2, 0);
                 hasUpdatedRoadX = true;
               }
               isMoving = false;
@@ -350,7 +357,7 @@ const RpgScreen = ({ handleLifeUpdate }: RpgScreenProps) => {
               // 完全に元に戻ったら終了
               if (mockAvatar) mockAvatar.rotation.y = 0;
               handleLifeUpdate(-1);
-              collectItem(roadX, roadY);
+              collectItem(positionX, positionY);
               resolve();
             }
           }
@@ -381,7 +388,8 @@ const RpgScreen = ({ handleLifeUpdate }: RpgScreenProps) => {
               requestAnimationFrame(step);
             } else {
               if (!hasUpdatedRoadX) {
-                roadX -= 2;
+                //1マス左に
+                handlePositionUpdate(-2, 0);
                 hasUpdatedRoadX = true;
               }
               isMoving = false;
@@ -397,7 +405,7 @@ const RpgScreen = ({ handleLifeUpdate }: RpgScreenProps) => {
             } else {
               if (mockAvatar) mockAvatar.rotation.y = 0;
               handleLifeUpdate(-1);
-              collectItem(roadX, roadY);
+              collectItem(positionX, positionY);
               resolve();
             }
           }
@@ -529,7 +537,7 @@ const RpgScreen = ({ handleLifeUpdate }: RpgScreenProps) => {
     async function createScene() {
       let exit = false;
 
-      console.log(roadX, roadY);
+      console.log(positionX, positionY);
       await createMockAvatar();
       createRoadAndSquare();
       //マスの作成
@@ -559,10 +567,10 @@ const RpgScreen = ({ handleLifeUpdate }: RpgScreenProps) => {
       // await run();
       await firstRun();
       while (!exit) {
-        console.log(roadX, roadY);
+        console.log(positionX, positionY);
         // 現在の座標に対応するCoordinateを取得
         const currentCoordinate = selectCoordinates.find(
-          (coord) => coord.x === roadX && coord.y === roadY
+          (coord) => coord.x === positionX && coord.y === positionY
         );
 
         // モーダルで選択を待つ（利用可能な方向のみ表示）
@@ -606,7 +614,7 @@ const RpgScreen = ({ handleLifeUpdate }: RpgScreenProps) => {
       mountRef.current?.removeChild(renderer.domElement);
       renderer.dispose();
     };
-  }, [handleLifeUpdate]);
+  }, [handleLifeUpdate, handlePositionUpdate]);
 
   return (
     <>
