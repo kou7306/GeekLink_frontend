@@ -31,6 +31,23 @@ const selectCoordinates: Coordinate[] = [
   { x: 4, y: 6, availableDirections: ["straight"] },
 ];
 
+const roads = [
+  { start: [0, 3], end: [2, 3] },
+  { start: [0, 3], end: [0, 6] },
+  { start: [0, 6], end: [0, 9] },
+  { start: [0, 9], end: [0, 12] },
+  { start: [0, 9], end: [-2, 9] },
+  { start: [2, 3], end: [2, 6] },
+  { start: [2, 6], end: [4, 6] },
+  { start: [2, 6], end: [2, 9] },
+  { start: [4, 6], end: [4, 9] },
+  { start: [0, 3], end: [-2, 3] },
+  { start: [-2, 3], end: [-2, 6] },
+  { start: [-2, 6], end: [-4, 6] },
+  { start: [-4, 6], end: [-4, 9] },
+  { start: [-2, 9], end: [-2, 12] },
+];
+
 const items = [
   {
     x: -2,
@@ -290,6 +307,7 @@ const RpgScreen = ({
           }
           renderer.render(scene, camera);
         }
+
         step();
       });
     }
@@ -549,25 +567,20 @@ const RpgScreen = ({
 
       console.log(positionX, positionY);
       await createMockAvatar();
-      createRoadAndSquare();
+      await createRoadAndSquare();
       //マスの作成
-      selectCoordinates.forEach((coordinate) => {
-        createSquare(coordinate.x, coordinate.y);
+      selectCoordinates.forEach(async (coordinate) => {
+        await createSquare(coordinate.x, coordinate.y);
       });
-      await createRoad(0, 3, 2, 3);
-      await createRoad(0, 3, 0, 6);
-      await createRoad(0, 6, 0, 9);
-      await createRoad(0, 9, 0, 12);
-      await createRoad(0, 9, -2, 9);
-      await createRoad(2, 3, 2, 6);
-      await createRoad(2, 6, 4, 6);
-      await createRoad(2, 6, 2, 9);
-      await createRoad(4, 6, 4, 9);
-      await createRoad(0, 3, -2, 3);
-      await createRoad(-2, 3, -2, 6);
-      await createRoad(-2, 6, -4, 6);
-      await createRoad(-4, 6, -4, 9);
-      await createRoad(-2, 9, -2, 12);
+
+      roads.forEach(async (road) => {
+        await createRoad(
+          road.start[0],
+          road.start[1],
+          road.end[0],
+          road.end[1]
+        );
+      });
       items.forEach((item) => {
         //アイテムがまだ取得されていない場合はアイテムを作成
         if (!item.isCollected) {
