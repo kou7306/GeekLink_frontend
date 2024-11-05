@@ -92,6 +92,9 @@ const Page = () => {
       </div>
       <div className="absolute top-4 right-4">
         <CoinDisplay coins={coins} />
+        <Button onClick={() => handlePositionUpdate(-positionX, -positionY)}>
+          座標リセット( デバッグ用 )
+        </Button>
       </div>
 
       {/* <div className="absolute bottom-4 left-4">
