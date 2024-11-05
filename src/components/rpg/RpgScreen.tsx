@@ -315,16 +315,20 @@ const RpgScreen = ({
     //一マス分歩く
     function run() {
       return new Promise<void>((resolve) => {
-        const targetPositionY = camera.position.y + 3; // 1マス進む
-        let hasUpdatedRoadY = false; // フラグを追加
-        function step() {
+        const startPosition = camera.position.y;
+        const targetPositionY = startPosition + 3;
+        let hasUpdatedRoadY = false;
+        let lastTime = performance.now();
+
+        function step(currentTime: number) {
+          const deltaTime = (currentTime - lastTime) / 1000; // 秒単位
+          lastTime = currentTime;
+
           if (camera.position.y < targetPositionY) {
-            camera.position.y += 0.02;
+            camera.position.y += 2 * deltaTime; // 速度を時間ベースに
             requestAnimationFrame(step);
           } else {
             if (!hasUpdatedRoadY) {
-              // まだ更新していない場合のみ実行
-              //1マス進む
               handlePositionUpdate(0, 3);
               hasUpdatedRoadY = true;
             }
@@ -334,7 +338,8 @@ const RpgScreen = ({
           }
           renderer.render(scene, camera);
         }
-        step();
+
+        requestAnimationFrame(step);
       });
     }
 
@@ -596,7 +601,7 @@ const RpgScreen = ({
           (coord) => coord.x === positionX && coord.y === positionY
         );
 
-        // モーダルで選択を待つ（利用可能な方向のみ表示）
+        // モーダルで選択���待つ（利用可能な方向のみ表示）
         const direction = await createSelectRoad(
           currentCoordinate?.availableDirections || []
         );
@@ -634,6 +639,18 @@ const RpgScreen = ({
 
     // クリーンアップ関数
     return () => {
+      // すべてのジオメトリとマテリアルを適切に破棄
+      scene.traverse((object) => {
+        if (object instanceof THREE.Mesh) {
+          object.geometry.dispose();
+          if (Array.isArray(object.material)) {
+            object.material.forEach((material) => material.dispose());
+          } else {
+            object.material.dispose();
+          }
+        }
+      });
+
       mountRef.current?.removeChild(renderer.domElement);
       renderer.dispose();
     };
