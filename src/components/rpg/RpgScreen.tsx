@@ -308,7 +308,7 @@ const RpgScreen = ({
               hasUpdatedRoadY = true;
             }
             handleLifeUpdate(-1);
-            collectItem(positionX, positionY);
+            collectItem(positionX, positionY + 3);
             resolve();
           }
           renderer.render(scene, camera);
@@ -357,7 +357,7 @@ const RpgScreen = ({
               // 完全に元に戻ったら終了
               if (mockAvatar) mockAvatar.rotation.y = 0;
               handleLifeUpdate(-1);
-              collectItem(positionX, positionY);
+              collectItem(positionX + 2, positionY);
               resolve();
             }
           }
@@ -405,7 +405,7 @@ const RpgScreen = ({
             } else {
               if (mockAvatar) mockAvatar.rotation.y = 0;
               handleLifeUpdate(-1);
-              collectItem(positionX, positionY);
+              collectItem(positionX - 2, positionY);
               resolve();
             }
           }
