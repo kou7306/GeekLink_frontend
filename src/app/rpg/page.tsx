@@ -119,6 +119,7 @@ const Page = () => {
         handlePositionUpdate={handlePositionUpdate}
         positionX={positionX}
         positionY={positionY}
+        lives={lives}
       />
 
       <Link href="/shop">

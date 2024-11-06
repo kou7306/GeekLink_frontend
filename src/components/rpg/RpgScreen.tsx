@@ -485,11 +485,19 @@ const RpgScreen = ({
         leftButton.style.border = "none";
         leftButton.style.borderRadius = "5px";
         leftButton.style.cursor = "pointer";
+        if (lives === 0) {
+          leftButton.disabled = true;
+          leftButton.style.backgroundColor = "#808080";
+        }
         leftButton.onmouseover = () => {
-          leftButton.style.backgroundColor = "#45a049";
+          lives !== 0
+            ? (leftButton.style.backgroundColor = "#45a049")
+            : (leftButton.style.backgroundColor = "#808080");
         };
         leftButton.onmouseout = () => {
-          leftButton.style.backgroundColor = "#4CAF50";
+          lives !== 0
+            ? (leftButton.style.backgroundColor = "#4CAF50")
+            : (leftButton.style.backgroundColor = "#808080");
         };
         leftButton.onclick = () => {
           if (isModalClosed) return; // 既に閉じている場合は何もしない
@@ -514,11 +522,19 @@ const RpgScreen = ({
         straightButton.style.border = "none";
         straightButton.style.borderRadius = "5px";
         straightButton.style.cursor = "pointer";
+        if (lives === 0) {
+          straightButton.disabled = true;
+          straightButton.style.backgroundColor = "#808080";
+        }
         straightButton.onmouseover = () => {
-          straightButton.style.backgroundColor = "#45a049";
+          lives !== 0
+            ? (straightButton.style.backgroundColor = "#45a049")
+            : (straightButton.style.backgroundColor = "#808080");
         };
         straightButton.onmouseout = () => {
-          straightButton.style.backgroundColor = "#4CAF50";
+          lives !== 0
+            ? (straightButton.style.backgroundColor = "#4CAF50")
+            : (straightButton.style.backgroundColor = "#808080");
         };
         straightButton.onclick = () => {
           if (isModalClosed) return; // 既に閉じている場合は何もしない
@@ -541,11 +557,19 @@ const RpgScreen = ({
         rightButton.style.border = "none";
         rightButton.style.borderRadius = "5px";
         rightButton.style.cursor = "pointer";
+        if (lives === 0) {
+          rightButton.disabled = true;
+          rightButton.style.backgroundColor = "#808080";
+        }
         rightButton.onmouseover = () => {
-          rightButton.style.backgroundColor = "#45a049";
+          lives !== 0
+            ? (rightButton.style.backgroundColor = "#45a049")
+            : (rightButton.style.backgroundColor = "#808080");
         };
         rightButton.onmouseout = () => {
-          rightButton.style.backgroundColor = "#4CAF50";
+          lives !== 0
+            ? (rightButton.style.backgroundColor = "#4CAF50")
+            : (rightButton.style.backgroundColor = "#808080");
         };
         rightButton.onclick = () => {
           if (isModalClosed) return; // 既に閉じている場合は何もしない
@@ -570,6 +594,7 @@ const RpgScreen = ({
     }
 
     async function createScene() {
+      console.log(lives);
       await createMockAvatar();
       await createRoadAndSquare();
       console.log(positionX, positionY);
