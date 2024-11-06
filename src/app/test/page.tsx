@@ -1,26 +1,35 @@
-import AvatarViewer from "@/components/rpg/AvatarViewer";
+"use client";
+import React from "react";
+import BonusPopup from "@/components/BonusPopup";
 
-const HomePage = () => {
+const TestPage: React.FC = () => {
+  // テストデータの定義
+  const testBonusData = {
+    lifeAdded: 3,
+    coinsAdded: 150,
+    userData: {
+      login_streak: "5", // 連続ログイン日数
+      last_login_date: new Date().toLocaleDateString(), // 最後のログイン日
+    },
+  };
+
+  const handleClosePopup = () => {
+    console.log("ポップアップを閉じました");
+    // ポップアップを閉じる処理（必要に応じて）
+  };
+
   return (
-    <div
-      style={{
-        width: "100vw",
-        height: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "#f0f0f0",
-      }}
-    >
-      <h1>3D Avatar Viewer</h1>
-      {/* アバターの表示サイズを指定 */}
-      <AvatarViewer
-        modelPath="/models/human.glb"
-        size={{ width: 300, height: 300 }}
+    <div className="p-4">
+      <h1 className="text-2xl font-bold mb-4">テストページ</h1>
+      {/* BonusPopupを表示 */}
+      <BonusPopup
+        lifeAdded={testBonusData.lifeAdded}
+        coinsAdded={testBonusData.coinsAdded}
+        userData={testBonusData.userData} // userDataを渡す
+        onClose={handleClosePopup}
       />
     </div>
   );
 };
 
-export default HomePage;
+export default TestPage;

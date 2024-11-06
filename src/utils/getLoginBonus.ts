@@ -1,7 +1,10 @@
-export const getLoginBonus = async (uuid: string) => {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+import { getUuidFromCookie } from "@/actions/users";
 
-  const response = await fetch(`${apiUrl}/login-bonus/${uuid}`, {
+export async function getLoginBonus(): Promise<any> {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const uuid = await getUuidFromCookie();
+  console.log("getLoginBonus -> uuid", uuid);
+  const response = await fetch(`${apiUrl}/user/get-login-bonus?uuid=${uuid}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -14,4 +17,4 @@ export const getLoginBonus = async (uuid: string) => {
   }
 
   return await response.json();
-};
+}
