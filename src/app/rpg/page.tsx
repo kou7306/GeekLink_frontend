@@ -28,8 +28,8 @@ const items = [
     isCollected: true,
   },
   {
-    x: 0,
-    y: 9,
+    x: 2,
+    y: 3,
     name: "ライフ",
     type: "life",
     image: "life.png",
@@ -72,6 +72,7 @@ const Page = () => {
     console.log("更新");
     try {
       await updateLife(newLife.toString());
+      console.log(lives);
     } catch (error) {
       console.error("Failed to update life:", error);
       setError("Failed to update life.");

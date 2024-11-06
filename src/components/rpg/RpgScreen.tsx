@@ -66,8 +66,8 @@ const items = [
     isCollected: true,
   },
   {
-    x: 0,
-    y: 9,
+    x: 2,
+    y: 3,
     name: "ライフ",
     type: "life",
     image: "life.png",
@@ -245,6 +245,9 @@ const RpgScreen = ({
     //アイテムが取得された時に呼び出される関数
     function collectItem(x: number, y: number) {
       const item = items.find((item) => item.x === x && item.y === y);
+      if (item?.type !== "life" || !item || item.isCollected) {
+        handleLifeUpdate(-1);
+      }
       if (item) {
         item.isCollected = true;
 
@@ -334,7 +337,6 @@ const RpgScreen = ({
               handlePositionUpdate(0, 3);
               hasUpdatedRoadY = true;
             }
-            handleLifeUpdate(-1);
             collectItem(positionX, positionY + 3);
             resolve();
           }
@@ -384,7 +386,6 @@ const RpgScreen = ({
             } else {
               // 完全に元に戻ったら終了
               if (mockAvatar) mockAvatar.rotation.y = 0;
-              handleLifeUpdate(-1);
               collectItem(positionX + 2, positionY);
               resolve();
             }
@@ -432,7 +433,6 @@ const RpgScreen = ({
               requestAnimationFrame(step);
             } else {
               if (mockAvatar) mockAvatar.rotation.y = 0;
-              handleLifeUpdate(-1);
               collectItem(positionX - 2, positionY);
               resolve();
             }
