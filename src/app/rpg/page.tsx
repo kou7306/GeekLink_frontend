@@ -9,37 +9,11 @@ import { useRouter } from "next/navigation";
 import { updateLife } from "@/utils/updateLife";
 import { Link } from "@mui/material";
 import { updatePosition } from "@/utils/updatePosition";
-
-const items = [
-  {
-    x: -2,
-    y: 3,
-    name: "コイン",
-    type: "coin",
-    image: "coin.png",
-    isCollected: false,
-  },
-  {
-    x: 0,
-    y: 6,
-    name: "王冠",
-    type: "costume",
-    image: "crown.png",
-    isCollected: true,
-  },
-  {
-    x: 2,
-    y: 3,
-    name: "ライフ",
-    type: "life",
-    image: "life.png",
-    isCollected: false,
-  },
-];
+import { updateCoin } from "@/utils/updateCoin";
 
 const Page = () => {
   const [lives, setLives] = useState<number>(0);
-  const [coins, setCoins] = useState(0);
+  const [coins, setCoins] = useState<number>(0);
   const [error, setError] = useState("");
   const [positionX, setPositionX] = useState<number>(0);
   const [positionY, setPositionY] = useState<number>(0);
@@ -86,6 +60,11 @@ const Page = () => {
     setPositionY(Number(res.positionY));
   };
 
+  const handleCoinUpdate = async (coin: number) => {
+    const res = await updateCoin(coin.toString());
+    setCoins(Number(res.coin));
+  };
+
   return (
     <div className="relative flex flex-col items-center justify-center h-full p-6 overflow-hidden">
       <div className="absolute top-4 left-4">
@@ -97,6 +76,9 @@ const Page = () => {
           onClick={() => handlePositionUpdate(-positionX, -positionY + 3)}
         >
           座標リセット( デバッグ用 )
+        </Button>
+        <Button onClick={() => handleCoinUpdate(1)}>
+          コイン+1( デバッグ用 )
         </Button>
       </div>
 
@@ -120,6 +102,7 @@ const Page = () => {
       <RpgScreen
         handleLifeUpdate={handleLifeUpdate}
         handlePositionUpdate={handlePositionUpdate}
+        handleCoinUpdate={handleCoinUpdate}
         positionX={positionX}
         positionY={positionY}
         lives={lives}

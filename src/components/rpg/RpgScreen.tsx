@@ -81,11 +81,13 @@ type RpgScreenProps = {
   positionX: number;
   positionY: number;
   lives: number;
+  handleCoinUpdate: (coin: number) => void;
 };
 
 const RpgScreen = ({
   handleLifeUpdate,
   handlePositionUpdate,
+  handleCoinUpdate,
   positionX,
   positionY,
   lives,
@@ -258,6 +260,10 @@ const RpgScreen = ({
           mesh.geometry.dispose();
           mesh.material instanceof THREE.Material && mesh.material.dispose();
           itemMeshes.delete(`${x},${y}`);
+
+          if (item?.type === "coin") {
+            handleCoinUpdate(1);
+          }
 
           // スナックバーを作成
           const snackbar = document.createElement("div");
