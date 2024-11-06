@@ -80,6 +80,7 @@ type RpgScreenProps = {
   handlePositionUpdate: (x: number, y: number) => void;
   positionX: number;
   positionY: number;
+  lives: number;
 };
 
 const RpgScreen = ({
@@ -87,6 +88,7 @@ const RpgScreen = ({
   handlePositionUpdate,
   positionX,
   positionY,
+  lives,
 }: RpgScreenProps) => {
   const mountRef = useRef<HTMLDivElement>(null);
 
@@ -641,7 +643,7 @@ const RpgScreen = ({
       mountRef.current?.removeChild(renderer.domElement);
       renderer.dispose();
     };
-  }, [handleLifeUpdate, handlePositionUpdate]);
+  }, [positionX, positionY]);
 
   return (
     <>
