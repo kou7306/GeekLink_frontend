@@ -17,13 +17,12 @@ export async function middleware(request: NextRequest) {
 
   let user;
 
+  // Reduxにログイン状態をディスパッチ
   if (!userLoggedIn) {
+    // ユーザー情報がまだ取得されていない場合のみgetUserを呼び出す
     user = await getUser(request, response);
     console.log("userNotRedux");
-  }
-
-  // Reduxにログイン状態をディスパッチ
-  if (user) {
+    // 取得したユーザー情報をReduxストアにディスパッチ
     store.dispatch({ type: "auth/login", payload: user });
   } else {
     user = state.auth.user;
