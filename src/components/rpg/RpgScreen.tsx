@@ -4,6 +4,7 @@ import { Button } from "@mui/material";
 import React, { useEffect, useRef } from "react";
 import seedrandom from "seedrandom";
 import * as THREE from "three";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 type Direction = "left" | "straight" | "right";
 
@@ -96,9 +97,6 @@ const RpgScreen = ({
 }: RpgScreenProps) => {
   const mountRef = useRef<HTMLDivElement>(null);
 
-  // グローバルな参照を作成
-  let mockAvatar: THREE.Mesh | null = null;
-
   useEffect(() => {
     if (!mountRef.current) return;
 
@@ -141,23 +139,49 @@ const RpgScreen = ({
 
     createStarField();
 
-    //モックのアバターを作る関数
-    function createMockAvatar() {
-      const boxGeometry = new THREE.BoxGeometry(0.5, 0.7, 0.1);
-      const materials = [
-        new THREE.MeshBasicMaterial({ color: 0xff0000 }),
-        new THREE.MeshBasicMaterial({ color: 0x00ff00 }),
-        new THREE.MeshBasicMaterial({ color: 0x0000ff }),
-        new THREE.MeshBasicMaterial({ color: 0xffff00 }),
-        new THREE.MeshBasicMaterial({ color: 0xff00ff }),
-        new THREE.MeshBasicMaterial({ color: 0x00ffff }),
-      ];
+    // グローバルな参照の型を変更
+    let mockAvatar: THREE.Object3D | null = null;
 
-      mockAvatar = new THREE.Mesh(boxGeometry, materials);
-      mockAvatar.position.set(0, -0.75, -2);
-      camera.add(mockAvatar);
-      scene.add(camera);
+    //modelPathを使ってアバターを作る関数
+    function createAvatar() {
+      const loader = new GLTFLoader();
+      return new Promise<void>((resolve) => {
+        loader.load(modelPath, (gltf) => {
+          mockAvatar = gltf.scene;
+          mockAvatar.scale.set(0.5, 0.5, 0.5); // スケールを調整
+          mockAvatar.position.set(0, -0.75, -2);
+          camera.add(mockAvatar);
+          scene.add(camera); // カメラではなくシーンに直接追加
+
+          // ライトを追加
+          const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+          const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+          directionalLight.position.set(0, 0, 3);
+          scene.add(ambientLight);
+          scene.add(directionalLight);
+
+          resolve();
+        });
+      });
     }
+
+    // //モックのアバターを作る関数
+    // function createMockAvatar() {
+    //   const boxGeometry = new THREE.BoxGeometry(0.5, 0.7, 0.1);
+    //   const materials = [
+    //     new THREE.MeshBasicMaterial({ color: 0xff0000 }),
+    //     new THREE.MeshBasicMaterial({ color: 0x00ff00 }),
+    //     new THREE.MeshBasicMaterial({ color: 0x0000ff }),
+    //     new THREE.MeshBasicMaterial({ color: 0xffff00 }),
+    //     new THREE.MeshBasicMaterial({ color: 0xff00ff }),
+    //     new THREE.MeshBasicMaterial({ color: 0x00ffff }),
+    //   ];
+
+    //   mockAvatar = new THREE.Mesh(boxGeometry, materials);
+    //   mockAvatar.position.set(0, -0.75, -2);
+    //   camera.add(mockAvatar);
+    //   scene.add(camera);
+    // }
 
     const group = new THREE.Group();
 
@@ -393,7 +417,7 @@ const RpgScreen = ({
               mockAvatar.rotation.y = rotationProgress;
               requestAnimationFrame(step);
             } else {
-              // 完全に元に戻ったら終了
+              // 完全に元に戻たら終了
               if (mockAvatar) mockAvatar.rotation.y = 0;
               collectItem(positionX + 2, positionY);
               resolve();
@@ -604,7 +628,8 @@ const RpgScreen = ({
 
     async function createScene() {
       console.log(lives);
-      await createMockAvatar();
+      // await createMockAvatar();
+      await createAvatar();
       await createRoadAndSquare();
       console.log(positionX, positionY);
       //マスの作成
