@@ -140,18 +140,18 @@ const RpgScreen = ({
     createStarField();
 
     // グローバルな参照の型を変更
-    let mockAvatar: THREE.Object3D | null = null;
+    let avatar: THREE.Object3D | null = null;
 
     //modelPathを使ってアバターを作る関数
     function createAvatar() {
       const loader = new GLTFLoader();
       return new Promise<void>((resolve) => {
         loader.load(modelPath, (gltf) => {
-          mockAvatar = gltf.scene;
-          mockAvatar.scale.set(0.5, 0.5, 0.5); // スケールを調整
-          mockAvatar.position.set(0, -0.75, -1.5);
-          mockAvatar.rotation.y = Math.PI; // 180度回転
-          camera.add(mockAvatar);
+          avatar = gltf.scene;
+          avatar.scale.set(0.5, 0.5, 0.5); // スケールを調整
+          avatar.position.set(0, -0.75, -1.5);
+          avatar.rotation.y = Math.PI; // 180度回転
+          camera.add(avatar);
           scene.add(camera); // カメラではなくシーンに直接追加
 
           // ライトを追加
@@ -377,9 +377,9 @@ const RpgScreen = ({
             if (camera.position.x < targetPositionX) {
               camera.position.x += 0.02;
 
-              if (mockAvatar && rotationProgress > targetRotation) {
+              if (avatar && rotationProgress > targetRotation) {
                 rotationProgress -= 0.1;
-                mockAvatar.rotation.y = rotationProgress;
+                avatar.rotation.y = rotationProgress;
               }
               requestAnimationFrame(step);
             } else {
@@ -392,12 +392,12 @@ const RpgScreen = ({
               step();
             }
           } else {
-            if (mockAvatar && rotationProgress < Math.PI) {
+            if (avatar && rotationProgress < Math.PI) {
               rotationProgress += 0.1;
-              mockAvatar.rotation.y = rotationProgress;
+              avatar.rotation.y = rotationProgress;
               requestAnimationFrame(step);
             } else {
-              if (mockAvatar) mockAvatar.rotation.y = Math.PI;
+              if (avatar) avatar.rotation.y = Math.PI;
               collectItem(positionX + 2, positionY);
               resolve();
             }
@@ -422,9 +422,9 @@ const RpgScreen = ({
             if (camera.position.x > targetPositionX) {
               camera.position.x -= 0.02;
 
-              if (mockAvatar && rotationProgress < targetRotation) {
+              if (avatar && rotationProgress < targetRotation) {
                 rotationProgress += 0.1; // 時計回りに回転
-                mockAvatar.rotation.y = rotationProgress;
+                avatar.rotation.y = rotationProgress;
               }
               requestAnimationFrame(step);
             } else {
@@ -437,12 +437,12 @@ const RpgScreen = ({
               step();
             }
           } else {
-            if (mockAvatar && rotationProgress > Math.PI) {
+            if (avatar && rotationProgress > Math.PI) {
               rotationProgress -= 0.1; // 反時計回りに戻る
-              mockAvatar.rotation.y = rotationProgress;
+              avatar.rotation.y = rotationProgress;
               requestAnimationFrame(step);
             } else {
-              if (mockAvatar) mockAvatar.rotation.y = Math.PI;
+              if (avatar) avatar.rotation.y = Math.PI;
               collectItem(positionX - 2, positionY);
               resolve();
             }
@@ -605,7 +605,6 @@ const RpgScreen = ({
 
     async function createScene() {
       console.log(lives);
-      // await createMockAvatar();
       await createAvatar();
       await createRoadAndSquare();
       console.log(positionX, positionY);
