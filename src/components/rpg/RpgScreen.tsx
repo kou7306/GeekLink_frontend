@@ -228,7 +228,7 @@ const RpgScreen = ({
       group.add(cylinder);
     }
 
-    //2点の座標から道を作る関数()
+    //2点の座標ら道を作る関数()
     function createRoad(x1: number, y1: number, x2: number, y2: number) {
       if (x1 === x2) {
         const planeGeometry = new THREE.PlaneGeometry(0.15, 3); //縦と横の幅を指定
@@ -293,7 +293,7 @@ const RpgScreen = ({
             handleCoinUpdate(1);
           }
 
-          // スナックバーを作成
+          // スナックバーを作
           const snackbar = document.createElement("div");
           snackbar.style.position = "fixed";
           snackbar.style.bottom = "20px";
@@ -385,41 +385,37 @@ const RpgScreen = ({
     function runRight() {
       return new Promise<void>((resolve) => {
         const targetPositionX = camera.position.x + 2;
-        let hasUpdatedRoadX = false; //一回だけ実行するためのフラグ
-        let rotationProgress = 0;
-        const targetRotation = -Math.PI / 2; //-90度
-        let isMoving = true; //動いているかどうかのフラグ
+        let hasUpdatedRoadX = false;
+        let rotationProgress = Math.PI;
+        const targetRotation = Math.PI / 2;
+        let isMoving = true;
 
         function step() {
           if (isMoving) {
             if (camera.position.x < targetPositionX) {
-              camera.position.x += 0.02; //1マス進む
+              camera.position.x += 0.02;
 
               if (mockAvatar && rotationProgress > targetRotation) {
-                rotationProgress -= 0.1; //-90度になるまで回転
+                rotationProgress -= 0.1;
                 mockAvatar.rotation.y = rotationProgress;
               }
               requestAnimationFrame(step);
             } else {
               if (!hasUpdatedRoadX) {
-                //1マス右に
                 handlePositionUpdate(2, 0);
                 hasUpdatedRoadX = true;
               }
               isMoving = false;
-              // 回転を元に戻す処理を開始
               rotationProgress = targetRotation;
               step();
             }
           } else {
-            // 回転を元に戻す
-            if (mockAvatar && rotationProgress < 0) {
+            if (mockAvatar && rotationProgress < Math.PI) {
               rotationProgress += 0.1;
               mockAvatar.rotation.y = rotationProgress;
               requestAnimationFrame(step);
             } else {
-              // 完全に元に戻たら終了
-              if (mockAvatar) mockAvatar.rotation.y = 0;
+              if (mockAvatar) mockAvatar.rotation.y = Math.PI;
               collectItem(positionX + 2, positionY);
               resolve();
             }
@@ -435,8 +431,8 @@ const RpgScreen = ({
       return new Promise<void>((resolve) => {
         const targetPositionX = camera.position.x - 2;
         let hasUpdatedRoadX = false;
-        let rotationProgress = 0;
-        const targetRotation = Math.PI / 2;
+        let rotationProgress = Math.PI;
+        const targetRotation = (3 * Math.PI) / 2; // 270度（時計回り）に変更
         let isMoving = true;
 
         function step() {
@@ -445,13 +441,12 @@ const RpgScreen = ({
               camera.position.x -= 0.02;
 
               if (mockAvatar && rotationProgress < targetRotation) {
-                rotationProgress += 0.1;
+                rotationProgress += 0.1; // 時計回りに回転
                 mockAvatar.rotation.y = rotationProgress;
               }
               requestAnimationFrame(step);
             } else {
               if (!hasUpdatedRoadX) {
-                //1マス左に
                 handlePositionUpdate(-2, 0);
                 hasUpdatedRoadX = true;
               }
@@ -460,13 +455,12 @@ const RpgScreen = ({
               step();
             }
           } else {
-            // 回転を元に戻す
-            if (mockAvatar && rotationProgress > 0) {
-              rotationProgress -= 0.1;
+            if (mockAvatar && rotationProgress > Math.PI) {
+              rotationProgress -= 0.1; // 反時計回りに戻る
               mockAvatar.rotation.y = rotationProgress;
               requestAnimationFrame(step);
             } else {
-              if (mockAvatar) mockAvatar.rotation.y = 0;
+              if (mockAvatar) mockAvatar.rotation.y = Math.PI;
               collectItem(positionX - 2, positionY);
               resolve();
             }
@@ -686,7 +680,7 @@ const RpgScreen = ({
 
     createScene();
 
-    // クリーンアップ関数の強化
+    // ���リーンアップ関数の強化
     return () => {
       // すべてのジオメトリとマテリアルを適切に破棄
       scene.traverse((object) => {
