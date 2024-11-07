@@ -150,6 +150,7 @@ const RpgScreen = ({
           mockAvatar = gltf.scene;
           mockAvatar.scale.set(0.5, 0.5, 0.5); // スケールを調整
           mockAvatar.position.set(0, -0.75, -2);
+          mockAvatar.rotation.y = Math.PI; // 180度回転
           camera.add(mockAvatar);
           scene.add(camera); // カメラではなくシーンに直接追加
 
