@@ -78,10 +78,11 @@ const items = [
 type RpgScreenProps = {
   handleLifeUpdate: (change: number) => void;
   handlePositionUpdate: (x: number, y: number) => void;
+  handleCoinUpdate: (coin: number) => void;
   positionX: number;
   positionY: number;
   lives: number;
-  handleCoinUpdate: (coin: number) => void;
+  modelPath: string;
 };
 
 const RpgScreen = ({
@@ -91,6 +92,7 @@ const RpgScreen = ({
   positionX,
   positionY,
   lives,
+  modelPath,
 }: RpgScreenProps) => {
   const mountRef = useRef<HTMLDivElement>(null);
 
@@ -234,6 +236,7 @@ const RpgScreen = ({
 
     //モックのアイテムを作る関数
     function createItem(x: number, y: number) {
+      //アイテムを作成
       const boxGeometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
       const boxMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
       const box = new THREE.Mesh(boxGeometry, boxMaterial);

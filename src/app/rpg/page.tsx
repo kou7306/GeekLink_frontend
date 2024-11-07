@@ -17,6 +17,7 @@ const Page = () => {
   const [error, setError] = useState("");
   const [positionX, setPositionX] = useState<number>(0);
   const [positionY, setPositionY] = useState<number>(0);
+  const [modelPath, setModelPath] = useState<string>("/models/human.glb");
   const router = useRouter();
 
   useEffect(() => {
@@ -106,6 +107,7 @@ const Page = () => {
         positionX={positionX}
         positionY={positionY}
         lives={lives}
+        modelPath={modelPath}
       />
 
       <Link href="/shop">
