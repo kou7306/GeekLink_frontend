@@ -340,18 +340,29 @@ const RpgScreen = ({
         const targetPositionY = startPosition + 3;
         let hasUpdatedRoadY = false;
         let lastTime = performance.now();
+        let bounceProgress = 0;
 
         function step(currentTime: number) {
-          const deltaTime = (currentTime - lastTime) / 1000; // 秒単位
+          const deltaTime = (currentTime - lastTime) / 1000;
           lastTime = currentTime;
 
           if (camera.position.y < targetPositionY) {
-            camera.position.y += 2 * deltaTime; // 速度を時間ベースに
+            camera.position.y += 2 * deltaTime;
+
+            if (avatar) {
+              // バウンス処理
+              bounceProgress += 0.1;
+              avatar.position.y =
+                -0.75 + Math.abs(Math.sin(bounceProgress)) * 0.05;
+            }
             requestAnimationFrame(step);
           } else {
             if (!hasUpdatedRoadY) {
               handlePositionUpdate(0, 3);
               hasUpdatedRoadY = true;
+            }
+            if (avatar) {
+              avatar.position.y = -0.75; // 移動終了時に位置を元に戻す
             }
             collectItem(positionX, positionY + 3);
             resolve();
@@ -371,15 +382,24 @@ const RpgScreen = ({
         let rotationProgress = Math.PI;
         const targetRotation = Math.PI / 2;
         let isMoving = true;
+        let bounceProgress = 0;
 
         function step() {
           if (isMoving) {
             if (camera.position.x < targetPositionX) {
               camera.position.x += 0.02;
 
-              if (avatar && rotationProgress > targetRotation) {
-                rotationProgress -= 0.1;
-                avatar.rotation.y = rotationProgress;
+              if (avatar) {
+                // 回転処理
+                if (rotationProgress > targetRotation) {
+                  rotationProgress -= 0.1;
+                  avatar.rotation.y = rotationProgress;
+                }
+
+                // バウンス処理
+                bounceProgress += 0.1;
+                avatar.position.y =
+                  -0.75 + Math.abs(Math.sin(bounceProgress)) * 0.05;
               }
               requestAnimationFrame(step);
             } else {
@@ -389,6 +409,7 @@ const RpgScreen = ({
               }
               isMoving = false;
               rotationProgress = targetRotation;
+              if (avatar) avatar.position.y = -0.75;
               step();
             }
           } else {
@@ -397,7 +418,10 @@ const RpgScreen = ({
               avatar.rotation.y = rotationProgress;
               requestAnimationFrame(step);
             } else {
-              if (avatar) avatar.rotation.y = Math.PI;
+              if (avatar) {
+                avatar.rotation.y = Math.PI;
+                avatar.position.y = -0.75; // 最終位置を確実に元に戻す
+              }
               collectItem(positionX + 2, positionY);
               resolve();
             }
@@ -414,17 +438,26 @@ const RpgScreen = ({
         const targetPositionX = camera.position.x - 2;
         let hasUpdatedRoadX = false;
         let rotationProgress = Math.PI;
-        const targetRotation = (3 * Math.PI) / 2; // 270度（時計回り）に変更
+        const targetRotation = (3 * Math.PI) / 2;
         let isMoving = true;
+        let bounceProgress = 0;
 
         function step() {
           if (isMoving) {
             if (camera.position.x > targetPositionX) {
               camera.position.x -= 0.02;
 
-              if (avatar && rotationProgress < targetRotation) {
-                rotationProgress += 0.1; // 時計回りに回転
-                avatar.rotation.y = rotationProgress;
+              if (avatar) {
+                // 回転処理
+                if (rotationProgress < targetRotation) {
+                  rotationProgress += 0.1;
+                  avatar.rotation.y = rotationProgress;
+                }
+
+                // バウンス処理を調整
+                bounceProgress += 0.1;
+                avatar.position.y =
+                  -0.75 + Math.abs(Math.sin(bounceProgress)) * 0.05; // 振幅を0.05に減らし、下方向への移動を防ぐ
               }
               requestAnimationFrame(step);
             } else {
@@ -434,15 +467,19 @@ const RpgScreen = ({
               }
               isMoving = false;
               rotationProgress = targetRotation;
+              if (avatar) avatar.position.y = -0.75;
               step();
             }
           } else {
             if (avatar && rotationProgress > Math.PI) {
-              rotationProgress -= 0.1; // 反時計回りに戻る
+              rotationProgress -= 0.1;
               avatar.rotation.y = rotationProgress;
               requestAnimationFrame(step);
             } else {
-              if (avatar) avatar.rotation.y = Math.PI;
+              if (avatar) {
+                avatar.rotation.y = Math.PI;
+                avatar.position.y = -0.75; // 最終位置を確実に元に戻す
+              }
               collectItem(positionX - 2, positionY);
               resolve();
             }
@@ -661,7 +698,7 @@ const RpgScreen = ({
 
     createScene();
 
-    // ���リーンアップ関数の強化
+    // リーン��ップ関数の強化
     return () => {
       // すべてのジオメトリとマテリアルを適切に破棄
       scene.traverse((object) => {
