@@ -1,7 +1,10 @@
 "use client";
 
+import { Button } from "@mui/material";
 import React, { useEffect, useRef } from "react";
+import seedrandom from "seedrandom";
 import * as THREE from "three";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 type Direction = "left" | "straight" | "right";
 
@@ -29,6 +32,23 @@ const selectCoordinates: Coordinate[] = [
   { x: 4, y: 6, availableDirections: ["straight"] },
 ];
 
+const roads = [
+  { start: [0, 3], end: [2, 3] },
+  { start: [0, 3], end: [0, 6] },
+  { start: [0, 6], end: [0, 9] },
+  { start: [0, 9], end: [0, 12] },
+  { start: [0, 9], end: [-2, 9] },
+  { start: [2, 3], end: [2, 6] },
+  { start: [2, 6], end: [4, 6] },
+  { start: [2, 6], end: [2, 9] },
+  { start: [4, 6], end: [4, 9] },
+  { start: [0, 3], end: [-2, 3] },
+  { start: [-2, 3], end: [-2, 6] },
+  { start: [-2, 6], end: [-4, 6] },
+  { start: [-4, 6], end: [-4, 9] },
+  { start: [-2, 9], end: [-2, 12] },
+];
+
 const items = [
   {
     x: -2,
@@ -47,8 +67,8 @@ const items = [
     isCollected: true,
   },
   {
-    x: 0,
-    y: 9,
+    x: 2,
+    y: 3,
     name: "ライフ",
     type: "life",
     image: "life.png",
@@ -56,14 +76,26 @@ const items = [
   },
 ];
 
-const Page = () => {
-  const mountRef = useRef<HTMLDivElement>(null);
-  //この値をデータベースで保管して、再度アクセスした時に前回の位置から再開できるようにする
-  let roadX = 0;
-  let roadY = 0;
+type RpgScreenProps = {
+  handleLifeUpdate: (change: number) => void;
+  handlePositionUpdate: (x: number, y: number) => void;
+  handleCoinUpdate: (coin: number) => void;
+  positionX: number;
+  positionY: number;
+  lives: number;
+  modelPath: string;
+};
 
-  // グローバルな参照を作成
-  let mockAvatar: THREE.Mesh | null = null;
+const RpgScreen = ({
+  handleLifeUpdate,
+  handlePositionUpdate,
+  handleCoinUpdate,
+  positionX,
+  positionY,
+  lives,
+  modelPath,
+}: RpgScreenProps) => {
+  const mountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!mountRef.current) return;
@@ -87,11 +119,13 @@ const Page = () => {
     function createStarField() {
       const starGeo = new THREE.BufferGeometry();
       const positions = new Float32Array(50000 * 3);
+      const rng = seedrandom("geeklink-stars"); // 固定のシード値を使用
 
       for (let i = 0; i < 50000; i++) {
-        positions[i * 3] = 3000 * (Math.random() - 0.5); // x
-        positions[i * 3 + 1] = 3000 * (Math.random() - 0.5); // y
-        positions[i * 3 + 2] = 3000 * (Math.random() - 0.5); // z
+        // 乱数生成器を使用して-1500から1500の範囲で座標を生成
+        positions[i * 3] = 3000 * (rng() - 0.5); // x
+        positions[i * 3 + 1] = 3000 * (rng() - 0.5); // y
+        positions[i * 3 + 2] = 3000 * (rng() - 0.5); // z
       }
 
       starGeo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
@@ -105,22 +139,31 @@ const Page = () => {
 
     createStarField();
 
-    //モックのアバターを作る関数
-    function createMockAvatar() {
-      const boxGeometry = new THREE.BoxGeometry(0.5, 0.7, 0.1);
-      const materials = [
-        new THREE.MeshBasicMaterial({ color: 0xff0000 }),
-        new THREE.MeshBasicMaterial({ color: 0x00ff00 }),
-        new THREE.MeshBasicMaterial({ color: 0x0000ff }),
-        new THREE.MeshBasicMaterial({ color: 0xffff00 }),
-        new THREE.MeshBasicMaterial({ color: 0xff00ff }),
-        new THREE.MeshBasicMaterial({ color: 0x00ffff }),
-      ];
+    // グローバルな参照の型を変更
+    let avatar: THREE.Object3D | null = null;
 
-      mockAvatar = new THREE.Mesh(boxGeometry, materials);
-      mockAvatar.position.set(0, -0.75, -2);
-      camera.add(mockAvatar);
-      scene.add(camera);
+    //modelPathを使ってアバターを作る関数
+    function createAvatar() {
+      const loader = new GLTFLoader();
+      return new Promise<void>((resolve) => {
+        loader.load(modelPath, (gltf) => {
+          avatar = gltf.scene;
+          avatar.scale.set(0.5, 0.5, 0.5); // スケールを調整
+          avatar.position.set(0, -0.75, -1.5);
+          avatar.rotation.y = Math.PI; // 180度回転
+          camera.add(avatar);
+          scene.add(camera); // カメラではなくシーンに直接追加
+
+          // ライトを追加
+          const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+          const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+          directionalLight.position.set(0, 0, 3);
+          scene.add(ambientLight);
+          scene.add(directionalLight);
+
+          resolve();
+        });
+      });
     }
 
     const group = new THREE.Group();
@@ -159,7 +202,7 @@ const Page = () => {
     function createSquare(x: number, y: number) {
       const cylinderGeometry = new THREE.CylinderGeometry(0.2, 0.2, 0.1, 32); // 半径0.2、高さ1、分割数32の円柱
       const cylinderMaterial = new THREE.MeshBasicMaterial({
-        color: 0xffff00,
+        color: 0x00ffff,
       });
       const cylinder = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
       cylinder.rotation.x = Math.PI / 2; // 円柱を横に寝かせる
@@ -167,12 +210,12 @@ const Page = () => {
       group.add(cylinder);
     }
 
-    //2点の座標から道を作る関数()
+    //2点の座標ら道を作る関数()
     function createRoad(x1: number, y1: number, x2: number, y2: number) {
       if (x1 === x2) {
         const planeGeometry = new THREE.PlaneGeometry(0.15, 3); //縦と横の幅を指定
         const planeMaterial = new THREE.MeshBasicMaterial({
-          color: 0x0000ff,
+          color: 0x00ffff,
           side: THREE.DoubleSide, //両面を描画する
           transparent: true, //透明にする
           opacity: 0.3,
@@ -183,7 +226,7 @@ const Page = () => {
       } else {
         const planeGeometry = new THREE.PlaneGeometry(0.15, 2); //縦と横の幅を指定
         const planeMaterial = new THREE.MeshBasicMaterial({
-          color: 0x0000ff,
+          color: 0x00ffff,
           side: THREE.DoubleSide, //両面を描画する
           transparent: true, //透明にする
           opacity: 0.3,
@@ -200,6 +243,7 @@ const Page = () => {
 
     //モックのアイテムを作る関数
     function createItem(x: number, y: number) {
+      //アイテムを作成
       const boxGeometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
       const boxMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
       const box = new THREE.Mesh(boxGeometry, boxMaterial);
@@ -213,6 +257,9 @@ const Page = () => {
     //アイテムが取得された時に呼び出される関数
     function collectItem(x: number, y: number) {
       const item = items.find((item) => item.x === x && item.y === y);
+      if (item?.type !== "life" || !item || item.isCollected) {
+        handleLifeUpdate(-1);
+      }
       if (item) {
         item.isCollected = true;
 
@@ -224,7 +271,11 @@ const Page = () => {
           mesh.material instanceof THREE.Material && mesh.material.dispose();
           itemMeshes.delete(`${x},${y}`);
 
-          // スナックバーを作成
+          if (item?.type === "coin") {
+            handleCoinUpdate(1);
+          }
+
+          // スナックバーを作
           const snackbar = document.createElement("div");
           snackbar.style.position = "fixed";
           snackbar.style.bottom = "20px";
@@ -250,8 +301,8 @@ const Page = () => {
     //最初の移動をしてカメラの位置を合わせる
     function firstRun() {
       return new Promise<void>((resolve) => {
-        const targetPositionX = roadX;
-        const targetPositionY = roadY - 2.0;
+        const targetPositionX = positionX;
+        const targetPositionY = positionY - 2.0;
         let hasUpdatedRoadY = false; // フラグを追加
         function step() {
           if (targetPositionX >= 0) {
@@ -266,7 +317,7 @@ const Page = () => {
             }
           }
           if (camera.position.y < targetPositionY) {
-            camera.position.y += 2;
+            camera.position.y += 3;
             requestAnimationFrame(step);
           } else {
             if (!hasUpdatedRoadY) {
@@ -277,6 +328,7 @@ const Page = () => {
           }
           renderer.render(scene, camera);
         }
+
         step();
       });
     }
@@ -284,24 +336,41 @@ const Page = () => {
     //一マス分歩く
     function run() {
       return new Promise<void>((resolve) => {
-        const targetPositionY = camera.position.y + 3; // 1マス進む
-        let hasUpdatedRoadY = false; // フラグを追加
-        function step() {
+        const startPosition = camera.position.y;
+        const targetPositionY = startPosition + 3;
+        let hasUpdatedRoadY = false;
+        let lastTime = performance.now();
+        let bounceProgress = 0;
+
+        function step(currentTime: number) {
+          const deltaTime = (currentTime - lastTime) / 1000;
+          lastTime = currentTime;
+
           if (camera.position.y < targetPositionY) {
-            camera.position.y += 0.02;
+            camera.position.y += 2 * deltaTime;
+
+            if (avatar) {
+              // バウンス処理
+              bounceProgress += 0.1;
+              avatar.position.y =
+                -0.75 + Math.abs(Math.sin(bounceProgress)) * 0.05;
+            }
             requestAnimationFrame(step);
           } else {
             if (!hasUpdatedRoadY) {
-              // まだ更新していない場合のみ実行
-              roadY += 3;
+              handlePositionUpdate(0, 3);
               hasUpdatedRoadY = true;
             }
-            collectItem(roadX, roadY);
+            if (avatar) {
+              avatar.position.y = -0.75; // 移動終了時に位置を元に戻す
+            }
+            collectItem(positionX, positionY + 3);
             resolve();
           }
           renderer.render(scene, camera);
         }
-        step();
+
+        requestAnimationFrame(step);
       });
     }
 
@@ -309,41 +378,51 @@ const Page = () => {
     function runRight() {
       return new Promise<void>((resolve) => {
         const targetPositionX = camera.position.x + 2;
-        let hasUpdatedRoadX = false; //一回だけ実行するためのフラグ
-        let rotationProgress = 0;
-        const targetRotation = -Math.PI / 2; //-90度
-        let isMoving = true; //動いているかどうかのフラグ
+        let hasUpdatedRoadX = false;
+        let rotationProgress = Math.PI;
+        const targetRotation = Math.PI / 2;
+        let isMoving = true;
+        let bounceProgress = 0;
 
         function step() {
           if (isMoving) {
             if (camera.position.x < targetPositionX) {
-              camera.position.x += 0.02; //1マス進む
+              camera.position.x += 0.02;
 
-              if (mockAvatar && rotationProgress > targetRotation) {
-                rotationProgress -= 0.1; //-90度になるまで回転
-                mockAvatar.rotation.y = rotationProgress;
+              if (avatar) {
+                // 回転処理
+                if (rotationProgress > targetRotation) {
+                  rotationProgress -= 0.1;
+                  avatar.rotation.y = rotationProgress;
+                }
+
+                // バウンス処理
+                bounceProgress += 0.1;
+                avatar.position.y =
+                  -0.75 + Math.abs(Math.sin(bounceProgress)) * 0.05;
               }
               requestAnimationFrame(step);
             } else {
               if (!hasUpdatedRoadX) {
-                roadX += 2; //1マス右に
+                handlePositionUpdate(2, 0);
                 hasUpdatedRoadX = true;
               }
               isMoving = false;
-              // 回転を元に戻す処理を開始
               rotationProgress = targetRotation;
+              if (avatar) avatar.position.y = -0.75;
               step();
             }
           } else {
-            // 回転を元に戻す
-            if (mockAvatar && rotationProgress < 0) {
+            if (avatar && rotationProgress < Math.PI) {
               rotationProgress += 0.1;
-              mockAvatar.rotation.y = rotationProgress;
+              avatar.rotation.y = rotationProgress;
               requestAnimationFrame(step);
             } else {
-              // 完全に元に戻ったら終了
-              if (mockAvatar) mockAvatar.rotation.y = 0;
-              collectItem(roadX, roadY);
+              if (avatar) {
+                avatar.rotation.y = Math.PI;
+                avatar.position.y = -0.75; // 最終位置を確実に元に戻す
+              }
+              collectItem(positionX + 2, positionY);
               resolve();
             }
           }
@@ -358,38 +437,50 @@ const Page = () => {
       return new Promise<void>((resolve) => {
         const targetPositionX = camera.position.x - 2;
         let hasUpdatedRoadX = false;
-        let rotationProgress = 0;
-        const targetRotation = Math.PI / 2;
+        let rotationProgress = Math.PI;
+        const targetRotation = (3 * Math.PI) / 2;
         let isMoving = true;
+        let bounceProgress = 0;
 
         function step() {
           if (isMoving) {
             if (camera.position.x > targetPositionX) {
               camera.position.x -= 0.02;
 
-              if (mockAvatar && rotationProgress < targetRotation) {
-                rotationProgress += 0.1;
-                mockAvatar.rotation.y = rotationProgress;
+              if (avatar) {
+                // 回転処理
+                if (rotationProgress < targetRotation) {
+                  rotationProgress += 0.1;
+                  avatar.rotation.y = rotationProgress;
+                }
+
+                // バウンス処理を調整
+                bounceProgress += 0.1;
+                avatar.position.y =
+                  -0.75 + Math.abs(Math.sin(bounceProgress)) * 0.05; // 振幅を0.05に減らし、下方向への移動を防ぐ
               }
               requestAnimationFrame(step);
             } else {
               if (!hasUpdatedRoadX) {
-                roadX -= 2;
+                handlePositionUpdate(-2, 0);
                 hasUpdatedRoadX = true;
               }
               isMoving = false;
               rotationProgress = targetRotation;
+              if (avatar) avatar.position.y = -0.75;
               step();
             }
           } else {
-            // 回転を元に戻す
-            if (mockAvatar && rotationProgress > 0) {
+            if (avatar && rotationProgress > Math.PI) {
               rotationProgress -= 0.1;
-              mockAvatar.rotation.y = rotationProgress;
+              avatar.rotation.y = rotationProgress;
               requestAnimationFrame(step);
             } else {
-              if (mockAvatar) mockAvatar.rotation.y = 0;
-              collectItem(roadX, roadY);
+              if (avatar) {
+                avatar.rotation.y = Math.PI;
+                avatar.position.y = -0.75; // 最終位置を確実に元に戻す
+              }
+              collectItem(positionX - 2, positionY);
               resolve();
             }
           }
@@ -426,6 +517,8 @@ const Page = () => {
         // メッセージを作成
         const message = document.createElement("p");
         message.textContent = "どちらに進みますか？";
+        message.style.textAlign = "center";
+        message.style.marginBottom = "20px";
         modal.appendChild(message);
 
         //右と左のボタンを作成
@@ -439,11 +532,19 @@ const Page = () => {
         leftButton.style.border = "none";
         leftButton.style.borderRadius = "5px";
         leftButton.style.cursor = "pointer";
+        if (lives === 0) {
+          leftButton.disabled = true;
+          leftButton.style.backgroundColor = "#808080";
+        }
         leftButton.onmouseover = () => {
-          leftButton.style.backgroundColor = "#45a049";
+          lives !== 0
+            ? (leftButton.style.backgroundColor = "#45a049")
+            : (leftButton.style.backgroundColor = "#808080");
         };
         leftButton.onmouseout = () => {
-          leftButton.style.backgroundColor = "#4CAF50";
+          lives !== 0
+            ? (leftButton.style.backgroundColor = "#4CAF50")
+            : (leftButton.style.backgroundColor = "#808080");
         };
         leftButton.onclick = () => {
           if (isModalClosed) return; // 既に閉じている場合は何もしない
@@ -468,11 +569,19 @@ const Page = () => {
         straightButton.style.border = "none";
         straightButton.style.borderRadius = "5px";
         straightButton.style.cursor = "pointer";
+        if (lives === 0) {
+          straightButton.disabled = true;
+          straightButton.style.backgroundColor = "#808080";
+        }
         straightButton.onmouseover = () => {
-          straightButton.style.backgroundColor = "#45a049";
+          lives !== 0
+            ? (straightButton.style.backgroundColor = "#45a049")
+            : (straightButton.style.backgroundColor = "#808080");
         };
         straightButton.onmouseout = () => {
-          straightButton.style.backgroundColor = "#4CAF50";
+          lives !== 0
+            ? (straightButton.style.backgroundColor = "#4CAF50")
+            : (straightButton.style.backgroundColor = "#808080");
         };
         straightButton.onclick = () => {
           if (isModalClosed) return; // 既に閉じている場合は何もしない
@@ -495,11 +604,19 @@ const Page = () => {
         rightButton.style.border = "none";
         rightButton.style.borderRadius = "5px";
         rightButton.style.cursor = "pointer";
+        if (lives === 0) {
+          rightButton.disabled = true;
+          rightButton.style.backgroundColor = "#808080";
+        }
         rightButton.onmouseover = () => {
-          rightButton.style.backgroundColor = "#45a049";
+          lives !== 0
+            ? (rightButton.style.backgroundColor = "#45a049")
+            : (rightButton.style.backgroundColor = "#808080");
         };
         rightButton.onmouseout = () => {
-          rightButton.style.backgroundColor = "#4CAF50";
+          lives !== 0
+            ? (rightButton.style.backgroundColor = "#4CAF50")
+            : (rightButton.style.backgroundColor = "#808080");
         };
         rightButton.onclick = () => {
           if (isModalClosed) return; // 既に閉じている場合は何もしない
@@ -512,6 +629,11 @@ const Page = () => {
         if (availableDirections.includes("right")) {
           modal.appendChild(rightButton);
         }
+        const lifeMessage = document.createElement("p");
+        lifeMessage.textContent = "ライフを1消費して進む";
+        lifeMessage.style.textAlign = "center";
+        lifeMessage.style.marginTop = "20px";
+        modal.appendChild(lifeMessage);
 
         // モーダルを表示
         document.body.appendChild(modal);
@@ -519,29 +641,23 @@ const Page = () => {
     }
 
     async function createScene() {
-      let exit = false;
-
-      console.log(roadX, roadY);
-      await createMockAvatar();
-      createRoadAndSquare();
+      console.log(lives);
+      await createAvatar();
+      await createRoadAndSquare();
+      console.log(positionX, positionY);
       //マスの作成
-      selectCoordinates.forEach((coordinate) => {
-        createSquare(coordinate.x, coordinate.y);
+      selectCoordinates.forEach(async (coordinate) => {
+        await createSquare(coordinate.x, coordinate.y);
       });
-      await createRoad(0, 3, 2, 3);
-      await createRoad(0, 3, 0, 6);
-      await createRoad(0, 6, 0, 9);
-      await createRoad(0, 9, 0, 12);
-      await createRoad(0, 9, -2, 9);
-      await createRoad(2, 3, 2, 6);
-      await createRoad(2, 6, 4, 6);
-      await createRoad(2, 6, 2, 9);
-      await createRoad(4, 6, 4, 9);
-      await createRoad(0, 3, -2, 3);
-      await createRoad(-2, 3, -2, 6);
-      await createRoad(-2, 6, -4, 6);
-      await createRoad(-4, 6, -4, 9);
-      await createRoad(-2, 9, -2, 12);
+
+      roads.forEach(async (road) => {
+        await createRoad(
+          road.start[0],
+          road.start[1],
+          road.end[0],
+          road.end[1]
+        );
+      });
       items.forEach((item) => {
         //アイテムがまだ取得されていない場合はアイテムを作成
         if (!item.isCollected) {
@@ -550,57 +666,78 @@ const Page = () => {
       });
       // await run();
       await firstRun();
-      while (!exit) {
-        console.log(roadX, roadY);
-        // 現在の座標に対応するCoordinateを取得
-        const currentCoordinate = selectCoordinates.find(
-          (coord) => coord.x === roadX && coord.y === roadY
-        );
 
-        // モーダルで選択を待つ（利用可能な方向のみ表示）
-        const direction = await createSelectRoad(
-          currentCoordinate?.availableDirections || []
-        );
+      // 現在の座標に対応するCoordinateを取得
+      const currentCoordinate = selectCoordinates.find(
+        (coord) => coord.x === positionX && coord.y === positionY
+      );
 
-        // 選択結果に応じて処理を分岐
-        if (
-          direction === "left" &&
-          currentCoordinate?.availableDirections.includes("left")
-        ) {
-          await runLeft();
-        } else if (
-          direction === "right" &&
-          currentCoordinate?.availableDirections.includes("right")
-        ) {
-          await runRight();
-        } else if (
-          direction === "straight" &&
-          currentCoordinate?.availableDirections.includes("straight")
-        ) {
-          await run();
-        }
+      // モーダルで選択待つ（利用可能な方向のみ表示）
+      const direction = await createSelectRoad(
+        currentCoordinate?.availableDirections || []
+      );
+
+      // 選択結果に応じて処理を分岐
+      if (
+        direction === "left" &&
+        currentCoordinate?.availableDirections.includes("left")
+      ) {
+        await runLeft();
+      } else if (
+        direction === "right" &&
+        currentCoordinate?.availableDirections.includes("right")
+      ) {
+        await runRight();
+      } else if (
+        direction === "straight" &&
+        currentCoordinate?.availableDirections.includes("straight")
+      ) {
+        await run();
       }
     }
 
     createScene();
 
-    // // アニメーション関数
-    // const animate = () => {
-    //   requestAnimationFrame(animate);
-
-    //   renderer.render(scene, camera);
-    // };
-
-    // animate();
-
-    // クリーンアップ関数
+    // リーン��ップ関数の強化
     return () => {
+      // すべてのジオメトリとマテリアルを適切に破棄
+      scene.traverse((object) => {
+        if (object instanceof THREE.Mesh) {
+          object.geometry.dispose();
+          if (Array.isArray(object.material)) {
+            object.material.forEach((material) => material.dispose());
+          } else {
+            object.material.dispose();
+          }
+        }
+      });
+
       mountRef.current?.removeChild(renderer.domElement);
       renderer.dispose();
     };
-  }, []);
+  }, [positionX, positionY]);
 
-  return <div ref={mountRef} style={{ width: "100%", height: "100vh" }} />;
+  return (
+    <>
+      <div ref={mountRef} style={{ width: "100%", height: "100vh" }} />
+      <div className="absolute bottom-4 left-4">
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={() => handleLifeUpdate(1)}
+        >
+          Increase Life
+        </Button>
+        <Button
+          variant="outlined"
+          color="secondary"
+          onClick={() => handleLifeUpdate(-1)}
+        >
+          Decrease Life
+        </Button>
+      </div>
+    </>
+  );
 };
 
-export default Page;
+export default RpgScreen;
