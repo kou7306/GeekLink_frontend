@@ -202,7 +202,7 @@ const RpgScreen = ({
     function createSquare(x: number, y: number) {
       const cylinderGeometry = new THREE.CylinderGeometry(0.2, 0.2, 0.1, 32); // 半径0.2、高さ1、分割数32の円柱
       const cylinderMaterial = new THREE.MeshBasicMaterial({
-        color: 0xffff00,
+        color: 0x00ffff,
       });
       const cylinder = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
       cylinder.rotation.x = Math.PI / 2; // 円柱を横に寝かせる
@@ -215,7 +215,7 @@ const RpgScreen = ({
       if (x1 === x2) {
         const planeGeometry = new THREE.PlaneGeometry(0.15, 3); //縦と横の幅を指定
         const planeMaterial = new THREE.MeshBasicMaterial({
-          color: 0x0000ff,
+          color: 0x00ffff,
           side: THREE.DoubleSide, //両面を描画する
           transparent: true, //透明にする
           opacity: 0.3,
@@ -226,7 +226,7 @@ const RpgScreen = ({
       } else {
         const planeGeometry = new THREE.PlaneGeometry(0.15, 2); //縦と横の幅を指定
         const planeMaterial = new THREE.MeshBasicMaterial({
-          color: 0x0000ff,
+          color: 0x00ffff,
           side: THREE.DoubleSide, //両面を描画する
           transparent: true, //透明にする
           opacity: 0.3,
