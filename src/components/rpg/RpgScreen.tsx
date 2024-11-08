@@ -258,9 +258,9 @@ const RpgScreen = ({
     //アイテムが取得された時に呼び出される関数
     function collectItem(x: number, y: number) {
       const item = items.find((item) => item.x === x && item.y === y);
-      if (item?.type !== "life" || !item || item.isCollected) {
-        handleLifeUpdate(-1);
-      }
+
+      handleLifeUpdate(-1);
+
       if (item) {
         item.isCollected = true;
 
@@ -391,7 +391,7 @@ const RpgScreen = ({
             });
             resultDialog.style.fontSize = "24px";
 
-            // アイテムタイプに応じてメ��セージを変更
+            // アイテムタイプに応じてメセージを変更
             const resultValue =
               displayArray[
                 (currentIndex - 1 + displayArray.length) % displayArray.length
@@ -417,6 +417,9 @@ const RpgScreen = ({
             // アイテムタイプに応じた処理を実行
             if (item?.type === "coin") {
               handleCoinUpdate(Number(resultValue));
+            } else if (item?.type === "life") {
+              handleLifeUpdate(Number(resultValue) - 1);
+              window.location.reload();
             }
 
             resultDialog.addEventListener("click", () => {
