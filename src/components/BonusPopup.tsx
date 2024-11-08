@@ -21,7 +21,7 @@ const BonusPopup: React.FC<BonusPopupProps> = ({
 }) => {
   return (
     <div className="fixed inset-0 bg-sub_base bg-opacity-50 flex items-center justify-center z-50">
-      <div className="border border-primary rounded-lg shadow-lg p-6 max-w-xs w-full text-center relative">
+     <div className="border border-primary rounded-lg shadow-lg p-6 max-w-xs w-full text-center relative bg-sub_base">
         <h2 className="text-2xl font-bold text-yellow-400 mb-4 whitespace-nowrap">
           おめでとうございます！
         </h2>
