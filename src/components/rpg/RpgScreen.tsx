@@ -85,6 +85,8 @@ type RpgScreenProps = {
   positionY: number;
   lives: number;
   modelPath: string;
+  isModalOpen: boolean;
+  setIsModalOpen: (isModalOpen: boolean) => void;
 };
 
 const RpgScreen = ({
@@ -95,6 +97,8 @@ const RpgScreen = ({
   positionY,
   lives,
   modelPath,
+  isModalOpen,
+  setIsModalOpen,
 }: RpgScreenProps) => {
   const mountRef = useRef<HTMLDivElement>(null);
 
@@ -259,6 +263,8 @@ const RpgScreen = ({
     function collectItem(x: number, y: number) {
       const item = items.find((item) => item.x === x && item.y === y);
 
+      setIsModalOpen(false);
+
       handleLifeUpdate(-1);
 
       if (item) {
@@ -418,12 +424,15 @@ const RpgScreen = ({
             if (item?.type === "coin") {
               handleCoinUpdate(Number(resultValue));
             } else if (item?.type === "life") {
-              handleLifeUpdate(Number(resultValue) - 1);
-              window.location.reload();
+              handleLifeUpdate(Number(resultValue));
+              window.location.reload(); // ライフ更新後にページをリロード
             }
 
             resultDialog.addEventListener("click", () => {
               document.body.removeChild(resultDialog);
+              // 結果ダイアログを閉じた後にモーダルを表示
+              setIsModalOpen(true);
+              handleMovement();
             });
           }, 500);
           return;
@@ -839,7 +848,7 @@ const RpgScreen = ({
       });
 
       await firstRun();
-      await handleMovement();
+      isModalOpen && (await handleMovement());
     }
 
     createScene();

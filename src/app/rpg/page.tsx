@@ -18,6 +18,7 @@ const Page = () => {
   const [positionX, setPositionX] = useState<number>(0);
   const [positionY, setPositionY] = useState<number>(0);
   const [modelPath, setModelPath] = useState<string>("/models/human.glb");
+  const [isModalOpen, setIsModalOpen] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -108,6 +109,8 @@ const Page = () => {
         positionY={positionY}
         lives={lives}
         modelPath={modelPath}
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
       />
 
       <Link href="/shop">
