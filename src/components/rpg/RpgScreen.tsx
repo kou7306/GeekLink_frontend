@@ -316,26 +316,32 @@ const RpgScreen = ({
     // ルーレット機能を追加
     function startRoulette() {
       const roulette = document.createElement("div");
-      roulette.style.position = "fixed";
-      roulette.style.top = "70%";
-      roulette.style.left = "50%";
-      roulette.style.transform = "translate(-50%, -50%)";
-      roulette.style.backgroundColor = "rgba(255, 255, 255, 0.95)";
-      roulette.style.padding = "20px 40px";
-      roulette.style.borderRadius = "10px";
-      roulette.style.border = "3px solid #8B4513";
-      roulette.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.3)";
-      roulette.style.zIndex = "1000";
-      roulette.style.width = "200px";
-      roulette.style.height = "80px";
-      roulette.style.display = "flex";
-      roulette.style.justifyContent = "center";
-      roulette.style.alignItems = "center";
-      roulette.style.fontFamily =
-        "'Hiragino Kaku Gothic Pro', 'メイリオ', sans-serif";
-      roulette.style.fontSize = "36px";
-      roulette.style.color = "#333";
-      roulette.style.cursor = "pointer";
+      const baseStyles = {
+        position: "fixed",
+        top: "70%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        backgroundColor: "rgba(255, 255, 255, 0.95)",
+        padding: "20px 40px",
+        borderRadius: "10px",
+        border: "3px solid #8B4513",
+        boxShadow: "0 0 10px rgba(0, 0, 0, 0.3)",
+        zIndex: "1000",
+        width: "200px",
+        height: "80px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        fontFamily: "'Hiragino Kaku Gothic Pro', 'メイリオ', sans-serif",
+        fontSize: "36px",
+        color: "#333",
+        cursor: "pointer",
+      };
+
+      // スタイルを適用
+      Object.entries(baseStyles).forEach(([key, value]) => {
+        roulette.style[key as any] = value;
+      });
 
       document.body.appendChild(roulette);
 
@@ -343,20 +349,26 @@ const RpgScreen = ({
       let currentIndex = 0;
       let isSpinning = true;
       let animationId: number;
+      let lastUpdateTime = Date.now();
+      const updateInterval = 100;
 
       const updateNumber = () => {
+        const currentTime = Date.now();
+
         if (!isSpinning) {
-          // 停止後、少し待ってから結果表示用のダイアログを表示
+          cancelAnimationFrame(animationId);
           setTimeout(() => {
             const resultDialog = document.createElement("div");
-            Object.assign(resultDialog.style, roulette.style);
-            resultDialog.textContent = `${numbers[currentIndex]}が出ました！`;
+            // 同じスタイルを結果ダイアログにも適用
+            Object.entries(baseStyles).forEach(([key, value]) => {
+              resultDialog.style[key as any] = value;
+            });
             resultDialog.style.fontSize = "24px";
+            resultDialog.textContent = `${numbers[currentIndex]}が出ました！`;
 
             document.body.appendChild(resultDialog);
             document.body.removeChild(roulette);
 
-            // 結果ダイアログをクリックで閉じる
             resultDialog.addEventListener("click", () => {
               document.body.removeChild(resultDialog);
             });
@@ -364,23 +376,21 @@ const RpgScreen = ({
           return;
         }
 
-        roulette.textContent = numbers[currentIndex].toString();
-        currentIndex = (currentIndex + 1) % numbers.length;
+        if (currentTime - lastUpdateTime >= updateInterval) {
+          roulette.textContent = numbers[currentIndex].toString();
+          currentIndex = (currentIndex + 1) % numbers.length;
+          lastUpdateTime = currentTime;
+        }
+
         animationId = requestAnimationFrame(updateNumber);
       };
 
-      // クリックで停止
       roulette.addEventListener("click", () => {
-        if (isSpinning) {
-          isSpinning = false;
-          cancelAnimationFrame(animationId);
-        }
+        isSpinning = false;
       });
 
-      // ルーレットスタート
       updateNumber();
     }
-    // }
 
     //最初の移動をしてカメラの位置を合わせる
     function firstRun() {
