@@ -97,7 +97,7 @@ const Chat = ({ params }: { params: any }) => {
         className="fixed bottom-0 w-4/5 p-2 bg-base z-99 flex justify-center items-center"
       >
         <input
-          className="w-3/5 bg-base-sub rounded-xl px-2 py-3 border-0 active:border-2 active:border-accent leading-tight"
+          className="text-black w-3/5 bg-base-sub rounded-xl px-2 py-3 border-0 active:border-2 leading-tight"
           type="text"
           name="socketData"
           value={socketData}

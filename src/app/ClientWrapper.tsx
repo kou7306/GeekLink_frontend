@@ -22,10 +22,7 @@ const ClientWrapper: React.FC<{ children: React.ReactNode }> = ({
       // 初回アクセスならば、最終アクセス日をローカルストレージに保存
       localStorage.setItem("lastAccessDate", today);
       setIsFirstVisit(true); // 初回アクセスフラグを設定
-    } else {
-      setIsFirstVisit(false); // それ以外は初回ではない
     }
-
     // 初回アクセスの場合
     if (isFirstVisit) {
       // ログインボーナスを取得
