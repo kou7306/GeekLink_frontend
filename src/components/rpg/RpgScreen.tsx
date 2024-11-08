@@ -14,6 +14,13 @@ type Coordinate = {
   availableDirections: Direction[];
 };
 
+type Item = {
+  x: number;
+  y: number;
+  type: string;
+  isCollected: boolean;
+};
+
 const selectCoordinates: Coordinate[] = [
   { x: 0, y: 0, availableDirections: ["straight"] },
   {
@@ -308,13 +315,13 @@ const RpgScreen = ({
         // クリックで閉じられるようにする
         dialog.addEventListener("click", () => {
           document.body.removeChild(dialog);
-          startRoulette();
+          startRoulette(item);
         });
       }
     }
 
     // ルーレット機能を追加
-    function startRoulette() {
+    function startRoulette(item: Item) {
       const roulette = document.createElement("div");
       const baseStyles = {
         position: "fixed",
@@ -345,7 +352,31 @@ const RpgScreen = ({
 
       document.body.appendChild(roulette);
 
+      // アイテムタイプに応じて使用する配列を決定
       const numbers = [1, 2, 3, 4, 5, 6];
+      const coinNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+      const lifeNumbers = [1, 2, 3];
+      const costumeList = ["ぼうし", "剣", "盾", "ローブ", "マント", "ブーツ"];
+
+      // 現在の位置のアイテムを取得
+      const currentItem = items.find(
+        (item) => item.x === positionX && item.y === positionY
+      );
+
+      // アイテムタイプに応じて表示する配列を選択
+      const displayArray = (() => {
+        switch (item?.type) {
+          case "coin":
+            return coinNumbers;
+          case "life":
+            return lifeNumbers;
+          case "costume":
+            return costumeList;
+          default:
+            return numbers;
+        }
+      })();
+
       let currentIndex = 0;
       let isSpinning = true;
       let animationId: number;
@@ -359,12 +390,27 @@ const RpgScreen = ({
           cancelAnimationFrame(animationId);
           setTimeout(() => {
             const resultDialog = document.createElement("div");
-            // 同じスタイルを結果ダイアログにも適用
             Object.entries(baseStyles).forEach(([key, value]) => {
               resultDialog.style[key as any] = value;
             });
             resultDialog.style.fontSize = "24px";
-            resultDialog.textContent = `${numbers[currentIndex]}が出ました！`;
+
+            // アイテムタイプに応じてメッセージを変更
+            const resultValue = displayArray[currentIndex - 1];
+            const resultMessage = (() => {
+              switch (item?.type) {
+                case "coin":
+                  return `${resultValue}コインGet！`;
+                case "life":
+                  return `ライフ${resultValue}回復！`;
+                case "costume":
+                  return `${resultValue}を手に入れた！`;
+                default:
+                  return `${resultValue}が出ました！`;
+              }
+            })();
+
+            resultDialog.textContent = resultMessage;
 
             document.body.appendChild(resultDialog);
             document.body.removeChild(roulette);
@@ -377,8 +423,8 @@ const RpgScreen = ({
         }
 
         if (currentTime - lastUpdateTime >= updateInterval) {
-          roulette.textContent = numbers[currentIndex].toString();
-          currentIndex = (currentIndex + 1) % numbers.length;
+          roulette.textContent = displayArray[currentIndex].toString();
+          currentIndex = (currentIndex + 1) % displayArray.length;
           lastUpdateTime = currentTime;
         }
 
