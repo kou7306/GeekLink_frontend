@@ -53,25 +53,19 @@ const items = [
   {
     x: -2,
     y: 3,
-    name: "コイン",
     type: "coin",
-    image: "coin.png",
     isCollected: false,
   },
   {
     x: 0,
     y: 6,
-    name: "王冠",
     type: "costume",
-    image: "crown.png",
     isCollected: true,
   },
   {
     x: 2,
     y: 3,
-    name: "ライフ",
     type: "life",
-    image: "life.png",
     isCollected: false,
   },
 ];
@@ -300,7 +294,7 @@ const RpgScreen = ({
           // テキストコンテナを作成
           const textContainer = document.createElement("div");
           textContainer.style.width = "100%";
-          textContainer.textContent = `${item?.name}を獲得しました！`;
+          textContainer.textContent = `${item?.type}マス！`;
 
           // 下向き三角形を追加
           const triangle = document.createElement("div");
