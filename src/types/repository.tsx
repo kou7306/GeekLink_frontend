@@ -1,5 +1,6 @@
 type Repository = {
   name: string;
+  url: string;
   stargazerCount: number;
   commitCount: number;
   languages: Language[];

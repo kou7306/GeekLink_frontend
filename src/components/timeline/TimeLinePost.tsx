@@ -4,7 +4,7 @@ import { format } from "date-fns";
 import { ja } from "date-fns/locale";
 import { Post } from "../../types/timeline";
 import { sendReaction } from "../../utils/actionPost";
-import { Link } from "@mui/material";
+import { Box, Avatar, Link } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 interface TimeLinePostProps {
@@ -140,7 +140,14 @@ const TimeLinePost: React.FC<TimeLinePostProps> = ({ post, uuid }) => {
               underline="none"
               sx={{ color: "text.secondary" }}
             >
-              <span className="font-semibold">{post.user_name}</span>
+              <Box display="flex" alignItems="center">
+                {post.user_image ? (
+                  <Avatar src={post.user_image} sx={{ width: 35, height: 35, mr: 1 }} />
+                ) : (
+                  <Avatar src="/user.svg" sx={{ width: 35, height: 35, mr: 1 }} />
+                )}
+                <span className="font-semibold">{post.user_name}</span>
+              </Box>
             </Link>
 
             <span className="text-sub_text ml-2">

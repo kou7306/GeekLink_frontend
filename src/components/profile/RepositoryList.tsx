@@ -9,7 +9,7 @@ import {
   Title,
 } from "chart.js";
 import RepositoryGraph from "./RepositoryGraph";
-import { Box, Typography, IconButton } from "@mui/material";
+import { Box, Typography, IconButton, Link } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ComponentLoading from "../core/ComponentLoading";
@@ -90,23 +90,25 @@ const RepositoryList: React.FC<RepositoryListProps> = ({ uuid }) => {
         {/* リポジトリがない場合でもスペースを確保 */}
         {repositoriesToShow.length > 0 ? (
           repositoriesToShow.map((repository, index) => (
-            <Box
-              key={index}
-              display={"flex"}
-              justifyContent={"center"}
-              sx={{
-                mb: 2,
-                height: "200px",
-                // 枠線を削除
-                borderRadius: "20px",
-                backgroundColor: (theme) => theme.palette.warning.main, // 背景色を設定
-                ":hover": {
-                  bgcolor: "info.main",
-                },
-              }}
-            >
-              <RepositoryGraph repository={repository} />
-            </Box>
+            <Link href={repository.url} key={index} target="_blank" rel="noopener noreferrer">
+              <Box
+                key={index}
+                display={"flex"}
+                justifyContent={"center"}
+                sx={{
+                  mb: 2,
+                  height: "200px",
+                  // 枠線を削除
+                  borderRadius: "20px",
+                  backgroundColor: (theme) => theme.palette.warning.main, // 背景色を設定
+                  ":hover": {
+                    bgcolor: "info.main",
+                  },
+                }}
+              >
+                <RepositoryGraph repository={repository} />
+              </Box>
+            </Link>
           ))
         ) : (
           <Typography variant="body2" color="text.primary" align="center">
