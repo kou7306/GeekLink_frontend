@@ -8,6 +8,8 @@ import Loading from "@/components/core/Loading";
 import RightSide from "@/components/top-page/RightSide";
 import LeftSide from "@/components/top-page/LeftSide";
 import { Box } from "@mui/material";
+import { Provider } from "react-redux";
+import store from "@/app/store";
 
 interface Profile {
   user_id: string;
@@ -78,7 +80,7 @@ const Home = () => {
   }, [router]);
 
   return (
-    <>
+    <Provider store={store}>
       {userExists ? (
         <Box sx={{ display: "flex", height: "100vh" }}>
           <Box
@@ -124,7 +126,7 @@ const Home = () => {
       ) : (
         <Loading />
       )}
-    </>
+    </Provider>
   );
 };
 

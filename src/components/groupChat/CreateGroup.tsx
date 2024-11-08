@@ -112,7 +112,7 @@ const CreateGroup = () => {
               variant="contained"
               color="primary"
               onClick={handleSubmit}
-              sx={{ marginTop: "16px", marginX: "8px" }}
+              sx={{ marginTop: "16px", marginX: "8px", color: "text.primary" }}
             >
               作成
             </Button>
