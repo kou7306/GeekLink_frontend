@@ -780,26 +780,8 @@ const RpgScreen = ({
       });
     }
 
-    async function createScene() {
-      console.log(lives);
-      await createAvatar();
-      await createRoadAndSquare();
-      console.log(positionX, positionY);
-      //マスの作成
-      selectCoordinates.forEach(async (coordinate) => {
-        await createSquare(coordinate.x, coordinate.y);
-      });
-
-      roads.forEach(async (road) => {
-        await createRoad(
-          road.start[0],
-          road.start[1],
-          road.end[0],
-          road.end[1]
-        );
-      });
-      await firstRun();
-
+    // 移動の処理を行う関数
+    async function handleMovement() {
       // 現在の座標に対応するCoordinateを取得
       const currentCoordinate = selectCoordinates.find(
         (coord) => coord.x === positionX && coord.y === positionY
@@ -827,6 +809,30 @@ const RpgScreen = ({
       ) {
         await run();
       }
+    }
+
+    async function createScene() {
+      console.log(lives);
+      await createAvatar();
+      await createRoadAndSquare();
+      console.log(positionX, positionY);
+
+      //マスの作成
+      selectCoordinates.forEach(async (coordinate) => {
+        await createSquare(coordinate.x, coordinate.y);
+      });
+
+      roads.forEach(async (road) => {
+        await createRoad(
+          road.start[0],
+          road.start[1],
+          road.end[0],
+          road.end[1]
+        );
+      });
+
+      await firstRun();
+      await handleMovement();
     }
 
     createScene();
