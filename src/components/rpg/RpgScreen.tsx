@@ -308,15 +308,77 @@ const RpgScreen = ({
         // クリックで閉じられるようにする
         dialog.addEventListener("click", () => {
           document.body.removeChild(dialog);
+          startRoulette();
         });
-
-        // 5秒後に自動で消える
-        setTimeout(() => {
-          if (document.body.contains(dialog)) {
-            document.body.removeChild(dialog);
-          }
-        }, 5000);
       }
+    }
+
+    // ルーレット機能を追加
+    function startRoulette() {
+      const roulette = document.createElement("div");
+      roulette.style.position = "fixed";
+      roulette.style.top = "70%";
+      roulette.style.left = "50%";
+      roulette.style.transform = "translate(-50%, -50%)";
+      roulette.style.backgroundColor = "rgba(255, 255, 255, 0.95)";
+      roulette.style.padding = "20px 40px";
+      roulette.style.borderRadius = "10px";
+      roulette.style.border = "3px solid #8B4513";
+      roulette.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.3)";
+      roulette.style.zIndex = "1000";
+      roulette.style.width = "200px";
+      roulette.style.height = "80px";
+      roulette.style.display = "flex";
+      roulette.style.justifyContent = "center";
+      roulette.style.alignItems = "center";
+      roulette.style.fontFamily =
+        "'Hiragino Kaku Gothic Pro', 'メイリオ', sans-serif";
+      roulette.style.fontSize = "36px";
+      roulette.style.color = "#333";
+      roulette.style.cursor = "pointer";
+
+      document.body.appendChild(roulette);
+
+      const numbers = [1, 2, 3, 4, 5, 6];
+      let currentIndex = 0;
+      let isSpinning = true;
+      let animationId: number;
+
+      const updateNumber = () => {
+        if (!isSpinning) {
+          // 停止後、少し待ってから結果表示用のダイアログを表示
+          setTimeout(() => {
+            const resultDialog = document.createElement("div");
+            Object.assign(resultDialog.style, roulette.style);
+            resultDialog.textContent = `${numbers[currentIndex]}が出ました！`;
+            resultDialog.style.fontSize = "24px";
+
+            document.body.appendChild(resultDialog);
+            document.body.removeChild(roulette);
+
+            // 結果ダイアログをクリックで閉じる
+            resultDialog.addEventListener("click", () => {
+              document.body.removeChild(resultDialog);
+            });
+          }, 500);
+          return;
+        }
+
+        roulette.textContent = numbers[currentIndex].toString();
+        currentIndex = (currentIndex + 1) % numbers.length;
+        animationId = requestAnimationFrame(updateNumber);
+      };
+
+      // クリックで停止
+      roulette.addEventListener("click", () => {
+        if (isSpinning) {
+          isSpinning = false;
+          cancelAnimationFrame(animationId);
+        }
+      });
+
+      // ルーレットスタート
+      updateNumber();
     }
     // }
 
