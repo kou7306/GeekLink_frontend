@@ -3,7 +3,7 @@ import TopUserRanking from "./TopUserRanking";
 import { useQuery } from "@tanstack/react-query";
 import ComponentLoading from "../core/ComponentLoading";
 
-const TopUsersRanking = () => {
+const TopUsersRanking: React.FC = () => {
   const { isLoading, isError, error, data } = useQuery({
     queryKey: ["rank"],
     queryFn: async () => {

@@ -7,7 +7,7 @@ type User = {
   name: string;
   image: string;
   rank: number;
-  activity_score: number;
+  activity_score: number | undefined | null;
 };
 
 type Props = {
@@ -15,6 +15,11 @@ type Props = {
 };
 
 const TopUserRanking = ({ user }: Props) => {
+  // user.activity_scoreがundefinedまたはnullの場合、ランキング表示しない
+  if (user.activity_score === undefined || user.activity_score === null) {
+    return null;
+  }
+
   const getRankColor = (rank: number) => {
     switch (rank) {
       case 1:
@@ -43,23 +48,21 @@ const TopUserRanking = ({ user }: Props) => {
       >
         <Box sx={{ display: "flex", alignItems: "center" }}>
           {user.rank <= 3 ? (
-              <EmojiEventsIcon
-                sx={{ color: rankColor, width: 30, height: 30 }}
-              />
-            ) : (
-              <ListItemText
-                primary={user.rank}
-                primaryTypographyProps={{
-                  sx: {
-                    fontSize: "1.5rem",
-                    minWidth: 24,
-                    textAlign: "center",
-                    ml: 0.3,
-                    mr: 0.4,
-                  },
-                }}
-              />
-            )}
+            <EmojiEventsIcon sx={{ color: rankColor, width: 30, height: 30 }} />
+          ) : (
+            <ListItemText
+              primary={user.rank}
+              primaryTypographyProps={{
+                sx: {
+                  fontSize: "1.5rem",
+                  minWidth: 24,
+                  textAlign: "center",
+                  ml: 0.3,
+                  mr: 0.4,
+                },
+              }}
+            />
+          )}
           <Box sx={{ display: "flex", alignItems: "center", ml: 1 }}>
             <Avatar src={user.image} alt={user.name} />
             <Box
@@ -78,6 +81,9 @@ const TopUserRanking = ({ user }: Props) => {
                     fontSize: "1.25rem",
                     color: "text.primary",
                     mr: 3,
+                    whiteSpace: "nowrap", // ここで改行しないように設定
+                    overflow: "hidden", // 長いテキストがはみ出さないようにする
+                    textOverflow: "ellipsis", // 長いテキストに省略記号を追加
                   },
                 }}
               />

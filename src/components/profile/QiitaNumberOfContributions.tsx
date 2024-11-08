@@ -37,7 +37,13 @@ const QiitaNumberOfContributions = ({ isMe }: Props) => {
 
   return (
     <>
-      <Box display="flex" flexDirection="row" alignItems="center" my={2}>
+      <Box
+        display="flex"
+        flexDirection="row"
+        alignItems="center"
+        my={2}
+        sx={{ marginBottom: 4 }}
+      >
         <Typography marginRight={1}>記事投稿数</Typography>
         <Typography>{countQiitaArticles}記事</Typography>
       </Box>

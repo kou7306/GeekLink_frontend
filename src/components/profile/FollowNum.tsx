@@ -43,7 +43,7 @@ const FollowNum = ({ isMe }: Props) => {
   const { followsNum, followersNum } = data;
 
   return (
-    <Box>
+    <Box sx={{ marginBottom: 4 }}>
       <Link
         href={isMe ? "/follow?tab=follows" : `/follow/${uuid}?tab=follows`}
         className="mr-4"
