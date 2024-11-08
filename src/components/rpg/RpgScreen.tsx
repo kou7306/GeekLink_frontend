@@ -266,10 +266,6 @@ const RpgScreen = ({
 
         itemMeshes.delete(`${x},${y}`);
 
-        if (item?.type === "coin") {
-          handleCoinUpdate(1);
-        }
-
         // ダイアログボックスを作成
         const dialog = document.createElement("div");
         dialog.style.position = "fixed";
@@ -396,7 +392,7 @@ const RpgScreen = ({
             resultDialog.style.fontSize = "24px";
 
             // アイテムタイプに応じてメッセージを変更
-            const resultValue = displayArray[currentIndex - 1];
+            const resultValue = displayArray[currentIndex];
             const resultMessage = (() => {
               switch (item?.type) {
                 case "coin":
@@ -414,6 +410,11 @@ const RpgScreen = ({
 
             document.body.appendChild(resultDialog);
             document.body.removeChild(roulette);
+
+            // アイテムタイプに応じた処理を実行
+            if (item?.type === "coin") {
+              handleCoinUpdate(Number(resultValue));
+            }
 
             resultDialog.addEventListener("click", () => {
               document.body.removeChild(resultDialog);
