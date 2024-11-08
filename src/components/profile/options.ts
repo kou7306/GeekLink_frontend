@@ -26,6 +26,8 @@ export interface User {
   zenn?: string;
   qiita?: string;
   atcoder?: string;
+  items?: string[];
+  currentAvatar?: string;
 }
 export type FollowUser = Pick<User, "user_id" | "name" | "image_url">;
 
