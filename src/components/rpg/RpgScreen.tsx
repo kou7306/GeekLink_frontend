@@ -257,74 +257,68 @@ const RpgScreen = ({
       if (item) {
         item.isCollected = true;
 
-        // シーンからアイテムを削除
-        const mesh = itemMeshes.get(`${x},${y}`);
-        if (mesh) {
-          group.remove(mesh);
-          mesh.geometry.dispose();
-          mesh.material instanceof THREE.Material && mesh.material.dispose();
-          itemMeshes.delete(`${x},${y}`);
+        itemMeshes.delete(`${x},${y}`);
 
-          if (item?.type === "coin") {
-            handleCoinUpdate(1);
-          }
-
-          // ダイアログボックスを作成
-          const dialog = document.createElement("div");
-          dialog.style.position = "fixed";
-          dialog.style.top = "70%";
-          dialog.style.left = "50%";
-          dialog.style.transform = "translate(-50%, -50%)";
-          dialog.style.backgroundColor = "rgba(255, 255, 255, 0.95)";
-          dialog.style.padding = "20px 40px";
-          dialog.style.borderRadius = "10px";
-          dialog.style.border = "3px solid #8B4513";
-          dialog.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.3)";
-          dialog.style.zIndex = "1000";
-          dialog.style.width = "80%";
-          dialog.style.maxWidth = "600px";
-          dialog.style.minHeight = "100px";
-          dialog.style.display = "flex";
-          dialog.style.alignItems = "center";
-          dialog.style.fontFamily =
-            "'Hiragino Kaku Gothic Pro', 'メイリオ', sans-serif";
-          dialog.style.fontSize = "18px";
-          dialog.style.color = "#333";
-
-          // テキストコンテナを作成
-          const textContainer = document.createElement("div");
-          textContainer.style.width = "100%";
-          textContainer.textContent = `${item?.type}マス！`;
-
-          // 下向き三角形を追加
-          const triangle = document.createElement("div");
-          triangle.style.position = "absolute";
-          triangle.style.bottom = "10px";
-          triangle.style.right = "10px";
-          triangle.style.width = "0";
-          triangle.style.height = "0";
-          triangle.style.borderLeft = "10px solid transparent";
-          triangle.style.borderRight = "10px solid transparent";
-          triangle.style.borderTop = "10px solid #666";
-
-          dialog.appendChild(textContainer);
-          dialog.appendChild(triangle);
-          document.body.appendChild(dialog);
-
-          // クリックで閉じられるようにする
-          dialog.addEventListener("click", () => {
-            document.body.removeChild(dialog);
-          });
-
-          // 5秒後に自動で消える
-          setTimeout(() => {
-            if (document.body.contains(dialog)) {
-              document.body.removeChild(dialog);
-            }
-          }, 5000);
+        if (item?.type === "coin") {
+          handleCoinUpdate(1);
         }
+
+        // ダイアログボックスを作成
+        const dialog = document.createElement("div");
+        dialog.style.position = "fixed";
+        dialog.style.top = "70%";
+        dialog.style.left = "50%";
+        dialog.style.transform = "translate(-50%, -50%)";
+        dialog.style.backgroundColor = "rgba(255, 255, 255, 0.95)";
+        dialog.style.padding = "20px 40px";
+        dialog.style.borderRadius = "10px";
+        dialog.style.border = "3px solid #8B4513";
+        dialog.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.3)";
+        dialog.style.zIndex = "1000";
+        dialog.style.width = "80%";
+        dialog.style.maxWidth = "600px";
+        dialog.style.minHeight = "100px";
+        dialog.style.display = "flex";
+        dialog.style.alignItems = "center";
+        dialog.style.fontFamily =
+          "'Hiragino Kaku Gothic Pro', 'メイリオ', sans-serif";
+        dialog.style.fontSize = "18px";
+        dialog.style.color = "#333";
+
+        // テキストコンテナを作成
+        const textContainer = document.createElement("div");
+        textContainer.style.width = "100%";
+        textContainer.textContent = `${item?.type}マス！`;
+
+        // 下向き三角形を追加
+        const triangle = document.createElement("div");
+        triangle.style.position = "absolute";
+        triangle.style.bottom = "10px";
+        triangle.style.right = "10px";
+        triangle.style.width = "0";
+        triangle.style.height = "0";
+        triangle.style.borderLeft = "10px solid transparent";
+        triangle.style.borderRight = "10px solid transparent";
+        triangle.style.borderTop = "10px solid #666";
+
+        dialog.appendChild(textContainer);
+        dialog.appendChild(triangle);
+        document.body.appendChild(dialog);
+
+        // クリックで閉じられるようにする
+        dialog.addEventListener("click", () => {
+          document.body.removeChild(dialog);
+        });
+
+        // 5秒後に自動で消える
+        setTimeout(() => {
+          if (document.body.contains(dialog)) {
+            document.body.removeChild(dialog);
+          }
+        }, 5000);
       }
     }
+    // }
 
     //最初の移動をしてカメラの位置を合わせる
     function firstRun() {
@@ -686,13 +680,6 @@ const RpgScreen = ({
           road.end[1]
         );
       });
-      items.forEach((item) => {
-        //アイテムがまだ取得されていない場合はアイテムを作成
-        if (!item.isCollected) {
-          createItem(item.x, item.y);
-        }
-      });
-      // await run();
       await firstRun();
 
       // 現在の座標に対応するCoordinateを取得
