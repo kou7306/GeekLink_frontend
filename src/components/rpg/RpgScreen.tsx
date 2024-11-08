@@ -238,7 +238,7 @@ const RpgScreen = ({
       }
     }
 
-    // アイテムのメッシュを追跡するためのマップを追加
+    // アイテムのメッシュを追跡るためのマップを追加
     const itemMeshes = new Map<string, THREE.Mesh>();
 
     //モックのアイテムを作る関数
@@ -275,25 +275,59 @@ const RpgScreen = ({
             handleCoinUpdate(1);
           }
 
-          // スナックバーを作
-          const snackbar = document.createElement("div");
-          snackbar.style.position = "fixed";
-          snackbar.style.bottom = "20px";
-          snackbar.style.left = "50%";
-          snackbar.style.transform = "translateX(-50%)";
-          snackbar.style.backgroundColor = "#333";
-          snackbar.style.color = "white";
-          snackbar.style.padding = "16px";
-          snackbar.style.borderRadius = "4px";
-          snackbar.style.zIndex = "1000";
-          snackbar.textContent = `${item?.name}を獲得しました！`;
+          // ダイアログボックスを作成
+          const dialog = document.createElement("div");
+          dialog.style.position = "fixed";
+          dialog.style.top = "70%";
+          dialog.style.left = "50%";
+          dialog.style.transform = "translate(-50%, -50%)";
+          dialog.style.backgroundColor = "rgba(255, 255, 255, 0.95)";
+          dialog.style.padding = "20px 40px";
+          dialog.style.borderRadius = "10px";
+          dialog.style.border = "3px solid #8B4513";
+          dialog.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.3)";
+          dialog.style.zIndex = "1000";
+          dialog.style.width = "80%";
+          dialog.style.maxWidth = "600px";
+          dialog.style.minHeight = "100px";
+          dialog.style.display = "flex";
+          dialog.style.alignItems = "center";
+          dialog.style.fontFamily =
+            "'Hiragino Kaku Gothic Pro', 'メイリオ', sans-serif";
+          dialog.style.fontSize = "18px";
+          dialog.style.color = "#333";
 
-          document.body.appendChild(snackbar);
+          // テキストコンテナを作成
+          const textContainer = document.createElement("div");
+          textContainer.style.width = "100%";
+          textContainer.textContent = `${item?.name}を獲得しました！`;
 
-          // 3秒後にスナックバーを削除
+          // 下向き三角形を追加
+          const triangle = document.createElement("div");
+          triangle.style.position = "absolute";
+          triangle.style.bottom = "10px";
+          triangle.style.right = "10px";
+          triangle.style.width = "0";
+          triangle.style.height = "0";
+          triangle.style.borderLeft = "10px solid transparent";
+          triangle.style.borderRight = "10px solid transparent";
+          triangle.style.borderTop = "10px solid #666";
+
+          dialog.appendChild(textContainer);
+          dialog.appendChild(triangle);
+          document.body.appendChild(dialog);
+
+          // クリックで閉じられるようにする
+          dialog.addEventListener("click", () => {
+            document.body.removeChild(dialog);
+          });
+
+          // 5秒後に自動で消える
           setTimeout(() => {
-            document.body.removeChild(snackbar);
-          }, 3000);
+            if (document.body.contains(dialog)) {
+              document.body.removeChild(dialog);
+            }
+          }, 5000);
         }
       }
     }
@@ -698,7 +732,7 @@ const RpgScreen = ({
 
     createScene();
 
-    // リーン��ップ関数の強化
+    // リーンップ関数の強化
     return () => {
       // すべてのジオメトリとマテリアルを適切に破棄
       scene.traverse((object) => {
