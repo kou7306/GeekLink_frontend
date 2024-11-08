@@ -1,12 +1,43 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SignOutButton from "@/components/auth/SignOutButton";
 import { usePathname } from "next/navigation";
 import { FaUser } from "react-icons/fa";
+import { getUuidFromCookie } from "@/actions/users";
+import { User } from "@/types/user";
+import UpdateStatusButton from "@/components/onlineStatus/updateStatusButton";
 
 const Header = () => {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false); // ポップアップの状態を管理
+  const [user, setUser] = useState<User | null>(null);
+  const [uuid, setUuid] = useState<string | null>(null);
+
+  // ユーザーのプロフィールを取得
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const userId = await getUuidFromCookie();
+      if (userId) {
+        try {
+          setUuid(userId);
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/profile/get-profile/${userId}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          const userData = await response.json();
+          setUser(userData);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      }
+    };
+    fetchProfile();
+  }, []);
 
   const isActive = (path: string) => pathname === path;
 
@@ -64,20 +95,22 @@ const Header = () => {
             おすすめユーザー
           </a>
         </nav>
-        <div className="relative">
+        <div className="relative flex items-center space-x-4">
+          {" "}
+          {/* アイコンとボタンを横並びにする */}
           <button
             onClick={handleMenuToggle}
             className="flex items-center justify-center bg-primary text-text p-2 rounded-full"
           >
             <FaUser className="text-xl" />
           </button>
-
+          <UpdateStatusButton />
           {isMenuOpen && (
             <div className="absolute right-0 mt-2 w-48 bg-sub_base shadow-lg rounded-lg py-4 z-50">
               <div className="flex flex-col items-center text-center">
                 <a
                   href="/my-page"
-                  className="block px-8 py-3 my-3 text-sm bg-primary text-black  rounded"
+                  className="block px-8 py-3 my-3 text-sm bg-primary text-black rounded"
                 >
                   マイページ
                 </a>
