@@ -8,38 +8,16 @@ import { getUserData } from "@/utils/getUserData";
 import { useRouter } from "next/navigation";
 import { updateLife } from "@/utils/updateLife";
 import { Link } from "@mui/material";
-
-const items = [
-  {
-    x: -2,
-    y: 3,
-    name: "コイン",
-    type: "coin",
-    image: "coin.png",
-    isCollected: false,
-  },
-  {
-    x: 0,
-    y: 6,
-    name: "王冠",
-    type: "costume",
-    image: "crown.png",
-    isCollected: true,
-  },
-  {
-    x: 0,
-    y: 9,
-    name: "ライフ",
-    type: "life",
-    image: "life.png",
-    isCollected: false,
-  },
-];
+import { updatePosition } from "@/utils/updatePosition";
+import { updateCoin } from "@/utils/updateCoin";
 
 const Page = () => {
-  const [lives, setLives] = useState(0);
-  const [coins, setCoins] = useState(0);
+  const [lives, setLives] = useState<number>(0);
+  const [coins, setCoins] = useState<number>(0);
   const [error, setError] = useState("");
+  const [positionX, setPositionX] = useState<number>(0);
+  const [positionY, setPositionY] = useState<number>(0);
+  const [modelPath, setModelPath] = useState<string>("/models/human.glb");
   const router = useRouter();
 
   useEffect(() => {
@@ -47,8 +25,10 @@ const Page = () => {
       try {
         const data = await getUserData();
         console.log("Fetched user data:", data);
-        setLives(data.life);
+        setLives(Number(data.life));
         setCoins(data.coin);
+        setPositionX(Number(data.position_x));
+        setPositionY(Number(data.position_y));
       } catch (error) {
         console.error("Failed to fetch user data:", error);
         setError("Failed to fetch user data.");
@@ -64,13 +44,26 @@ const Page = () => {
 
     setLives(newLife);
     setError("");
+    console.log("更新");
     try {
       await updateLife(newLife.toString());
+      console.log(lives);
     } catch (error) {
       console.error("Failed to update life:", error);
       setError("Failed to update life.");
       setLives(lives); // Revert UI if API call fails
     }
+  };
+
+  const handlePositionUpdate = async (x: number, y: number) => {
+    const res = await updatePosition(x.toString(), y.toString());
+    setPositionX(Number(res.positionX));
+    setPositionY(Number(res.positionY));
+  };
+
+  const handleCoinUpdate = async (coin: number) => {
+    const res = await updateCoin(coin.toString());
+    setCoins(Number(res.coin));
   };
 
   return (
@@ -80,11 +73,17 @@ const Page = () => {
       </div>
       <div className="absolute top-4 right-4">
         <CoinDisplay coins={coins} />
+        <Button
+          onClick={() => handlePositionUpdate(-positionX, -positionY + 3)}
+        >
+          座標リセット( デバッグ用 )
+        </Button>
+        <Button onClick={() => handleCoinUpdate(1)}>
+          コイン+1( デバッグ用 )
+        </Button>
       </div>
 
-      <RpgScreen />
-
-      <div className="flex gap-4 mt-6">
+      {/* <div className="absolute bottom-4 left-4">
         <Button
           variant="outlined"
           color="primary"
@@ -99,7 +98,17 @@ const Page = () => {
         >
           Decrease Life
         </Button>
-      </div>
+      </div> */}
+
+      <RpgScreen
+        handleLifeUpdate={handleLifeUpdate}
+        handlePositionUpdate={handlePositionUpdate}
+        handleCoinUpdate={handleCoinUpdate}
+        positionX={positionX}
+        positionY={positionY}
+        lives={lives}
+        modelPath={modelPath}
+      />
 
       <Link href="/shop">
         <Button
