@@ -391,8 +391,11 @@ const RpgScreen = ({
             });
             resultDialog.style.fontSize = "24px";
 
-            // アイテムタイプに応じてメッセージを変更
-            const resultValue = displayArray[currentIndex];
+            // アイテムタイプに応じてメ��セージを変更
+            const resultValue =
+              displayArray[
+                (currentIndex - 1 + displayArray.length) % displayArray.length
+              ];
             const resultMessage = (() => {
               switch (item?.type) {
                 case "coin":
