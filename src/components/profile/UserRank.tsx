@@ -131,7 +131,7 @@ const UserRank = ({ isMe, currentAvatar }: Props) => {
 
       {/* Avatar display */}
       <Box sx={{ marginTop: 2 }}>
-        {currentAvatar && <AvatarViewer modelPath={currentAvatar} size={{ width: 400, height: 300 }} />}
+        <AvatarViewer modelPath="/models/mii-sword.glb" size={{ width: 400, height: 300 }} />
       </Box>
 
       {/* Change Avatar button */}
