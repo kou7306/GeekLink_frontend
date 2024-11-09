@@ -19,9 +19,10 @@ const rankImages: { [key: string]: string } = {
 
 type Props = {
   isMe: boolean;
+  currentAvatar?: string;
 };
 
-const UserRank = ({ isMe }: Props) => {
+const UserRank = ({ isMe, currentAvatar }: Props) => {
   const { uuid } = useParams();
   const router = useRouter();
 
@@ -29,18 +30,15 @@ const UserRank = ({ isMe }: Props) => {
     queryKey: ["rank"],
     queryFn: async () => {
       const userUid = isMe ? (await getUuidFromCookie()) ?? uuid : uuid;
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/rank/user`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            uuid: userUid,
-          }),
-        }
-      );
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/rank/user`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          uuid: userUid,
+        }),
+      });
       if (!response.ok) {
         throw new Error("Failed to fetch UserRank");
       }
@@ -91,6 +89,7 @@ const UserRank = ({ isMe }: Props) => {
     router.push("/change-avatar");
   };
 
+  console.log("currentAvatar", currentAvatar);
   return (
     <Box
       sx={{
@@ -132,20 +131,12 @@ const UserRank = ({ isMe }: Props) => {
 
       {/* Avatar display */}
       <Box sx={{ marginTop: 2 }}>
-        <AvatarViewer
-          modelPath="/models/human.glb"
-          size={{ width: 400, height: 200 }}
-        />
+        {currentAvatar && <AvatarViewer modelPath={currentAvatar} size={{ width: 400, height: 300 }} />}
       </Box>
 
       {/* Change Avatar button */}
       <Box sx={{ marginTop: 2 }}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleChangeAvatar}
-          sx={{ color: "white" }}
-        >
+        <Button variant="contained" color="primary" onClick={handleChangeAvatar} sx={{ color: "white" }}>
           着替える
         </Button>
       </Box>

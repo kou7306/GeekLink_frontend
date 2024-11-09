@@ -1,110 +1,80 @@
 "use client";
-import React, { useState } from "react";
+
+import { getUuidFromCookie } from "@/actions/users";
+import ChangeAvatarPage from "@/components/rpg/ChangeAvatarPage";
 import { useRouter } from "next/navigation";
-import {
-  Box,
-  Typography,
-  Grid,
-  Card,
-  CardActionArea,
-  CardMedia,
-  Button,
-} from "@mui/material";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import AvatarViewer from "@/components/rpg/AvatarViewer";
+import { useEffect, useState } from "react";
 
-// Mock data: List of user equipment
-const mockEquipments = [
-  {
-    id: 1,
-    name: "Avatar 1",
-    modelPath: "/models/avatar1.glb",
-    thumbnail: "/img/avatar1.png",
-  },
-  {
-    id: 2,
-    name: "Avatar 2",
-    modelPath: "/models/avatar2.glb",
-    thumbnail: "/img/avatar2.png",
-  },
-  {
-    id: 3,
-    name: "Avatar 3",
-    modelPath: "/models/avatar3.glb",
-    thumbnail: "/img/avatar3.png",
-  },
-  // Add other equipment as needed
-];
+interface AvatarData {
+  current_avatar: string;
+}
 
-const ChangeAvatar = () => {
-  const router = useRouter();
-  const [selectedAvatar, setSelectedAvatar] = useState("/models/human.glb");
+interface ItemsData {
+  items: string[];
+}
 
-  const handleSelectAvatar = (modelPath: string) => {
-    setSelectedAvatar(modelPath);
-  };
-
-  const handleBack = () => {
-    router.back(); // Navigate back to the previous page
-  };
-
-  return (
-    <Box sx={{ padding: 3, textAlign: "center", position: "relative" }}>
-      {/* Back button in the top-left corner with transparent background */}
-      <Button
-        onClick={handleBack}
-        variant="contained"
-        startIcon={<ArrowBackIcon />}
-        sx={{
-          position: "absolute",
-          top: 16,
-          left: 16,
-          backgroundColor: "transparent",
-          color: "primary.main",
-          "&:hover": {
-            backgroundColor: "rgba(0, 0, 0, 0.04)", // light hover effect
-          },
-        }}
-      >
-        戻る
-      </Button>
-
-      <Typography variant="h4" gutterBottom>
-        アバターを選択
-      </Typography>
-
-      {/* Display selected avatar */}
-      <Box sx={{ marginBottom: 4 }}>
-        <AvatarViewer
-          modelPath={selectedAvatar}
-          size={{ width: "100%", height: 400 }}
-        />
-      </Box>
-
-      {/* List of avatar options */}
-      <Grid container spacing={2} justifyContent="center">
-        {mockEquipments.map((equipment) => (
-          <Grid item xs={6} sm={4} md={3} key={equipment.id}>
-            <Card>
-              <CardActionArea
-                onClick={() => handleSelectAvatar(equipment.modelPath)}
-              >
-                <CardMedia
-                  component="img"
-                  height="140"
-                  image={equipment.thumbnail}
-                  alt={equipment.name}
-                />
-                <Typography variant="body2" align="center">
-                  {equipment.name}
-                </Typography>
-              </CardActionArea>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-    </Box>
-  );
+const getCurrentAvatar = async (userId: string): Promise<AvatarData> => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/avatar/${userId}`, {
+    cache: "no-store",
+  });
+  return response.json();
 };
 
-export default ChangeAvatar;
+const getUserItems = async (userId: string): Promise<ItemsData> => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/rpg/item/${userId}`, {
+    cache: "no-store",
+  });
+  return response.json();
+};
+
+export default function Page() {
+  const router = useRouter();
+  const [userId, setUserId] = useState<string>();
+  const [currentAvatarData, setCurrentAvatarData] = useState<AvatarData>({ current_avatar: "" });
+  const [userItemsData, setUserItemsData] = useState<ItemsData>({ items: [] });
+
+  useEffect(() => {
+    const fetchUuid = async () => {
+      const uuid = await getUuidFromCookie();
+      if (!uuid) {
+        router.push("/login");
+        return;
+      }
+      setUserId(uuid);
+    };
+
+    fetchUuid();
+  }, [router]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!userId) return;
+
+      try {
+        const [avatarData, itemsData] = await Promise.all([
+          getCurrentAvatar(userId),
+          getUserItems(userId),
+        ]);
+
+        setCurrentAvatarData(avatarData);
+        setUserItemsData(itemsData);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchData();
+  }, [userId]);
+
+  if (!userId) {
+    return null;
+  }
+
+  return (
+    <ChangeAvatarPage
+      userId={userId}
+      currentAvatarData={currentAvatarData}
+      userItemsData={userItemsData}
+    />
+  );
+}

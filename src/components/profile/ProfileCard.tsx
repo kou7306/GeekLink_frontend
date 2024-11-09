@@ -25,6 +25,8 @@ interface ProfileCardProps {
 }
 
 const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
+  console.log("currentAvatar", user.currentAvatar);
+  const [isFollowd, setIsFollowed] = useState<boolean>(false);
   const [uuid, setUuid] = useState<string>();
 
   // Get UUID from cookie on component mount
@@ -126,7 +128,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
           {/* 使用言語の割合 */}
           <PercentageOfLanguages isMe={isMe} />
           {/* ユーザーランク */}
-          <UserRank isMe={isMe} />
+          <UserRank isMe={isMe} currentAvatar={user.currentAvatar} />
         </div>
         <UserMainInformation user={user} onEdit={onEdit} isMe={isMe} />
       </div>
