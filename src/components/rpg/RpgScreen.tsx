@@ -290,7 +290,7 @@ const RpgScreen = ({
     //2点の座標ら道を作る関数()
     function createRoad(x1: number, y1: number, x2: number, y2: number) {
       if (x1 === x2) {
-        const planeGeometry = new THREE.PlaneGeometry(0.15, 3); //縦と横の幅を指定
+        const planeGeometry = new THREE.PlaneGeometry(0.25, 3); //縦と横の幅を指定
         const planeMaterial = new THREE.MeshBasicMaterial({
           color: 0x00ffff,
           side: THREE.DoubleSide, //両面を描画する
@@ -301,7 +301,7 @@ const RpgScreen = ({
         plane.position.set(x1, y1 + 0.5, 0); // 道の位置を中心に
         group.add(plane);
       } else {
-        const planeGeometry = new THREE.PlaneGeometry(0.15, 2); //縦と横の幅を指定
+        const planeGeometry = new THREE.PlaneGeometry(0.25, 2); //縦と横の幅を指定
         const planeMaterial = new THREE.MeshBasicMaterial({
           color: 0x00ffff,
           side: THREE.DoubleSide, //両面を描画する
