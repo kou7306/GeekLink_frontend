@@ -7,6 +7,7 @@ import { getUser } from "@/lib/auth";
 import Providers from "./Providers";
 import ClientWrapper from "./ClientWrapper";
 import { store } from "@/app/store";
+import { getUuidFromCookie } from "@/actions/users";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,10 +20,11 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const uuid = await getUuidFromCookie();
   return (
     <html lang="ja">
       <body className={`${inter.className} bg-base text-text`}>
-        {<Header />}
+        {uuid && <Header />}
         <Providers>
           <ClientWrapper>
             <main className="pt-20 text-font">{children}</main>
