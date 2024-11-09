@@ -28,7 +28,7 @@ const ShopPageClient: React.FC<ShopPageClientProps> = ({ userId, userCoin, userI
     setMessage(null);
 
     try {
-      const response = await fetch(`http://localhost:8080/rpg/item`, {
+      const response = await fetch(`http://backend:8080/rpg/item`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
