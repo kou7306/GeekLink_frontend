@@ -714,7 +714,6 @@ const RpgScreen = ({
             document.body.removeChild(resultDialog);
             setIsModalOpen(true);
             handleMovement();
-            window.location.reload();
           });
           return;
         }
@@ -1151,7 +1150,7 @@ const RpgScreen = ({
       mountRef.current?.removeChild(renderer.domElement);
       renderer.dispose();
     };
-  }, [positionX, positionY]);
+  }, [positionX, positionY, isModalOpen]);
 
   return (
     <>
