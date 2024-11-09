@@ -25,7 +25,7 @@ const OnlineUserIcons = () => {
   const socketRef = useRef<Socket | null>(null);
   const BALL_MIN_SIZE = 70;
   const BALL_MAX_SIZE = 120;
-  const FORCE_TO_CENTER = 0.6;
+  const FORCE_TO_CENTER = 0.3;
   const REPULSION = 0.2;
   const FRICTION = 0.9;
 
