@@ -60,7 +60,7 @@ function LoginForm({ scene }: LoginFormProps) {
                   borderRadius: 8,
                   "&:hover": {
                     backgroundColor: "primary.main",
-                    color: "primary.contrastText",
+                    color: "text.primary",
                   },
                 }}
               >
