@@ -415,10 +415,36 @@ const RpgScreen = ({
         cursor: "pointer",
       };
 
-      // スタイルを適用
+      // 基本スタイルを適用
       Object.entries(baseStyles).forEach(([key, value]) => {
         roulette.style[key as any] = value;
       });
+
+      // アイテムタイプに応じてスタイルをカスタマイズ
+      switch (item?.type) {
+        case "coin":
+          roulette.style.backgroundColor = "rgba(255, 223, 0, 0.95)";
+          roulette.style.border = "3px solid #DAA520";
+          roulette.style.color = "#8B4513";
+          roulette.style.boxShadow = "0 0 15px rgba(255, 215, 0, 0.5)";
+          break;
+        case "life":
+          roulette.style.backgroundColor = "rgba(144, 238, 144, 0.95)";
+          roulette.style.border = "3px solid #228B22";
+          roulette.style.color = "#006400";
+          roulette.style.boxShadow = "0 0 15px rgba(0, 255, 0, 0.3)";
+          break;
+        case "costume":
+          roulette.style.backgroundColor = "rgba(135, 206, 235, 0.95)";
+          roulette.style.border = "3px solid #4169E1";
+          roulette.style.color = "#000080";
+          roulette.style.boxShadow = "0 0 15px rgba(0, 0, 255, 0.3)";
+          break;
+        default:
+          roulette.style.backgroundColor = "rgba(255, 255, 255, 0.95)";
+          roulette.style.border = "3px solid #8B4513";
+          roulette.style.color = "#333";
+      }
 
       document.body.appendChild(roulette);
 
@@ -465,7 +491,7 @@ const RpgScreen = ({
             resultDialog.style[key as any] = value;
           });
 
-          // アイテムタイプに応じてスタイルをカ���タマイズ
+          // アイテムタイプに応じてスタイルをカタマイズ
           switch (item?.type) {
             case "coin":
               resultDialog.style.backgroundColor = "rgba(255, 223, 0, 0.95)"; // 金色
@@ -871,7 +897,7 @@ const RpgScreen = ({
             : (rightButton.style.backgroundColor = "#808080");
         };
         rightButton.onclick = () => {
-          if (isModalClosed) return; // 既に閉じている場合は何もしない
+          if (isModalClosed) return; // 既に���じている場合は何もしない
           isModalClosed = true;
 
           document.body.removeChild(modal);
