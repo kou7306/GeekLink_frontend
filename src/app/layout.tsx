@@ -3,10 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import Header from "./Header";
-import { getUser } from "@/lib/auth";
 import Providers from "./Providers";
 import ClientWrapper from "./ClientWrapper";
-import { store } from "@/app/store";
 import { getUuidFromCookie } from "@/actions/users";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -21,6 +19,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const uuid = await getUuidFromCookie();
+
   return (
     <html lang="ja">
       <body className={`${inter.className} bg-base text-text`}>

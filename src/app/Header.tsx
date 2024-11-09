@@ -106,7 +106,7 @@ const Header = () => {
           </button>
           <UpdateStatusButton />
           {isMenuOpen && (
-            <div className="absolute right-0 mt-2 w-48 bg-sub_base shadow-lg rounded-lg py-4 z-50">
+            <div className="absolute right-0 top-14 mt-2 w-48 bg-sub_base shadow-lg rounded-lg py-4 z-50">
               <div className="flex flex-col items-center text-center">
                 <a
                   href="/my-page"
