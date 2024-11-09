@@ -6,6 +6,8 @@ import { FaUser } from "react-icons/fa";
 import { getUuidFromCookie } from "@/actions/users";
 import { User } from "@/types/user";
 import UpdateStatusButton from "@/components/onlineStatus/updateStatusButton";
+import Link from "next/link";
+import Image from "next/image";
 
 const Header = () => {
   const pathname = usePathname();
@@ -56,17 +58,13 @@ const Header = () => {
         <nav className="flex space-x-6">
           <a
             href="/conversation"
-            className={`text-text hover:text-primary ${
-              isActive("/conversation") ? "text-primary" : ""
-            }`}
+            className={`text-text hover:text-primary ${isActive("/conversation") ? "text-primary" : ""}`}
           >
             メッセージ
           </a>
           <a
             href="/group-list"
-            className={`text-text hover:text-primary ${
-              isActive("/group-list") ? "text-primary" : ""
-            }`}
+            className={`text-text hover:text-primary ${isActive("/group-list") ? "text-primary" : ""}`}
           >
             グループ
           </a>
@@ -80,9 +78,7 @@ const Header = () => {
           </a>
           <a
             href="/ranking"
-            className={`text-text hover:text-primary ${
-              isActive("/ranking") ? "text-primary" : ""
-            }`}
+            className={`text-text hover:text-primary ${isActive("/ranking") ? "text-primary" : ""}`}
           >
             ランキング
           </a>
@@ -104,6 +100,14 @@ const Header = () => {
           >
             <FaUser className="text-xl" />
           </button>
+          <Link
+            href="/rpg"
+            className={`flex items-center justify-center p-2 rounded-sm hover:opacity-80 transition-opacity ${
+              isActive("/rpg") ? "opacity-80" : ""
+            }`}
+          >
+            <Image src="/game-icon.svg" alt="Game" width={32} height={32} className="rounded-sm" />
+          </Link>
           <UpdateStatusButton />
           {isMenuOpen && (
             <div className="absolute right-0 mt-2 w-48 bg-sub_base shadow-lg rounded-lg py-4 z-50">
