@@ -1,5 +1,6 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { store } from "@/app/store";
 
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({
@@ -10,8 +11,25 @@ export async function middleware(request: NextRequest) {
 
   const path = new URL(request.url).pathname;
 
-  const user = await getUser(request, response);
+  // Redux ストアからログイン状態を取得
+  const state = store.getState();
+  const userLoggedIn = state.auth.isLoggedIn;
 
+  let user;
+
+  // Reduxにログイン状態をディスパッチ
+  if (!userLoggedIn) {
+    // ユーザー情報がまだ取得されていない場合のみgetUserを呼び出す
+    user = await getUser(request, response);
+    console.log("userNotRedux");
+    // 取得したユーザー情報をReduxストアにディスパッチ
+    store.dispatch({ type: "auth/login", payload: user });
+  } else {
+    user = state.auth.user;
+    console.log("userRedux");
+  }
+
+  // ユーザーがログインしていない場合、特定のパスでリダイレクト
   if (
     (path === "/" ||
       path === "/protected-route" ||
@@ -20,17 +38,13 @@ export async function middleware(request: NextRequest) {
       path === "/my-page" ||
       path === "/random-match" ||
       path === "/profile-initialization") &&
-    !user
+    !user // ユーザーが取得できない、またはログインしていない場合
   ) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
   return response;
 }
-
-export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"],
-};
 
 async function getUser(request: NextRequest, response: NextResponse) {
   const supabase = createServerClient(
@@ -42,16 +56,6 @@ async function getUser(request: NextRequest, response: NextResponse) {
           return request.cookies.get(name)?.value;
         },
         set(name: string, value: string, options: CookieOptions) {
-          request.cookies.set({
-            name,
-            value,
-            ...options,
-          });
-          response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
-          });
           response.cookies.set({
             name,
             value,
@@ -59,16 +63,6 @@ async function getUser(request: NextRequest, response: NextResponse) {
           });
         },
         remove(name: string, options: CookieOptions) {
-          request.cookies.set({
-            name,
-            value: "",
-            ...options,
-          });
-          response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
-          });
           response.cookies.set({
             name,
             value: "",
@@ -79,5 +73,5 @@ async function getUser(request: NextRequest, response: NextResponse) {
     }
   );
 
-  return (await supabase.auth.getUser()).data.user;
+  return (await supabase.auth.getUser()).data.user; // ユーザー情報を取得
 }

@@ -5,6 +5,8 @@ import { Toaster } from "react-hot-toast";
 import Header from "./Header";
 import { getUser } from "@/lib/auth";
 import Providers from "./Providers";
+import ClientWrapper from "./ClientWrapper";
+import { store } from "@/app/store";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,13 +19,14 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const user = await getUser();
   return (
     <html lang="ja">
       <body className={`${inter.className} bg-base text-text`}>
-        {user != null && <Header />}
+        {<Header />}
         <Providers>
-          <main className="pt-20 text-font">{children}</main>
+          <ClientWrapper>
+            <main className="pt-20 text-font">{children}</main>
+          </ClientWrapper>
         </Providers>
         <Toaster />
       </body>

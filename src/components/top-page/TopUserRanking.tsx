@@ -7,7 +7,7 @@ type User = {
   name: string;
   image: string;
   rank: number;
-  contribution_count: number;
+  activity_score: number;
 };
 
 type Props = {
@@ -36,32 +36,54 @@ const TopUserRanking = ({ user }: Props) => {
         sx={{
           paddingTop: 0.5,
           paddingBottom: 0.5,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
         }}
       >
-        <EmojiEventsIcon sx={{ color: rankColor, width: 30, height: 30 }} />
-        <Box sx={{ display: "flex", alignItems: "center", ml: 1 }}>
-          <Avatar src={user.image} alt={user.name} />
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              ml: 1,
-            }}
-          >
-            <ListItemText
-              primary={user.name}
-              primaryTypographyProps={{
-                sx: {
-                  fontWeight: 600,
-                  fontSize: "1.25rem",
-                  color: "text.primary",
-                  mr: 3,
-                },
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          {user.rank <= 3 ? (
+              <EmojiEventsIcon
+                sx={{ color: rankColor, width: 30, height: 30 }}
+              />
+            ) : (
+              <ListItemText
+                primary={user.rank}
+                primaryTypographyProps={{
+                  sx: {
+                    fontSize: "1.5rem",
+                    minWidth: 24,
+                    textAlign: "center",
+                    ml: 0.3,
+                    mr: 0.4,
+                  },
+                }}
+              />
+            )}
+          <Box sx={{ display: "flex", alignItems: "center", ml: 1 }}>
+            <Avatar src={user.image} alt={user.name} />
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                ml: 1,
               }}
-            />
+            >
+              <ListItemText
+                primary={user.name}
+                primaryTypographyProps={{
+                  sx: {
+                    fontWeight: 600,
+                    fontSize: "1.25rem",
+                    color: "text.primary",
+                    mr: 3,
+                  },
+                }}
+              />
+            </Box>
             <ListItemText
-              primary={`${user.contribution_count} コントリビューション`}
+              primary={`${user.activity_score} ポイント`}
               primaryTypographyProps={{
                 sx: {
                   fontWeight: 400,

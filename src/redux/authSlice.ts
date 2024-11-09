@@ -1,42 +1,33 @@
-// // src/features/auth/authSlice.js
-// import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+// authSlice.ts
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-// // ログイン状態を確認する非同期処理を定義
-// export const checkLoginStatus = createAsyncThunk(
-//   "auth/checkLoginStatus",
-//   async () => {
-//     const response = await fetch("/api/checkLogin"); // APIに置き換える
-//     const data = await response.json();
-//     return data.isLoggedIn;
-//   }
-// );
+interface AuthState {
+  isLoggedIn: boolean;
+  user: any | null; // ユーザーの型を適切に置き換えてください
+}
 
-// const authSlice = createSlice({
-//   name: "auth",
-//   initialState: {
-//     isLoggedIn: false,
-//     status: "idle", // 状態管理用：idle, loading, succeeded, failed
-//   },
-//   reducers: {
-//     logout: (state) => {
-//       state.isLoggedIn = false;
-//     },
-//   },
-//   extraReducers: (builder) => {
-//     builder
-//       .addCase(checkLoginStatus.pending, (state) => {
-//         state.status = "loading";
-//       })
-//       .addCase(checkLoginStatus.fulfilled, (state, action) => {
-//         state.isLoggedIn = action.payload;
-//         state.status = "succeeded";
-//       })
-//       .addCase(checkLoginStatus.rejected, (state) => {
-//         state.status = "failed";
-//       });
-//   },
-// });
+const initialState: AuthState = {
+  isLoggedIn: false,
+  user: null,
+};
 
-// export const { logout } = authSlice.actions;
+const authSlice = createSlice({
+  name: "auth",
+  initialState,
+  reducers: {
+    login: (state, action: PayloadAction<any>) => {
+      state.isLoggedIn = true;
+      state.user = action.payload;
+    },
+    logout: (state) => {
+      state.isLoggedIn = false;
+      state.user = null;
+    },
+    setUser: (state, action: PayloadAction<any>) => {
+      state.user = action.payload;
+    },
+  },
+});
 
-// export default authSlice.reducer;
+export const { login, logout, setUser } = authSlice.actions;
+export const authReducer = authSlice.reducer;
