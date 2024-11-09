@@ -153,6 +153,31 @@ const TeamRecruitmentPage = ({ event, currentUserId }: Props) => {
     }
   };
 
+  const handleDeleteEvent = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/events/${event.id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("イベントの締め切りに失敗しました");
+      }
+
+      toast.success("イベントを締め切りました");
+      router.push('/team-recruitments');
+    } catch (error) {
+      toast.error("エラーが発生しました");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <>
       <Paper
@@ -345,6 +370,7 @@ const TeamRecruitmentPage = ({ event, currentUserId }: Props) => {
                     color: "black",
                     backgroundColor: "white",
                   }}
+                  onClick={() => handleDeleteEvent() }
                 >
                   締め切る
                 </Button>
