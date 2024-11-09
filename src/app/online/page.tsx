@@ -29,7 +29,7 @@ const OnlineUserIcons = () => {
   const REPULSION = 0.2;
   const FRICTION = 0.9;
 
-  const COLLISION_SCALE = 2.0;
+  const COLLISION_SCALE = 3.0;
 
   useEffect(() => {
     // Fetch initial users
