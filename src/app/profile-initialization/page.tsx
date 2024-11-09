@@ -13,6 +13,7 @@ import OccupationSelect from "@/components/profile/OccupationSelect";
 import TechSelection from "@/components/profile/TechSelect";
 import { getUuidFromCookie } from "@/actions/users";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export default function Profile() {
   const [isTechModalOpen, setIsTechModalOpen] = useState(false);
@@ -46,6 +47,11 @@ export default function Profile() {
     qiita: "",
     atcoder: "",
   });
+  const router =useRouter();
+
+  const handleButtonClick = () => {
+    router.push("/");
+  };
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -180,6 +186,7 @@ export default function Profile() {
           <button
             type="submit"
             className="w-full bg-secondary hover:bg-primary text-white font-bold py-2 px-4 rounded"
+            onClick={handleButtonClick}
           >
             登録
           </button>
