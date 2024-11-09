@@ -21,23 +21,14 @@ export async function middleware(request: NextRequest) {
   if (!userLoggedIn) {
     // ユーザー情報がまだ取得されていない場合のみgetUserを呼び出す
     user = await getUser(request, response);
-    console.log("userNotRedux");
     // 取得したユーザー情報をReduxストアにディスパッチ
     store.dispatch({ type: "auth/login", payload: user });
   } else {
     user = state.auth.user;
-    console.log("userRedux");
   }
 
   // ユーザーがログインしていない場合、特定のパスでリダイレクト
   if (
-    (path === "/" ||
-      path === "/protected-route" ||
-      path === "/conversation" ||
-      path === "/fetch" ||
-      path === "/my-page" ||
-      path === "/random-match" ||
-      path === "/profile-initialization") &&
     !user // ユーザーが取得できない、またはログインしていない場合
   ) {
     return NextResponse.redirect(new URL("/login", request.url));
