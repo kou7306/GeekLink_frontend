@@ -129,6 +129,7 @@ const ShopPageClient: React.FC<ShopPageClientProps> = ({ userId, userCoin, userI
                         disabled={loading || !canAfford}
                         sx={{
                           backgroundColor: "primary.main",
+                          color: "white",
                           "&:hover": {
                             backgroundColor: "#64b5f6",
                           },
