@@ -62,7 +62,7 @@ const Header = () => {
               isActive("/conversation") ? "text-primary" : ""
             }`}
           >
-            ワーキング
+            作業部屋
           </a>
           <a
             href="/conversation"
