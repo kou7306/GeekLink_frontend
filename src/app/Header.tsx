@@ -57,6 +57,14 @@ const Header = () => {
         </div>
         <nav className="flex space-x-6">
           <a
+            href="/online"
+            className={`text-text hover:text-primary ${
+              isActive("/conversation") ? "text-primary" : ""
+            }`}
+          >
+            ワーキング
+          </a>
+          <a
             href="/conversation"
             className={`text-text hover:text-primary ${isActive("/conversation") ? "text-primary" : ""}`}
           >
