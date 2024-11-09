@@ -47,7 +47,7 @@ const ChangeAvatarPage: React.FC<ChangeAvatarPageProps> = ({
 
     if (selectedModel) {
       try {
-        const response = await fetch(`http://backend:8080/avatar/${userId}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/avatar/${userId}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",

@@ -1,37 +1,78 @@
+"use client";
+
 import { getUuidFromCookie } from "@/actions/users";
 import ChangeAvatarPage from "@/components/rpg/ChangeAvatarPage";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
-async function getCurrentAvatar(userId: string) {
-  const response = await fetch(`http://backend:8080/avatar/${userId}`, {
+interface AvatarData {
+  current_avatar: string;
+}
+
+interface ItemsData {
+  items: string[];
+}
+
+const getCurrentAvatar = async (userId: string): Promise<AvatarData> => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/avatar/${userId}`, {
     cache: "no-store",
   });
   return response.json();
-}
+};
 
-async function getUserItems(userId: string) {
-  const response = await fetch(`http://backend:8080/rpg/item/${userId}`, {
+const getUserItems = async (userId: string): Promise<ItemsData> => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/rpg/item/${userId}`, {
     cache: "no-store",
   });
   return response.json();
-}
+};
 
-export default async function Page() {
-  const uuid = await getUuidFromCookie();
+export default function Page() {
+  const router = useRouter();
+  const [userId, setUserId] = useState<string>();
+  const [currentAvatarData, setCurrentAvatarData] = useState<AvatarData>({ current_avatar: "" });
+  const [userItemsData, setUserItemsData] = useState<ItemsData>({ items: [] });
 
-  if (!uuid) {
-    redirect("/login");
+  useEffect(() => {
+    const fetchUuid = async () => {
+      const uuid = await getUuidFromCookie();
+      if (!uuid) {
+        router.push("/login");
+        return;
+      }
+      setUserId(uuid);
+    };
+
+    fetchUuid();
+  }, [router]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!userId) return;
+
+      try {
+        const [avatarData, itemsData] = await Promise.all([
+          getCurrentAvatar(userId),
+          getUserItems(userId),
+        ]);
+
+        setCurrentAvatarData(avatarData);
+        setUserItemsData(itemsData);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchData();
+  }, [userId]);
+
+  if (!userId) {
+    return null;
   }
-
-  const [currentAvatarData, userItemsData] = await Promise.all([
-    getCurrentAvatar(uuid),
-    getUserItems(uuid),
-  ]);
 
   return (
     <ChangeAvatarPage
-      userId={uuid}
+      userId={userId}
       currentAvatarData={currentAvatarData}
       userItemsData={userItemsData}
     />

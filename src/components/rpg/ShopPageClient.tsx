@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Grid, Card, CardContent, Typography, Button, Container, Box, Alert } from "@mui/material";
 import { blenderModels } from "@/constants/blenderModels";
 import AvatarViewer from "@/components/rpg/AvatarViewer";
@@ -20,6 +20,15 @@ const ShopPageClient: React.FC<ShopPageClientProps> = ({ userId, userCoin, userI
   const [currentCoin, setCurrentCoin] = useState(parseInt(userCoin.coin));
   const [purchasedItems, setPurchasedItems] = useState<string[]>(userItems.items);
 
+  // propsの変更を監視して状態を更新
+  useEffect(() => {
+    setCurrentCoin(parseInt(userCoin.coin));
+    setPurchasedItems(userItems.items);
+  }, [userCoin.coin, userItems.items]);
+
+  console.log("currentCoin", currentCoin);
+  console.log("purchasedItems", purchasedItems);
+
   // fee > 0 のアイテムのみを表示
   const shopItems = blenderModels.filter((item) => item.fee > 0);
 
@@ -28,14 +37,14 @@ const ShopPageClient: React.FC<ShopPageClientProps> = ({ userId, userCoin, userI
     setMessage(null);
 
     try {
-      const response = await fetch(`http://backend:8080/rpg/item`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/rpg/costume`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           uuid: userId,
-          item: itemId,
+          costume: itemId,
           coin: (-itemFee).toString(), // 負の値で送信
         }),
       });

@@ -1,29 +1,75 @@
+"use client";
+
 import { getUuidFromCookie } from "@/actions/users";
 import ShopPageClient from "@/components/rpg/ShopPageClient";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
-async function getUserCoin(userId: string) {
-  const response = await fetch(`http://backend:8080/rpg/coin/${userId}`, {
+interface UserCoin {
+  coin: string;
+}
+
+interface UserItems {
+  items: string[];
+}
+
+const getUserCoin = async (userId: string): Promise<UserCoin> => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/rpg/coin/${userId}`, {
     cache: "no-store",
   });
   return response.json();
-}
+};
 
-async function getUserItems(userId: string) {
-  const response = await fetch(`http://backend:8080/rpg/item/${userId}`, {
+const getUserItems = async (userId: string): Promise<UserItems> => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/rpg/costume/${userId}`, {
     cache: "no-store",
   });
   return response.json();
-}
+};
 
-export default async function Page() {
-  const uuid = await getUuidFromCookie();
+export default function Page() {
+  const router = useRouter();
+  const [userId, setUserId] = useState<string>();
+  const [userCoin, setUserCoin] = useState<UserCoin>({ coin: "0" });
+  const [userItems, setUserItems] = useState<UserItems>({ items: [] });
 
-  if (!uuid) {
-    redirect("/login");
+  useEffect(() => {
+    const fetchUuid = async () => {
+      const uuid = await getUuidFromCookie();
+      if (!uuid) {
+        router.push("/login");
+        return;
+      }
+      setUserId(uuid);
+    };
+
+    fetchUuid();
+  }, [router]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!userId) return;
+
+      try {
+        const [coinData, itemsData] = await Promise.all([getUserCoin(userId), getUserItems(userId)]);
+
+        console.log("coinData", coinData);
+        console.log("itemsData", itemsData);
+        setUserCoin(coinData);
+        setUserItems(itemsData);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchData();
+  }, [userId]);
+
+  if (!userId) {
+    return null;
   }
 
-  const [userCoin, userItems] = await Promise.all([getUserCoin(uuid), getUserItems(uuid)]);
-
-  return <ShopPageClient userId={uuid} userCoin={userCoin} userItems={userItems} />;
+  console.log("userCoin", userCoin);
+  console.log("userItems", userItems);
+  return <ShopPageClient userId={userId} userCoin={userCoin} userItems={userItems} />;
 }
