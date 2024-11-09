@@ -3,7 +3,7 @@
 import { getUuidFromCookie } from "@/actions/users";
 import ChangeAvatarPage from "@/components/rpg/ChangeAvatarPage";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 interface AvatarData {
   current_avatar: string;
@@ -33,6 +33,20 @@ export default function Page() {
   const [currentAvatarData, setCurrentAvatarData] = useState<AvatarData>({ current_avatar: "" });
   const [userItemsData, setUserItemsData] = useState<ItemsData>({ items: [] });
 
+  const fetchData = useCallback(async () => {
+    if (!userId) return;
+    try {
+      const [avatarData, itemsData] = await Promise.all([
+        getCurrentAvatar(userId),
+        getUserItems(userId),
+      ]);
+      setCurrentAvatarData(avatarData);
+      setUserItemsData(itemsData);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  }, [userId]);
+
   useEffect(() => {
     const fetchUuid = async () => {
       const uuid = await getUuidFromCookie();
@@ -42,30 +56,12 @@ export default function Page() {
       }
       setUserId(uuid);
     };
-
     fetchUuid();
   }, [router]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (!userId) return;
-
-      try {
-        const [avatarData, itemsData] = await Promise.all([
-          getCurrentAvatar(userId),
-          getUserItems(userId),
-        ]);
-
-        setCurrentAvatarData(avatarData);
-        setUserItemsData(itemsData);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-
     fetchData();
-  }, [userId]);
-
+  }, [fetchData]);
   if (!userId) {
     return null;
   }
@@ -75,6 +71,7 @@ export default function Page() {
       userId={userId}
       currentAvatarData={currentAvatarData}
       userItemsData={userItemsData}
+      onAvatarUpdate={fetchData}
     />
   );
 }
