@@ -3,6 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import { User } from "@/types/user";
 import Link from "next/link";
+import { io, Socket } from "socket.io-client";
 
 interface Ball {
   id: string;
@@ -21,15 +22,17 @@ const OnlineUserIcons = () => {
   const [balls, setBalls] = useState<Ball[]>([]);
   const [hoveredUser, setHoveredUser] = useState<Ball | null>(null);
   const animationFrameRef = useRef<number>();
+  const socketRef = useRef<Socket | null>(null);
   const BALL_MIN_SIZE = 70;
   const BALL_MAX_SIZE = 120;
   const FORCE_TO_CENTER = 0.6;
-  const REPULSION = 0.6;
+  const REPULSION = 0.2;
   const FRICTION = 0.9;
 
-  const COLLISION_SCALE = 1.3;
+  const COLLISION_SCALE = 2.0;
 
   useEffect(() => {
+    // Fetch initial users
     const fetchUsers = async () => {
       try {
         const response = await fetch(
@@ -78,7 +81,7 @@ const OnlineUserIcons = () => {
             startTime: user.start_work_time
               ? new Date(user.start_work_time)
               : null,
-            motivation: user.motivation || "モチベーション情報なし",
+            motivation: user.motivation || "意気込みなし",
             userLink: "/my-page/" + user.user_id || "/",
             radius,
           };
@@ -91,6 +94,39 @@ const OnlineUserIcons = () => {
     };
 
     fetchUsers();
+
+    // Socket.IO connection
+    socketRef.current = io(`${process.env.NEXT_PUBLIC_WS_URL}/ws/online-users`);
+
+    socketRef.current.on("connect", () => {
+      console.log("Socket.IO connected");
+    });
+
+    socketRef.current.on("userAdded", (data: any) => {
+      const newBall = {
+        id: data.userId,
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        vx: 0,
+        vy: 0,
+        imageUrl: data.imageUrl || "/user.svg",
+        startTime: data.startWorkTime ? new Date(data.startWorkTime) : null,
+        motivation: data.motivation || "意気込みなし",
+        userLink: "/my-page/" + data.userId || "/",
+        radius: calculateIconSize(data.startWorkTime) / 2,
+      };
+      setBalls((prevBalls) => [...prevBalls, newBall]);
+    });
+
+    socketRef.current.on("userRemoved", (data: any) => {
+      setBalls((prevBalls) =>
+        prevBalls.filter((ball) => ball.id !== data.userId)
+      );
+    });
+
+    socketRef.current.on("disconnect", () => {
+      console.log("Socket.IO disconnected");
+    });
 
     const width = window.innerWidth;
     const height = window.innerHeight;
@@ -159,15 +195,31 @@ const OnlineUserIcons = () => {
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+      }
     };
   }, []);
 
   const calculateIconSize = (startTime: Date | null): number => {
+    // startTimeがnullの場合は最小サイズを返す
     if (!startTime) return BALL_MIN_SIZE;
+
+    // startTimeがDate型でない場合は、Dateに変換
+    if (!(startTime instanceof Date)) {
+      // startTimeが文字列の場合、Dateオブジェクトを生成
+      startTime = new Date(startTime);
+      // 変換後にDateオブジェクトとして有効かチェック
+      if (isNaN(startTime.getTime())) {
+        return BALL_MIN_SIZE; // 無効な日付なら最小サイズを返す
+      }
+    }
+
     const now = new Date();
     const elapsedHours = Math.floor(
       (now.getTime() - startTime.getTime()) / (1000 * 60 * 60)
     );
+
     return Math.min(BALL_MIN_SIZE + elapsedHours * 5, BALL_MAX_SIZE);
   };
 
@@ -176,16 +228,14 @@ const OnlineUserIcons = () => {
 
   return (
     <div className="relative w-full h-full overflow-hidden">
-      {" "}
-      {/* Updated to enable scrolling */}
       <div
         className="absolute inset-0 z-0 bg-cover bg-center"
         style={{
-          backgroundImage: "linear-gradient(0deg, #00dedc, #115d89, #080f1c)", // 背景色
+          backgroundImage: "linear-gradient(0deg, #00dedc, #115d89, #080f1c)",
         }}
       />
       <div className="absolute top-20 left-1/2 transform -translate-x-1/2 text-lg font-semibold text-primary z-10">
-        作業中のユーザー数: {balls.length}
+        作業中のユーザー数: {balls.length}名
       </div>
       {balls.map((ball) => {
         const iconSize = calculateIconSize(ball.startTime);
@@ -217,11 +267,12 @@ const OnlineUserIcons = () => {
         <div className="absolute top-32 left-1/2 transform -translate-x-1/2 bg-sub_base p-4 rounded-lg shadow-lg w-80 text-center z-20">
           <p>
             作業時間:{" "}
-            {Math.floor(
-              (new Date().getTime() - hoveredUser.startTime!.getTime()) /
-                (1000 * 60 * 60)
-            )}
-            時間
+            {hoveredUser.startTime
+              ? `${Math.floor(
+                  (new Date().getTime() - hoveredUser.startTime.getTime()) /
+                    (1000 * 60 * 60)
+                )} 時間`
+              : "不明"}
           </p>
           <p>{hoveredUser.motivation}</p>
         </div>
@@ -230,10 +281,4 @@ const OnlineUserIcons = () => {
   );
 };
 
-export default function Home() {
-  return (
-    <div className="w-full h-full bg-black overflow-hidden">
-      <OnlineUserIcons />
-    </div>
-  );
-}
+export default OnlineUserIcons;
