@@ -458,52 +458,48 @@ const RpgScreen = ({
 
         if (!isSpinning) {
           cancelAnimationFrame(animationId);
-          setTimeout(() => {
-            const resultDialog = document.createElement("div");
-            Object.entries(baseStyles).forEach(([key, value]) => {
-              resultDialog.style[key as any] = value;
-            });
-            resultDialog.style.fontSize = "24px";
+          const resultDialog = document.createElement("div");
+          Object.entries(baseStyles).forEach(([key, value]) => {
+            resultDialog.style[key as any] = value;
+          });
+          resultDialog.style.fontSize = "24px";
 
-            // アイテムタイプに応じてメセージを変更
-            const resultValue =
-              displayArray[
-                (currentIndex - 1 + displayArray.length) % displayArray.length
-              ];
-            const resultMessage = (() => {
-              switch (item?.type) {
-                case "coin":
-                  return `${resultValue}コインGet！`;
-                case "life":
-                  return `ライフ${resultValue}回復！`;
-                case "costume":
-                  return `${resultValue}を手に入れた！`;
-                default:
-                  return `${resultValue}が出ました！`;
-              }
-            })();
-
-            resultDialog.textContent = resultMessage;
-
-            document.body.appendChild(resultDialog);
-            document.body.removeChild(roulette);
-
-            // アイテムタイプに応じた処理を実行
-            if (item?.type === "coin") {
-              handleCoinUpdate(Number(resultValue));
-            } else if (item?.type === "life") {
-              handleLifeUpdate(Number(resultValue));
-              window.location.reload(); // ライフ更新後にページをリロード
+          // アイテムタイプに応じてメッセージを変更
+          const resultValue =
+            displayArray[
+              (currentIndex - 1 + displayArray.length) % displayArray.length
+            ];
+          const resultMessage = (() => {
+            switch (item?.type) {
+              case "coin":
+                return `${resultValue}コインGet！`;
+              case "life":
+                return `ライフ${resultValue}回復！`;
+              case "costume":
+                return `${resultValue}を手に入れた！`;
+              default:
+                return `${resultValue}が出ました！`;
             }
+          })();
 
-            resultDialog.addEventListener("click", () => {
-              document.body.removeChild(resultDialog);
-              // 結果ダイアログを閉じた後にモーダルを表示
-              setIsModalOpen(true);
-              handleMovement();
-              window.location.reload(); // ページを再レンダリング
-            });
-          }, 500);
+          resultDialog.textContent = resultMessage;
+
+          document.body.appendChild(resultDialog);
+          document.body.removeChild(roulette);
+
+          // アイテムタイプに応じた処理を実行
+          if (item?.type === "coin") {
+            handleCoinUpdate(Number(resultValue));
+          } else if (item?.type === "life") {
+            handleLifeUpdate(Number(resultValue) - 1);
+          }
+
+          resultDialog.addEventListener("click", () => {
+            document.body.removeChild(resultDialog);
+            setIsModalOpen(true);
+            handleMovement();
+            window.location.reload();
+          });
           return;
         }
 
