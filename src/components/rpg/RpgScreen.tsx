@@ -12,6 +12,7 @@ type Coordinate = {
   x: number;
   y: number;
   availableDirections: Direction[];
+  type: string;
 };
 
 type Item = {
@@ -22,21 +23,22 @@ type Item = {
 };
 
 const selectCoordinates: Coordinate[] = [
-  { x: 0, y: 0, availableDirections: ["straight"] },
+  { x: 0, y: 0, availableDirections: ["straight"], type: "start" },
   {
     x: 0,
     y: 3,
     availableDirections: ["left", "straight", "right"],
+    type: "coin",
   },
-  { x: -2, y: 3, availableDirections: ["straight"] },
-  { x: -2, y: 6, availableDirections: ["left"] },
-  { x: -4, y: 6, availableDirections: ["straight"] },
-  { x: 0, y: 6, availableDirections: ["straight"] },
-  { x: 0, y: 9, availableDirections: ["left", "straight"] },
-  { x: -2, y: 9, availableDirections: ["straight"] },
-  { x: 2, y: 3, availableDirections: ["straight"] },
-  { x: 2, y: 6, availableDirections: ["straight", "right"] },
-  { x: 4, y: 6, availableDirections: ["straight"] },
+  { x: -2, y: 3, availableDirections: ["straight"], type: "coin" },
+  { x: -2, y: 6, availableDirections: ["left"], type: "life" },
+  { x: -4, y: 6, availableDirections: ["straight"], type: "coin" },
+  { x: 0, y: 6, availableDirections: ["straight"], type: "costume" },
+  { x: 0, y: 9, availableDirections: ["left", "straight"], type: "coin" },
+  { x: -2, y: 9, availableDirections: ["straight"], type: "coin" },
+  { x: 2, y: 3, availableDirections: ["straight"], type: "life" },
+  { x: 2, y: 6, availableDirections: ["straight", "right"], type: "coin" },
+  { x: 4, y: 6, availableDirections: ["straight"], type: "coin" },
 ];
 
 const roads = [
@@ -67,12 +69,60 @@ const items = [
     x: 0,
     y: 6,
     type: "costume",
-    isCollected: true,
+    isCollected: false,
   },
   {
     x: 2,
     y: 3,
     type: "life",
+    isCollected: false,
+  },
+  {
+    x: 2,
+    y: 6,
+    type: "coin",
+    isCollected: false,
+  },
+  {
+    x: -2,
+    y: 6,
+    type: "life",
+    isCollected: false,
+  },
+  {
+    x: -4,
+    y: 6,
+    type: "coin",
+    isCollected: false,
+  },
+  {
+    x: 0,
+    y: 9,
+    type: "coin",
+    isCollected: false,
+  },
+  {
+    x: -2,
+    y: 9,
+    type: "coin",
+    isCollected: false,
+  },
+  {
+    x: 2,
+    y: 3,
+    type: "life ",
+    isCollected: false,
+  },
+  {
+    x: 2,
+    y: 6,
+    type: "coin",
+    isCollected: false,
+  },
+  {
+    x: 4,
+    y: 6,
+    type: "coin",
     isCollected: false,
   },
 ];
@@ -204,11 +254,29 @@ const RpgScreen = ({
     }
 
     //座標からマスを作る関数
-    function createSquare(x: number, y: number) {
+    function createSquare(x: number, y: number, type: string) {
       const cylinderGeometry = new THREE.CylinderGeometry(0.2, 0.2, 0.1, 32); // 半径0.2、高さ1、分割数32の円柱
+
+      // タイプに応じて色を設定
+      let color;
+      switch (type) {
+        case "coin":
+          color = 0xffff00; // 黄色
+          break;
+        case "life":
+          color = 0x00ff00; // 緑
+          break;
+        case "costume":
+          color = 0x0000ff; // 青
+          break;
+        default:
+          color = 0x00ffff; // デフォルトの色（シアン）
+      }
+
       const cylinderMaterial = new THREE.MeshBasicMaterial({
-        color: 0x00ffff,
+        color: color,
       });
+
       const cylinder = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
       cylinder.rotation.x = Math.PI / 2; // 円柱を横に寝かせる
       cylinder.position.set(x, y - 1, 0); // 中心のマス
@@ -836,7 +904,7 @@ const RpgScreen = ({
 
       //マスの作成
       selectCoordinates.forEach(async (coordinate) => {
-        await createSquare(coordinate.x, coordinate.y);
+        await createSquare(coordinate.x, coordinate.y, coordinate.type);
       });
 
       roads.forEach(async (road) => {
