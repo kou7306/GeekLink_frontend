@@ -21,6 +21,7 @@ const Page = () => {
   const [modelPath, setModelPath] = useState<string>("/models/human.glb");
   const [myItem, setMyItem] = useState<string[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(true);
+  const [changeScene, setChangeScene] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -121,6 +122,8 @@ const Page = () => {
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
         myItem={myItem}
+        changeScene={changeScene}
+        setChangeScene={setChangeScene}
       />
 
       <Link href="/shop">

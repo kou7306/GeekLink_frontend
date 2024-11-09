@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@mui/material";
+import { handleWebpackExternalForEdgeRuntime } from "next/dist/build/webpack/plugins/middleware-plugin";
 import React, { useEffect, useRef } from "react";
 import seedrandom from "seedrandom";
 import * as THREE from "three";
@@ -263,6 +264,8 @@ type RpgScreenProps = {
   isModalOpen: boolean;
   setIsModalOpen: (isModalOpen: boolean) => void;
   myItem: string[];
+  changeScene: boolean;
+  setChangeScene: (changeScene: boolean) => void;
 };
 
 const RpgScreen = ({
@@ -277,6 +280,8 @@ const RpgScreen = ({
   isModalOpen,
   setIsModalOpen,
   myItem,
+  changeScene,
+  setChangeScene,
 }: RpgScreenProps) => {
   const mountRef = useRef<HTMLDivElement>(null);
 
@@ -529,13 +534,13 @@ const RpgScreen = ({
         // クリックで閉じられるようにする
         dialog.addEventListener("click", () => {
           document.body.removeChild(dialog);
-          startRoulette(item);
+          startRoulette(item, x, y);
         });
       }
     }
 
     // ルーレット機能を追加
-    function startRoulette(item: Item) {
+    function startRoulette(item: Item, x: number, y: number) {
       const roulette = document.createElement("div");
       const baseStyles = {
         position: "fixed",
@@ -616,7 +621,7 @@ const RpgScreen = ({
         (item) => item.x === positionX && item.y === positionY
       );
 
-      // アイテムタイプに応じて表示する配列を選択
+      // アイテム��イプに応じて表示する配列を選択
       const displayArray = (() => {
         switch (item?.type) {
           case "coin":
@@ -713,7 +718,8 @@ const RpgScreen = ({
           resultDialog.addEventListener("click", () => {
             document.body.removeChild(resultDialog);
             setIsModalOpen(true);
-            handleMovement();
+            setChangeScene(!changeScene);
+            handleMovement(x, y);
           });
           return;
         }
@@ -1076,11 +1082,11 @@ const RpgScreen = ({
       });
     }
 
-    // 移動の処理を行う関数
-    async function handleMovement() {
+    // 動の処理を行う関数
+    async function handleMovement(x: number, y: number) {
       // 現在の座標に対応するCoordinateを取得
       const currentCoordinate = selectCoordinates.find(
-        (coord) => coord.x === positionX && coord.y === positionY
+        (coord) => coord.x === x && coord.y === y
       );
 
       // モーダルで選択待つ（利用可能な方向のみ表示）
@@ -1113,22 +1119,26 @@ const RpgScreen = ({
       await createRoadAndSquare();
       console.log(positionX, positionY);
 
-      //マスの作成
-      selectCoordinates.forEach(async (coordinate) => {
-        await createSquare(coordinate.x, coordinate.y, coordinate.type);
-      });
+      // forEachをPromise.allとmapに変更
+      await Promise.all(
+        selectCoordinates.map(async (coordinate) => {
+          await createSquare(coordinate.x, coordinate.y, coordinate.type);
+        })
+      );
 
-      roads.forEach(async (road) => {
-        await createRoad(
-          road.start[0],
-          road.start[1],
-          road.end[0],
-          road.end[1]
-        );
-      });
+      await Promise.all(
+        roads.map(async (road) => {
+          await createRoad(
+            road.start[0],
+            road.start[1],
+            road.end[0],
+            road.end[1]
+          );
+        })
+      );
 
       await firstRun();
-      isModalOpen && (await handleMovement());
+      isModalOpen && (await handleMovement(positionX, positionY));
     }
 
     createScene();
@@ -1150,7 +1160,7 @@ const RpgScreen = ({
       mountRef.current?.removeChild(renderer.domElement);
       renderer.dispose();
     };
-  }, [positionX, positionY, isModalOpen]);
+  }, [positionX, positionY, changeScene]);
 
   return (
     <>
