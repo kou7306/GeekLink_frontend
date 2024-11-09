@@ -83,14 +83,14 @@ const Page = () => {
       </div>
       <div className="absolute top-4 right-4">
         <CoinDisplay coins={coins} />
-        <Button
+        {/* <Button
           onClick={() => handlePositionUpdate(-positionX, -positionY + 3)}
         >
           座標リセット( デバッグ用 )
         </Button>
         <Button onClick={() => handleCoinUpdate(1)}>
           コイン+1( デバッグ用 )
-        </Button>
+        </Button> */}
       </div>
 
       {/* <div className="absolute bottom-4 left-4">

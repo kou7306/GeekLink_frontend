@@ -1166,7 +1166,7 @@ const RpgScreen = ({
   return (
     <>
       <div ref={mountRef} style={{ width: "100%", height: "100vh" }} />
-      <div className="absolute bottom-4 left-4">
+      {/* <div className="absolute bottom-4 left-4">
         <Button
           variant="outlined"
           color="primary"
@@ -1181,7 +1181,7 @@ const RpgScreen = ({
         >
           Decrease Life
         </Button>
-      </div>
+      </div> */}
     </>
   );
 };
