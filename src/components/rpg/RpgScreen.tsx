@@ -131,24 +131,28 @@ type RpgScreenProps = {
   handleLifeUpdate: (change: number) => void;
   handlePositionUpdate: (x: number, y: number) => void;
   handleCoinUpdate: (coin: number) => void;
+  handleAddItem: (item: string) => void;
   positionX: number;
   positionY: number;
   lives: number;
   modelPath: string;
   isModalOpen: boolean;
   setIsModalOpen: (isModalOpen: boolean) => void;
+  myItem: string[];
 };
 
 const RpgScreen = ({
   handleLifeUpdate,
   handlePositionUpdate,
   handleCoinUpdate,
+  handleAddItem,
   positionX,
   positionY,
   lives,
   modelPath,
   isModalOpen,
   setIsModalOpen,
+  myItem,
 }: RpgScreenProps) => {
   const mountRef = useRef<HTMLDivElement>(null);
 
@@ -286,7 +290,7 @@ const RpgScreen = ({
     //2点の座標ら道を作る関数()
     function createRoad(x1: number, y1: number, x2: number, y2: number) {
       if (x1 === x2) {
-        const planeGeometry = new THREE.PlaneGeometry(0.15, 3); //縦と横の幅を指定
+        const planeGeometry = new THREE.PlaneGeometry(0.25, 3); //縦と横の幅を指定
         const planeMaterial = new THREE.MeshBasicMaterial({
           color: 0x00ffff,
           side: THREE.DoubleSide, //両面を描画する
@@ -297,7 +301,7 @@ const RpgScreen = ({
         plane.position.set(x1, y1 + 0.5, 0); // 道の位置を中心に
         group.add(plane);
       } else {
-        const planeGeometry = new THREE.PlaneGeometry(0.15, 2); //縦と横の幅を指定
+        const planeGeometry = new THREE.PlaneGeometry(0.25, 2); //縦と横の幅を指定
         const planeMaterial = new THREE.MeshBasicMaterial({
           color: 0x00ffff,
           side: THREE.DoubleSide, //両面を描画する
@@ -471,7 +475,17 @@ const RpgScreen = ({
       const numbers = [1, 2, 3, 4, 5, 6];
       const coinNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
       const lifeNumbers = [1, 2, 3];
-      const costumeList = ["ぼうし", "剣", "盾", "ローブ", "マント", "ブーツ"];
+      // myItemに含まれていないコスチュームのみをフィルタリング
+      const costumeList = [
+        "ぼうし",
+        "剣",
+        "盾",
+        "ローブ",
+        "マント",
+        "ブーツ",
+        "マスク",
+        "靴",
+      ].filter((costume) => !myItem.includes(costume));
 
       // 現在の位置のアイテムを取得
       const currentItem = items.find(
@@ -568,6 +582,8 @@ const RpgScreen = ({
             handleCoinUpdate(Number(resultValue));
           } else if (item?.type === "life") {
             handleLifeUpdate(Number(resultValue) - 1);
+          } else if (item?.type === "costume") {
+            handleAddItem(resultValue as string);
           }
 
           resultDialog.addEventListener("click", () => {

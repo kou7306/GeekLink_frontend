@@ -10,6 +10,7 @@ import { updateLife } from "@/utils/updateLife";
 import { Link } from "@mui/material";
 import { updatePosition } from "@/utils/updatePosition";
 import { updateCoin } from "@/utils/updateCoin";
+import { addItem } from "@/utils/addItem";
 
 const Page = () => {
   const [lives, setLives] = useState<number>(0);
@@ -18,6 +19,7 @@ const Page = () => {
   const [positionX, setPositionX] = useState<number>(0);
   const [positionY, setPositionY] = useState<number>(0);
   const [modelPath, setModelPath] = useState<string>("/models/human.glb");
+  const [myItem, setMyItem] = useState<string[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(true);
   const router = useRouter();
 
@@ -30,6 +32,7 @@ const Page = () => {
         setCoins(data.coin);
         setPositionX(Number(data.position_x));
         setPositionY(Number(data.position_y));
+        setMyItem(data.items);
       } catch (error) {
         console.error("Failed to fetch user data:", error);
         setError("Failed to fetch user data.");
@@ -65,6 +68,11 @@ const Page = () => {
   const handleCoinUpdate = async (coin: number) => {
     const res = await updateCoin(coin.toString());
     setCoins(Number(res.coin));
+  };
+
+  const handleAddItem = async (item: string) => {
+    const res = await addItem(item);
+    console.log(res);
   };
 
   return (
@@ -105,12 +113,14 @@ const Page = () => {
         handleLifeUpdate={handleLifeUpdate}
         handlePositionUpdate={handlePositionUpdate}
         handleCoinUpdate={handleCoinUpdate}
+        handleAddItem={handleAddItem}
         positionX={positionX}
         positionY={positionY}
         lives={lives}
         modelPath={modelPath}
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
+        myItem={myItem}
       />
 
       <Link href="/shop">
