@@ -459,10 +459,41 @@ const RpgScreen = ({
         if (!isSpinning) {
           cancelAnimationFrame(animationId);
           const resultDialog = document.createElement("div");
+
+          // 基本スタイルを適用
           Object.entries(baseStyles).forEach(([key, value]) => {
             resultDialog.style[key as any] = value;
           });
+
+          // アイテムタイプに応じてスタイルをカ���タマイズ
+          switch (item?.type) {
+            case "coin":
+              resultDialog.style.backgroundColor = "rgba(255, 223, 0, 0.95)"; // 金色
+              resultDialog.style.border = "3px solid #DAA520"; // ゴールデンロッド
+              resultDialog.style.color = "#8B4513"; // サドルブラウン
+              resultDialog.style.boxShadow = "0 0 15px rgba(255, 215, 0, 0.5)"; // 金色の光沢
+              break;
+            case "life":
+              resultDialog.style.backgroundColor = "rgba(144, 238, 144, 0.95)"; // ライトグリーン
+              resultDialog.style.border = "3px solid #228B22"; // フォレストグリーン
+              resultDialog.style.color = "#006400"; // ダークグリーン
+              resultDialog.style.boxShadow = "0 0 15px rgba(0, 255, 0, 0.3)"; // 緑の光沢
+              break;
+            case "costume":
+              resultDialog.style.backgroundColor = "rgba(135, 206, 235, 0.95)"; // スカイブルー
+              resultDialog.style.border = "3px solid #4169E1"; // ロイヤルブルー
+              resultDialog.style.color = "#000080"; // ネイビー
+              resultDialog.style.boxShadow = "0 0 15px rgba(0, 0, 255, 0.3)"; // 青の光沢
+              break;
+            default:
+              resultDialog.style.backgroundColor = "rgba(255, 255, 255, 0.95)";
+              resultDialog.style.border = "3px solid #8B4513";
+              resultDialog.style.color = "#333";
+          }
+
           resultDialog.style.fontSize = "24px";
+          resultDialog.style.fontWeight = "bold";
+          resultDialog.style.textShadow = "1px 1px 2px rgba(0, 0, 0, 0.2)";
 
           // アイテムタイプに応じてメッセージを変更
           const resultValue =
