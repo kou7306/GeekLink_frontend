@@ -365,7 +365,24 @@ const RpgScreen = ({
         // テキストコンテナを作成
         const textContainer = document.createElement("div");
         textContainer.style.width = "100%";
-        textContainer.textContent = `${item?.type}マス！`;
+
+        // アイテムタイプに応じてテキストを変更
+        const displayText = (() => {
+          switch (item?.type) {
+            case "coin":
+              return "コインマス！";
+            case "life":
+              return "ライフマス！";
+            case "costume":
+              return "着せ替えマス！";
+            default:
+              return "マス！";
+          }
+        })();
+
+        textContainer.textContent = displayText;
+
+        dialog.appendChild(textContainer);
 
         // 下向き三角形を追加
         const triangle = document.createElement("div");
@@ -378,7 +395,6 @@ const RpgScreen = ({
         triangle.style.borderRight = "10px solid transparent";
         triangle.style.borderTop = "10px solid #666";
 
-        dialog.appendChild(textContainer);
         dialog.appendChild(triangle);
         document.body.appendChild(dialog);
 
@@ -828,7 +844,7 @@ const RpgScreen = ({
             : (leftButton.style.backgroundColor = "#808080");
         };
         leftButton.onclick = () => {
-          if (isModalClosed) return; // 既に���じている場合は何���しない
+          if (isModalClosed) return; // 既にじている場合は何しない
           isModalClosed = true;
 
           document.body.removeChild(modal);
