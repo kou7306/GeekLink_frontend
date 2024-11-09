@@ -12,24 +12,33 @@ type Coordinate = {
   x: number;
   y: number;
   availableDirections: Direction[];
+  type: string;
+};
+
+type Item = {
+  x: number;
+  y: number;
+  type: string;
+  isCollected: boolean;
 };
 
 const selectCoordinates: Coordinate[] = [
-  { x: 0, y: 0, availableDirections: ["straight"] },
+  { x: 0, y: 0, availableDirections: ["straight"], type: "start" },
   {
     x: 0,
     y: 3,
     availableDirections: ["left", "straight", "right"],
+    type: "coin",
   },
-  { x: -2, y: 3, availableDirections: ["straight"] },
-  { x: -2, y: 6, availableDirections: ["left"] },
-  { x: -4, y: 6, availableDirections: ["straight"] },
-  { x: 0, y: 6, availableDirections: ["straight"] },
-  { x: 0, y: 9, availableDirections: ["left", "straight"] },
-  { x: -2, y: 9, availableDirections: ["straight"] },
-  { x: 2, y: 3, availableDirections: ["straight"] },
-  { x: 2, y: 6, availableDirections: ["straight", "right"] },
-  { x: 4, y: 6, availableDirections: ["straight"] },
+  { x: -2, y: 3, availableDirections: ["straight"], type: "coin" },
+  { x: -2, y: 6, availableDirections: ["left"], type: "life" },
+  { x: -4, y: 6, availableDirections: ["straight"], type: "coin" },
+  { x: 0, y: 6, availableDirections: ["straight"], type: "costume" },
+  { x: 0, y: 9, availableDirections: ["left", "straight"], type: "coin" },
+  { x: -2, y: 9, availableDirections: ["straight"], type: "coin" },
+  { x: 2, y: 3, availableDirections: ["straight"], type: "life" },
+  { x: 2, y: 6, availableDirections: ["straight", "right"], type: "coin" },
+  { x: 4, y: 6, availableDirections: ["straight"], type: "coin" },
 ];
 
 const roads = [
@@ -53,25 +62,67 @@ const items = [
   {
     x: -2,
     y: 3,
-    name: "コイン",
     type: "coin",
-    image: "coin.png",
     isCollected: false,
   },
   {
     x: 0,
     y: 6,
-    name: "王冠",
     type: "costume",
-    image: "crown.png",
-    isCollected: true,
+    isCollected: false,
   },
   {
     x: 2,
     y: 3,
-    name: "ライフ",
     type: "life",
-    image: "life.png",
+    isCollected: false,
+  },
+  {
+    x: 2,
+    y: 6,
+    type: "coin",
+    isCollected: false,
+  },
+  {
+    x: -2,
+    y: 6,
+    type: "life",
+    isCollected: false,
+  },
+  {
+    x: -4,
+    y: 6,
+    type: "coin",
+    isCollected: false,
+  },
+  {
+    x: 0,
+    y: 9,
+    type: "coin",
+    isCollected: false,
+  },
+  {
+    x: -2,
+    y: 9,
+    type: "coin",
+    isCollected: false,
+  },
+  {
+    x: 2,
+    y: 3,
+    type: "life ",
+    isCollected: false,
+  },
+  {
+    x: 2,
+    y: 6,
+    type: "coin",
+    isCollected: false,
+  },
+  {
+    x: 4,
+    y: 6,
+    type: "coin",
     isCollected: false,
   },
 ];
@@ -84,6 +135,8 @@ type RpgScreenProps = {
   positionY: number;
   lives: number;
   modelPath: string;
+  isModalOpen: boolean;
+  setIsModalOpen: (isModalOpen: boolean) => void;
 };
 
 const RpgScreen = ({
@@ -94,6 +147,8 @@ const RpgScreen = ({
   positionY,
   lives,
   modelPath,
+  isModalOpen,
+  setIsModalOpen,
 }: RpgScreenProps) => {
   const mountRef = useRef<HTMLDivElement>(null);
 
@@ -109,7 +164,7 @@ const RpgScreen = ({
       1000
     );
     camera.position.set(0, -2, 2); // カメラの位置
-    camera.lookAt(0, 0, -0.6); // カメラの注視点をシーンの中心に設定
+    camera.lookAt(0, 0, -0.25); // カメラの注視点をシーンの中心に設定
     const renderer = new THREE.WebGLRenderer({ antialias: true }); // アンチエイリアスを有効にして、より滑らかな描画を行う
 
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -199,11 +254,29 @@ const RpgScreen = ({
     }
 
     //座標からマスを作る関数
-    function createSquare(x: number, y: number) {
+    function createSquare(x: number, y: number, type: string) {
       const cylinderGeometry = new THREE.CylinderGeometry(0.2, 0.2, 0.1, 32); // 半径0.2、高さ1、分割数32の円柱
+
+      // タイプに応じて色を設定
+      let color;
+      switch (type) {
+        case "coin":
+          color = 0xffff00; // 黄色
+          break;
+        case "life":
+          color = 0x00ff00; // 緑
+          break;
+        case "costume":
+          color = 0x0000ff; // 青
+          break;
+        default:
+          color = 0x00ffff; // デフォルトの色（シアン）
+      }
+
       const cylinderMaterial = new THREE.MeshBasicMaterial({
-        color: 0x00ffff,
+        color: color,
       });
+
       const cylinder = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
       cylinder.rotation.x = Math.PI / 2; // 円柱を横に寝かせる
       cylinder.position.set(x, y - 1, 0); // 中心のマス
@@ -238,7 +311,7 @@ const RpgScreen = ({
       }
     }
 
-    // アイテムのメッシュを追跡するためのマップを追加
+    // アイテムのメッシュを追跡るためのマップを追加
     const itemMeshes = new Map<string, THREE.Mesh>();
 
     //モックのアイテムを作る関数
@@ -257,45 +330,269 @@ const RpgScreen = ({
     //アイテムが取得された時に呼び出される関数
     function collectItem(x: number, y: number) {
       const item = items.find((item) => item.x === x && item.y === y);
-      if (item?.type !== "life" || !item || item.isCollected) {
-        handleLifeUpdate(-1);
-      }
+
+      setIsModalOpen(false);
+
+      handleLifeUpdate(-1);
+
       if (item) {
         item.isCollected = true;
 
-        // シーンからアイテムを削除
-        const mesh = itemMeshes.get(`${x},${y}`);
-        if (mesh) {
-          group.remove(mesh);
-          mesh.geometry.dispose();
-          mesh.material instanceof THREE.Material && mesh.material.dispose();
-          itemMeshes.delete(`${x},${y}`);
+        itemMeshes.delete(`${x},${y}`);
 
-          if (item?.type === "coin") {
-            handleCoinUpdate(1);
+        // ダイアログボックスを作成
+        const dialog = document.createElement("div");
+        dialog.style.position = "fixed";
+        dialog.style.top = "70%";
+        dialog.style.left = "50%";
+        dialog.style.transform = "translate(-50%, -50%)";
+        dialog.style.backgroundColor = "rgba(255, 255, 255, 0.95)";
+        dialog.style.padding = "20px 40px";
+        dialog.style.borderRadius = "10px";
+        dialog.style.border = "3px solid #8B4513";
+        dialog.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.3)";
+        dialog.style.zIndex = "1000";
+        dialog.style.width = "80%";
+        dialog.style.maxWidth = "600px";
+        dialog.style.minHeight = "100px";
+        dialog.style.display = "flex";
+        dialog.style.alignItems = "center";
+        dialog.style.fontFamily =
+          "'Hiragino Kaku Gothic Pro', 'メイリオ', sans-serif";
+        dialog.style.fontSize = "18px";
+        dialog.style.color = "#333";
+
+        // テキストコンテナを作成
+        const textContainer = document.createElement("div");
+        textContainer.style.width = "100%";
+
+        // アイテムタイプに応じてテキストを変更
+        const displayText = (() => {
+          switch (item?.type) {
+            case "coin":
+              return "コインマス！";
+            case "life":
+              return "ライフマス！";
+            case "costume":
+              return "着せ替えマス！";
+            default:
+              return "マス！";
+          }
+        })();
+
+        textContainer.textContent = displayText;
+
+        dialog.appendChild(textContainer);
+
+        // 下向き三角形を追加
+        const triangle = document.createElement("div");
+        triangle.style.position = "absolute";
+        triangle.style.bottom = "10px";
+        triangle.style.right = "10px";
+        triangle.style.width = "0";
+        triangle.style.height = "0";
+        triangle.style.borderLeft = "10px solid transparent";
+        triangle.style.borderRight = "10px solid transparent";
+        triangle.style.borderTop = "10px solid #666";
+
+        dialog.appendChild(triangle);
+        document.body.appendChild(dialog);
+
+        // クリックで閉じられるようにする
+        dialog.addEventListener("click", () => {
+          document.body.removeChild(dialog);
+          startRoulette(item);
+        });
+      }
+    }
+
+    // ルーレット機能を追加
+    function startRoulette(item: Item) {
+      const roulette = document.createElement("div");
+      const baseStyles = {
+        position: "fixed",
+        top: "70%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        backgroundColor: "rgba(255, 255, 255, 0.95)",
+        padding: "20px 40px",
+        borderRadius: "10px",
+        border: "3px solid #8B4513",
+        boxShadow: "0 0 10px rgba(0, 0, 0, 0.3)",
+        zIndex: "1000",
+        width: "300px",
+        height: "100px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        fontFamily: "'Hiragino Kaku Gothic Pro', 'メイリオ', sans-serif",
+        fontSize: "36px",
+        color: "#333",
+        cursor: "pointer",
+        textAlign: "center",
+        wordBreak: "keep-all",
+        whiteSpace: "pre-line",
+      };
+
+      // 基本スタイルを適用
+      Object.entries(baseStyles).forEach(([key, value]) => {
+        roulette.style[key as any] = value;
+      });
+
+      // アイテムタイプに応じてスタイルをカスタマイズ
+      switch (item?.type) {
+        case "coin":
+          roulette.style.backgroundColor = "rgba(255, 223, 0, 0.95)";
+          roulette.style.border = "3px solid #DAA520";
+          roulette.style.color = "#8B4513";
+          roulette.style.boxShadow = "0 0 15px rgba(255, 215, 0, 0.5)";
+          break;
+        case "life":
+          roulette.style.backgroundColor = "rgba(144, 238, 144, 0.95)";
+          roulette.style.border = "3px solid #228B22";
+          roulette.style.color = "#006400";
+          roulette.style.boxShadow = "0 0 15px rgba(0, 255, 0, 0.3)";
+          break;
+        case "costume":
+          roulette.style.backgroundColor = "rgba(135, 206, 235, 0.95)";
+          roulette.style.border = "3px solid #4169E1";
+          roulette.style.color = "#000080";
+          roulette.style.boxShadow = "0 0 15px rgba(0, 0, 255, 0.3)";
+          break;
+        default:
+          roulette.style.backgroundColor = "rgba(255, 255, 255, 0.95)";
+          roulette.style.border = "3px solid #8B4513";
+          roulette.style.color = "#333";
+      }
+
+      document.body.appendChild(roulette);
+
+      // アイテムタイプに応じて使用する配列を決定
+      const numbers = [1, 2, 3, 4, 5, 6];
+      const coinNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+      const lifeNumbers = [1, 2, 3];
+      const costumeList = ["ぼうし", "剣", "盾", "ローブ", "マント", "ブーツ"];
+
+      // 現在の位置のアイテムを取得
+      const currentItem = items.find(
+        (item) => item.x === positionX && item.y === positionY
+      );
+
+      // アイテムタイプに応じて表示する配列を選択
+      const displayArray = (() => {
+        switch (item?.type) {
+          case "coin":
+            return coinNumbers;
+          case "life":
+            return lifeNumbers;
+          case "costume":
+            return costumeList;
+          default:
+            return numbers;
+        }
+      })();
+
+      let currentIndex = 0;
+      let isSpinning = true;
+      let animationId: number;
+      let lastUpdateTime = Date.now();
+      const updateInterval = 100;
+
+      const updateNumber = () => {
+        const currentTime = Date.now();
+
+        if (!isSpinning) {
+          cancelAnimationFrame(animationId);
+          const resultDialog = document.createElement("div");
+
+          // 基本スタイルを適用
+          Object.entries(baseStyles).forEach(([key, value]) => {
+            resultDialog.style[key as any] = value;
+          });
+
+          // アイテムタイプに応じてスタイルをカタマイズ
+          switch (item?.type) {
+            case "coin":
+              resultDialog.style.backgroundColor = "rgba(255, 223, 0, 0.95)"; // 金色
+              resultDialog.style.border = "3px solid #DAA520"; // ゴールデンロッド
+              resultDialog.style.color = "#8B4513"; // サドルブラウン
+              resultDialog.style.boxShadow = "0 0 15px rgba(255, 215, 0, 0.5)"; // 金色の光沢
+              break;
+            case "life":
+              resultDialog.style.backgroundColor = "rgba(144, 238, 144, 0.95)"; // ライトグリーン
+              resultDialog.style.border = "3px solid #228B22"; // フォレストグリーン
+              resultDialog.style.color = "#006400"; // ダークグリーン
+              resultDialog.style.boxShadow = "0 0 15px rgba(0, 255, 0, 0.3)"; // 緑の光沢
+              break;
+            case "costume":
+              resultDialog.style.backgroundColor = "rgba(135, 206, 235, 0.95)"; // スカイブルー
+              resultDialog.style.border = "3px solid #4169E1"; // ロイヤルブルー
+              resultDialog.style.color = "#000080"; // ネイビー
+              resultDialog.style.boxShadow = "0 0 15px rgba(0, 0, 255, 0.3)"; // 青の光沢
+              break;
+            default:
+              resultDialog.style.backgroundColor = "rgba(255, 255, 255, 0.95)";
+              resultDialog.style.border = "3px solid #8B4513";
+              resultDialog.style.color = "#333";
           }
 
-          // スナックバーを作
-          const snackbar = document.createElement("div");
-          snackbar.style.position = "fixed";
-          snackbar.style.bottom = "20px";
-          snackbar.style.left = "50%";
-          snackbar.style.transform = "translateX(-50%)";
-          snackbar.style.backgroundColor = "#333";
-          snackbar.style.color = "white";
-          snackbar.style.padding = "16px";
-          snackbar.style.borderRadius = "4px";
-          snackbar.style.zIndex = "1000";
-          snackbar.textContent = `${item?.name}を獲得しました！`;
+          resultDialog.style.fontSize = "24px";
+          resultDialog.style.fontWeight = "bold";
+          resultDialog.style.textShadow = "1px 1px 2px rgba(0, 0, 0, 0.2)";
 
-          document.body.appendChild(snackbar);
+          // アイテムタイプに応じてメッセージを変更
+          const resultValue =
+            displayArray[
+              (currentIndex - 1 + displayArray.length) % displayArray.length
+            ];
+          const resultMessage = (() => {
+            switch (item?.type) {
+              case "coin":
+                return `${resultValue}コインGet！`;
+              case "life":
+                return `ライフ${resultValue}回復！`;
+              case "costume":
+                return `${resultValue}を手に入れた！`;
+              default:
+                return `${resultValue}が出ました！`;
+            }
+          })();
 
-          // 3秒後にスナックバーを削除
-          setTimeout(() => {
-            document.body.removeChild(snackbar);
-          }, 3000);
+          resultDialog.textContent = resultMessage;
+
+          document.body.appendChild(resultDialog);
+          document.body.removeChild(roulette);
+
+          // アイテムタイプに応じた処理を実行
+          if (item?.type === "coin") {
+            handleCoinUpdate(Number(resultValue));
+          } else if (item?.type === "life") {
+            handleLifeUpdate(Number(resultValue) - 1);
+          }
+
+          resultDialog.addEventListener("click", () => {
+            document.body.removeChild(resultDialog);
+            setIsModalOpen(true);
+            handleMovement();
+            window.location.reload();
+          });
+          return;
         }
-      }
+
+        if (currentTime - lastUpdateTime >= updateInterval) {
+          roulette.textContent = displayArray[currentIndex].toString();
+          currentIndex = (currentIndex + 1) % displayArray.length;
+          lastUpdateTime = currentTime;
+        }
+
+        animationId = requestAnimationFrame(updateNumber);
+      };
+
+      roulette.addEventListener("click", () => {
+        isSpinning = false;
+      });
+
+      updateNumber();
     }
 
     //最初の移動をしてカメラの位置を合わせる
@@ -547,7 +844,7 @@ const RpgScreen = ({
             : (leftButton.style.backgroundColor = "#808080");
         };
         leftButton.onclick = () => {
-          if (isModalClosed) return; // 既に閉じている場合は何もしない
+          if (isModalClosed) return; // 既にじている場合は何しない
           isModalClosed = true;
 
           document.body.removeChild(modal);
@@ -640,33 +937,8 @@ const RpgScreen = ({
       });
     }
 
-    async function createScene() {
-      console.log(lives);
-      await createAvatar();
-      await createRoadAndSquare();
-      console.log(positionX, positionY);
-      //マスの作成
-      selectCoordinates.forEach(async (coordinate) => {
-        await createSquare(coordinate.x, coordinate.y);
-      });
-
-      roads.forEach(async (road) => {
-        await createRoad(
-          road.start[0],
-          road.start[1],
-          road.end[0],
-          road.end[1]
-        );
-      });
-      items.forEach((item) => {
-        //アイテムがまだ取得されていない場合はアイテムを作成
-        if (!item.isCollected) {
-          createItem(item.x, item.y);
-        }
-      });
-      // await run();
-      await firstRun();
-
+    // 移動の処理を行う関数
+    async function handleMovement() {
       // 現在の座標に対応するCoordinateを取得
       const currentCoordinate = selectCoordinates.find(
         (coord) => coord.x === positionX && coord.y === positionY
@@ -696,9 +968,33 @@ const RpgScreen = ({
       }
     }
 
+    async function createScene() {
+      console.log(lives);
+      await createAvatar();
+      await createRoadAndSquare();
+      console.log(positionX, positionY);
+
+      //マスの作成
+      selectCoordinates.forEach(async (coordinate) => {
+        await createSquare(coordinate.x, coordinate.y, coordinate.type);
+      });
+
+      roads.forEach(async (road) => {
+        await createRoad(
+          road.start[0],
+          road.start[1],
+          road.end[0],
+          road.end[1]
+        );
+      });
+
+      await firstRun();
+      isModalOpen && (await handleMovement());
+    }
+
     createScene();
 
-    // リーン��ップ関数の強化
+    // リーンップ関数の強化
     return () => {
       // すべてのジオメトリとマテリアルを適切に破棄
       scene.traverse((object) => {
