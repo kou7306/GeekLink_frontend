@@ -29,8 +29,10 @@ export async function middleware(request: NextRequest) {
 
   // ユーザーがログインしていない場合、特定のパスでリダイレクト
   if (
+    !(path === "/login" || path === "/sign-up") &&
     !user // ユーザーが取得できない、またはログインしていない場合
   ) {
+    console.log("redirect");
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
