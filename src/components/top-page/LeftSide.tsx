@@ -4,7 +4,7 @@ import SuggestUserList from "./SuggestUserList";
 
 const RightSide = () => {
   return (
-    <div className="p-6">
+    <div className="p-5">
       <FollowerList />
       <SuggestUserList />
     </div>

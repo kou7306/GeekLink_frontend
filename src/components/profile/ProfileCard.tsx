@@ -1,11 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { getUuidFromCookie } from "@/actions/users";
-import axios from "axios";
 import { User } from "./options";
 import Image from "next/image";
 import { FaGithub, FaTwitter } from "react-icons/fa";
-import { addFollowID, deleteFollowID } from "@/utils/addFollow";
 import { Box, Grid } from "@mui/material";
 import RepositoryList from "./RepositoryList";
 import QiitaList from "./QiitaList";
@@ -18,6 +16,7 @@ import GitHubContributions from "./GitHubContributions";
 import PercentageOfLanguages from "./PercentageOfLanguages";
 import UserRank from "./UserRank";
 import FollowNum from "./FollowNum";
+import FollowButton from "./FollowButton";
 
 interface ProfileCardProps {
   user: User;
@@ -25,16 +24,10 @@ interface ProfileCardProps {
   onEdit?: () => void;
 }
 
-interface FollowCheckResponse {
-  message: string;
-  data: boolean;
-}
-
 const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
   console.log("currentAvatar", user.currentAvatar);
   const [isFollowd, setIsFollowed] = useState<boolean>(false);
   const [uuid, setUuid] = useState<string>();
-  const [hoverText, setHoverText] = useState<string>("フォロー中");
 
   // Get UUID from cookie on component mount
   useEffect(() => {
@@ -50,26 +43,6 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
     };
     getUuid();
   }, []);
-
-  useEffect(() => {
-    console.log("isFollowd =", isFollowd);
-  }, [isFollowd]);
-
-  useEffect(() => {
-    if (uuid && !isMe) {
-      axios
-        .post(`${process.env.NEXT_PUBLIC_API_URL}/profile/follow-status`, {
-          myID: uuid,
-          uuid: user.user_id, // Assuming user.user_id is the target UUID
-        })
-        .then((response: { data: FollowCheckResponse }) => {
-          setIsFollowed(response.data.data);
-        })
-        .catch((error) => {
-          console.error("Error fetching follow status:", error);
-        });
-    }
-  }, [uuid, user.user_id]);
 
   return (
     <Box>
@@ -143,38 +116,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
             {isMe ? <SocialMediaIntegration /> : null}
           </div>
           {user.message && <CommentComponent message={user.message} />}
-          {!isMe && (
-            <button
-              className={`rounded-full p-1.5 border-2 mt-2 my-4 w-32 ${
-                isFollowd
-                  ? "bg-white text-black border-gray-600 hover:border-red-500 hover:text-red-500"
-                  : "bg-base text-white border-black"
-              }`}
-              onClick={() => {
-                if (!isFollowd) {
-                  addFollowID(user.user_id);
-                  setIsFollowed(true);
-                } else {
-                  deleteFollowID(user.user_id);
-                  setIsFollowed(false);
-                }
-              }}
-              onMouseEnter={() => {
-                if (isFollowd) setHoverText("フォロー解除");
-              }}
-              onMouseLeave={() => {
-                if (isFollowd) setHoverText("フォロー中");
-              }}
-            >
-              <span
-                className={`text-sm font-semibold tracking-wider ${
-                  isFollowd ? "" : "text-white"
-                }`}
-              >
-                {!isFollowd ? "フォロー" : hoverText}
-              </span>
-            </button>
-          )}
+          {/* フォローボタン */}
+          {uuid && <FollowButton userId={user.user_id} isMe={isMe} myID={uuid} />}
 
           {/* フォロー・フォロワー数 */}
           <FollowNum isMe={isMe} />

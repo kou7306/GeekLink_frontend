@@ -39,6 +39,22 @@ const selectCoordinates: Coordinate[] = [
   { x: 2, y: 3, availableDirections: ["straight"], type: "life" },
   { x: 2, y: 6, availableDirections: ["straight", "right"], type: "coin" },
   { x: 4, y: 6, availableDirections: ["straight"], type: "coin" },
+  { x: 2, y: 9, availableDirections: ["straight"], type: "life" },
+  { x: 2, y: 12, availableDirections: ["right"], type: "coin" },
+  { x: 4, y: 9, availableDirections: ["straight"], type: "coin" },
+  { x: 4, y: 12, availableDirections: ["right"], type: "costume" },
+  { x: 6, y: 12, availableDirections: ["right"], type: "life" },
+  { x: 0, y: 12, availableDirections: ["straight"], type: "coin" },
+  { x: 0, y: 15, availableDirections: ["straight"], type: "coin" },
+  { x: 0, y: 18, availableDirections: [], type: "costume" },
+  { x: -4, y: 9, availableDirections: ["left"], type: "life" },
+  { x: -6, y: 9, availableDirections: ["straight"], type: "coin" },
+  { x: -6, y: 12, availableDirections: ["straight"], type: "coin" },
+  { x: -6, y: 15, availableDirections: ["right"], type: "costume" },
+  { x: -2, y: 12, availableDirections: ["left"], type: "life" },
+  { x: -4, y: 12, availableDirections: ["straight"], type: "coin" },
+  { x: -4, y: 15, availableDirections: ["left"], type: "coin" },
+  { x: -4, y: 18, availableDirections: [], type: "life" },
 ];
 
 const roads = [
@@ -56,6 +72,18 @@ const roads = [
   { start: [-2, 6], end: [-4, 6] },
   { start: [-4, 6], end: [-4, 9] },
   { start: [-2, 9], end: [-2, 12] },
+  { start: [2, 9], end: [2, 12] },
+  { start: [2, 12], end: [4, 12] },
+  { start: [4, 9], end: [4, 12] },
+  { start: [4, 12], end: [6, 12] },
+  { start: [0, 12], end: [0, 15] },
+  { start: [0, 15], end: [0, 18] },
+  { start: [-4, 9], end: [-6, 9] },
+  { start: [-6, 9], end: [-6, 12] },
+  { start: [-6, 12], end: [-6, 15] },
+  { start: [-2, 12], end: [-4, 12] },
+  { start: [-4, 12], end: [-4, 15] },
+  { start: [-4, 15], end: [-4, 18] },
 ];
 
 const items = [
@@ -123,6 +151,102 @@ const items = [
     x: 4,
     y: 6,
     type: "coin",
+    isCollected: false,
+  },
+  {
+    x: 2,
+    y: 9,
+    type: "life",
+    isCollected: false,
+  },
+  {
+    x: 2,
+    y: 12,
+    type: "coin",
+    isCollected: false,
+  },
+  {
+    x: 4,
+    y: 9,
+    type: "coin",
+    isCollected: false,
+  },
+  {
+    x: 4,
+    y: 12,
+    type: "costume",
+    isCollected: false,
+  },
+  {
+    x: 6,
+    y: 12,
+    type: "life",
+    isCollected: false,
+  },
+  {
+    x: 0,
+    y: 12,
+    type: "coin",
+    isCollected: false,
+  },
+  {
+    x: 0,
+    y: 15,
+    type: "coin",
+    isCollected: false,
+  },
+  {
+    x: 0,
+    y: 18,
+    type: "costume",
+    isCollected: false,
+  },
+  {
+    x: -4,
+    y: 9,
+    type: "life",
+    isCollected: false,
+  },
+  {
+    x: -6,
+    y: 9,
+    type: "coin",
+    isCollected: false,
+  },
+  {
+    x: -6,
+    y: 12,
+    type: "coin",
+    isCollected: false,
+  },
+  {
+    x: -6,
+    y: 15,
+    type: "costume",
+    isCollected: false,
+  },
+  {
+    x: -2,
+    y: 12,
+    type: "life",
+    isCollected: false,
+  },
+  {
+    x: -4,
+    y: 12,
+    type: "coin",
+    isCollected: false,
+  },
+  {
+    x: -4,
+    y: 15,
+    type: "coin",
+    isCollected: false,
+  },
+  {
+    x: -4,
+    y: 18,
+    type: "life",
     isCollected: false,
   },
 ];
@@ -590,7 +714,6 @@ const RpgScreen = ({
             document.body.removeChild(resultDialog);
             setIsModalOpen(true);
             handleMovement();
-            window.location.reload();
           });
           return;
         }
@@ -1027,7 +1150,7 @@ const RpgScreen = ({
       mountRef.current?.removeChild(renderer.domElement);
       renderer.dispose();
     };
-  }, [positionX, positionY]);
+  }, [positionX, positionY, isModalOpen]);
 
   return (
     <>
