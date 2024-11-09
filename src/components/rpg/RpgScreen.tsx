@@ -164,7 +164,7 @@ const RpgScreen = ({
       1000
     );
     camera.position.set(0, -2, 2); // カメラの位置
-    camera.lookAt(0, 0, -0.6); // カメラの注視点をシーンの中心に設定
+    camera.lookAt(0, 0, -0.25); // カメラの注視点をシーンの中心に設定
     const renderer = new THREE.WebGLRenderer({ antialias: true }); // アンチエイリアスを有効にして、より滑らかな描画を行う
 
     renderer.setSize(window.innerWidth, window.innerHeight);
