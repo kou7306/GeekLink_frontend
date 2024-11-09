@@ -404,8 +404,8 @@ const RpgScreen = ({
         border: "3px solid #8B4513",
         boxShadow: "0 0 10px rgba(0, 0, 0, 0.3)",
         zIndex: "1000",
-        width: "200px",
-        height: "80px",
+        width: "300px",
+        height: "100px",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -413,6 +413,9 @@ const RpgScreen = ({
         fontSize: "36px",
         color: "#333",
         cursor: "pointer",
+        textAlign: "center",
+        wordBreak: "keep-all",
+        whiteSpace: "pre-line",
       };
 
       // 基本スタイルを適用
@@ -825,7 +828,7 @@ const RpgScreen = ({
             : (leftButton.style.backgroundColor = "#808080");
         };
         leftButton.onclick = () => {
-          if (isModalClosed) return; // 既に閉じている場合は何もしない
+          if (isModalClosed) return; // 既に���じている場合は何���しない
           isModalClosed = true;
 
           document.body.removeChild(modal);
@@ -897,7 +900,7 @@ const RpgScreen = ({
             : (rightButton.style.backgroundColor = "#808080");
         };
         rightButton.onclick = () => {
-          if (isModalClosed) return; // 既に���じている場合は何もしない
+          if (isModalClosed) return; // 既に閉じている場合は何もしない
           isModalClosed = true;
 
           document.body.removeChild(modal);
