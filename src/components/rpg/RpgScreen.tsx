@@ -433,6 +433,7 @@ const RpgScreen = ({
               // 結果ダイアログを閉じた後にモーダルを表示
               setIsModalOpen(true);
               handleMovement();
+              window.location.reload(); // ページを再レンダリング
             });
           }, 500);
           return;
