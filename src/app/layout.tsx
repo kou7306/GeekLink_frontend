@@ -13,6 +13,15 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "GeekLink",
+  description: "GeekLink - 学生エンジニアのためのプラットフォーム",
+  icons: {
+    icon: [
+      {
+        url: "/geeklink-logo.svg",
+        type: "image/svg+xml",
+      }
+    ]
+  }
 };
 
 export default async function RootLayout({
