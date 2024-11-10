@@ -41,7 +41,6 @@ const SubHeader: React.FC<Props> = ({
   const handleAddMember = async () => {
     if (uuid && groupId) {
       const response = await addGroupMember(groupId, uuid);
-      console.log(response.message);
       if (response.message === "success") {
         setGroupData((prevGroupData) => ({
           ...prevGroupData,

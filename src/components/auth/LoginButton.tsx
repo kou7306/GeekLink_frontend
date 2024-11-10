@@ -32,14 +32,20 @@ function LoginButton({ provider }: LoginButtonProps) {
       onClick={() => handleClickLoginButton(provider)}
       disabled={isPending}
       className={`${
-        provider === "github" ? "bg-gray-800 hover:bg-black" : "bg-red-500 hover:bg-red-600"
+        provider === "github"
+          ? "bg-gray-800 hover:bg-black"
+          : "bg-red-500 hover:bg-red-600"
       } text-white font-bold py-2 px-4 rounded w-full flex items-center justify-center space-x-2`}
     >
       {isPending ? (
         "Logging in..."
       ) : (
         <>
-          {provider === "github" ? <FaGithub className="w-5 h-5" /> : <FaGoogle className="w-5 h-5" />}
+          {provider === "github" ? (
+            <FaGithub className="w-5 h-5" />
+          ) : (
+            <FaGoogle className="w-5 h-5" />
+          )}
           <span>{provider === "github" ? "GitHub" : "Google"}</span>
         </>
       )}

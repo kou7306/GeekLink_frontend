@@ -14,16 +14,22 @@ interface UserItems {
 }
 
 const getUserCoin = async (userId: string): Promise<UserCoin> => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/rpg/coin/${userId}`, {
-    cache: "no-store",
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/rpg/coin/${userId}`,
+    {
+      cache: "no-store",
+    }
+  );
   return response.json();
 };
 
 const getUserItems = async (userId: string): Promise<UserItems> => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/rpg/costume/${userId}`, {
-    cache: "no-store",
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/rpg/costume/${userId}`,
+    {
+      cache: "no-store",
+    }
+  );
   return response.json();
 };
 
@@ -51,10 +57,11 @@ export default function Page() {
       if (!userId) return;
 
       try {
-        const [coinData, itemsData] = await Promise.all([getUserCoin(userId), getUserItems(userId)]);
+        const [coinData, itemsData] = await Promise.all([
+          getUserCoin(userId),
+          getUserItems(userId),
+        ]);
 
-        console.log("coinData", coinData);
-        console.log("itemsData", itemsData);
         setUserCoin(coinData);
         setUserItems(itemsData);
       } catch (error) {
@@ -69,7 +76,7 @@ export default function Page() {
     return null;
   }
 
-  console.log("userCoin", userCoin);
-  console.log("userItems", userItems);
-  return <ShopPageClient userId={userId} userCoin={userCoin} userItems={userItems} />;
+  return (
+    <ShopPageClient userId={userId} userCoin={userCoin} userItems={userItems} />
+  );
 }

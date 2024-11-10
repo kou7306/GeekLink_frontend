@@ -1115,10 +1115,8 @@ const RpgScreen = ({
     }
 
     async function createScene() {
-      console.log(lives);
       await createAvatar();
       await createRoadAndSquare();
-      console.log(positionX, positionY);
 
       // forEachをPromise.allとmapに変更
       await Promise.all(

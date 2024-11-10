@@ -1,6 +1,15 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Grid, Card, CardContent, Typography, Button, Container, Box, Alert } from "@mui/material";
+import {
+  Grid,
+  Card,
+  CardContent,
+  Typography,
+  Button,
+  Container,
+  Box,
+  Alert,
+} from "@mui/material";
 import { blenderModels } from "@/constants/blenderModels";
 import AvatarViewer from "@/components/rpg/AvatarViewer";
 
@@ -14,20 +23,26 @@ interface ShopPageClientProps {
   };
 }
 
-const ShopPageClient: React.FC<ShopPageClientProps> = ({ userId, userCoin, userItems }) => {
+const ShopPageClient: React.FC<ShopPageClientProps> = ({
+  userId,
+  userCoin,
+  userItems,
+}) => {
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
+  const [message, setMessage] = useState<{
+    text: string;
+    type: "success" | "error";
+  } | null>(null);
   const [currentCoin, setCurrentCoin] = useState(parseInt(userCoin.coin));
-  const [purchasedItems, setPurchasedItems] = useState<string[]>(userItems.items);
+  const [purchasedItems, setPurchasedItems] = useState<string[]>(
+    userItems.items
+  );
 
   // propsの変更を監視して状態を更新
   useEffect(() => {
     setCurrentCoin(parseInt(userCoin.coin));
     setPurchasedItems(userItems.items);
   }, [userCoin.coin, userItems.items]);
-
-  console.log("currentCoin", currentCoin);
-  console.log("purchasedItems", purchasedItems);
 
   // fee > 0 のアイテムのみを表示
   const shopItems = blenderModels.filter((item) => item.fee > 0);
@@ -37,17 +52,20 @@ const ShopPageClient: React.FC<ShopPageClientProps> = ({ userId, userCoin, userI
     setMessage(null);
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/rpg/costume`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          uuid: userId,
-          costume: itemId,
-          coin: (-itemFee).toString(), // 負の値で送信
-        }),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/rpg/costume`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            uuid: userId,
+            costume: itemId,
+            coin: (-itemFee).toString(), // 負の値で送信
+          }),
+        }
+      );
 
       const data = await response.json();
 
@@ -56,7 +74,10 @@ const ShopPageClient: React.FC<ShopPageClientProps> = ({ userId, userCoin, userI
         setCurrentCoin((prev) => prev - itemFee);
         setPurchasedItems((prev) => [...prev, itemId]);
       } else {
-        setMessage({ text: data.result || "購入に失敗しました", type: "error" });
+        setMessage({
+          text: data.result || "購入に失敗しました",
+          type: "error",
+        });
       }
     } catch (error) {
       setMessage({ text: "エラーが発生しました", type: "error" });
@@ -99,7 +120,10 @@ const ShopPageClient: React.FC<ShopPageClientProps> = ({ userId, userCoin, userI
                   }}
                 >
                   <Box sx={{ height: "250px", position: "relative" }}>
-                    <AvatarViewer modelPath={item.avatarPath} size={{ width: "100%", height: "100%" }} />
+                    <AvatarViewer
+                      modelPath={item.avatarPath}
+                      size={{ width: "100%", height: "100%" }}
+                    />
                   </Box>
                   <CardContent
                     sx={{
@@ -112,13 +136,21 @@ const ShopPageClient: React.FC<ShopPageClientProps> = ({ userId, userCoin, userI
                   >
                     <Box>
                       <Typography variant="h6">{item.name}</Typography>
-                      <Typography variant="body2" color="yellow" sx={{ marginBottom: 1 }}>
+                      <Typography
+                        variant="body2"
+                        color="yellow"
+                        sx={{ marginBottom: 1 }}
+                      >
                         {item.fee} コイン
                       </Typography>
                     </Box>
 
                     {isPurchased ? (
-                      <Typography variant="h6" color="primary" sx={{ fontWeight: "bold" }}>
+                      <Typography
+                        variant="h6"
+                        color="primary"
+                        sx={{ fontWeight: "bold" }}
+                      >
                         購入済み
                       </Typography>
                     ) : (
@@ -135,7 +167,11 @@ const ShopPageClient: React.FC<ShopPageClientProps> = ({ userId, userCoin, userI
                           },
                         }}
                       >
-                        {!canAfford ? "コイン不足" : loading ? "購入中..." : "購入"}
+                        {!canAfford
+                          ? "コイン不足"
+                          : loading
+                          ? "購入中..."
+                          : "購入"}
                       </Button>
                     )}
                   </CardContent>

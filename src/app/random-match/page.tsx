@@ -237,11 +237,9 @@ export default function Home() {
         <button
           className="bg-red-500 text-white font-bold py-2 px-4 w-36 rounded hover:bg-red-700 transition duration-200 mt-24"
           onClick={async () => {
-            console.log(swipedRightUserIds);
             try {
               if (swipedRightUserIds.length > 0) {
                 const data = await postSwipedRightUserIds(swipedRightUserIds);
-                console.log(data);
               } else {
                 console.warn("No users swiped right");
               }

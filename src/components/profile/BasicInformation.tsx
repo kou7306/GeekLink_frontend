@@ -9,7 +9,7 @@ type Props = {
 const BasicInformation = ({ user }: Props) => {
   return (
     <>
-      <Box marginTop={2}>
+      <Box marginTop={6}>
         <Typography variant="h6" fontWeight={600}>
           基本情報
         </Typography>

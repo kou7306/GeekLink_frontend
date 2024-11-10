@@ -44,7 +44,6 @@ const TeamRecruitmentPage = ({ event, currentUserId }: Props) => {
 
     fetchUsers();
   }, []);
-  console.log(uuid);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -170,7 +169,7 @@ const TeamRecruitmentPage = ({ event, currentUserId }: Props) => {
       }
 
       toast.success("イベントを締め切りました");
-      router.push('/team-recruitments');
+      router.push("/team-recruitments");
     } catch (error) {
       toast.error("エラーが発生しました");
     } finally {
@@ -370,7 +369,7 @@ const TeamRecruitmentPage = ({ event, currentUserId }: Props) => {
                     color: "black",
                     backgroundColor: "white",
                   }}
-                  onClick={() => handleDeleteEvent() }
+                  onClick={() => handleDeleteEvent()}
                 >
                   締め切る
                 </Button>

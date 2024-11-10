@@ -30,7 +30,6 @@ const ClientWrapper: React.FC<{ children: React.ReactNode }> = ({
         .then((data: any) => {
           setBonusData(data); // ボーナスデータを設定
           setShowBonusPopup(true); // ポップアップを表示
-          console.log("ボーナスデータ:", data);
         })
         .catch((error) => {
           console.error("ボーナス取得エラー:", error);

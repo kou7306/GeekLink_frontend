@@ -5,8 +5,6 @@ interface CoinDisplayProps {
 }
 
 const CoinDisplay: React.FC<CoinDisplayProps> = ({ coins }) => {
-  console.log("Coins in CoinDisplay:", coins); // デバッグ: coinsの値をログに出力
-
   return (
     <div className="flex items-center rounded-lg pr-4 shadow-lg">
       {/* coin.pngを表示 */}

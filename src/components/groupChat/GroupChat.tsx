@@ -45,7 +45,6 @@ const GroupChat = ({ params }: { params: any }) => {
   useEffect(() => {
     const fetchMessages = async () => {
       const { messages } = await getMessageData(groupId);
-      console.log(messages);
       setMessages(messages);
     };
 
@@ -58,8 +57,6 @@ const GroupChat = ({ params }: { params: any }) => {
       const { group, members } = await getGroupMembers(groupId);
       setGroupData(group);
       setMembers(members);
-      console.log("groupData", group?.member_ids);
-      console.log("members", members);
     };
 
     fetchMembers();

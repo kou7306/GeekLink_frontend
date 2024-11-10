@@ -31,7 +31,6 @@ const CreateGroup = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       const uuid = await getUuidFromCookie();
-      console.log(uuid);
       if (uuid) {
         setUuid(uuid);
       }
@@ -65,7 +64,6 @@ const CreateGroup = () => {
       }
 
       const data = await response.json();
-      console.log("Group created: ", data);
 
       handleClose();
     } catch (error) {

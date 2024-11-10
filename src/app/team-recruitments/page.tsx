@@ -16,7 +16,6 @@ async function fetchEvents(eventType: "EVENT" | "HACKATHON") {
     },
   });
   if (!response.ok) {
-    console.log("response", response);
   }
 
   const events = await response.json();

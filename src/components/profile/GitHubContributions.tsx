@@ -44,7 +44,7 @@ const GitHubContributions = ({ isMe }: Props) => {
     : 0;
 
   return (
-    <Box display="flex" flexDirection="row" alignItems="center" mt={2}>
+    <Box display="flex" flexDirection="row" alignItems="center" mt={6}>
       <Typography marginRight={1}>Contribution数</Typography>
       <Typography>{numberOfContributions} contributions</Typography>
     </Box>

@@ -17,8 +17,6 @@ export const getLatestMessage = async (
     // レスポンスをJSONとしてパース
     const { message }: { message: Message } = await response.json();
 
-    console.log("message", message.content);
-
     return { message };
   } catch (error) {
     console.error("Error fetching messages:", error);

@@ -10,8 +10,6 @@ interface RecruitmentProps {
 
 const Recruitment = ({ event }: RecruitmentProps) => {
   const [user, setUser] = useState<User | null>(null);
-  console.log(event);
-
   useEffect(() => {
     const fetchProfile = async () => {
       if (event.owner_id) {
@@ -48,10 +46,7 @@ const Recruitment = ({ event }: RecruitmentProps) => {
         {user && user.image_url ? (
           <Avatar src={user.image_url} sx={{ width: 40, height: 40 }} />
         ) : (
-          <Avatar
-            src="/user.svg"
-            sx={{ width: 40, height: 40 }}
-          ></Avatar>
+          <Avatar src="/user.svg" sx={{ width: 40, height: 40 }}></Avatar>
         )}
         <Typography variant="h6" sx={{ fontWeight: "bold" }}>
           {user ? user.name : ""}

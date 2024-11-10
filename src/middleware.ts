@@ -11,7 +11,7 @@ export async function middleware(request: NextRequest) {
   const path = new URL(request.url).pathname;
 
   const user = await getUser(request, response);
-
+  console.log("middleware-User:", user);
   if (
     (path === "/" ||
       path === "/protected-route" ||
@@ -22,6 +22,7 @@ export async function middleware(request: NextRequest) {
       path === "/profile-initialization") &&
     !user
   ) {
+    console.log("Redirecting to login");
     return NextResponse.redirect(new URL("/login", request.url));
   }
 

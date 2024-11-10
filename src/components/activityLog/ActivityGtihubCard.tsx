@@ -6,7 +6,6 @@ import { bg } from "date-fns/locale";
 export const GitHubActivityCard: React.FC<{ activity: any }> = ({
   activity,
 }) => {
-  console.log("activity", activity);
   let displayText = "";
 
   switch (true) {

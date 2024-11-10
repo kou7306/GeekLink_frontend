@@ -30,7 +30,6 @@ export const addGroupMember = async (
 
     // レスポンスをJSONとしてパース
     const data = await response.json();
-    console.log(data);
     return data; // { message: "success" } を返す
   } catch (error) {
     console.error("Error adding group member:", error);

@@ -11,7 +11,6 @@ const Page = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       const uuid = await getUuidFromCookie();
-      console.log(uuid);
       if (uuid) {
         setUuid(uuid);
       }

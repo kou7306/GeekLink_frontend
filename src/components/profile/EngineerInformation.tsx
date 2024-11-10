@@ -1,6 +1,6 @@
 import React from "react";
 import { User } from "./options";
-import { Box, Typography } from "@mui/material";
+import { Box, Chip, Typography } from "@mui/material";
 
 type Props = {
   user: User;
@@ -8,7 +8,7 @@ type Props = {
 
 const EngineerInformation = ({ user }: Props) => {
   return (
-    <Box marginTop={2}>
+    <Box marginTop={6}>
       <Typography variant="h6" fontWeight={600}>
         エンジニア情報
       </Typography>
@@ -20,20 +20,16 @@ const EngineerInformation = ({ user }: Props) => {
             </Typography>
             <Box display="flex" flexWrap="wrap" gap={1}>
               {user.experience?.map((experience, index) => (
-                <Typography
+                <Chip
                   key={index}
-                  variant="body2"
-                  bgcolor="background.default" // 背景色を background.default に変更
-                  color="text.primary" // 文字色を白に設定
-                  px={1}
-                  py={0.5}
-                  borderRadius={1}
-                >
-                  {experience}
-                </Typography>
+                  label={experience}
+                  color="default"
+                  variant="outlined"
+                />
               ))}
             </Box>
           </Box>
+
           <Box>
             <Typography variant="subtitle1" fontWeight={600} gutterBottom>
               希望職種
