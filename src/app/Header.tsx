@@ -11,11 +11,10 @@ import Image from "next/image";
 
 const Header = () => {
   const pathname = usePathname();
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // ポップアップの状態を管理
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [uuid, setUuid] = useState<string | null>(null);
 
-  // ユーザーのプロフィールを取得
   useEffect(() => {
     const fetchProfile = async () => {
       const userId = await getUuidFromCookie();
@@ -41,10 +40,22 @@ const Header = () => {
     fetchProfile();
   }, []);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.target.closest(".popup-menu") && isMenuOpen) {
+        setIsMenuOpen(false);
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [isMenuOpen]);
+
   const isActive = (path: string) => pathname === path;
 
   const handleMenuToggle = () => {
-    setIsMenuOpen((prev) => !prev); // メニューの表示/非表示をトグル
+    setIsMenuOpen((prev) => !prev);
   };
 
   return (
@@ -66,13 +77,17 @@ const Header = () => {
           </a>
           <a
             href="/conversation"
-            className={`text-text hover:text-primary ${isActive("/conversation") ? "text-primary" : ""}`}
+            className={`text-text hover:text-primary ${
+              isActive("/conversation") ? "text-primary" : ""
+            }`}
           >
             メッセージ
           </a>
           <a
             href="/group-list"
-            className={`text-text hover:text-primary ${isActive("/group-list") ? "text-primary" : ""}`}
+            className={`text-text hover:text-primary ${
+              isActive("/group-list") ? "text-primary" : ""
+            }`}
           >
             グループ
           </a>
@@ -86,7 +101,9 @@ const Header = () => {
           </a>
           <a
             href="/ranking"
-            className={`text-text hover:text-primary ${isActive("/ranking") ? "text-primary" : ""}`}
+            className={`text-text hover:text-primary ${
+              isActive("/ranking") ? "text-primary" : ""
+            }`}
           >
             ランキング
           </a>
@@ -100,8 +117,6 @@ const Header = () => {
           </a>
         </nav>
         <div className="relative flex items-center space-x-4">
-          {" "}
-          {/* アイコンとボタンを横並びにする */}
           <button
             onClick={handleMenuToggle}
             className="flex items-center justify-center bg-primary text-text p-2 rounded-full"
@@ -114,11 +129,17 @@ const Header = () => {
               isActive("/rpg") ? "opacity-80" : ""
             }`}
           >
-            <Image src="/game-icon.svg" alt="Game" width={32} height={32} className="rounded-sm" />
+            <Image
+              src="/game-icon.svg"
+              alt="Game"
+              width={32}
+              height={32}
+              className="rounded-sm"
+            />
           </Link>
           <UpdateStatusButton />
           {isMenuOpen && (
-            <div className="absolute right-0 top-14 mt-2 w-48 bg-sub_base shadow-lg rounded-lg py-4 z-50">
+            <div className="absolute right-0 top-14 mt-2 w-48 bg-sub_base shadow-lg rounded-lg py-4 z-50 popup-menu">
               <div className="flex flex-col items-center text-center">
                 <a
                   href="/my-page"

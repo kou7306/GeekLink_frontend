@@ -8,9 +8,9 @@ type Props = {
 
 const OtherInformation = ({ user }: Props) => {
   return (
-    <Box marginTop={2}>
+    <Box marginTop={6}>
       <Typography variant="h6" fontWeight={600}>
-        その他
+        その他の情報
       </Typography>
       <Box marginLeft={2} marginTop={2}>
         <Box display="flex" flexDirection="column" gap={2}>

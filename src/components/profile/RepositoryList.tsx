@@ -90,7 +90,12 @@ const RepositoryList: React.FC<RepositoryListProps> = ({ uuid }) => {
         {/* リポジトリがない場合でもスペースを確保 */}
         {repositoriesToShow.length > 0 ? (
           repositoriesToShow.map((repository, index) => (
-            <Link href={repository.url} key={index} target="_blank" rel="noopener noreferrer">
+            <Link
+              href={repository.url}
+              key={index}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <Box
                 key={index}
                 display={"flex"}
@@ -112,7 +117,7 @@ const RepositoryList: React.FC<RepositoryListProps> = ({ uuid }) => {
           ))
         ) : (
           <Typography variant="body2" color="text.primary" align="center">
-            No repositories available.
+            連携されていません
           </Typography>
         )}
 

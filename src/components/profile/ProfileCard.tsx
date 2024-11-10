@@ -25,7 +25,6 @@ interface ProfileCardProps {
 }
 
 const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
-  console.log("currentAvatar", user.currentAvatar);
   const [isFollowd, setIsFollowed] = useState<boolean>(false);
   const [uuid, setUuid] = useState<string>();
 
@@ -117,7 +116,9 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
           </div>
           {user.message && <CommentComponent message={user.message} />}
           {/* フォローボタン */}
-          {uuid && <FollowButton userId={user.user_id} isMe={isMe} myID={uuid} />}
+          {uuid && (
+            <FollowButton userId={user.user_id} isMe={isMe} myID={uuid} />
+          )}
 
           {/* フォロー・フォロワー数 */}
           <FollowNum isMe={isMe} />

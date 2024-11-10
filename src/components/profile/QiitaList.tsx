@@ -96,7 +96,7 @@ const QiitaList: React.FC<QiitaListProps> = ({ uuid }) => {
           ))
         ) : (
           <Typography variant="body2" color="text.primary" align="center">
-            No articles available.
+            連携されていません
           </Typography>
         )}
         {/* アイコンボタンを常に表示、条件に応じて動作を切り替え */}

@@ -72,6 +72,7 @@ const Home = () => {
           })
           .catch((error) => console.error("Error:", error));
       } else {
+        console.error("User not found11");
         router.push("/login");
       }
     };
@@ -117,7 +118,7 @@ const Home = () => {
               overflowY: "auto", // スクロール可能にする
               position: "fixed",
               right: 0,
-              height: "100vh",
+              height: "90vh",
             }}
           >
             <RightSide />
