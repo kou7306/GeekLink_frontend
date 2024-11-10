@@ -41,8 +41,8 @@ const Header = () => {
   }, []);
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (!event.target.closest(".popup-menu") && isMenuOpen) {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (!(event.target as HTMLElement).closest(".popup-menu") && isMenuOpen) {
         setIsMenuOpen(false);
       }
     };
