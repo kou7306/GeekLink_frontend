@@ -11,10 +11,11 @@ import Image from "next/image";
 
 const Header = () => {
   const pathname = usePathname();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // ポップアップの状態を管理
   const [user, setUser] = useState<User | null>(null);
   const [uuid, setUuid] = useState<string | null>(null);
 
+  // ユーザーのプロフィールを取得
   useEffect(() => {
     const fetchProfile = async () => {
       const userId = await getUuidFromCookie();
@@ -40,22 +41,10 @@ const Header = () => {
     fetchProfile();
   }, []);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (!(event.target as HTMLElement).closest(".popup-menu") && isMenuOpen) {
-        setIsMenuOpen(false);
-      }
-    };
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, [isMenuOpen]);
-
   const isActive = (path: string) => pathname === path;
 
   const handleMenuToggle = () => {
-    setIsMenuOpen((prev) => !prev);
+    setIsMenuOpen((prev) => !prev); // メニューの表示/非表示をトグル
   };
 
   return (
@@ -117,6 +106,8 @@ const Header = () => {
           </a>
         </nav>
         <div className="relative flex items-center space-x-4">
+          {" "}
+          {/* アイコンとボタンを横並びにする */}
           <button
             onClick={handleMenuToggle}
             className="flex items-center justify-center bg-primary text-text p-2 rounded-full"
@@ -139,7 +130,7 @@ const Header = () => {
           </Link>
           <UpdateStatusButton />
           {isMenuOpen && (
-            <div className="absolute right-0 top-14 mt-2 w-48 bg-sub_base shadow-lg rounded-lg py-4 z-50 popup-menu">
+            <div className="absolute right-0 top-14 mt-2 w-48 bg-sub_base shadow-lg rounded-lg py-4 z-50">
               <div className="flex flex-col items-center text-center">
                 <a
                   href="/my-page"
