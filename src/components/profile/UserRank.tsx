@@ -92,7 +92,6 @@ const UserRank = ({ isMe, currentAvatar }: Props) => {
     router.push("/change-avatar");
   };
 
-  console.log("currentAvatar", currentAvatar);
   return (
     <Box
       sx={{

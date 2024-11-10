@@ -23,12 +23,9 @@ export default function Callback() {
     const api_url = process.env.NEXT_PUBLIC_API_URL;
 
     if (code) {
-      console.log("Code:", code);
-      console.log("UUID:", uuid);
       axios
         .post(api_url + "/qiita/callback", { uuid, code })
         .then((response) => {
-          console.log("Token saved:", response.data);
           router.push("/"); // 認証成功後にホームに戻る
         })
         .catch((error) => {

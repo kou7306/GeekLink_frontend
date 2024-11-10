@@ -23,7 +23,6 @@ function SignInButton({
 
   const handleSignIn = async () => {
     startTransition(async () => {
-      console.log(email, password);
       const { errorMessage } = await signInAction(email, password);
       if (!errorMessage) {
         router.push("/");

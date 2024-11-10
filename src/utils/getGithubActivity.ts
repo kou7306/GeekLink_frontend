@@ -60,7 +60,6 @@ export const getContributionsSinceLastUpdate = async (
     // 最後の更新日時を取得
     const lastUpdate = localStorage.getItem(lastUpdateKey);
     const lastUpdateDate = lastUpdate ? new Date(Number(lastUpdate)) : null;
-    console.log("lastUpdateDate", lastUpdateDate);
 
     // 更新日時が存在しない場合は、全データを取得
     if (!lastUpdateDate) {
@@ -98,7 +97,6 @@ export const getContributionsSinceLastUpdate = async (
     }
 
     const contributions = await response.json();
-    console.log("YearUpdatecontributions", contributions);
     return contributions.logs.length;
   } catch (error) {
     console.error("Error fetching contributions since last update:", error);
@@ -111,7 +109,6 @@ export const getMonthlyContributionInfo = async (
   uuid: string
 ): Promise<{ logs: any[] }> => {
   try {
-    console.log(uuid);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     const cacheKey = `contribution-info-${uuid}`;
     const cacheExpirationKey = `contribution-info-expiration-${uuid}`;
@@ -143,7 +140,6 @@ export const getMonthlyContributionInfo = async (
     }
 
     const contributions = await response.json();
-    console.log("Monthcontributions", contributions);
     // データをキャッシュに保存し、有効期限を設定
     localStorage.setItem(cacheKey, JSON.stringify(contributions));
     localStorage.setItem(cacheExpirationKey, (now + oneWeekInMs).toString());
@@ -201,7 +197,6 @@ export const getContributionsInfoSinceLastUpdate = async (
     }
 
     const contributions = await response.json();
-    console.log("MonthUpdatecontributions", contributions);
     return contributions;
   } catch (error) {
     console.error("Error fetching contributions since last update:", error);

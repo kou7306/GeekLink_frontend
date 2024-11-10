@@ -60,7 +60,6 @@ const ActivityLogGraph: React.FC<{ propsArray: ActivityLogGraphProps[] }> = ({
     geeklink: "rgb(75, 192, 192)",
   };
 
-  console.log(propsArray);
   // datasetsに各kindのデータを追加
   const datasets = propsArray
     .filter((activity) => activity.data.length === 12) // データが12個のものだけを残す

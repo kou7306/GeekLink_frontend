@@ -3,16 +3,22 @@ import { Post } from "../types/timeline";
 import axios from "axios";
 
 // 投稿一覧を取得する関数
-export const getPosts = async (page: number, limit: number): Promise<Post[]> => {
+export const getPosts = async (
+  page: number,
+  limit: number
+): Promise<Post[]> => {
   try {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-    const response = await fetch(`${apiUrl}/timeline/post?page=${page}&limit=${limit}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await fetch(
+      `${apiUrl}/timeline/post?page=${page}&limit=${limit}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     if (!response.ok) {
       throw new Error("Failed to fetch posts");
@@ -63,9 +69,12 @@ export const createPost = async (postData: {
   }
 };
 
-export const sendReaction = async (postId: string, userId: string, emoji: string) => {
+export const sendReaction = async (
+  postId: string,
+  userId: string,
+  emoji: string
+) => {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-  console.log("sendReaction", postId, userId, emoji);
   const response = await fetch(`${apiUrl}/timeline/add-reaction`, {
     method: "POST",
     headers: {

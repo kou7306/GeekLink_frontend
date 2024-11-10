@@ -28,7 +28,6 @@ const Page = () => {
     const fetchData = async () => {
       try {
         const data = await getUserData();
-        console.log("Fetched user data:", data);
         setLives(Number(data.life));
         setCoins(data.coin);
         setPositionX(Number(data.position_x));
@@ -49,10 +48,8 @@ const Page = () => {
 
     setLives(newLife);
     setError("");
-    console.log("更新");
     try {
       await updateLife(newLife.toString());
-      console.log(lives);
     } catch (error) {
       console.error("Failed to update life:", error);
       setError("Failed to update life.");
@@ -73,7 +70,6 @@ const Page = () => {
 
   const handleAddItem = async (item: string) => {
     const res = await addItem(item);
-    console.log(res);
   };
 
   return (

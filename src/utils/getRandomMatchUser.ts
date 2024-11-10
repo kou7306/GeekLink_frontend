@@ -15,7 +15,6 @@ export interface User {
 export const getRandomUsers = async (): Promise<User[]> => {
   try {
     const uuid = await getUuidFromCookie();
-    console.log(uuid);
     // APIからデータを取得
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     const response = await fetch(`${apiUrl}/match/random-match`, {
@@ -29,7 +28,6 @@ export const getRandomUsers = async (): Promise<User[]> => {
 
     // レスポンスをJSONとしてパース
     const data: User[] = await response.json();
-    console.log(data);
     return data;
   } catch (error) {
     console.error("Error fetching random users:", error);

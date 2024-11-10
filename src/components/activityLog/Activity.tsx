@@ -37,7 +37,6 @@ const Activity: React.FC<ActivityProps> = ({ uuid }) => {
       if (uuid) {
         // GitHub年間コントリビューションを取得
         const yearlyData = await getYearlyContribution(uuid);
-        console.log("yearlyData", yearlyData);
         setYearlyContribution(yearlyData);
 
         // GitHub更新以来のコントリビューションを取得
@@ -68,7 +67,6 @@ const Activity: React.FC<ActivityProps> = ({ uuid }) => {
 
         // アプリ内の年間のデータを取得
         const geekLinkActivity = await getGeekLinkActivity(uuid);
-        console.log("geekLinkActivity", geekLinkActivity);
         setYearlyGeekLinkActivity(geekLinkActivity.monthlyActivityCounts);
 
         // アプリ内の月間のデータを取得
