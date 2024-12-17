@@ -1,16 +1,16 @@
 import UsersPage from "@/components/suggest-users/UsersPage";
-import { checkUserIdExistence } from "@/utils/checkUserIdExistence";
-import { redirect } from "next/navigation";
+import { getSuggestUser } from "@/utils/getSuggestUser";
 import React from "react";
+import Loading from "../loading";
 
 const page = async () => {
-  // const isUserIdExist = await checkUserIdExistence();
-  // // ユーザーIDが存在しない場合はプロフィール初期化ページにリダイレクト
-  // if (!isUserIdExist) {
-  //   redirect("/profile-initialization");
-  // }
+  const data = await getSuggestUser();
 
-  return <UsersPage isUserIdExist={true} />;
+  if (!data) {
+    return <Loading />;
+  }
+
+  return <UsersPage isUserIdExist={true} users={data} />;
 };
 
 export default page;

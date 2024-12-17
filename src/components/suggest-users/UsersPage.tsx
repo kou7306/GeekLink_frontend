@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import FilterSearch from "../modal/FilterSearch";
 import {
   ageToIndex,
@@ -11,11 +11,9 @@ import {
   techToIndex,
 } from "@/utils/mapping";
 import { useRouter } from "next/navigation";
-import { getUuidFromCookie } from "@/actions/users";
 import Loading from "../core/Loading";
 import UserCard from "./UserCard";
 import { Profile } from "../../types/user";
-import { getSuggestUser } from "@/utils/getSuggestUser";
 
 interface UsersResponse {
   samePlaceUsers: Profile[];
@@ -28,9 +26,10 @@ interface UsersResponse {
 
 type Props = {
   isUserIdExist: boolean;
+  users: UsersResponse;
 };
 
-const UsersPage = ({ isUserIdExist = false }: Props) => {
+const UsersPage = ({ isUserIdExist = false, users }: Props) => {
   const [selectedPlaces, setSelectedPlaces] = useState<string[]>([]);
   const [selectedAges, setSelectedAges] = useState<string[]>([]);
   const [enteredHobby, setEnteredHobby] = useState("");
@@ -42,31 +41,7 @@ const UsersPage = ({ isUserIdExist = false }: Props) => {
   >([]);
 
   const [selectedExperiences, setSelectedExperiences] = useState<string[]>([]);
-  const [uuid, setUuid] = useState<string>("");
-  const [users, setUsers] = useState<UsersResponse | null>(null);
-
   const router = useRouter();
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const uuid = await getUuidFromCookie();
-      if (uuid) {
-        setUuid(uuid);
-      }
-    };
-
-    fetchUsers();
-  }, []); // 初回マウント時に実行する
-
-  useEffect(() => {
-    const fetchAndSetData = async () => {
-      const data = await getSuggestUser();
-
-      setUsers(data);
-    };
-
-    fetchAndSetData();
-  }, [uuid]);
 
   const handlePlaceClick = (place: string) => {
     setSelectedPlaces((prevSelectedPlaces) =>
