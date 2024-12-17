@@ -29,7 +29,7 @@ const Search = () => {
 
   const handleSearchButton = () => {
     console.log(keyword);
-    router.push(`/team-recruitments?keyword=${keyword}`);
+    router.push(`/team-recruitments/search?keyword=${keyword}`);
     handleClose();
   };
 
