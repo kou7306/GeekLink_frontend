@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
-import { Box, Modal, TextField, Typography } from "@mui/material";
+import { Box, Button, Modal, TextField, Typography } from "@mui/material";
 
 const style = {
   position: "absolute" as "absolute",
@@ -19,6 +19,10 @@ const Search = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const handleSearch = () => {
+    console.log("検索");
+  };
+
   return (
     <>
       <SearchIcon onClick={handleOpen} />
@@ -32,8 +36,24 @@ const Search = () => {
           <Typography id="modal-modal-title" variant="h6" component="h2">
             キーワードで検索
           </Typography>
-          <Box id="modal-modal-description" sx={{ mt: 2 }}>
+          <Box
+            id="modal-modal-description"
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            sx={{ mt: 2 }}
+          >
             <TextField fullWidth label="検索" variant="outlined" />
+            <Button
+              onClick={handleSearch}
+              sx={{
+                mt: 2,
+                bgcolor: "primary.main",
+                color: "white",
+              }}
+            >
+              検索
+            </Button>
           </Box>
         </Box>
       </Modal>
