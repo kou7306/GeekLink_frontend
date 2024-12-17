@@ -14,10 +14,7 @@ const nextConfig = {
           { key: "Access-Control-Allow-Credentials", value: "true" },
           {
             key: "Access-Control-Allow-Origin",
-            value: [
-              "http://localhost:3000",
-              "https://giiku5-frontend.vercel.app/",
-            ],
+            value: "http://localhost:3000, https://giiku5-frontend.vercel.app/",
           },
           {
             key: "Access-Control-Allow-Methods",
