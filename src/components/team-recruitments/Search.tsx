@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import { Box, Button, Modal, TextField, Typography } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 const style = {
   position: "absolute" as "absolute",
@@ -15,12 +16,21 @@ const style = {
 };
 
 const Search = () => {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const handleSearch = () => {
-    console.log("検索");
+  const [keyword, setKeyword] = useState("");
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setKeyword(e.target.value);
+  };
+
+  const handleSearchButton = () => {
+    console.log(keyword);
+    router.push(`/team-recruitments?keyword=${keyword}`);
+    handleClose();
   };
 
   return (
@@ -43,9 +53,14 @@ const Search = () => {
             alignItems="center"
             sx={{ mt: 2 }}
           >
-            <TextField fullWidth label="検索" variant="outlined" />
+            <TextField
+              fullWidth
+              label="検索"
+              variant="outlined"
+              onChange={handleSearch}
+            />
             <Button
-              onClick={handleSearch}
+              onClick={handleSearchButton}
               sx={{
                 mt: 2,
                 bgcolor: "primary.main",
