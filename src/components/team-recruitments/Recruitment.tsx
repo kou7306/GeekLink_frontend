@@ -1,5 +1,3 @@
-"use client";
-
 import { Event } from "@/types/event";
 import { Box, Typography, Avatar, Chip } from "@mui/material";
 import axios from "axios";

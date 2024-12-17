@@ -1,5 +1,7 @@
+"use client";
 import { getUuidFromCookie } from "@/actions/users";
 import TeamRecruitmentPage from "@/components/team-recruitments/TeamRecruitmentsPage";
+import { useState, useEffect } from "react";
 
 async function fetchEvents(eventType: "EVENT" | "HACKATHON") {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -37,30 +39,30 @@ async function fetchCurrentUserEvents(ownerId: string) {
 }
 
 export default async function Page() {
-  let hackathonEvents = [];
-  let eventEvents = [];
-  let currentUserEvents = [];
+  const [hackathonEvents, setHackathonEvents] = useState([]);
+  const [eventEvents, setEventEvents] = useState([]);
+  const [currentUserEvents, setCurrentUserEvents] = useState([]);
 
-  try {
-    hackathonEvents = await fetchEvents("HACKATHON");
-  } catch (error) {
-    console.error("Error fetching hackathon events:", error);
-  }
-
-  try {
-    eventEvents = await fetchEvents("EVENT");
-  } catch (error) {
-    console.error("Error fetching event events:", error);
-  }
-
-  try {
-    const currentUserUuid = await getUuidFromCookie();
-    currentUserEvents = currentUserUuid
-      ? await fetchCurrentUserEvents(currentUserUuid)
-      : [];
-  } catch (error) {
-    console.error("Error fetching current user events:", error);
-  }
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const hackathonEvents = await fetchEvents("HACKATHON");
+        const eventEvents = await fetchEvents("EVENT");
+        const currentUserUuid = await getUuidFromCookie();
+        setHackathonEvents(hackathonEvents);
+        setEventEvents(eventEvents);
+        if (currentUserUuid) {
+          const currentUserEvents = await fetchCurrentUserEvents(
+            currentUserUuid
+          );
+          setCurrentUserEvents(currentUserEvents);
+        }
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <TeamRecruitmentPage
