@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
-import { Box, Button, Modal, TextField, Typography } from "@mui/material";
-import { useRouter } from "next/navigation";
+import { Box, Modal, TextField, Typography } from "@mui/material";
 
 const style = {
   position: "absolute" as "absolute",
@@ -16,22 +15,9 @@ const style = {
 };
 
 const Search = () => {
-  const router = useRouter();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  const [keyword, setKeyword] = useState("");
-
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setKeyword(e.target.value);
-  };
-
-  const handleSearchButton = () => {
-    console.log(keyword);
-    router.push(`/team-recruitments/search?keyword=${keyword}`);
-    handleClose();
-  };
 
   return (
     <>
@@ -46,29 +32,8 @@ const Search = () => {
           <Typography id="modal-modal-title" variant="h6" component="h2">
             キーワードで検索
           </Typography>
-          <Box
-            id="modal-modal-description"
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            sx={{ mt: 2 }}
-          >
-            <TextField
-              fullWidth
-              label="検索"
-              variant="outlined"
-              onChange={handleSearch}
-            />
-            <Button
-              onClick={handleSearchButton}
-              sx={{
-                mt: 2,
-                bgcolor: "primary.main",
-                color: "white",
-              }}
-            >
-              検索
-            </Button>
+          <Box id="modal-modal-description" sx={{ mt: 2 }}>
+            <TextField fullWidth label="検索" variant="outlined" />
           </Box>
         </Box>
       </Modal>
