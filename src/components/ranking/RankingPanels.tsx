@@ -28,7 +28,6 @@ const RankingPanels = ({ value }: Props) => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            mode: "no-cors",
           },
         }
       );
